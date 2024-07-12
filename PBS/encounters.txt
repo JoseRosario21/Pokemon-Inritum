@@ -1,0 +1,35 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[003] # Stuot Pier
+Land,21
+    35,WURMPLE,2,5
+    25,TAILLOW,2,5
+    20,NINCADA,2,5
+    15,POOCHYENA,2,5
+    5,TADBULB,2,5
+#-------------------------------
+[004] # Stuot City
+Land,21
+    35,RATTATA,3,6
+    25,TAILLOW,3,6
+    20,POOCHYENA,3,6
+    15,MACHOP,3,6
+    5,EKANS,3,6
+#-------------------------------
+[011] # Route1
+Land,21
+    30,RATTATA,9,12
+    20,ILLUMISE,9,12
+    20,VOLBEAT,9,12
+    15,EKANS,9,12
+    10,SNUBBULL,9,12
+    5,BUDEW,9,12
+#-------------------------------
+[012] # Feldspar Cave
+Cave,10
+    30,ZUBAT,10,14
+    20,ROGGENROLA,10,14
+    20,SILICOBRA,10,14
+    15,SANDSHREW,10,14
+    10,NOIBAT,10,14
+    5,ARON,10,14

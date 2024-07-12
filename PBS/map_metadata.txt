@@ -1,0 +1,38 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[001]   # Intro
+Name = Intro
+#-------------------------------
+[003]   # Stuot Pier
+Outdoor = true
+ShowArea = true
+Bicycle = true
+HealingSpot = 4,22,13
+#-------------------------------
+[004]   # Stuot City
+Name = Stuot City
+Outdoor = true
+ShowArea = true
+Bicycle = true
+HealingSpot = 4,22,13
+#-------------------------------
+[010]   # Stuot Lab
+Name = 
+#-------------------------------
+[011]   # Route1
+Outdoor = true
+ShowArea = true
+Bicycle = true
+#-------------------------------
+[012]   # Feldspar Cave
+ShowArea = true
+#-------------------------------
+[016]   # Help Center
+#-------------------------------
+[022]   # Stuot Town
+Name = Stuout Town
+Outdoor = true
+ShowArea = true
+Bicycle = true
+Weather = Sun,80
+SnapEdges = true

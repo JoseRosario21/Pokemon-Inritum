@@ -1,0 +1,108 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[RIVAL1,Meryl]
+LoseText = Whoa! I was completely defeated!
+Pokemon = POPPLIO,5
+#-------------------------------
+[BUGCATCHER,Rick]
+LoseText = A good battle indeed!
+Pokemon = PINSIR,8
+#-------------------------------
+[LASS,Sophia]
+LoseText = You might think he's weak, but he is very capable of winning in the big leagues!
+Pokemon = PACHIRISU,7
+#-------------------------------
+[YOUNGSTER,Andre]
+LoseText = You got me there!
+Pokemon = POOCHYENA,6
+Pokemon = YUNGOOS,5
+#-------------------------------
+[BIKER,Josh]
+LoseText = Pft, you just got lucky!
+Pokemon = RATTATA,8
+Pokemon = SANDSHREW,5
+#-------------------------------
+[SCIENTIST,Harry]
+LoseText = ...
+Pokemon = VOLTORB,5
+Pokemon = MAGNEMITE,6
+#-------------------------------
+[COOLTRAINER_M,Jack]
+LoseText = ...
+Pokemon = PURRLOIN,7
+#-------------------------------
+[POKEMANIAC,James]
+LoseText = ...
+Pokemon = TRUBBISH,5
+Pokemon = RATTATA,5
+Pokemon = KOFFING,6
+#-------------------------------
+[POKEMONBREEDER,Sarah]
+LoseText = ...
+Pokemon = FLABEBE,6
+Pokemon = CHERUBI,6
+#-------------------------------
+[COOLTRAINER_F,Amelia]
+LoseText = ...
+Pokemon = MEOWTH_1,5
+Pokemon = MASCHIFF,5
+#-------------------------------
+[FISHERMAN,Hugh]
+LoseText = ...
+Pokemon = FINNEON,7
+Pokemon = GOLDEEN,8
+#-------------------------------
+[PICNICKER,Lillie]
+LoseText = ...
+Pokemon = WHISMUR,7
+Pokemon = SENTRET,7
+#-------------------------------
+[CAMPER,Mike]
+LoseText = ...
+Pokemon = PONYTA,9
+#-------------------------------
+[BUGCATCHER,Andrew]
+LoseText = ...
+Pokemon = CATERPIE,7
+Pokemon = METAPOD,7
+Pokemon = BUTTERFREE,7
+#-------------------------------
+[HIKER,Rohan]
+LoseText = ...
+Pokemon = ROGGENROLA,7
+Pokemon = ZUBAT,6
+#-------------------------------
+[POKEMONTRAINER_May,Meryl,1]
+LoseText = ...
+Pokemon = POPPLIO,13
+#-------------------------------
+[CRUSHGIRL,Jenny]
+LoseText = ...
+Pokemon = MACHOP,10
+Pokemon = MAKUHITA,10
+#-------------------------------
+[YOUNGSTER,Nathan]
+LoseText = A good battle indeed!
+Pokemon = LOUDRED,12
+Pokemon = PATRAT,12
+#-------------------------------
+[HIKER,Duncan]
+LoseText = ...
+Pokemon = GEODUDE,10
+Pokemon = ONIX,12
+#-------------------------------
+[RUINMANIAC,Markus]
+LoseText = ...
+Pokemon = DRILBUR,10
+Pokemon = BRONZOR,12
+#-------------------------------
+[TEAMROCKET_M,Grunt]
+LoseText = ...
+Pokemon = MURKROW,11
+Pokemon = IMPIDIMP,11
+Pokemon = INKAY,13
+Pokemon = SIGILYPH,14
+#-------------------------------
+[RIVAL2,Karl]
+LoseText = ...
+Pokemon = BELDUM,15
