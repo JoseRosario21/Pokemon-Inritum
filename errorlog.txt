@@ -844,3 +844,191 @@ Backtrace:
 [Modern Quest System + UI] 003_Quest_UI.rb:108:in `pbStartScene'
 [Modern Quest System + UI] 003_Quest_UI.rb:324:in `pbStartScreen'
 001_UI_PauseMenu.rb:332:in `block (3 levels) in load_scripts_from_folder'
+
+=================
+
+[2024-07-12 23:35:38 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: NameError
+Message: uninitialized constant QuestModule::StoryQuest
+
+Backtrace:
+[Modern Quest System + UI] 002_Quest_Main.rb:258:in `const_get'
+[Modern Quest System + UI] 002_Quest_Main.rb:258:in `getName'
+[Modern Quest System + UI] 003_Quest_UI.rb:26:in `drawItem'
+[Modern Quest System + UI] 003_Quest_UI.rb:44:in `block in refresh'
+[Modern Quest System + UI] 003_Quest_UI.rb:42:in `each'
+[Modern Quest System + UI] 003_Quest_UI.rb:42:in `refresh'
+[Modern Quest System + UI] 003_Quest_UI.rb:16:in `quests='
+[Modern Quest System + UI] 003_Quest_UI.rb:108:in `pbStartScene'
+[Modern Quest System + UI] 003_Quest_UI.rb:324:in `pbStartScreen'
+001_UI_PauseMenu.rb:332:in `block (3 levels) in load_scripts_from_folder'
+
+=================
+
+[2024-07-12 23:35:56 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: NameError
+Message: uninitialized constant QuestModule::StoryQuest
+
+Backtrace:
+[Modern Quest System + UI] 002_Quest_Main.rb:258:in `const_get'
+[Modern Quest System + UI] 002_Quest_Main.rb:258:in `getName'
+[Modern Quest System + UI] 003_Quest_UI.rb:26:in `drawItem'
+[Modern Quest System + UI] 003_Quest_UI.rb:44:in `block in refresh'
+[Modern Quest System + UI] 003_Quest_UI.rb:42:in `each'
+[Modern Quest System + UI] 003_Quest_UI.rb:42:in `refresh'
+[Modern Quest System + UI] 003_Quest_UI.rb:16:in `quests='
+[Modern Quest System + UI] 003_Quest_UI.rb:108:in `pbStartScene'
+[Modern Quest System + UI] 003_Quest_UI.rb:324:in `pbStartScreen'
+001_UI_PauseMenu.rb:332:in `block (3 levels) in load_scripts_from_folder'
+
+=================
+
+[2024-07-12 23:42:18 +0100]
+[Pokémon Essentials version 21.1]
+
+Exception: NoMethodError
+Message: undefined method `trainer_type' for nil:NilClass
+
+Backtrace:
+004_Player.rb:73:in `trainer_type'
+001_Trainer.rb:49:in `male?'
+011_Messages.rb:434:in `pbMessageDisplay'
+011_Messages.rb:691:in `pbMessage'
+011_Messages.rb:704:in `pbConfirmMessage'
+999_Main.rb:30:in `mainFunctionDebug'
+999_Main.rb:18:in `block in mainFunction'
+003_Errors.rb:79:in `pbCriticalCode'
+999_Main.rb:18:in `mainFunction'
+999_Main.rb:51:in `block (2 levels) in load_scripts_from_folder'
+
+=================
+
+[2024-07-13 00:01:00 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: EOFError
+Message: end of file reached
+
+Backtrace:
+<internal:marshal>:34:in `load'
+001_SaveData.rb:28:in `load'
+001_SaveData.rb:28:in `block in get_data_from_file'
+001_SaveData.rb:27:in `open'
+001_SaveData.rb:27:in `get_data_from_file'
+001_SaveData.rb:45:in `read_from_file'
+001_StartGame.rb:22:in `set_up_system'
+999_Main.rb:37:in `mainFunctionDebug'
+999_Main.rb:18:in `block in mainFunction'
+003_Errors.rb:79:in `pbCriticalCode'
+
+=================
+
+[2024-07-13 00:01:28 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: EOFError
+Message: end of file reached
+
+Backtrace:
+<internal:marshal>:34:in `load'
+001_SaveData.rb:28:in `load'
+001_SaveData.rb:28:in `block in get_data_from_file'
+001_SaveData.rb:27:in `open'
+001_SaveData.rb:27:in `get_data_from_file'
+001_SaveData.rb:45:in `read_from_file'
+001_StartGame.rb:22:in `set_up_system'
+999_Main.rb:37:in `mainFunctionDebug'
+999_Main.rb:18:in `block in mainFunction'
+003_Errors.rb:79:in `pbCriticalCode'
+
+=================
+
+[2024-07-13 00:01:36 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: EOFError
+Message: end of file reached
+
+Backtrace:
+<internal:marshal>:34:in `load'
+001_SaveData.rb:28:in `load'
+001_SaveData.rb:28:in `block in get_data_from_file'
+001_SaveData.rb:27:in `open'
+001_SaveData.rb:27:in `get_data_from_file'
+001_SaveData.rb:45:in `read_from_file'
+001_StartGame.rb:22:in `set_up_system'
+999_Main.rb:37:in `mainFunctionDebug'
+999_Main.rb:18:in `block in mainFunction'
+003_Errors.rb:79:in `pbCriticalCode'
+
+=================
+
+[2024-07-13 00:01:59 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: EOFError
+Message: end of file reached
+
+Backtrace:
+<internal:marshal>:34:in `load'
+001_SaveData.rb:28:in `load'
+001_SaveData.rb:28:in `block in get_data_from_file'
+001_SaveData.rb:27:in `open'
+001_SaveData.rb:27:in `get_data_from_file'
+001_SaveData.rb:45:in `read_from_file'
+001_StartGame.rb:22:in `set_up_system'
+999_Main.rb:37:in `mainFunctionDebug'
+999_Main.rb:18:in `block in mainFunction'
+003_Errors.rb:79:in `pbCriticalCode'
+
+=================
+
+[2024-07-13 00:09:36 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: EOFError
+Message: end of file reached
+
+Backtrace:
+<internal:marshal>:34:in `load'
+001_SaveData.rb:28:in `load'
+001_SaveData.rb:28:in `block in get_data_from_file'
+001_SaveData.rb:27:in `open'
+001_SaveData.rb:27:in `get_data_from_file'
+001_SaveData.rb:45:in `read_from_file'
+001_StartGame.rb:22:in `set_up_system'
+999_Main.rb:37:in `mainFunctionDebug'
+999_Main.rb:18:in `block in mainFunction'
+003_Errors.rb:79:in `pbCriticalCode'
+
+=================
+
+[2024-07-13 00:37:27 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: EOFError
+Message: end of file reached
+
+Backtrace:
+<internal:marshal>:34:in `load'
+001_SaveData.rb:28:in `load'
+001_SaveData.rb:28:in `block in get_data_from_file'
+001_SaveData.rb:27:in `open'
+001_SaveData.rb:27:in `get_data_from_file'
+001_SaveData.rb:45:in `read_from_file'
+001_StartGame.rb:22:in `set_up_system'
+999_Main.rb:37:in `mainFunctionDebug'
+999_Main.rb:18:in `block in mainFunction'
+003_Errors.rb:79:in `pbCriticalCode'

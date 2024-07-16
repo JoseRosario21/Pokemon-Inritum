@@ -10,6 +10,7 @@ end
 SPEEDUP_STAGES = [1, 1.5, 2]
 $GameSpeed = 0
 $CanToggle = true
+$RefreshEventsForTurbo = false
 #===============================================================================#
 # Set $CanToggle depending on the saved setting
 #===============================================================================#
@@ -20,6 +21,7 @@ module Game
 
   def self.load(save_data)
     original_load(save_data)
+          #echoln "UNSCALED #{System.unscaled_uptime} * #{SPEEDUP_STAGES[$GameSpeed]} - #{$GameSpeed}"
     $CanToggle = $PokemonSystem.only_speedup_battles == 0
   end
 end
@@ -34,6 +36,7 @@ module Input
       $GameSpeed += 1
       $GameSpeed = 0 if $GameSpeed >= SPEEDUP_STAGES.size
       $PokemonSystem.battle_speed = $GameSpeed if $PokemonSystem && $PokemonSystem.only_speedup_battles == 1
+      $RefreshEventsForTurbo  = true
     end
   end
 end
@@ -79,6 +82,56 @@ def pbBattleOnStepTaken(repel_active)
   return if $game_temp.in_battle
   original_pbBattleOnStepTaken(repel_active)
 end
+
+class Game_Event < Game_Character
+def pbGetInterpreter
+  return @interpreter
+end
+
+def pbResetInterpreterWaitCount
+  @interpreter.pbRefreshWaitCount if @interpreter && IsParallel
+end
+
+def IsParallel
+  return @trigger == 4
+end  
+end  
+
+class Interpreter
+  def pbRefreshWaitCount
+    @wait_count = 0
+    @wait_start = System.uptime
+  end  
+end  
+
+class Window_AdvancedTextPokemon < SpriteWindow_Base
+  def pbResetWaitCounter
+    @wait_timer_start = nil
+    @waitcount = 0
+    @display_last_updated = nil
+  end  
+end  
+
+$CurrentMsgWindow = nil;
+def pbMessage(message, commands = nil, cmdIfCancel = 0, skin = nil, defaultCmd = 0, &block)
+  ret = 0
+  msgwindow = pbCreateMessageWindow(nil, skin)
+  $CurrentMsgWindow = msgwindow
+
+  if commands
+    ret = pbMessageDisplay(msgwindow, message, true,
+                           proc { |msgwndw|
+                             next Kernel.pbShowCommands(msgwndw, commands, cmdIfCancel, defaultCmd, &block)
+                           }, &block)
+  else
+    pbMessageDisplay(msgwindow, message, &block)
+  end
+  pbDisposeMessageWindow(msgwindow)
+  $CurrentMsgWindow = nil
+  Input.update
+  return ret
+end
+
 #===============================================================================#
 # Fix for scrolling fog speed
 #===============================================================================#
@@ -86,6 +139,19 @@ class Game_Map
   alias_method :original_update, :update unless method_defined?(:original_update)
 
   def update
+    if $RefreshEventsForTurbo
+      echoln "UNSCALED #{System.unscaled_uptime} * #{SPEEDUP_STAGES[$GameSpeed]} - #{$GameSpeed}"
+      if $game_map&.events
+        $game_map.events.each_value { |event| event.pbResetInterpreterWaitCount }
+      end
+
+      @scroll_timer_start = System.uptime/SPEEDUP_STAGES[SPEEDUP_STAGES.size-1] if (@scroll_distance_x || 0) != 0 || (@scroll_distance_y || 0) != 0
+
+      $CurrentMsgWindow.pbResetWaitCounter if $game_temp.message_window_showing && $CurrentMsgWindow 
+
+      $RefreshEventsForTurbo = false
+    end
+
     temp_timer = @fog_scroll_last_update_timer
     @fog_scroll_last_update_timer = System.uptime # Don't scroll in the original update method
     original_update
