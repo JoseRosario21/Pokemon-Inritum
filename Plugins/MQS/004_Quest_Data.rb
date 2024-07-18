@@ -29,7 +29,7 @@ module QuestModule
     :Name => "Help me find my Lillipup!",
     :QuestGiver => "Lass Selena",
     :Stage1 => "Look for Lillipup",
-    :Location1 => "Stuot City",
+    :Location1 => "Stuot Pier",
     :Stage2 => "Look for Lillipup again",
     :Location2 => "Stuot City",
     :Stage3 => "Save Lillipup",
