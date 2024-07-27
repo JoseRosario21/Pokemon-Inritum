@@ -32,7 +32,7 @@ module QuestModule
     :Location1 => "Stuot Pier",
     :Stage2 => "Look for Lillipup again",
     :Location2 => "Stuot City",
-    :Stage3 => "Save Lillipup",
+    :Stage3 => "Look for Lillipup again",
     :Location3 => "Stuot City",
     :QuestDescription => "I lost my Lillipup while taking him for a walk after a Mightyena frightened him! I have been looking around the city but I just can't find him. Can someone help me find him please? I miss him so much. My father's Stoutland gave us another egg so you can take it as a reward if you want.",
     :RewardString => "Pokémon Egg."
