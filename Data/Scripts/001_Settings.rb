@@ -31,6 +31,8 @@ module Settings
       "BloodyNeonz",
       "Ajax Lasnamae",
       "Gothmonkey",
+      "Silly Robot Man",
+      "DarkStar",
       "",
       _INTL("Special thanks to:"),
     ]
@@ -275,7 +277,7 @@ module Settings
   # Whether the Pokédex list shown is the one for the player's current region
   # (true), or whether a menu pops up for the player to manually choose which
   # Dex list to view if more than one is available (false).
-  USE_CURRENT_REGION_DEX                    = false
+  USE_CURRENT_REGION_DEX                    = true
   # Whether all forms of a given species will be immediately available to view
   # in the Pokédex so long as that species has been seen at all (true), or
   # whether each form needs to be seen specifically before that form appears in

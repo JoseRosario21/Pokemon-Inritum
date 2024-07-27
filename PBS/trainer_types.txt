@@ -400,3 +400,9 @@ Gender = Male
 BaseMoney = 100
 BattleBGM = Battle Champion
 VictoryBGM = Battle victory leader
+#-------------------------------
+[TEAM_REBIRTH_LEADER]
+Name = Rebirth Leader
+Gender = Male
+SkillLevel = 100
+BaseMoney = 200

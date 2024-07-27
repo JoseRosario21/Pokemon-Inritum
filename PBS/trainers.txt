@@ -106,3 +106,9 @@ Pokemon = SIGILYPH,14
 [RIVAL2,Karl]
 LoseText = ...
 Pokemon = BELDUM,15
+
+#-------------------------------
+[TEAM_REBIRTH_LEADER,Astraeus]
+LoseText = ...
+Pokemon = MURKROW,11
+

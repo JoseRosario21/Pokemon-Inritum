@@ -3,73 +3,60 @@ module QuestModule
     :ID => "0",
     :Name => "Chapter 1",
     :QuestGiver => "nil",
-    :Stage1 => "Meet Arthur at the Lab",
-    :Stage2 => "Obtain your starter Pokémon",
-    :Stage3 => "Battle Meryl",
-    :Stage4 => "Investigate Feldspar Cave",
-    :Stage5 => "Report to Orion",
-    :Stage6 => "Visit the School",
-    :Stage7 => "Defend the Lab",
+    :Stage1 => "Meet Arthur at the Lab.",
+    :Stage2 => "Obtain your starter Pokémon.",
+    :Stage3 => "Battle Meryl.",
+    :Stage4 => "Investigate Feldspar Cave.",
+    :Stage5 => "Report to Orion.",
+    :Stage6 => "Battle Karl.",
+    :Stage7 => "Visit the School.",
+    :Stage8 => "Pick the books Karl requested from the library.",
+    :Stage9 => "Defend the Lab.",
     :Location1 => "Stuot Lab",
     :Location2 => "Stuot Lab",
     :Location3 => "Stuot Lab",
     :Location4 => "Feldspar Cave",
     :Location5 => "Stuot Lab",
-    :Location6 => "Stuot School",
-    :Location7 => "Stuot Lab",
+    :Location6 => "Stuot Lab",
+    :Location7 => "Stuot School",
+    :Location8 => "Stuot School",
+    :Location9 => "Stuot Lab",
     :QuestDescription => "Chapter 1 story",
   }
   
-  # Here's the simplest example of a single-stage quest with everything specified
   Quest1 = {
     :ID => "1",
-    :Name => "Introductions",
-    :QuestGiver => "Little Boy",
-    :Stage1 => "Look for clues.",
-    :Location1 => "Lappet Town",
-    :QuestDescription => "Some wild Pokémon stole a little boy's favourite toy. Find those troublemakers and help him get it back.",
-    :RewardString => "Something shiny!"
+    :Name => "Help me find my Lillipup!",
+    :QuestGiver => "Lass Selena",
+    :Stage1 => "Look for Lillipup",
+    :Location1 => "Stuot Pier",
+    :Stage2 => "Look for Lillipup again",
+    :Location2 => "Stuot City",
+    :Stage3 => "Look for Lillipup again",
+    :Location3 => "Stuot City",
+    :QuestDescription => "I lost my Lillipup while taking him for a walk after a Mightyena frightened him! I have been looking around the city but I just can't find him. Can someone help me find him please? I miss him so much. My father's Stoutland gave us another egg so you can take it as a reward if you want.",
+    :RewardString => "Pokémon Egg."
   }
   
-  # Here's an extension of the above that includes multiple stages
   Quest2 = {
     :ID => "2",
-    :Name => "Introductions",
-    :QuestGiver => "Little Boy",
-    :Stage1 => "Look for clues.",
-    :Stage2 => "Follow the trail.",
-    :Stage3 => "Catch the troublemakers!",
-    :Location1 => "Lappet Town",
-    :Location2 => "Viridian Forest",
-    :Location3 => "Route 3",
-	:StageLabel1 => "1",
-	:StageLabel2 => "2",
-    :QuestDescription => "Some wild Pokémon stole a little boy's favourite toy. Find those troublemakers and help him get it back.",
-    :RewardString => "Something shiny!"
+    :Name => "I need a combee!",
+    :QuestGiver => "Youngster Larry",
+    :Stage1 => "Catch a combee",
+    :Location1 => "Route 1",
+    :QuestDescription => "I went to Route 1 to look for a dex entry of combee but I just couldn't find one. It was supposed to be easy, they say it appears 95% of the time but I kept getting other Pokémon on the grass. Am I doing something wrong? If anyone could just catch it would be great. I could then copy the information for my Dex.",
+    :RewardString => "1500$ + 5 Great Balls"
   }
   
   # Here's an example of a quest with lots of stages that also doesn't have a stage location defined for every stage
   Quest3 = {
     :ID => "3",
-    :Name => "Last-minute chores",
-    :QuestGiver => "Grandma",
-    :Stage1 => "A",
-    :Stage2 => "B",
-    :Stage3 => "C",
-    :Stage4 => "D",
-    :Stage5 => "E",
-    :Stage6 => "F",
-    :Stage7 => "G",
-    :Stage8 => "H",
-    :Stage9 => "I",
-    :Stage10 => "J",
-    :Stage11 => "K",
-    :Stage12 => "L",
-    :Location1 => "nil",
-    :Location2 => "nil",
-    :Location3 => "Dewford Town",
-    :QuestDescription => "Isn't the alphabet longer than this?",
-    :RewardString => "Chicken soup!"
+    :Name => "Precious item lost!",
+    :QuestGiver => "Beauty Trish",
+    :Stage1 => "Look for the Big Pearl",
+    :Location1 => "Stuot City",
+    :QuestDescription => "I lost my Big Pearl somewhere in the City but I can't find it. It was a gift from my boyfriend and it's worth a lot of money. I'm afraid if someone finds it he will try to sell it. Please help me!",
+    :RewardString => "3 Super Potion, 2500$ and a Lum Berry"
   }
   
   # Here's an example of not defining the quest giver and reward text
