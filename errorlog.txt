@@ -18,3 +18,24 @@ Backtrace:
 003_Errors.rb:79:in `pbCriticalCode'
 999_Main.rb:18:in `mainFunction'
 999_Main.rb:51:in `block (2 levels) in load_scripts_from_folder'
+
+=================
+
+[2024-07-31 12:02:35 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: NameError
+Message: uninitialized constant Game_Event::IsParallel
+
+Backtrace:
+[Delta Speed Up] _Main_Script.rb:92:in `pbResetInterpreterWaitCount'
+[Delta Speed Up] _Main_Script.rb:145:in `block in update'
+[Delta Speed Up] _Main_Script.rb:145:in `each_value'
+[Delta Speed Up] _Main_Script.rb:145:in `update'
+002_Scene_Map.rb:138:in `block in updateMaps'
+002_Scene_Map.rb:137:in `each'
+002_Scene_Map.rb:137:in `updateMaps'
+002_Scene_Map.rb:125:in `block in miniupdate'
+002_Scene_Map.rb:123:in `loop'
+002_Scene_Map.rb:123:in `miniupdate'

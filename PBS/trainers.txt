@@ -75,6 +75,7 @@ Pokemon = ZUBAT,6
 [POKEMONTRAINER_May,Meryl,1]
 LoseText = ...
 Pokemon = POPPLIO,13
+Pokemon = DUCKLETT,11
 #-------------------------------
 [CRUSHGIRL,Jenny]
 LoseText = ...
@@ -96,7 +97,7 @@ LoseText = ...
 Pokemon = DRILBUR,10
 Pokemon = BRONZOR,12
 #-------------------------------
-[TEAMROCKET_M,Grunt]
+[TEAM_REBIRTH_GRUNT_M,Grunt]
 LoseText = ...
 Pokemon = MURKROW,11
 Pokemon = IMPIDIMP,11

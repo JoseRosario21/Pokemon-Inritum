@@ -406,3 +406,9 @@ Name = Rebirth Leader
 Gender = Male
 SkillLevel = 100
 BaseMoney = 200
+#-------------------------------
+[TEAM_REBIRTH_GRUNT_M]
+Name = Team Rebirth
+Gender = Male
+SkillLevel = 100
+BaseMoney = 100
