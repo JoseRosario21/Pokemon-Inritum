@@ -1,11 +1,19 @@
 Name = Generation 9 Pack
-Version = 3.2.5
+Version = 3.2.6
 Essentials = 21.1
 Requires = v21.1 Hotfixes,1.0.9
 Website = https://www.reliccastle.com/threads/5817/
 Credits = Caruban
 
 # Change logs
+#############################################
+# 3.2.6
+#############################################
+# - Fixed Trace interaction with Ability Shield
+# - Changed Doodle and Dragon Cheer Battle::AI::Handlers from using batttle.allSameSideBattlers to ai.each_same_side_battler
+# - Moved rough_damage method from Battle::AI to Battle::AI::AIMove
+# - Moved zero_to_hero_ability ShouldSwitch handler outside of Battle::AI class
+#
 #############################################
 # 3.2.5
 #############################################

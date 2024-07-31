@@ -289,7 +289,6 @@ class Battle::Battler
   #-----------------------------------------------------------------------------
   # Aliased for new continuous ability checks.
   #-----------------------------------------------------------------------------
-  alias paldea_pbContinualAbilityChecks pbContinualAbilityChecks
   def pbContinualAbilityChecks(onSwitchIn = false)
     @battle.pbEndPrimordialWeather
     if hasActiveAbility?(:COMMANDER)
@@ -298,12 +297,28 @@ class Battle::Battler
     @proteanTrigger = false
     plateType = pbGetJudgmentType(@legendPlateType)
     @legendPlateType = plateType
-    if hasActiveAbility?(:TRACE) && hasActiveItem?(:ABILITYSHIELD)
-      @battle.pbShowAbilitySplash(self)
-      @battle.pbDisplay(_INTL("{1}'s Ability is protected by the effects of its Ability Shield!", pbThis))
-      @battle.pbHideAbilitySplash(self)
-    else
-      paldea_pbContinualAbilityChecks(onSwitchIn)
+    if hasActiveAbility?(:TRACE)
+      if hasActiveItem?(:ABILITYSHIELD) # Trace failed by its own Ability Shield
+        if onSwitchIn
+          @battle.pbShowAbilitySplash(self)
+          @battle.pbDisplay(_INTL("{1}'s Ability is protected by the effects of its Ability Shield!", pbThis))
+          @battle.pbHideAbilitySplash(self)
+        end
+      else
+        choices = @battle.allOtherSideBattlers(@index).select do |b|
+          next !b.hasActiveItem?(:ABILITYSHIELD) && (b.ability_id == :WONDERGUARD || !b.uncopyableAbility?)
+        end
+        if choices.length > 0
+          choice = choices[@battle.pbRandom(choices.length)]
+          @battle.pbShowAbilitySplash(self)
+          self.ability = choice.ability
+          @battle.pbDisplay(_INTL("{1} traced {2}'s {3}!", pbThis, choice.pbThis(true), choice.abilityName))
+          @battle.pbHideAbilitySplash(self)
+          if !onSwitchIn && (unstoppableAbility? || abilityActive?)
+            Battle::AbilityEffects.triggerOnSwitchIn(self.ability, self, @battle)
+          end
+        end
+      end
     end
     pbMirrorStatUpsOpposing
   end
