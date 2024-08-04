@@ -23,52 +23,52 @@ Pokemon = RATTATA,8
 Pokemon = SANDSHREW,5
 #-------------------------------
 [SCIENTIST,Harry]
-LoseText = ...
+LoseText = My prediction was wrong.
 Pokemon = VOLTORB,5
 Pokemon = MAGNEMITE,6
 #-------------------------------
 [COOLTRAINER_M,Jack]
-LoseText = ...
+LoseText = Next time I won't go so easy on you!
 Pokemon = PURRLOIN,7
 #-------------------------------
 [POKEMANIAC,James]
-LoseText = ...
+LoseText = My team needs stronger Pokémon...
 Pokemon = TRUBBISH,5
 Pokemon = RATTATA,5
 Pokemon = KOFFING,6
 #-------------------------------
 [POKEMONBREEDER,Sarah]
-LoseText = ...
+LoseText = My cute Pokémon, how dare you?
 Pokemon = FLABEBE,6
 Pokemon = CHERUBI,6
 #-------------------------------
 [COOLTRAINER_F,Amelia]
-LoseText = ...
+LoseText = You are not cool!
 Pokemon = MEOWTH_1,5
 Pokemon = MASCHIFF,5
 #-------------------------------
 [FISHERMAN,Hugh]
-LoseText = ...
+LoseText = Even the mightiest fisherman has an off day.
 Pokemon = FINNEON,7
 Pokemon = GOLDEEN,8
 #-------------------------------
 [PICNICKER,Lillie]
-LoseText = ...
+LoseText = Guess it's back to the picnic blanket for me!
 Pokemon = WHISMUR,7
 Pokemon = SENTRET,7
 #-------------------------------
 [CAMPER,Mike]
-LoseText = ...
+LoseText = Looks like my Ponyta needs more training!
 Pokemon = PONYTA,9
 #-------------------------------
 [BUGCATCHER,Andrew]
-LoseText = ...
+LoseText = Bug Pokémon are still the coolest!
 Pokemon = CATERPIE,7
 Pokemon = METAPOD,7
 Pokemon = BUTTERFREE,7
 #-------------------------------
 [HIKER,Rohan]
-LoseText = ...
+LoseText = Tough match!
 Pokemon = ROGGENROLA,7
 Pokemon = ZUBAT,6
 #-------------------------------
@@ -78,7 +78,7 @@ Pokemon = POPPLIO,13
 Pokemon = DUCKLETT,11
 #-------------------------------
 [CRUSHGIRL,Jenny]
-LoseText = ...
+LoseText = I will keep on fighting!
 Pokemon = MACHOP,10
 Pokemon = MAKUHITA,10
 #-------------------------------
@@ -88,24 +88,24 @@ Pokemon = LOUDRED,12
 Pokemon = PATRAT,12
 #-------------------------------
 [HIKER,Duncan]
-LoseText = ...
+LoseText = My rock Pokémons weren't hard enough.
 Pokemon = GEODUDE,10
 Pokemon = ONIX,12
 #-------------------------------
 [RUINMANIAC,Markus]
-LoseText = ...
+LoseText = Interesting...
 Pokemon = DRILBUR,10
 Pokemon = BRONZOR,12
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt]
-LoseText = ...
+LoseText = You don't know who you're messing with.
 Pokemon = MURKROW,11
 Pokemon = IMPIDIMP,11
 Pokemon = INKAY,13
 Pokemon = SIGILYPH,14
 #-------------------------------
 [RIVAL2,Karl]
-LoseText = ...
+LoseText = My beldum needs to improve a lot!
 Pokemon = BELDUM,15
 
 #-------------------------------

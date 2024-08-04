@@ -39,3 +39,43 @@ Backtrace:
 002_Scene_Map.rb:125:in `block in miniupdate'
 002_Scene_Map.rb:123:in `loop'
 002_Scene_Map.rb:123:in `miniupdate'
+
+=================
+
+[2024-08-03 13:48:54 +0100]
+[Pokémon Essentials version 21.1]
+
+Exception: NoMethodError
+Message: undefined method `trainer_type' for nil:NilClass
+
+Backtrace:
+004_Player.rb:73:in `trainer_type'
+001_Trainer.rb:49:in `male?'
+011_Messages.rb:434:in `pbMessageDisplay'
+011_Messages.rb:691:in `pbMessage'
+011_Messages.rb:704:in `pbConfirmMessage'
+999_Main.rb:30:in `mainFunctionDebug'
+999_Main.rb:18:in `block in mainFunction'
+003_Errors.rb:79:in `pbCriticalCode'
+999_Main.rb:18:in `mainFunction'
+999_Main.rb:51:in `block (2 levels) in load_scripts_from_folder'
+
+=================
+
+[2024-08-03 13:49:37 +0100]
+[Pokémon Essentials version 21.1]
+
+Exception: NoMethodError
+Message: undefined method `trainer_type' for nil:NilClass
+
+Backtrace:
+004_Player.rb:73:in `trainer_type'
+001_Trainer.rb:49:in `male?'
+011_Messages.rb:434:in `pbMessageDisplay'
+011_Messages.rb:691:in `pbMessage'
+011_Messages.rb:704:in `pbConfirmMessage'
+999_Main.rb:30:in `mainFunctionDebug'
+999_Main.rb:18:in `block in mainFunction'
+003_Errors.rb:79:in `pbCriticalCode'
+999_Main.rb:18:in `mainFunction'
+999_Main.rb:51:in `block (2 levels) in load_scripts_from_folder'

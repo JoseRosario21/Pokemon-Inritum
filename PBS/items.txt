@@ -6563,3 +6563,11 @@ Pocket = 8
 Price = 0
 Flags = KeyItem
 Description = A faded sea chart that shows the way to a certain island.
+#-------------------------------
+[POKETREAT]
+Name = PokéTreat
+NamePlural = PokéTreats
+Pocket = 1
+Price = 400
+Flags = Fling_30
+Description = A treat for wild Pokémon so that you can earn their trust.
