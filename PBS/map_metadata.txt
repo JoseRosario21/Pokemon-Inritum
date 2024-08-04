@@ -18,6 +18,7 @@ HealingSpot = 4,22,13
 #-------------------------------
 [010]   # Stuot Lab
 Name = 
+Flags = PowerSpot
 #-------------------------------
 [011]   # Route1
 Outdoor = true
