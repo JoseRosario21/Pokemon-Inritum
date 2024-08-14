@@ -107,7 +107,12 @@ Pokemon = SIGILYPH,14
 [RIVAL2,Karl]
 LoseText = My beldum needs to improve a lot!
 Pokemon = BELDUM,15
-
+    Shiny = yes
+    Moves = TAKEDOWN
+    AbilityIndex = 0
+    Item = ORANBERRY
+    IV = 31,31,31,31,31,31
+    Ball = HEAVYBALL
 #-------------------------------
 [TEAM_REBIRTH_LEADER,Astraeus]
 LoseText = ...
