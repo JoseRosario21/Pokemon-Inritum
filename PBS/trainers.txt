@@ -6,11 +6,11 @@ Pokemon = POPPLIO,5
 #-------------------------------
 [BUGCATCHER,Rick]
 LoseText = A good battle indeed!
-Pokemon = PINSIR,8
+Pokemon = PINSIR,7
 #-------------------------------
 [LASS,Sophia]
 LoseText = You might think he's weak, but he is very capable of winning in the big leagues!
-Pokemon = PACHIRISU,7
+Pokemon = PACHIRISU,6
 #-------------------------------
 [YOUNGSTER,Andre]
 LoseText = You got me there!
@@ -19,7 +19,7 @@ Pokemon = YUNGOOS,5
 #-------------------------------
 [BIKER,Josh]
 LoseText = Pft, you just got lucky!
-Pokemon = RATTATA,8
+Pokemon = RATTATA,7
 Pokemon = SANDSHREW,5
 #-------------------------------
 [SCIENTIST,Harry]
@@ -74,7 +74,7 @@ Pokemon = ZUBAT,6
 #-------------------------------
 [POKEMONTRAINER_May,Meryl,1]
 LoseText = ...
-Pokemon = POPPLIO,13
+Pokemon = POPPLIO,14
 Pokemon = DUCKLETT,11
 #-------------------------------
 [CRUSHGIRL,Jenny]
@@ -84,7 +84,7 @@ Pokemon = MAKUHITA,10
 #-------------------------------
 [YOUNGSTER,Nathan]
 LoseText = A good battle indeed!
-Pokemon = LOUDRED,12
+Pokemon = LOUDRED,11
 Pokemon = PATRAT,12
 #-------------------------------
 [HIKER,Duncan]
@@ -99,10 +99,10 @@ Pokemon = BRONZOR,12
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt]
 LoseText = You don't know who you're messing with.
-Pokemon = MURKROW,11
-Pokemon = IMPIDIMP,11
-Pokemon = INKAY,13
-Pokemon = SIGILYPH,14
+Pokemon = MURKROW,10
+Pokemon = IMPIDIMP,10
+Pokemon = INKAY,12
+Pokemon = SIGILYPH,13
 #-------------------------------
 [RIVAL2,Karl]
 LoseText = My beldum needs to improve a lot!
