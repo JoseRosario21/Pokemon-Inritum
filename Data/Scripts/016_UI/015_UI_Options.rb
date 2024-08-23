@@ -17,9 +17,9 @@ class PokemonSystem
   attr_accessor :textinput
 
   def initialize
-    @textspeed     = 1     # Text speed (0=slow, 1=medium, 2=fast, 3=instant)
+    @textspeed     = 2     # Text speed (0=slow, 1=medium, 2=fast, 3=instant)
     @battlescene   = 0     # Battle effects (animations) (0=on, 1=off)
-    @battlestyle   = 0     # Battle style (0=switch, 1=set)
+    @battlestyle   = 1     # Battle style (0=switch, 1=set)
     @sendtoboxes   = 0     # Send to Boxes (0=manual, 1=automatic)
     @givenicknames = 0     # Give nicknames (0=give, 1=don't give)
     @frame         = 0     # Default window frame (see also Settings::MENU_WINDOWSKINS)
@@ -29,7 +29,7 @@ class PokemonSystem
     @runstyle      = 0     # Default movement speed (0=walk, 1=run)
     @bgmvolume     = 80    # Volume of background music and ME
     @sevolume      = 100   # Volume of sound effects
-    @textinput     = 0     # Text input mode (0=cursor, 1=keyboard)
+    @textinput     = 1     # Text input mode (0=cursor, 1=keyboard)
   end
 end
 
@@ -447,15 +447,15 @@ MenuHandlers.add(:options_menu, :battle_animations, {
   "set_proc"    => proc { |value, _scene| $PokemonSystem.battlescene = value }
 })
 
-MenuHandlers.add(:options_menu, :battle_style, {
-  "name"        => _INTL("Battle Style"),
-  "order"       => 50,
-  "type"        => EnumOption,
-  "parameters"  => [_INTL("Switch"), _INTL("Set")],
-  "description" => _INTL("Choose whether you can switch Pokémon when an opponent's Pokémon faints."),
-  "get_proc"    => proc { next $PokemonSystem.battlestyle },
-  "set_proc"    => proc { |value, _scene| $PokemonSystem.battlestyle = value }
-})
+# MenuHandlers.add(:options_menu, :battle_style, {
+#   "name"        => _INTL("Battle Style"),
+#   "order"       => 50,
+#   "type"        => EnumOption,
+#   "parameters"  => [_INTL("Switch"), _INTL("Set")],
+#   "description" => _INTL("Choose whether you can switch Pokémon when an opponent's Pokémon faints."),
+#   "get_proc"    => proc { next $PokemonSystem.battlestyle },
+#   "set_proc"    => proc { |value, _scene| $PokemonSystem.battlestyle = value }
+# })
 
 MenuHandlers.add(:options_menu, :movement_style, {
   "name"        => _INTL("Default Movement"),
