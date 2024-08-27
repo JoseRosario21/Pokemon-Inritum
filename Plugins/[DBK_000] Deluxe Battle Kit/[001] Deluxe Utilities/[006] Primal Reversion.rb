@@ -98,7 +98,7 @@ class Battle::Scene::Animation::BattlerPrimalReversion < Battle::Scene::Animatio
       :shadow  => @pkmn.shadowPokemon?,
       :hue     => @pkmn.super_shiny_hue
     }
-    @cry_file = GameData::Species.cry_filename(@primal[0], @primal[2])
+    @cry_file = GameData::Species.cry_filename(@primal[:species], @primal[:form])
     case @pkmn.species
     when :GROUDON then @bg_color = Color.new(255, 0, 0, 180)
     when :KYOGRE  then @bg_color = Color.new(0, 0, 255, 180)

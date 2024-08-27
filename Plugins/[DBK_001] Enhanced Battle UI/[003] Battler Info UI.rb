@@ -241,7 +241,7 @@ class Battle::Scene
         stage = battler.stages[stat[0]]
       else
         textPos.push([stat, xpos + 17, ypos + 138 + (i * 24), :left, BASE_LIGHT, SHADOW_LIGHT])
-        stage = battler.effects[PBEffects::FocusEnergy]
+        stage = [battler.effects[PBEffects::FocusEnergy], 3].min
       end
       if stage != 0
         arrow = (stage > 0) ? 0 : 18
@@ -269,14 +269,16 @@ class Battle::Scene
     end
     #---------------------------------------------------------------------------
     # Displays the "???" type on newly encountered species, or battlers with no typing.
-    unknown_species = !(
-	  !@battle.internalBattle ||
-      battler.pbOwnedByPlayer? ||
-      $player.pokedex.owned?(poke.species) ||
-      $player.pokedex.battled_count(poke.species) > 0
-    )
-    unknown_species = false if Settings::SHOW_TYPE_EFFECTIVENESS_FOR_NEW_SPECIES
-    unknown_species = true if battler.celestial?
+    if Settings::SHOW_TYPE_EFFECTIVENESS_FOR_NEW_SPECIES
+      unknown_species = false
+    else
+      unknown_species = !(
+        !@battle.internalBattle ||
+        battler.pbOwnedByPlayer? ||
+        $player.pokedex.owned?(poke.species) ||
+        $player.pokedex.battled_count(poke.species) > 0
+      )
+    end
     displayTypes = [:QMARKS] if unknown_species || displayTypes.empty?
     #---------------------------------------------------------------------------
     # Draws each display type. Maximum of 3 types.
@@ -482,7 +484,7 @@ class Battle::Scene
           #---------------------------------------------------------------------
           when :LeechSeed
             name = GameData::Move.get(:LEECHSEED).name
-            desc = _INTL("The Pokémon's HP is leeched every turn to heal the opponent.")
+            desc = _INTL("The Pokémon's HP is leeched every turn to heal {1}.", @battle.battlers[value].name)
           #---------------------------------------------------------------------
           when :Curse
             name = GameData::Move.get(:CURSE).name
@@ -500,6 +502,14 @@ class Battle::Scene
             name = GameData::Move.get(:RAGE).name
             desc = _INTL("The Pokémon's Attack stat increases whenever it's hit.")
           #---------------------------------------------------------------------
+          when :HelpingHand
+            name = GameData::Move.get(:HELPINGHAND).name
+            desc = _INTL("The Pokémon's damage output is being increased.")
+          #---------------------------------------------------------------------
+          when :PowerTrick
+            name = GameData::Move.get(:POWERTRICK).name
+            desc = _INTL("The Pokémon's Atk and Def are swapped.")
+          #---------------------------------------------------------------------
           when :Torment
             name = GameData::Move.get(:TORMENT).name
             desc = _INTL("The Pokémon can't use the same move twice in a row.")
@@ -508,17 +518,65 @@ class Battle::Scene
             name = GameData::Move.get(:CHARGE).name
             desc = _INTL("The Pokémon's next Electric move will double in power.")
           #---------------------------------------------------------------------
+          when :Electrify
+            name = GameData::Move.get(:ELECTRIFY).name
+            desc = _INTL("The Pokémon's next move will be Electric type.")
+          #---------------------------------------------------------------------
+          when :IonDeluge
+            name = GameData::Move.get(:IONDELUGE).name
+            desc = _INTL("The Pokémon's Normal type moves become Electric type.")
+          #---------------------------------------------------------------------
           when :Minimize
             name = GameData::Move.get(:MINIMIZE).name
             desc = _INTL("The Pokémon shrunk and now takes more damage when squished.")
           #---------------------------------------------------------------------
+          when :SkyDrop
+            name = GameData::Move.get(:SKYDROP).name
+            desc = _INTL("The Pokémon is being lifted in the air by {1}.", @battle.battlers[value].name)
+          #---------------------------------------------------------------------
           when :TarShot
             name = GameData::Move.get(:TARSHOT).name
-            desc = _INTL("The Pokémon has been made weaker to Fire moves.")
+            desc = _INTL("The Pokémon has been made weaker to Fire type moves.")
+          #---------------------------------------------------------------------
+          when :Powder
+            name = GameData::Move.get(:POWDER).name
+            desc = _INTL("The Pokémon takes damage when it uses a Fire type move.")
           #---------------------------------------------------------------------
           when :Wish
             name = GameData::Move.get(:WISH).name
             desc = _INTL("The Pokémon in this spot restores HP on the next turn.")
+          #---------------------------------------------------------------------
+          when :HealingWish
+            name = GameData::Move.get(:HEALINGWISH).name
+            desc = _INTL("Fully heals a Pokémon switching into this spot.")
+          #---------------------------------------------------------------------
+          when :LunarDance
+            name = GameData::Move.get(:LUNARDANCE).name
+            desc = _INTL("Fully heals a Pokémon switching into this spot.")
+          #---------------------------------------------------------------------
+          when :Endure
+            name = GameData::Move.get(:ENDURE).name
+            desc = _INTL("The Pokémon will survive all incoming attacks with 1 HP.")
+          #---------------------------------------------------------------------
+          when :Substitute
+            name = GameData::Move.get(:SUBSTITUTE).name
+            desc = _INTL("The Pokémon's substitute will take any incoming moves.")
+          #---------------------------------------------------------------------
+          when :MagicCoat
+            name = GameData::Move.get(:MAGICCOAT).name
+            desc = _INTL("The Pokémon bounces back any incoming status moves.")
+          #---------------------------------------------------------------------
+          when :CraftyShield
+            name = GameData::Move.get(:CRAFTYSHIELD).name
+            desc = _INTL("The Pokémon is protected from all status moves.")
+          #---------------------------------------------------------------------
+          when :QuickGuard
+            name = GameData::Move.get(:QUICKGUARD).name
+            desc = _INTL("The Pokémon is protected from all priority moves.")
+          #---------------------------------------------------------------------
+          when :WideGuard
+            name = GameData::Move.get(:WIDEGUARD).name
+            desc = _INTL("The Pokémon is protected from all spread moves.")
           #---------------------------------------------------------------------
           when :Foresight
             name = GameData::Move.get(:FORESIGHT).name
@@ -534,6 +592,14 @@ class Battle::Scene
               desc = _INTL("The Pokémon's Dark immunities and evasion boosts are ignored.")
             else
               desc = _INTL("The Pokémon's evasion boosts are ignored.")
+            end
+          #---------------------------------------------------------------------
+          when :SmackDown
+            name = GameData::Move.get(:SMACKDOWN).name
+            if battler.pbHasType?(:FLYING)
+              desc = _INTL("The Pokémon is grounded and its Flying immunities are ignored.")
+            else
+              desc = _INTL("The Pokémon is grounded.")
             end
           #---------------------------------------------------------------------
           when :Stockpile
@@ -728,16 +794,33 @@ class Battle::Scene
           #---------------------------------------------------------------------
           when :Attract
             name = _INTL("Infatuation")
-            data = (battler.gender == 0) ? "female" : "male"
-            desc = _INTL("The Pokémon is less likely to attack {1} Pokémon.", data)
+            desc = _INTL("The Pokémon is less likely to attack {1}.", @battle.battlers[value].name)
+          #---------------------------------------------------------------------
+          when :WeightChange
+            name = _INTL("Weight Changed")
+            desc = _INTL("The Pokémon's weight has been {1}.", (value > 0) ? "increased" : "decreased")
           #---------------------------------------------------------------------
           when :MeanLook, :NoRetreat, :JawLock, :Octolock
             name = _INTL("No Escape")
             desc = _INTL("The Pokémon can't flee or be switched out.")
           #---------------------------------------------------------------------
+          when :Protect, :SpikyShield, :BanefulBunker
+            name = _INTL("Full Protect")
+            desc = _INTL("The Pokémon is protected from all incoming moves.")
+          #---------------------------------------------------------------------
+          when :KingsShield, :Obstruct, :SilkTrap, :BurningBulwark, :MatBlock
+            name = _INTL("Damage Protect")
+            desc = _INTL("The Pokémon is protected from all incoming damage.")
+          #---------------------------------------------------------------------
           when :ZHealing
             name = _INTL("Z-Healing")
             desc = _INTL("A Pokémon switching into this spot will recover its HP.")
+          #---------------------------------------------------------------------
+          when :TwoTurnAttack
+            if battler.semiInvulnerable?
+              name = _INTL("Semi-Invulnerable")
+              desc = _INTL("The Pokémon cannot be hit by most attacks.")
+            end
           #---------------------------------------------------------------------
           when :PerishSong
             name = _INTL("Counting Down")
@@ -752,10 +835,10 @@ class Battle::Scene
           when :Syrupy
             name = _INTL("Speed Down")
             tick = value.to_s
-            desc = _INTL("The Pokémon's Speed is lowered for 3 turns.")
+            desc = _INTL("The Pokémon's Speed is lowered for 3 turns.", )
           #---------------------------------------------------------------------
           when :SlowStart
-            name = _INTL("Slow Start")
+            name = GameData::Ability.get(:SLOWSTART).name
             tick = value.to_s
             desc = _INTL("The Pokémon gets its act together in 5 turns.")
           #---------------------------------------------------------------------
@@ -799,12 +882,6 @@ class Battle::Scene
             name = _INTL("Sea of Fire")
             tick = sprintf("%d/%d", value, 4)
             desc = _INTL("Pokémon that are not Fire types take damage every turn.")
-          #---------------------------------------------------------------------
-          when :TwoTurnAttack
-            if battler.semiInvulnerable?
-              name = _INTL("Semi-Invulnerable")
-              desc = _INTL("The Pokémon cannot be hit by most attacks.")
-            end
           #---------------------------------------------------------------------
           else next
           end

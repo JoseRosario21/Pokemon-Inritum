@@ -18,11 +18,13 @@ class Battle::Scene::Animation
       when Pokemon
         poke.species_data.apply_dynamax_metrics_to_sprite(@pictureSprites[sprite], 1)
         @pictureSprites[sprite].set_dynamax_pattern(pkmn.species_data.id, true)
-      when Array
-        speciesID = GameData::Species.get_species_form(poke[0], poke[2]).id
-        metrics_data = GameData::SpeciesMetrics.get(speciesID)
+      when Hash
+        species_data = GameData::Species.get_species_form(poke[:species], poke[:form])
+        data = [species_data.species, species_data.form]
+        data.push(poke[:gender] == 1) if PluginManager.installed?("[DBK] Animated Pokémon System")
+        metrics_data = GameData::SpeciesMetrics.get_species_form(*data)
         metrics_data.apply_dynamax_metrics_to_sprite(@pictureSprites[sprite], 1)
-        @pictureSprites[sprite].set_dynamax_pattern(speciesID, true)
+        @pictureSprites[sprite].set_dynamax_pattern(species_data.id, true)
       end
       outline.setXY(delay, @pictureSprites[sprite].x, @pictureSprites[sprite].y)
       outline.setZ(delay, @pictureSprites[sprite].z)
@@ -99,7 +101,7 @@ class Battle::Scene::Animation::BattlerDynamax < Battle::Scene::Animation
     form = pkmn.getEmaxForm if pkmn.hasEternamaxForm?
     @dynamax = @pkmn.clone
     @dynamax[:form] = form
-    if PluginManager.installed?("[DBK] Animated Pokémon System")
+    if pkmn.super_shiny? && PluginManager.installed?("[DBK] Animated Pokémon System")
       metrics = GameData::SpeciesMetrics.get_species_form(pkmn.species, form, pkmn.gender == 1)
       @dynamax[:hue] = metrics.sprite_super_hue 
     end
@@ -434,7 +436,7 @@ class Battle::Scene::Animation::BattlerDynamaxWild < Battle::Scene::Animation
     form = pkmn.getEmaxForm if pkmn.hasEternamaxForm?
     @dynamax = @pkmn.clone
     @dynamax[:form] = form
-    if PluginManager.installed?("[DBK] Animated Pokémon System")
+    if pkmn.super_shiny? && PluginManager.installed?("[DBK] Animated Pokémon System")
       metrics = GameData::SpeciesMetrics.get_species_form(pkmn.species, form, pkmn.gender == 1)
       @dynamax[:hue] = metrics.sprite_super_hue 
     end

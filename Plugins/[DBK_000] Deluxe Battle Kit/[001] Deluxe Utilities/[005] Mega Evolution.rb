@@ -227,7 +227,7 @@ class Battle::Scene::Animation::BattlerMegaEvolve < Battle::Scene::Animation
       :shadow  => @pkmn.shadowPokemon?,
       :hue     => @pkmn.super_shiny_hue
     }
-    @cry_file = GameData::Species.cry_filename(@mega[0], @mega[2])
+    @cry_file = GameData::Species.cry_filename(@mega[:species], @mega[:form])
     if @battler.item && @battler.item.is_mega_stone?
       @megastone_file = "Graphics/Items/" + @battler.item_id.to_s
     end

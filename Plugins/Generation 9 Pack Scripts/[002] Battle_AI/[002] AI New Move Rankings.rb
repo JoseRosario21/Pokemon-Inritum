@@ -768,12 +768,12 @@ Battle::AI::Handlers::MoveFailureCheck.add("UserMakeSubstituteSwitchOut",
 Battle::AI::Handlers::MoveEffectScore.add("UserMakeSubstituteSwitchOut",
   proc { |score, move, user, ai, battle|
     # Switch out score
-    switchout_score = Battle::AI::Handlers.apply_move_effect_against_target_score("SwitchOutUserStatusMove",
-        0, move, user, b, ai, battle)
+    switchout_score = Battle::AI::Handlers.apply_move_effect_score("SwitchOutUserStatusMove",
+        0, move, user, ai, battle)
     score += switchout_score if switchout_score != Battle::AI::MOVE_USELESS_SCORE
     # Substitute score
-    substitute_score = Battle::AI::Handlers.apply_move_effect_against_target_score("UserMakeSubstitute",
-        0, move, user, b, ai, battle)
+    substitute_score = Battle::AI::Handlers.apply_move_effect_score("UserMakeSubstitute",
+        0, move, user, ai, battle)
     score += substitute_score if substitute_score != Battle::AI::MOVE_USELESS_SCORE
     next score
   }

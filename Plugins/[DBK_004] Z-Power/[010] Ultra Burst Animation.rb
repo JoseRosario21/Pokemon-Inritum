@@ -19,7 +19,7 @@ class Battle::Scene::Animation::BattlerUltraBurst < Battle::Scene::Animation
       :shadow  => @pkmn.shadowPokemon?,
       :hue     => @pkmn.super_shiny_hue
     }
-    @cry_file = GameData::Species.cry_filename(@ultra[0], @ultra[2])
+    @cry_file = GameData::Species.cry_filename(@ultra[:species], @ultra[:form])
     #---------------------------------------------------------------------------
     # Gets background and animation data.
     @path = Settings::DELUXE_GRAPHICS_PATH

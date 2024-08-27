@@ -231,6 +231,7 @@ class Battle::FakeBattler
   def style?;          return false; end
   def tera?;           return false; end
   def celestial?;      return false; end
+  def visiblePokemon;  return @pokemon; end
 end
 
 class Battle

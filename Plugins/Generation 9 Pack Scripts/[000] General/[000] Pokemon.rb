@@ -41,12 +41,19 @@ end
 
 class Pokemon
   alias paldea_initialize initialize
-  def initialize(*args)
-    paldea_initialize(*args)
+  def initialize(species, level, owner = $player, withMoves = true, recheck_form = true)
+    paldea_initialize(species, level, owner, withMoves, recheck_form)
     @evo_move_count   = {}
     @evo_crest_count  = {}
     @evo_recoil_count = 0
     @evo_step_count   = 0
+    if @species == :BASCULEGION && recheck_form
+      f = MultipleForms.call("getFormOnCreation", self)
+      if f
+        self.form = f
+        reset_moves if withMoves
+      end
+    end
   end
   
   #-----------------------------------------------------------------------------
@@ -451,6 +458,15 @@ MultipleForms.register(:SQUAWKABILLY, {
 MultipleForms.register(:PALAFIN, {
   "getFormOnLeavingBattle" => proc { |pkmn, battle, usedInBattle, endBattle|
     next 0 if endBattle
+  }
+})
+
+#-------------------------------------------------------------------------------
+# Tatsugiri - Multiple Forms.
+#-------------------------------------------------------------------------------
+MultipleForms.register(:TATSUGIRI, {
+  "getFormOnCreation" => proc { |pkmn|
+    next rand(3)
   }
 })
 
