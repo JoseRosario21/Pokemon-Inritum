@@ -1,11 +1,20 @@
 Name = Generation 9 Pack
-Version = 3.2.6
+Version = 3.2.7
 Essentials = 21.1
 Requires = v21.1 Hotfixes,1.0.9
 Website = https://www.reliccastle.com/threads/5817/
 Credits = Caruban
 
 # Change logs
+#############################################
+# 3.2.7
+#############################################
+# - Added the missing Sharpness ability to Gallade in PBS
+# - Added the missing Tatsugiri form on creation
+# - Fixed Basculegion's forms bug when generated in the wild
+# - Fixed Supersweet Syrup ability battler name into a lowercase
+# - Fixed Tail Shed AI MoveEffectScore handler
+# - Fixed typo in Mabosstiff follower sprite's name
 #############################################
 # 3.2.6
 #############################################
