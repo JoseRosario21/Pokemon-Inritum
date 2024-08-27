@@ -21,7 +21,7 @@ class Battle::Scene::Animation::BattlerTerastallize < Battle::Scene::Animation
       :shadow  => @pkmn.shadowPokemon?,
       :hue     => @pkmn.super_shiny_hue
     }
-    @cry_file = GameData::Species.cry_filename_from_pokemon(@pkmn)
+    @cry_file = GameData::Species.cry_filename(@terastal[:species], @terastal[:form])
     #---------------------------------------------------------------------------
     # Gets trainer data from battler index (non-wild only).
     if !@battler.wild?

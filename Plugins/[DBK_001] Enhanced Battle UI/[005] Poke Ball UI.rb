@@ -41,7 +41,7 @@ class Battle::Scene
     ypos = @sprites["messageBox"].y - 128
     imagePos = [[@path + "select_ball_bg", 0, ypos]]
     imagePos.push([@path + "select_ball_desc", 0, ypos - 72]) if showDesc
-    textY = (showDesc) ? ypos - 58 : ypos + 14
+    textY = (showDesc) ? ypos - 59 : ypos + 13
     action = (showDesc) ? _INTL("Z: Hide") : _INTL("Z: Details")
     item = GameData::Item.try_get(items[index][0])
     name = (item) ? _INTL("{1}", item.name) : _INTL("Return")

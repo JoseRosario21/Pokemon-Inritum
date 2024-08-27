@@ -270,9 +270,13 @@ class Battle::Scene
     cw.setIndexAndMode(@lastCmd[idxBattler], mode)
     pbSelectBattler(idxBattler)
     ret = -1
+    promptTimer = System.uptime
     loop do
       oldIndex = cw.index
       pbUpdate(cw)
+      if Settings::UI_PROMPT_DISPLAY == 2 && @sprites["enhancedUIPrompts"].visible
+        pbToggleUIPrompt if System.uptime - promptTimer > 2
+      end
       if Input.trigger?(Input::LEFT)
         cw.index -= 1 if (cw.index & 1) == 1
       elsif Input.trigger?(Input::RIGHT)
@@ -298,11 +302,13 @@ class Battle::Scene
         break
       elsif Input.trigger?(Input::JUMPUP)
         pbToggleBattleInfo
+        promptTimer = System.uptime
       elsif Input.trigger?(Input::JUMPDOWN)
         if pbToggleBallInfo(idxBattler)
           ret = 1
           break
         end
+        promptTimer = System.uptime
       end
     end
     return ret

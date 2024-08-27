@@ -8,9 +8,17 @@ module Settings
   BATTLE_UI_GRAPHICS_PATH = "Graphics/Plugins/Enhanced Battle UI/"
   
   #-----------------------------------------------------------------------------
-  # When true, button prompts to open UI menus will appear when selecting commands.
+  # The display style for button prompts used to open UI menus that appear when selecting commands.
+  # 0 => No prompts shown
+  # 1 => Always show prompt
+  # 2 => Show prompt, but hide after 2 seconds.
   #-----------------------------------------------------------------------------
-  SHOW_UI_PROMPTS = true
+  UI_PROMPT_DISPLAY = 2
+  
+  #-----------------------------------------------------------------------------
+  # When true, Move UI background will reflect the color of the move type.
+  #-----------------------------------------------------------------------------
+  USE_MOVE_TYPE_BACKGROUNDS = true
   
   #-----------------------------------------------------------------------------
   # When false, type effectiveness display of moves will not be shown vs new 
@@ -28,7 +36,7 @@ class Battle::Scene
   #-----------------------------------------------------------------------------
   # White text.
   #-----------------------------------------------------------------------------
-  BASE_LIGHT     = Color.new(232, 232, 232)
+  BASE_LIGHT     = Color.new(248, 248, 248)
   SHADOW_LIGHT   = Color.new(72, 72, 72)
   #-----------------------------------------------------------------------------
   # Black text.
@@ -80,7 +88,7 @@ class Battle::Scene
         @sprites["info_icon#{b.index}"].z = 300
         pbAddSpriteOutline(["info_icon#{b.index}", @viewport, b.pokemon, PictureOrigin::CENTER])
       end
-      ballY = @sprites["messageBox"].y - 58
+      ballY = @sprites["messageBox"].y - 56
       5.times do |i|
         case i
         when 0 then ballX = 64
@@ -125,7 +133,7 @@ class Battle::Scene
   end
   
   def pbRefreshUIPrompt(idxBattler = nil, window = nil)
-    return if !Settings::SHOW_UI_PROMPTS
+    return if Settings::UI_PROMPT_DISPLAY == 0
     return if !@sprites["enhancedUIPrompts"]
     return if idxBattler && !@battle.pbOwnedByPlayer?(idxBattler)
     @sprites["enhancedUIPrompts"].window = window if window
@@ -177,6 +185,7 @@ class Battle::Scene
     when MESSAGE_BOX, TARGET_BOX
       pbHideUIPrompt
     when FIGHT_BOX, COMMAND_BOX
+      return if @sprites["fightWindow"].visible && @sprites["enhancedUI"].visible
       pbRefreshUIPrompt(nil, windowType)
     end
   end
@@ -256,6 +265,9 @@ end
 class Battle::Scene::EnhancedUIPrompt < Sprite
   attr_reader :round, :window, :battler
   
+  TEXT_BASE_COLOR   = Color.new(248, 248, 248)
+  TEXT_SHADOW_COLOR = Color.new(0, 0, 0)
+  
   def initialize(battler, battle, window, viewport = nil)
     super(viewport) 
     offset    = 0
@@ -280,6 +292,9 @@ class Battle::Scene::EnhancedUIPrompt < Sprite
         offset = 24
       end
     end
+    @contents = Bitmap.new(@bgBitmap.width, @bgBitmap.height / 2)
+    self.bitmap = @contents
+    pbSetSmallFont(self.bitmap)
     self.x       = -164
     self.y       = 236 + offset
     self.z       = 120
@@ -339,6 +354,10 @@ class Battle::Scene::EnhancedUIPrompt < Sprite
   def refresh
     return if !@battler
     offset = 0
+    textPos = [
+      [_INTL(": A"), 68, 7,  :left, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, :outline],
+      [_INTL(": S"), 68, 31, :left, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, :outline]
+    ]
     case @window
     when Battle::Scene::FIGHT_BOX
       @bgSprite.src_rect.y = @bgBitmap.height / 2
@@ -350,10 +369,13 @@ class Battle::Scene::EnhancedUIPrompt < Sprite
         @bgSprite.src_rect.height = @bgBitmap.height / 2
       else
         @bgSprite.src_rect.height = 28
+        textPos.delete_at(1)
         offset = 24
       end
     end
     self.y = 236 + offset
+    self.bitmap.clear
+    pbDrawTextPositions(self.bitmap, textPos)
   end
 
   def update

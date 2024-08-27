@@ -26,7 +26,7 @@ class Battle::Scene
         @sprites["info_icon#{b.index}"].pokemon = b.displayPokemon
         @sprites["info_icon#{b.index}"].visible = @enhancedUIToggle == :move
         @sprites["info_icon#{b.index}"].x = Graphics.width - 32 - (idx * 64)
-        @sprites["info_icon#{b.index}"].y = 68
+        @sprites["info_icon#{b.index}"].y = 48
         if b.dynamax?
           @sprites["info_icon#{b.index}"].set_dynamax_icon_pattern
         elsif b.tera?
@@ -50,11 +50,14 @@ class Battle::Scene
     @enhancedUIOverlay.clear
     return if @enhancedUIToggle != :move
     xpos = 0
-    ypos = 94
-    move = battler.moves[cw.index]
-    powBase   = accBase   = effBase   = BASE_LIGHT
-    powShadow = accShadow = effShadow = SHADOW_LIGHT
-    basePower = calcPower = finalPower = move.power
+    ypos = 78
+    move = battler.moves[cw.index].clone
+    if battler.dynamax? || specialAction == :dynamax && cw.mode == 2
+      move = move.convert_dynamax_move(battler, @battle)
+    end
+    powBase   = accBase   = priBase   = effBase   = BASE_LIGHT
+    powShadow = accShadow = priShadow = effShadow = SHADOW_LIGHT
+    basePower = calcPower = power = move.power
     category = move.category
     type = move.pbCalcType(battler)
     terastal = battler.tera? || (specialAction == :tera && cw.teraType > 0)
@@ -67,7 +70,7 @@ class Battle::Scene
         case move.function_code
         when "CategoryDependsOnHigherDamageTera"
           type = battler.tera_type
-          basePower = calcPower = finalPower = 100
+          basePower = calcPower = power = 100
         when "TerapagosCategoryDependsOnHigherDamage"
           type = :STELLAR if battler.isSpecies?(:TERAPAGOS)
         end
@@ -85,50 +88,51 @@ class Battle::Scene
     #---------------------------------------------------------------------------
     # Draws images.
     typenumber = GameData::Type.get(type).icon_position
+    bgnumber = (Settings::USE_MOVE_TYPE_BACKGROUNDS) ? typenumber + 1 : 0
     imagePos = [
-      [@path + "move_bg", xpos, ypos],
-      ["Graphics/UI/types",    xpos + 272, ypos + 4, 0, typenumber * 28, 64, 28],
-      ["Graphics/UI/category", xpos + 336, ypos + 4, 0, category * 28, 64, 28]
+      [@path + "move_bg",      xpos,       ypos,     0, bgnumber * 164, 512, 164],
+      ["Graphics/UI/types",    xpos + 282, ypos + 6, 0, typenumber * 28, 64, 28],
+      ["Graphics/UI/category", xpos + 350, ypos + 6, 0, category * 28, 64, 28]
     ]
     pbDrawMoveFlagIcons(xpos, ypos, move, imagePos)
     pbDrawTypeEffectiveness(xpos, ypos, move, type, imagePos)
     pbDrawImagePositions(@enhancedUIOverlay, imagePos)
     #---------------------------------------------------------------------------
     # Move damage calculations (for display purposes).
-    if terastal
-      if battler.typeTeraBoosted?(type, true)
-        bonus = (battler.tera_type == :STELLAR) ? 1.2 : 1.5
-        stab = (battler.types.include?(type)) ? 2 : bonus
-      else
-        stab = (battler.types.include?(type)) ? 1.5 : 1
-      end
-    else
-      stab = (battler.pbHasType?(type)) ? 1.5 : 1
-    end
-    stab = 1 if defined?(move.pbFixedDamage(battler, battler.pbDirectOpposing))
-    hidePower = false
-    case move.function_code
-    when "ThrowUserItemAtTarget"                     # Fling
-      hidePower = true if !battler.item
-    when "TypeAndPowerDependOnUserBerry"             # Natural Gift
-      hidePower = true if !battler.item || !battler.item.is_berry?
-    when "PursueSwitchingFoe",                       # Pursuit
-         "RemoveTargetItem",                         # Knock Off
-         "HitOncePerUserTeamMember",                 # Beat Up
-         "DoublePowerIfTargetActed",                 # Payback
-         "DoublePowerIfTargetNotActed",              # Bolt Beak, Fishious Rend
-         "PowerHigherWithTargetHP",                  # Crush Grip, Wring Out
-         "PowerHigherWithTargetHP100PowerRange",     # Hard Press
-         "PowerHigherWithTargetWeight",              # Low Kick, Grass Knot
-         "PowerHigherWithUserFasterThanTarget",      # Electro Ball
-         "PowerHigherWithTargetFasterThanUser",      # Gyro Ball
-         "FixedDamageUserLevelRandom",               # Psywave
-         "RandomlyDamageOrHealTarget",               # Present
-         "RandomlyDealsDoubleDamage",                # Fickle Beam
-         "RandomPowerDoublePowerIfTargetUnderground" # Magnitude
-      hidePower = true if calcPower == 1
-    end
     if move.damagingMove?
+      if terastal
+        if battler.typeTeraBoosted?(type, true)
+          bonus = (battler.tera_type == :STELLAR) ? 1.2 : 1.5
+          stab = (battler.types.include?(type)) ? 2 : bonus
+        else
+          stab = (battler.types.include?(type)) ? 1.5 : 1
+        end
+      else
+        stab = (battler.pbHasType?(type)) ? 1.5 : 1
+      end
+      stab = 1 if defined?(move.pbFixedDamage(battler, battler.pbDirectOpposing))
+      hidePower = false
+      case move.function_code
+      when "ThrowUserItemAtTarget"                     # Fling
+        hidePower = true if !battler.item
+      when "TypeAndPowerDependOnUserBerry"             # Natural Gift
+        hidePower = true if !battler.item || !battler.item.is_berry?
+      when "PursueSwitchingFoe",                       # Pursuit
+           "RemoveTargetItem",                         # Knock Off
+           "HitOncePerUserTeamMember",                 # Beat Up
+           "DoublePowerIfTargetActed",                 # Payback
+           "DoublePowerIfTargetNotActed",              # Bolt Beak, Fishious Rend
+           "PowerHigherWithTargetHP",                  # Crush Grip, Wring Out
+           "PowerHigherWithTargetHP100PowerRange",     # Hard Press
+           "PowerHigherWithTargetWeight",              # Low Kick, Grass Knot
+           "PowerHigherWithUserFasterThanTarget",      # Electro Ball
+           "PowerHigherWithTargetFasterThanUser",      # Gyro Ball
+           "FixedDamageUserLevelRandom",               # Psywave
+           "RandomlyDamageOrHealTarget",               # Present
+           "RandomlyDealsDoubleDamage",                # Fickle Beam
+           "RandomPowerDoublePowerIfTargetUnderground" # Magnitude
+        hidePower = true if calcPower == 1
+      end
       if !hidePower
         calcPower = move.pbBaseDamage(basePower, battler, battler.pbDirectOpposing)
         calcPower = move.pbModifyDamage(calcPower, battler, battler.pbDirectOpposing)
@@ -137,21 +141,12 @@ class Battle::Scene
       hidePower = true if calcPower == 1
       powerDiff = (move.function_code == "PowerHigherWithUserHP") ? calcPower - basePower : basePower - calcPower
       calcPower *= stab
-      finalPower = (calcPower >= powerDiff) ? calcPower : basePower * stab
-      calcPower = finalPower if finalPower > basePower
-      if finalPower > 1
-        if calcPower > basePower
-          powBase, powShadow = BASE_RAISED, SHADOW_RAISED
-        elsif finalPower < (basePower * stab).floor
-          powBase, powShadow = BASE_LOWERED, SHADOW_LOWERED
-        end
-      end
+      power = (calcPower >= powerDiff) ? calcPower : basePower * stab
     end
     #---------------------------------------------------------------------------
-    # Draws text.
-    textPos = []
-    power = (finalPower == 0) ? "---" : (hidePower) ? "???" : finalPower.floor.to_s
-    accuracy = (move.accuracy == 0) ? "---" : move.accuracy.to_s
+    # Final move attribute calculations.
+    acc = move.accuracy
+    pri = move.priority
     case move.function_code
     when "ParalyzeFlinchTarget", "BurnFlinchTarget", "FreezeFlinchTarget"
       chance = 10
@@ -160,19 +155,60 @@ class Battle::Scene
     else
       chance = move.addlEffect
     end
-    effect_rate = (chance == 0) ? "---" : chance.to_s + "%"
+    baseChance = chance
+    showTera = terastal && battler.typeTeraBoosted?(type, true)
+    bonus, power, acc, pri, chance = pbGetFinalModifier(
+      battler, move, type, basePower, power, acc, pri, chance, showTera)
+    calcPower = power if power > basePower
+    if power > 1
+      if calcPower > basePower
+        powBase, powShadow = BASE_RAISED, SHADOW_RAISED
+      elsif power < (basePower * stab).floor
+        powBase, powShadow = BASE_LOWERED, SHADOW_LOWERED
+      end
+    end
+    if acc > 0
+      if acc > move.accuracy
+        accBase, accShadow = BASE_RAISED, SHADOW_RAISED
+      elsif acc < move.accuracy
+        accBase, accShadow = BASE_LOWERED, SHADOW_LOWERED
+      end
+    end
+    if pri != 0
+      if pri > move.priority
+        priBase, priShadow = BASE_RAISED, SHADOW_RAISED
+      elsif pri < move.priority
+        priBase, priShadow = BASE_LOWERED, SHADOW_LOWERED
+      end
+    end
+    if chance > 0
+      if chance > baseChance
+        effBase, effShadow = BASE_RAISED, SHADOW_RAISED
+      elsif chance < baseChance
+        effBase, effShadow = BASE_LOWERED, SHADOW_LOWERED
+      end
+    end
+    #---------------------------------------------------------------------------
+    # Draws text.
+    textPos = []
+    displayPower    = (power  == 0) ? "---" : (hidePower) ? "???" : power.ceil.to_s
+    displayAccuracy = (acc    == 0) ? "---" : acc.ceil.to_s
+    displayPriority = (pri    == 0) ? "---" : (pri > 0) ? "+" + pri.to_s : pri.to_s
+    displayChance   = (chance == 0) ? "---" : chance.ceil.to_s + "%"
     textPos.push(
-      [move.name,       xpos + 10,            ypos + 8,  :left,   BASE_LIGHT, SHADOW_LIGHT],
-      [_INTL("Pow:"),   Graphics.width - 86,  ypos + 10, :center, BASE_LIGHT, SHADOW_LIGHT],
-      [_INTL("Acc:"),   Graphics.width - 86,  ypos + 40, :center, BASE_LIGHT, SHADOW_LIGHT],
-      [_INTL("Effct:"), xpos + 286,           ypos + 40, :left,   BASE_LIGHT, SHADOW_LIGHT],
-      [power,           Graphics.width - 34,  ypos + 10, :center, powBase,    powShadow],
-      [accuracy,        Graphics.width - 34,  ypos + 40, :center, accBase,    accShadow],
-      [effect_rate,     Graphics.width - 146, ypos + 40, :center, effBase,    effShadow]
+      [move.name,       xpos + 10,  ypos + 12, :left,   BASE_LIGHT, SHADOW_LIGHT],
+      [_INTL("Pow"),    xpos + 256, ypos + 40, :left,   BASE_LIGHT, SHADOW_LIGHT],
+      [displayPower,    xpos + 309, ypos + 40, :center, powBase,    powShadow],
+      [_INTL("Acc"),    xpos + 348, ypos + 40, :left,   BASE_LIGHT, SHADOW_LIGHT],
+      [displayAccuracy, xpos + 401, ypos + 40, :center, accBase,    accShadow],
+      [_INTL("Pri"),    xpos + 442, ypos + 40, :left,   BASE_LIGHT, SHADOW_LIGHT],
+      [displayPriority, xpos + 484, ypos + 40, :center, priBase,    priShadow],
+      [_INTL("Eff"),    xpos + 428, ypos + 12, :left,   BASE_LIGHT, SHADOW_LIGHT],
+      [displayChance,   xpos + 484, ypos + 12, :center, effBase,    effShadow]
     )
-    pbAddPluginText(xpos, ypos, textPos, move, type, battler, specialAction, cw)
+    textPos.push([bonus[0], xpos + 8, ypos + 132, :left, bonus[1], bonus[2]]) if bonus
     pbDrawTextPositions(@enhancedUIOverlay, textPos)
-    drawTextEx(@enhancedUIOverlay, xpos + 10, ypos + 70, Graphics.width - 10, 2, 
+    drawTextEx(@enhancedUIOverlay, xpos + 8, ypos + 74, Graphics.width - 12, 2, 
       GameData::Move.get(move.id).description, BASE_LIGHT, SHADOW_LIGHT)
   end
   
@@ -181,7 +217,7 @@ class Battle::Scene
   #-----------------------------------------------------------------------------
   def pbDrawMoveFlagIcons(xpos, ypos, move, imagePos)
     flagX = xpos + 6
-    flagY = ypos + 32
+    flagY = ypos + 35
     icons = 0
     if defined?(move.zMove?) && move.zMove?
       imagePos.push([@path + "move_flags", flagX + (icons * 26), flagY, 0 * 26, 0, 26, 28])
@@ -254,45 +290,115 @@ class Battle::Scene
   end
   
   #-----------------------------------------------------------------------------
-  # Draws additional plugin-specific text to be displayed in the Move Info UI.
+  # Applies final move attribute modifiers and any additional bonus text.
   #-----------------------------------------------------------------------------
-  def pbAddPluginText(xpos, ypos, textPos, move, type, battler, specialAction, cw)
-    case specialAction
+  def pbGetFinalModifier(battler, move, type, baseDmg, power, acc, pri, chance, showTera)
+    bonus = nil
     #---------------------------------------------------------------------------
-    # Sets up additional text for Z-Moves.
+    # Bonus text and modifiers for ability changes to move.
     #---------------------------------------------------------------------------
-    when :zmove
-      return if move.damagingMove?
-      if cw.mode == 2
-        if move.zMove? && move.has_zpower?
-          effect, stage = move.get_zpower_effect
-          case effect
-          when "HealUser"    then text = _INTL("Fully restores the user's HP.")
-          when "HealSwitch"  then text = _INTL("Fully restores an incoming Pokémon's HP.")
-          when "CriticalHit" then text = _INTL("Raises the user's critical hit rate.")
-          when "ResetStats"  then text = _INTL("Resets the user's lowered stat stages.")
-          when "FollowMe"    then text = _INTL("The user becomes the center of attention.")
-          else
-            if stage
-              stat = (effect == "AllStats") ? "stats" : GameData::Stat.get(effect.to_sym).name
-              case stage
-              when "3" then text = _INTL("Drastically raises the user's {1}.", stat)
-              when "2" then text = _INTL("Sharply raises the user's {1}.", stat)
-              else          text = _INTL("Raises the user's {1}.", stat)
-              end
-            end
+    if battler.abilityActive?
+      target = (@battle.pbOpposingBattlerCount == 1) ? battler.pbDirectOpposing(true) : nil
+      5.times do |i|
+        break if bonus
+        case i
+        #-----------------------------------------------------------------------
+        when 0 # Abilities that change move type.
+          next if type == move.type
+          newType = Battle::AbilityEffects.triggerModifyMoveBaseType(battler.ability, battler, move, move.type)
+          next if newType != type
+          bonus = [_INTL("Type changed by the {1} ability.", battler.abilityName), BASE_RAISED, SHADOW_RAISED]
+          power *= 1.2 if move.powerBoost
+          move.powerBoost = false
+        #-----------------------------------------------------------------------
+        when 1 # Abilities that alter base power.
+          next if power == 0
+          next if battler.hasActiveAbility?(:ANALYTIC)
+          next if !target && battler.hasActiveAbility?(:RIVALRY)
+          multipliers = {
+            :power_multiplier        => 1.0,
+            :attack_multiplier       => 1.0,
+            :defense_multiplier      => 1.0,
+            :final_damage_multiplier => 1.0
+          }
+          Battle::AbilityEffects.triggerDamageCalcFromUser(
+            battler.ability, battler, (target || battler), move, multipliers, baseDmg, type
+          )
+          oldPower = power
+          power *= multipliers[:power_multiplier]
+          if power > oldPower
+            bonus = [_INTL("Power boosted by the {1} ability.", battler.abilityName), BASE_RAISED, SHADOW_RAISED]
+          elsif power < oldPower
+            bonus = [_INTL("Power weakened by the {1} ability.", battler.abilityName), BASE_LOWERED, SHADOW_LOWERED]
           end
-          textPos.push([_INTL("Z-Power: #{text}"), xpos + 10, ypos + 128, :left, BASE_RAISED, SHADOW_RAISED]) if text
+        #-----------------------------------------------------------------------
+        when 2 # Abilities that alter accuracy.
+          next if acc == 0
+          modifiers = {
+            :base_accuracy           => acc,
+            :accuracy_stage          => 0,
+            :evasion_stage           => 0,
+            :accuracy_multiplier     => 1.0,
+            :evasion_multiplier      => 1.0
+          }
+          Battle::AbilityEffects.triggerAccuracyCalcFromUser(
+            battler.ability, modifiers, battler, (target || battler), move, type
+          )
+          oldAcc = acc
+          acc = [modifiers[:base_accuracy] * modifiers[:accuracy_multiplier], 100].min
+          if acc > oldAcc || acc == 0
+            bonus = [_INTL("Accuracy boosted by the {1} ability.", battler.abilityName), BASE_RAISED, SHADOW_RAISED]
+          elsif acc < oldAcc
+            bonus = [_INTL("Accuracy lowered by the {1} ability.", battler.abilityName), BASE_LOWERED, SHADOW_LOWERED]
+          end
+        #-----------------------------------------------------------------------
+        when 3 # Abilities that alter priority.
+          oldPri = pri
+          pri = Battle::AbilityEffects.triggerPriorityChange(battler.ability, battler, move, pri)
+          if pri > oldPri
+            bonus = [_INTL("Priority boosted by the {1} ability.", battler.abilityName), BASE_RAISED, SHADOW_RAISED]
+          elsif pri < oldPri
+            bonus = [_INTL("Priority lowered by the {1} ability.", battler.abilityName), BASE_LOWERED, SHADOW_LOWERED]
+          end
+        #-----------------------------------------------------------------------
+        when 4 # Abilities that boost additional effect chance.
+          next if power == 0 || [0, 100].include?(chance) || battler.ability_id != :SERENEGRACE
+          chance = [chance * 2, 100].min
+          bonus = [_INTL("Effect chance boosted by the {1} ability.", battler.abilityName), BASE_RAISED, SHADOW_RAISED]
         end
       end
-    #---------------------------------------------------------------------------
-    # Sets up additional text for moves affected by Terastallization.
-    #---------------------------------------------------------------------------
-    when :tera
-      return if move.statusMove?
-      if cw.teraType > 0 && battler.typeTeraBoosted?(type, true)
-        textPos.push([_INTL("Tera Type: Power boosted by Terastallization."), xpos + 10, ypos + 128, :left, BASE_RAISED, SHADOW_RAISED])
-      end
     end
+    #---------------------------------------------------------------------------
+    # Special note for Mega Launcher + Heal Pulse.
+    #---------------------------------------------------------------------------
+    if battler.hasActiveAbility?(:MEGALAUNCHER) && move.healingMove? && move.pulseMove?
+      bonus = [_INTL("Healing boosted by the {1} ability.", battler.abilityName), BASE_RAISED, SHADOW_RAISED]
+    end
+    #---------------------------------------------------------------------------
+    # Bonus text for moves that utilize special battle mechanics.
+    #---------------------------------------------------------------------------
+    if showTera && move.damagingMove?
+	    bonus = [_INTL("Power boosted by Terastallization."), BASE_RAISED, SHADOW_RAISED]
+    elsif defined?(move.zMove?) && move.zMove? && move.has_zpower?
+      effect, stage = move.get_zpower_effect
+      case effect
+      when "HealUser"    then text = _INTL("Z-Power: Fully restores the user's HP.")
+      when "HealSwitch"  then text = _INTL("Z-Power: Fully restores an incoming Pokémon's HP.")
+      when "CriticalHit" then text = _INTL("Z-Power: Raises the user's critical hit rate.")
+      when "ResetStats"  then text = _INTL("Z-Power: Resets the user's lowered stat stages.")
+      when "FollowMe"    then text = _INTL("Z-Power: The user becomes the center of attention.")
+      else
+        if stage
+          stat = (effect == "AllStats") ? "stats" : GameData::Stat.get(effect.to_sym).name
+          case stage
+          when "3" then text = _INTL("Z-Power: Drastically raises the user's {1}.", stat)
+          when "2" then text = _INTL("Z-Power: Sharply raises the user's {1}.", stat)
+          else          text = _INTL("Z-Power: Raises the user's {1}.", stat)
+          end
+        end
+      end
+      bonus = [text, BASE_RAISED, SHADOW_RAISED] if text
+    end
+    return bonus, power, acc, pri, chance
   end
 end
