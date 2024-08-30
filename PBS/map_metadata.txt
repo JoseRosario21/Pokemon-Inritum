@@ -20,7 +20,7 @@ HealingSpot = 4,22,13
 Name = 
 Flags = PowerSpot
 #-------------------------------
-[011]   # Route1
+[012]   # Route1
 Outdoor = true
 ShowArea = true
 Bicycle = true

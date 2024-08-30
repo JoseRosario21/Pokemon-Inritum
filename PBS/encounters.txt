@@ -16,7 +16,7 @@ Land,21
     15,MACHOP,3,6
     5,EKANS,3,6
 #-------------------------------
-[011] # Route1
+[012] # Route1
 Land,21
     30,RATTATA,9,12
     20,ILLUMISE,9,12
@@ -25,7 +25,7 @@ Land,21
     10,SNUBBULL,9,12
     5,BUDEW,9,12
 #-------------------------------
-[012] # Feldspar Cave
+[040] # Feldspar Cave
 Cave,10
     30,ZUBAT,10,14
     20,ROGGENROLA,10,14
