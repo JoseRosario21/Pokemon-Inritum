@@ -3,10 +3,10 @@
 [0]
 StartMoney = 3000
 StartItemStorage = POTION
-Home = 4,22,14,2
+Home = 10,33,67,8
 StorageCreator = Bill
 WildBattleBGM = Battle wild
-TrainerBattleBGM = Battle trainer
+TrainerBattleBGM = Lets Battle!
 WildVictoryBGM = Battle victory wild
 TrainerVictoryBGM = Battle victory trainer
 SurfBGM = Surfing
