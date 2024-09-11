@@ -124,7 +124,7 @@ LoseText = ...
 Pokemon = MURKROW,11
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,1]
-LoseText = The guys inside will take care of you.
+LoseText = Don't think you are so strong now.
 Pokemon = BRONZOR,12
 Pokemon = DROWZEE,13
 #-------------------------------
@@ -134,45 +134,44 @@ Pokemon = IMPIDIMP,12
 Pokemon = SNEASEL,13
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,3]
-LoseText = The guys inside will take care of you.
-Pokemon = MEOWSTIC,15
+LoseText = Good luck getting out of here.
+Pokemon = MEOWSTIC,13
     Moves = REFLECT,LIGHTSCREEN,PSYBEAM,MAGICALLEAF
     AbilityIndex = 2
     Item = LIGHTCLAY
     IV = 10,10,10,10,10,10
-Pokemon = MRMIME,15
+Pokemon = MRMIME,13
     Moves = PSYBEAM,DAZZLINGGLEAM,CHARGEBEAM,ICYWIND
     AbilityIndex = 2
     IV = 10,10,10,10,10,10
 Pokemon = SOLROCK,15
-    Moves = ROCKPOLISH,ROCKSLIDE,ZENHEADBUTT,HYPNOSIS
+    Moves = ROCKPOLISH,ROCKSLIDE,ZENHEADBUTT
     AbilityIndex = 0
     Item = BABIRIBERRY
     IV = 10,10,10,10,10,10
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,4]
-LoseText = The guys inside will take care of you.
-Pokemon = QWILFISH,15
+LoseText = This win changes nothing.
+Pokemon = QWILFISH,13
     Moves = SPIKES,TOXICSPIKES,BITE,POISONTAIL
     AbilityIndex = 2
     Form = 1
-    Item = FOCUSSASH
     IV = 10,10,10,10,10,10
-Pokemon = MEOWSTIC,15
+Pokemon = MEOWSTIC,13
     Moves = FAKEOUT,CALMMIND,PSYBEAM,ECHOEDVOICE
     AbilityIndex = 2
     Form = 1
     Gender = female
     IV = 10,10,10,10,10,10
-Pokemon = LUNATONE,16
-    Moves = PSYWAVE,COSMICPOWER,HYPNOSIS,ICYWIND
+Pokemon = LUNATONE,15
+    Moves = PSYWAVE,COSMICPOWER,ICYWIND
     AbilityIndex = 0
     Item = RINDOBERRY
     IV = 10,10,10,10,10,10
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,5]
 Items = ZRING
-LoseText = The guys inside will take care of you.
+LoseText = ...
 Pokemon = FROSLASS,74
     Moves = ICEBEAM,BLIZZARD,SHADOWBALL,DRAININGKISS
     AbilityIndex = 0
@@ -184,7 +183,7 @@ Pokemon = IMPIDIMP,10
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,6]
 Items = ZRING
-LoseText = The guys inside will take care of you.
+LoseText = ...
 Pokemon = ALAKAZAM,73
     Moves = PSYCHIC,SHADOWBALL,FOCUSBLAST,CALMMIND
     AbilityIndex = 0
