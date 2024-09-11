@@ -183,3 +183,136 @@ Backtrace:
 999_Main.rb:50:in `loop'
 999_Main.rb:50:in `block in load_scripts_from_folder'
 Main:35:in `eval'
+
+=================
+
+[2024-09-11 08:31:26 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: RuntimeError
+Message: Undefined value RATATA_1 in GameData::Species.
+File PBS/encounters.txt, line 19
+10,RATATA_1,2,5
+
+
+
+Backtrace:
+001_Compiler.rb:454:in `checkEnumField'
+[v21.1 Hotfixes] Compiler bug fixes.rb:53:in `cast_csv_value'
+001_Compiler.rb:724:in `block (2 levels) in get_csv_record'
+001_Compiler.rb:710:in `each'
+001_Compiler.rb:710:in `block in get_csv_record'
+001_Compiler.rb:708:in `loop'
+001_Compiler.rb:708:in `get_csv_record'
+002_Compiler_CompilePBS.rb:679:in `block (2 levels) in compile_encounters'
+001_Compiler.rb:244:in `block (2 levels) in pbCompilerEachPreppedLine'
+001_Compiler.rb:236:in `each_line'
+
+=================
+
+[2024-09-11 08:31:52 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: RuntimeError
+Message: Unknown exception when compiling.
+
+Backtrace:
+001_Compiler.rb:1114:in `rescue in main'
+001_Compiler.rb:1041:in `main'
+999_Main.rb:35:in `mainFunctionDebug'
+999_Main.rb:18:in `block in mainFunction'
+003_Errors.rb:79:in `pbCriticalCode'
+999_Main.rb:18:in `mainFunction'
+999_Main.rb:51:in `block (2 levels) in load_scripts_from_folder'
+999_Main.rb:50:in `loop'
+999_Main.rb:50:in `block in load_scripts_from_folder'
+Main:35:in `eval'
+
+=================
+
+[2024-09-11 08:32:06 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: RuntimeError
+Message: Undefined value GLAMOW in GameData::Species.
+File PBS/encounters.txt, line 29
+15,GLAMOW,3,6
+
+
+
+Backtrace:
+001_Compiler.rb:454:in `checkEnumField'
+[v21.1 Hotfixes] Compiler bug fixes.rb:53:in `cast_csv_value'
+001_Compiler.rb:724:in `block (2 levels) in get_csv_record'
+001_Compiler.rb:710:in `each'
+001_Compiler.rb:710:in `block in get_csv_record'
+001_Compiler.rb:708:in `loop'
+001_Compiler.rb:708:in `get_csv_record'
+002_Compiler_CompilePBS.rb:679:in `block (2 levels) in compile_encounters'
+001_Compiler.rb:244:in `block (2 levels) in pbCompilerEachPreppedLine'
+001_Compiler.rb:236:in `each_line'
+
+=================
+
+[2024-09-11 08:32:10 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: RuntimeError
+Message: Unknown exception when compiling.
+
+Backtrace:
+001_Compiler.rb:1114:in `rescue in main'
+001_Compiler.rb:1041:in `main'
+999_Main.rb:35:in `mainFunctionDebug'
+999_Main.rb:18:in `block in mainFunction'
+003_Errors.rb:79:in `pbCriticalCode'
+999_Main.rb:18:in `mainFunction'
+999_Main.rb:51:in `block (2 levels) in load_scripts_from_folder'
+999_Main.rb:50:in `loop'
+999_Main.rb:50:in `block in load_scripts_from_folder'
+Main:35:in `eval'
+
+=================
+
+[2024-09-11 14:33:30 +0100]
+[Pokémon Essentials version 21.1]
+
+Exception: NoMethodError
+Message: undefined method `trainer_type' for nil:NilClass
+
+Backtrace:
+004_Player.rb:73:in `trainer_type'
+001_Trainer.rb:49:in `male?'
+011_Messages.rb:434:in `pbMessageDisplay'
+011_Messages.rb:691:in `pbMessage'
+011_Messages.rb:704:in `pbConfirmMessage'
+999_Main.rb:30:in `mainFunctionDebug'
+999_Main.rb:18:in `block in mainFunction'
+003_Errors.rb:79:in `pbCriticalCode'
+999_Main.rb:18:in `mainFunction'
+999_Main.rb:51:in `block (2 levels) in load_scripts_from_folder'
+
+=================
+
+[2024-09-11 18:29:59 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: TypeError
+Message: nil can't be coerced into Integer
+
+Backtrace:
+007_BattleAnimationPlayer.rb:509:in `-'
+007_BattleAnimationPlayer.rb:509:in `block in playTiming'
+007_BattleAnimationPlayer.rb:475:in `each'
+007_BattleAnimationPlayer.rb:475:in `playTiming'
+007_BattleAnimationPlayer.rb:842:in `update'
+[[DBK] Dynamax] [011] Battle.rb:294:in `block in pbAnimationCore'
+[[DBK] Dynamax] [011] Battle.rb:293:in `loop'
+[[DBK] Dynamax] [011] Battle.rb:293:in `pbAnimationCore'
+[Deluxe Battle Kit] [001] Animation Utilities.rb:30:in `block in pbAnimation'
+004_Scene_PlayAnimations.rb:399:in `pbSaveShadows'

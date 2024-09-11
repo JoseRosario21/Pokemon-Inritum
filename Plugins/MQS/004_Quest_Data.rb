@@ -13,6 +13,7 @@ module QuestModule
     :Stage8 => "Visit the School.",
     :Stage9 => "Pick the books Karl requested from the library.",
     :Stage10 => "Defend the Lab.",
+    :Stage10 => "You finished the demo!",
     :Location1 => "Stuot Lab",
     :Location2 => "Stuot Lab",
     :Location3 => "Olive Residency",
@@ -23,6 +24,7 @@ module QuestModule
     :Location8 => "Stuot School",
     :Location9 => "Stuot School",
     :Location10 => "Stuot Lab",
+    :Location11 => "Stuot Lab",
     :QuestDescription => "Chapter 1 story",
   }
   

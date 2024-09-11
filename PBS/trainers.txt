@@ -114,7 +114,82 @@ Pokemon = BELDUM,15
     IV = 31,31,31,31,31,31
     Ball = HEAVYBALL
 #-------------------------------
+[POKEMONTRAINER_May,Meryl,2]
+LoseText = ...
+Pokemon = BRIONNE,17
+Pokemon = DUCKLETT,13
+#-------------------------------
 [TEAM_REBIRTH_LEADER,Astraeus]
 LoseText = ...
 Pokemon = MURKROW,11
+#-------------------------------
+[TEAM_REBIRTH_GRUNT_M,Grunt,1]
+LoseText = Don't think you are so strong now.
+Pokemon = BRONZOR,12
+Pokemon = DROWZEE,13
+#-------------------------------
+[TEAM_REBIRTH_GRUNT_M,Grunt,2]
+LoseText = The guys inside will take care of you.
+Pokemon = IMPIDIMP,12
+Pokemon = SNEASEL,13
+#-------------------------------
+[TEAM_REBIRTH_GRUNT_M,Grunt,3]
+LoseText = Good luck getting out of here.
+Pokemon = MEOWSTIC,13
+    Moves = REFLECT,LIGHTSCREEN,PSYBEAM,MAGICALLEAF
+    AbilityIndex = 2
+    Item = LIGHTCLAY
+    IV = 10,10,10,10,10,10
+Pokemon = MRMIME,13
+    Moves = PSYBEAM,DAZZLINGGLEAM,CHARGEBEAM,ICYWIND
+    AbilityIndex = 2
+    IV = 10,10,10,10,10,10
+Pokemon = SOLROCK,15
+    Moves = ROCKPOLISH,ROCKSLIDE,ZENHEADBUTT
+    AbilityIndex = 0
+    Item = BABIRIBERRY
+    IV = 10,10,10,10,10,10
+#-------------------------------
+[TEAM_REBIRTH_GRUNT_M,Grunt,4]
+LoseText = This win changes nothing.
+Pokemon = QWILFISH,13
+    Moves = SPIKES,TOXICSPIKES,BITE,POISONTAIL
+    AbilityIndex = 2
+    Form = 1
+    IV = 10,10,10,10,10,10
+Pokemon = MEOWSTIC,13
+    Moves = FAKEOUT,CALMMIND,PSYBEAM,ECHOEDVOICE
+    AbilityIndex = 2
+    Form = 1
+    Gender = female
+    IV = 10,10,10,10,10,10
+Pokemon = LUNATONE,15
+    Moves = PSYWAVE,COSMICPOWER,ICYWIND
+    AbilityIndex = 0
+    Item = RINDOBERRY
+    IV = 10,10,10,10,10,10
+#-------------------------------
+[TEAM_REBIRTH_GRUNT_M,Grunt,5]
+Items = ZRING
+LoseText = ...
+Pokemon = FROSLASS,74
+    Moves = ICEBEAM,BLIZZARD,SHADOWBALL,DRAININGKISS
+    AbilityIndex = 0
+    Item = ICIUMZ
+    IV = 31,31,31,31,31,31
+    EV = 0,0,0,252,252,6
+Pokemon = IMPIDIMP,10
+Pokemon = IMPIDIMP,10
+#-------------------------------
+[TEAM_REBIRTH_GRUNT_M,Grunt,6]
+Items = ZRING
+LoseText = ...
+Pokemon = ALAKAZAM,73
+    Moves = PSYCHIC,SHADOWBALL,FOCUSBLAST,CALMMIND
+    AbilityIndex = 0
+    Item = PSYCHIUMZ
+    IV = 31,31,31,31,31,31
+    EV = 0,0,0,252,252,6
+Pokemon = IMPIDIMP,10
+Pokemon = IMPIDIMP,10
 

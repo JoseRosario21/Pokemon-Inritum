@@ -2,34 +2,87 @@
 #-------------------------------
 [003] # Stuot Pier
 Land,21
-    35,WURMPLE,2,5
-    25,TAILLOW,2,5
-    20,NINCADA,2,5
-    15,POOCHYENA,2,5
+    20,WURMPLE,2,5
+    20,SPINARAK,2,5
+    20,WEEDLE,2,5
+    15,WOOPER,2,5
+    10,NINCADA,2,5
+    10,ODDISH,2,5
     5,TADBULB,2,5
+LandDay,21
+    15,TAILLOW,2,5
+    10,LEDYBA,2,5
+    5,BUIZEL,2,5
+    5,FARFETCHD,2,5
+LandNight,21
+    15,POOCHYENA,2,5
+    10,RATTATA_1,2,5
+    5,STUNKY,2,5
+    5,CAPSAKID,2,5
 #-------------------------------
 [004] # Stuot City
 Land,21
-    35,RATTATA,3,6
-    25,TAILLOW,3,6
-    20,POOCHYENA,3,6
-    15,MACHOP,3,6
+    20,TAROUNTULA,3,6
+    15,VENONAT,3,6
+    15,PATRAT,3,6
+    15,SEEDOT,3,6
+    15,GLAMEOW,3,6
+    15,TAILLOW,3,6
+    5,BELLSPROUT,3,6
+LandDay,21
+    10,RATTATA,3,6
+    10,MACHOP,3,6
+    5,YANMA,3,6
+    5,PAWMI,3,6
+LandNight,21
+    10,SPEAROW,3,6
+    10,PURRLOIN,3,6
+    5,MEOWTH_1,3,6
     5,EKANS,3,6
 #-------------------------------
 [012] # Route1
 Land,21
-    30,RATTATA,9,12
-    20,ILLUMISE,9,12
-    20,VOLBEAT,9,12
-    15,EKANS,9,12
-    10,SNUBBULL,9,12
-    5,BUDEW,9,12
+    20,SENTRET,7,11
+    20,CATERPIE,7,11
+    15,KRICKETOT,7,11
+    15,ILLUMISE,7,11
+    15,VOLBEAT,7,11
+    10,LECHONK,7,11
+    5,WIGLETT,7,11
+LandDay,21
+    10,SNUBBULL,7,11
+    10,PSYDUCK,7,11
+    5,BUDEW,7,11
+    5,MANKEY,7,11
+LandNight,21
+    10,EKANS,7,11
+    10,HOOTHOOT,7,11
+    5,GIRAFARIG,7,11
+    5,WOOPER_1,7,11
+HeadbuttHigh,21
+    30,BURMY,7,11
+    30,SEEDOT,7,11
+    30,PIDOVE,7,11
+HeadbuttLow,21
+    50,COMBEE,7,11
+    50,PINECO,7,11
 #-------------------------------
 [040] # Feldspar Cave
-Cave,10
-    30,ZUBAT,10,14
-    20,ROGGENROLA,10,14
-    20,SILICOBRA,10,14
-    15,SANDSHREW,10,14
-    10,NOIBAT,10,14
+Cave,21
+    20,GEODUDE,10,14
+    20,ZUBAT,10,14
+    15,SILICOBRA,10,14
+    10,NACLI,10,14
+    10,BONSLY,10,14
+    10,ROGGENROLA,10,14
     5,ARON,10,14
+    5,NIDORANmA,10,14
+    5,NIDORANfE,10,14
+CaveDay,21
+    10,CLEFAIRY,10,14
+    10,SANDSHREW,10,14
+    5,NOSEPASS,10,14
+CaveNight,21
+    10,DWEBBLE,10,14
+    10,NOIBAT,10,14
+    5,BINACLE,10,14
