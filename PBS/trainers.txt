@@ -192,4 +192,10 @@ Pokemon = ALAKAZAM,73
     EV = 0,0,0,252,252,6
 Pokemon = IMPIDIMP,10
 Pokemon = IMPIDIMP,10
+#-------------------------------
+[POKEMONBREEDER,Kristen]
+LoseText = Did you level up?
+Pokemon = AUDINO,12
+Pokemon = AUDINO,12
+Pokemon = AUDINO,12
 
