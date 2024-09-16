@@ -196,6 +196,9 @@ Pokemon = IMPIDIMP,10
 [POKEMONBREEDER,Kristen]
 LoseText = Did you level up?
 Pokemon = AUDINO,12
+    Moves = POUND
 Pokemon = AUDINO,12
+    Moves = POUND
 Pokemon = AUDINO,12
+    Moves = POUND
 
