@@ -316,3 +316,66 @@ Backtrace:
 [[DBK] Dynamax] [011] Battle.rb:293:in `pbAnimationCore'
 [Deluxe Battle Kit] [001] Animation Utilities.rb:30:in `block in pbAnimation'
 004_Scene_PlayAnimations.rb:399:in `pbSaveShadows'
+
+=================
+
+[2024-09-20 14:24:16 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: TypeError
+Message: nil can't be coerced into Integer
+
+Backtrace:
+007_BattleAnimationPlayer.rb:482:in `-'
+007_BattleAnimationPlayer.rb:482:in `block in playTiming'
+007_BattleAnimationPlayer.rb:475:in `each'
+007_BattleAnimationPlayer.rb:475:in `playTiming'
+007_BattleAnimationPlayer.rb:842:in `update'
+[[DBK] Dynamax] [011] Battle.rb:294:in `block in pbAnimationCore'
+[[DBK] Dynamax] [011] Battle.rb:293:in `loop'
+[[DBK] Dynamax] [011] Battle.rb:293:in `pbAnimationCore'
+[Deluxe Battle Kit] [001] Animation Utilities.rb:32:in `block in pbAnimation'
+004_Scene_PlayAnimations.rb:399:in `pbSaveShadows'
+
+=================
+
+[2024-09-20 14:24:28 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: TypeError
+Message: nil can't be coerced into Integer
+
+Backtrace:
+007_BattleAnimationPlayer.rb:482:in `-'
+007_BattleAnimationPlayer.rb:482:in `block in playTiming'
+007_BattleAnimationPlayer.rb:475:in `each'
+007_BattleAnimationPlayer.rb:475:in `playTiming'
+007_BattleAnimationPlayer.rb:842:in `update'
+[[DBK] Dynamax] [011] Battle.rb:294:in `block in pbAnimationCore'
+[[DBK] Dynamax] [011] Battle.rb:293:in `loop'
+[[DBK] Dynamax] [011] Battle.rb:293:in `pbAnimationCore'
+[Deluxe Battle Kit] [001] Animation Utilities.rb:32:in `block in pbAnimation'
+004_Scene_PlayAnimations.rb:399:in `pbSaveShadows'
+
+=================
+
+[2024-09-20 14:24:30 +0100]
+[Pokémon Essentials version 21.1]
+[v21.1 Hotfixes 1.0.9]
+
+Exception: TypeError
+Message: nil can't be coerced into Integer
+
+Backtrace:
+007_BattleAnimationPlayer.rb:482:in `-'
+007_BattleAnimationPlayer.rb:482:in `block in playTiming'
+007_BattleAnimationPlayer.rb:475:in `each'
+007_BattleAnimationPlayer.rb:475:in `playTiming'
+007_BattleAnimationPlayer.rb:842:in `update'
+[[DBK] Dynamax] [011] Battle.rb:294:in `block in pbAnimationCore'
+[[DBK] Dynamax] [011] Battle.rb:293:in `loop'
+[[DBK] Dynamax] [011] Battle.rb:293:in `pbAnimationCore'
+[Deluxe Battle Kit] [001] Animation Utilities.rb:32:in `block in pbAnimation'
+004_Scene_PlayAnimations.rb:399:in `pbSaveShadows'
