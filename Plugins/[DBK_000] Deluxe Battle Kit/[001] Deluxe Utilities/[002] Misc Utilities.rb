@@ -195,13 +195,13 @@ class Battle::Battler
   def hasEligibleAction?(*args)
     args.each do |arg|
       case arg
-      when :mega    then return true if hasMega?
+      when :mega    then return true if hasMega?    && @battle.pbHasMegaRing?(@index)
       when :primal  then return true if hasPrimal?
-      when :zmove   then return true if hasZMove?
-      when :ultra   then return true if hasUltra?
-      when :dynamax then return true if hasDynamax?
+      when :zmove   then return true if hasZMove?   && @battle.pbHasZRing?(@index)
+      when :ultra   then return true if hasUltra?   && @battle.pbHasZRing?(@index)
+      when :dynamax then return true if hasDynamax? && @battle.pbHasDynamaxBand?(@index)
       when :style   then return true if hasStyle?
-      when :tera    then return true if hasTera?
+      when :tera    then return true if hasTera?    && @battle.pbHasTeraOrb?(@index)
       when :zodiac  then return true if hasZodiacPower?
       end
     end

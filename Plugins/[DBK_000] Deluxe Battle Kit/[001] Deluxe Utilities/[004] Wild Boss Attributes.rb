@@ -209,7 +209,7 @@ class Battle::Battler
   def takesIndirectDamage?(showMsg = false)
     return false if fainted?
     if @pokemon.immunities.include?(:INDIRECT)
-      @battle.pbDisplay("{1} is completely immune to indirect damage!", pbThis) if showMsg
+      @battle.pbDisplay(_INTL("{1} is completely immune to indirect damage!", pbThis)) if showMsg
       return false
     end
     return dx_takesIndirectDamage?(showMsg)

@@ -1,5 +1,5 @@
 ################################################################################
-# "Caruban's Dynamic Darkness" v 1.2.0
+# "Caruban's Dynamic Darkness" v 1.2.1
 # By Caruban
 #-------------------------------------------------------------------------------
 # I made this plugin after seeing NuriYuri's DynamicLight (PSDK). 
@@ -174,12 +174,9 @@ end
 def pbSetDarknessRadius(value)
   return if value < 0
   return if Settings::FLASHLIGHT_ONLY_MAPS.include?($game_map.map_id)
-  var = Settings::VARIABLE_RADIUS_DARK_MAP[$game_map.map_id]
-  if var
-    $game_variables[var] = value
-  elsif $PokemonGlobal.darknessRadius
-    $PokemonGlobal.darknessRadius = value
-  end
+  return if !$game_temp.darkness_sprite
+  darkness = $game_temp.darkness_sprite
+  darkness.radius = value
 end
 
 # Change darkness circle radius with animation
@@ -187,7 +184,7 @@ def pbMoveDarknessRadius(value)
   return if !$game_temp.darkness_sprite
   return if Settings::FLASHLIGHT_ONLY_MAPS.include?($game_map.map_id)
   darkness = $game_temp.darkness_sprite
-  value = [darkness.radiusMin, [darkness.radiusMin, value].max].min
+  value = [darkness.radiusMax, [darkness.radiusMin, value].max].min
   darkness.moveRadius(value)
 end
 
@@ -277,12 +274,11 @@ class DarknessSprite < Sprite
     super(viewport)
     @darkness = Bitmap.new(Graphics.width, Graphics.height)
     @radius = pbGetDarknessRadius
-    pbSetDarknessRadius(@radius)
     @light_modifier = 0
     @light_starttime = System.uptime
     self.bitmap = @darkness
     self.z      = 99998
-    refresh
+    self.radius = @radius
   end
   
   def radiusMin; return 0;  end
@@ -290,7 +286,12 @@ class DarknessSprite < Sprite
 
   def radius=(value)
     @radius = value.round
-    pbSetDarknessRadius(@radius)
+    var = Settings::VARIABLE_RADIUS_DARK_MAP[$game_map.map_id]
+    if var
+      $game_variables[var] = @radius
+    elsif $PokemonGlobal.darknessRadius
+      $PokemonGlobal.darknessRadius = @radius
+    end
     refresh
   end
 

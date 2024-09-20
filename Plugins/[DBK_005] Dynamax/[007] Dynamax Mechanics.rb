@@ -332,6 +332,7 @@ class Battle
     side  = battler.idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
     @dynamax[side][owner] = -2
+    pbCalculatePriority(false, [idxBattler])
     triggers = ["AfterDynamax", battler.species, *battler.pokemon.types]
     if battler.hasGmax?
       triggers.push("AfterGigantamax", battler.species, *battler.pokemon.types)

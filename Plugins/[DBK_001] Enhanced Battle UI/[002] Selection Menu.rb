@@ -85,10 +85,10 @@ class Battle::Scene
           @sprites["info_icon#{b.index}"].x = iconX
           @sprites["info_icon#{b.index}"].y = iconY
           pbSetWithOutline("info_icon#{b.index}", [iconX, iconY, 300])
-          imagePos.push([@path + "info_owner", bgX + 36, iconY + 11],
-                        [@path + "info_gender", bgX + 146, iconY - 37, b.gender * 22, 0, 22, 20])
+          imagePos.push([@path + "info_owner", bgX + 36, iconY + 12, 0, 0, 128, 20],
+                        [@path + "info_gender", bgX + 148, iconY - 34, b.gender * 22, 0, 22, 22])
           textPos.push([_INTL("{1}", b.pokemon.name), nameX, iconY - 16, :center, base, shadow],
-                       [@battle.pbGetOwnerFromBattlerIndex(b.index).name, nameX - 10, iconY + 13, 2, BASE_LIGHT, SHADOW_LIGHT])
+                       [@battle.pbGetOwnerFromBattlerIndex(b.index).name, nameX - 10, iconY + 14, 2, BASE_LIGHT, SHADOW_LIGHT])
         end
         @battle.player.each_with_index { |t, i| trainers.push([t, i]) if t.able_pokemon_count > 0 }
         ballY = ypos + 154
@@ -122,10 +122,10 @@ class Battle::Scene
           pbSetWithOutline("info_icon#{b.index}", [iconX, iconY, 400])
           textPos.push([_INTL("{1}", b.displayPokemon.name), nameX, iconY - 16, :center, base, shadow])
           if @battle.trainerBattle?
-            imagePos.push([@path + "info_owner", bgX + 36, iconY + 11])
-            textPos.push([@battle.pbGetOwnerFromBattlerIndex(b.index).name, nameX - 10, iconY + 13, :center, BASE_LIGHT, SHADOW_LIGHT])
+            imagePos.push([@path + "info_owner", bgX + 36, iconY + 12, 0, 0, 128, 20])
+            textPos.push([@battle.pbGetOwnerFromBattlerIndex(b.index).name, nameX - 10, iconY + 14, :center, BASE_LIGHT, SHADOW_LIGHT])
           end
-          imagePos.push([@path + "info_gender", bgX + 146, iconY - 37, b.displayPokemon.gender * 22, 0, 22, 20])
+          imagePos.push([@path + "info_gender", bgX + 148, iconY - 36, b.displayPokemon.gender * 22, 0, 22, 22])
         end
         if @battle.opponent
           @battle.opponent.each_with_index { |t, i| trainers.push([t, i]) if t.able_pokemon_count > 0 } 
@@ -150,7 +150,7 @@ class Battle::Scene
             else                        ballX = ballXMiddle
             end
           end
-          imagePos.push([@path + "info_owner", ballX - 16, ballY - ballOffset])
+          imagePos.push([@path + "info_owner", ballX - 16, ballY - ballOffset, 0, 0, 128, 20])
           NUM_BALLS.times do |slot|
             idx = 0
             if !trainer.party[slot]                   then idx = 3 # Empty
@@ -274,7 +274,7 @@ class Battle::Scene
     loop do
       oldIndex = cw.index
       pbUpdate(cw)
-      if Settings::UI_PROMPT_DISPLAY == 2 && @sprites["enhancedUIPrompts"].visible
+      if Settings::UI_PROMPT_DISPLAY == 2 && pbShowingPrompt?
         pbToggleUIPrompt if System.uptime - promptTimer > 2
       end
       if Input.trigger?(Input::LEFT)
@@ -300,10 +300,10 @@ class Battle::Scene
         pbHideInfoUI
         ret = -2
         break
-      elsif Input.trigger?(Input::JUMPUP)
+      elsif Input.trigger?(Input::JUMPUP) && !pbInSafari?
         pbToggleBattleInfo
         promptTimer = System.uptime
-      elsif Input.trigger?(Input::JUMPDOWN)
+      elsif Input.trigger?(Input::JUMPDOWN) && !pbInSafari?
         if pbToggleBallInfo(idxBattler)
           ret = 1
           break

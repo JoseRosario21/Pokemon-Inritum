@@ -251,17 +251,17 @@ module PluginManager
   #-----------------------------------------------------------------------------
   # Used to ensure all plugins that rely on Deluxe Battle Kit are up to date.
   #-----------------------------------------------------------------------------
-  def self.plugin_check_DBK(version = "1.1.9")
+  def self.plugin_check_DBK(version = "1.2")
     if self.installed?("Deluxe Battle Kit", version, true)
-      {"[DBK] Enhanced Battle UI"      => "2.0.3",
+      {"[DBK] Enhanced Battle UI"      => "2.0.4",
        "[DBK] SOS Battles"             => "1.0.6",
        "[DBK] Raid Battles"            => "1.0",
        "[DBK] Z-Power"                 => "1.0.7",
-       "[DBK] Dynamax"                 => "1.0.8",
-       "[DBK] Terastallization"        => "1.1.1",
+       "[DBK] Dynamax"                 => "1.0.9",
+       "[DBK] Terastallization"        => "1.1.2",
        "[DBK] Improved Item AI"        => "1.0",
        "[DBK] Wonder Launcher"         => "1.0.2",
-       "[DBK] Animated Pokémon System" => "1.0.6",
+       "[DBK] Animated Pokémon System" => "1.0.7",
        "[MUI] Improved Mementos"       => "1.0.2"
       }.each do |p_name, v_num|
         next if !self.installed?(p_name)

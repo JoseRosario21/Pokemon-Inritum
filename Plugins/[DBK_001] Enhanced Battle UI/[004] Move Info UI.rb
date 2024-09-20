@@ -91,8 +91,8 @@ class Battle::Scene
     bgnumber = (Settings::USE_MOVE_TYPE_BACKGROUNDS) ? typenumber + 1 : 0
     imagePos = [
       [@path + "move_bg",      xpos,       ypos,     0, bgnumber * 164, 512, 164],
-      ["Graphics/UI/types",    xpos + 282, ypos + 6, 0, typenumber * 28, 64, 28],
-      ["Graphics/UI/category", xpos + 350, ypos + 6, 0, category * 28, 64, 28]
+      ["Graphics/UI/types",    xpos + 282, ypos + 8, 0, typenumber * 28, 64, 28],
+      ["Graphics/UI/category", xpos + 350, ypos + 8, 0, category * 28, 64, 28]
     ]
     pbDrawMoveFlagIcons(xpos, ypos, move, imagePos)
     pbDrawTypeEffectiveness(xpos, ypos, move, type, imagePos)
@@ -157,7 +157,7 @@ class Battle::Scene
     end
     baseChance = chance
     showTera = terastal && battler.typeTeraBoosted?(type, true)
-    bonus, power, acc, pri, chance = pbGetFinalModifier(
+    bonus, power, acc, pri, chance = pbGetFinalModifiers(
       battler, move, type, basePower, power, acc, pri, chance, showTera)
     calcPower = power if power > basePower
     if power > 1
@@ -196,7 +196,7 @@ class Battle::Scene
     displayPriority = (pri    == 0) ? "---" : (pri > 0) ? "+" + pri.to_s : pri.to_s
     displayChance   = (chance == 0) ? "---" : chance.ceil.to_s + "%"
     textPos.push(
-      [move.name,       xpos + 10,  ypos + 12, :left,   BASE_LIGHT, SHADOW_LIGHT],
+      [move.name,       xpos + 10,  ypos + 12, :left,   BASE_LIGHT, SHADOW_LIGHT, :outline],
       [_INTL("Pow"),    xpos + 256, ypos + 40, :left,   BASE_LIGHT, SHADOW_LIGHT],
       [displayPower,    xpos + 309, ypos + 40, :center, powBase,    powShadow],
       [_INTL("Acc"),    xpos + 348, ypos + 40, :left,   BASE_LIGHT, SHADOW_LIGHT],
@@ -206,7 +206,7 @@ class Battle::Scene
       [_INTL("Eff"),    xpos + 428, ypos + 12, :left,   BASE_LIGHT, SHADOW_LIGHT],
       [displayChance,   xpos + 484, ypos + 12, :center, effBase,    effShadow]
     )
-    textPos.push([bonus[0], xpos + 8, ypos + 132, :left, bonus[1], bonus[2]]) if bonus
+    textPos.push([bonus[0], xpos + 8, ypos + 132, :left, bonus[1], bonus[2], :outline]) if bonus
     pbDrawTextPositions(@enhancedUIOverlay, textPos)
     drawTextEx(@enhancedUIOverlay, xpos + 8, ypos + 74, Graphics.width - 12, 2, 
       GameData::Move.get(move.id).description, BASE_LIGHT, SHADOW_LIGHT)
@@ -219,43 +219,20 @@ class Battle::Scene
     flagX = xpos + 6
     flagY = ypos + 35
     icons = 0
-    if defined?(move.zMove?) && move.zMove?
-      imagePos.push([@path + "move_flags", flagX + (icons * 26), flagY, 0 * 26, 0, 26, 28])
-      icons += 1
-    elsif defined?(move.dynamaxMove?) && move.dynamaxMove?
-      imagePos.push([@path + "move_flags", flagX + (icons * 26), flagY, 1 * 26, 0, 26, 28])
-      icons += 1
-    end
+    flags = move.flags.clone
     if GameData::Target.get(move.target).targets_foe
-      if !move.flags.include?("CanProtect")
-        imagePos.push([@path + "move_flags", flagX + (icons * 26), flagY, 2 * 26, 0, 26, 28])
-        icons += 1
-      end
-      if !move.flags.include?("CanMirrorMove")
-        imagePos.push([@path + "move_flags", flagX + (icons * 26), flagY, 3 * 26, 0, 26, 28])
-        icons += 1
-      end
+      flags.push("NoProtect")      if !flags.include?("CanProtect")
+      flags.push("NoMirrorMove")   if !flags.include?("CanMirrorMove")
     end
-    move.flags.each do |flag|
-      idx = -1
-      case flag
-      when "Contact"          then idx = 4
-      when "TramplesMinimize" then idx = 5
-      when "ElectrocuteUser"  then idx = 7
-      when "ThawsUser"        then idx = 8
-      when "Sound"            then idx = 9
-      when "Punching"         then idx = 10
-      when "Biting"           then idx = 11
-      when "Bomb"             then idx = 12
-      when "Pulse"            then idx = 13
-      when "Powder"           then idx = 14
-      when "Dance"            then idx = 15
-      when "Slicing"          then idx = 16
-      when "Wind"             then idx = 17
-      end
-      idx = 6 if flag.include?("HighCriticalHitRate")
-      next if idx < 0
-      imagePos.push([@path + "move_flags", flagX + (icons * 26), flagY, idx * 26, 0, 26, 28])
+    flags.uniq!
+    flags.each do |flag|
+      break if icons > 8
+      flag = "ZMove"               if flag.include?("ZMove_")
+      flag = "DynamaxMove"         if flag.include?("DynamaxMove_") || flag == "GmaxMove"
+      flag = "HighCriticalHitRate" if flag.include?("HighCriticalHitRate_")
+      path = @path + "Move Flags/" + flag
+      next if !pbResolveBitmap(path)
+      imagePos.push([path, flagX + (icons * 26), flagY])
       icons += 1
     end
   end
@@ -292,18 +269,31 @@ class Battle::Scene
   #-----------------------------------------------------------------------------
   # Applies final move attribute modifiers and any additional bonus text.
   #-----------------------------------------------------------------------------
-  def pbGetFinalModifier(battler, move, type, baseDmg, power, acc, pri, chance, showTera)
+  def pbGetFinalModifiers(battler, move, type, baseDmg, power, acc, pri, chance, showTera)
     bonus = nil
+    powMults = {
+      :power_multiplier        => 1.0,
+      :attack_multiplier       => 1.0,
+      :defense_multiplier      => 1.0,
+      :final_damage_multiplier => 1.0
+    }
+    accMods = {
+      :base_accuracy           => acc,
+      :accuracy_stage          => 0,
+      :evasion_stage           => 0,
+      :accuracy_multiplier     => 1.0,
+      :evasion_multiplier      => 1.0
+    }
+    target = (@battle.pbOpposingBattlerCount == 1) ? battler.pbDirectOpposing(true) : nil
     #---------------------------------------------------------------------------
     # Bonus text and modifiers for ability changes to move.
     #---------------------------------------------------------------------------
     if battler.abilityActive?
-      target = (@battle.pbOpposingBattlerCount == 1) ? battler.pbDirectOpposing(true) : nil
       5.times do |i|
         break if bonus
         case i
         #-----------------------------------------------------------------------
-        when 0 # Abilities that change move type.
+        when 0 # Abilities that alter move type.
           next if type == move.type
           newType = Battle::AbilityEffects.triggerModifyMoveBaseType(battler.ability, battler, move, move.type)
           next if newType != type
@@ -311,48 +301,12 @@ class Battle::Scene
           power *= 1.2 if move.powerBoost
           move.powerBoost = false
         #-----------------------------------------------------------------------
-        when 1 # Abilities that alter base power.
-          next if power == 0
-          next if battler.hasActiveAbility?(:ANALYTIC)
-          next if !target && battler.hasActiveAbility?(:RIVALRY)
-          multipliers = {
-            :power_multiplier        => 1.0,
-            :attack_multiplier       => 1.0,
-            :defense_multiplier      => 1.0,
-            :final_damage_multiplier => 1.0
-          }
-          Battle::AbilityEffects.triggerDamageCalcFromUser(
-            battler.ability, battler, (target || battler), move, multipliers, baseDmg, type
-          )
-          oldPower = power
-          power *= multipliers[:power_multiplier]
-          if power > oldPower
-            bonus = [_INTL("Power boosted by the {1} ability.", battler.abilityName), BASE_RAISED, SHADOW_RAISED]
-          elsif power < oldPower
-            bonus = [_INTL("Power weakened by the {1} ability.", battler.abilityName), BASE_LOWERED, SHADOW_LOWERED]
-          end
+        when 1 # Abilities that alter additional effect chance.
+          next if power == 0 || [0, 100].include?(chance) || battler.ability_id != :SERENEGRACE
+          chance = [chance * 2, 100].min
+          bonus = [_INTL("Effect chance boosted by the {1} ability.", battler.abilityName), BASE_RAISED, SHADOW_RAISED]
         #-----------------------------------------------------------------------
-        when 2 # Abilities that alter accuracy.
-          next if acc == 0
-          modifiers = {
-            :base_accuracy           => acc,
-            :accuracy_stage          => 0,
-            :evasion_stage           => 0,
-            :accuracy_multiplier     => 1.0,
-            :evasion_multiplier      => 1.0
-          }
-          Battle::AbilityEffects.triggerAccuracyCalcFromUser(
-            battler.ability, modifiers, battler, (target || battler), move, type
-          )
-          oldAcc = acc
-          acc = [modifiers[:base_accuracy] * modifiers[:accuracy_multiplier], 100].min
-          if acc > oldAcc || acc == 0
-            bonus = [_INTL("Accuracy boosted by the {1} ability.", battler.abilityName), BASE_RAISED, SHADOW_RAISED]
-          elsif acc < oldAcc
-            bonus = [_INTL("Accuracy lowered by the {1} ability.", battler.abilityName), BASE_LOWERED, SHADOW_LOWERED]
-          end
-        #-----------------------------------------------------------------------
-        when 3 # Abilities that alter priority.
+        when 2 # Abilities that alter priority.
           oldPri = pri
           pri = Battle::AbilityEffects.triggerPriorityChange(battler.ability, battler, move, pri)
           if pri > oldPri
@@ -361,10 +315,67 @@ class Battle::Scene
             bonus = [_INTL("Priority lowered by the {1} ability.", battler.abilityName), BASE_LOWERED, SHADOW_LOWERED]
           end
         #-----------------------------------------------------------------------
-        when 4 # Abilities that boost additional effect chance.
-          next if power == 0 || [0, 100].include?(chance) || battler.ability_id != :SERENEGRACE
-          chance = [chance * 2, 100].min
-          bonus = [_INTL("Effect chance boosted by the {1} ability.", battler.abilityName), BASE_RAISED, SHADOW_RAISED]
+        when 3 # Abilities that alter accuracy.
+          next if acc == 0
+          oldAcc = acc
+          Battle::AbilityEffects.triggerAccuracyCalcFromUser(
+            battler.ability, accMods, battler, (target || battler), move, type
+          )
+          acc = [accMods[:base_accuracy] * accMods[:accuracy_multiplier], 100].min
+          if acc > oldAcc || acc == 0
+            bonus = [_INTL("Accuracy boosted by the {1} ability.", battler.abilityName), BASE_RAISED, SHADOW_RAISED]
+          elsif acc < oldAcc
+            bonus = [_INTL("Accuracy lowered by the {1} ability.", battler.abilityName), BASE_LOWERED, SHADOW_LOWERED]
+          end
+        #-----------------------------------------------------------------------
+        when 4 # Abilities that alter base power.
+          next if power == 0
+          next if battler.hasActiveAbility?(:ANALYTIC)
+          next if !target && battler.hasActiveAbility?(:RIVALRY)
+          oldPower = power
+          Battle::AbilityEffects.triggerDamageCalcFromUser(
+            battler.ability, battler, (target || battler), move, powMults, baseDmg, type
+          )
+          power *= powMults[:power_multiplier]
+          if power > oldPower
+            bonus = [_INTL("Power boosted by the {1} ability.", battler.abilityName), BASE_RAISED, SHADOW_RAISED]
+          elsif power < oldPower
+            bonus = [_INTL("Power weakened by the {1} ability.", battler.abilityName), BASE_LOWERED, SHADOW_LOWERED]
+          end
+        end
+      end
+    end
+    #---------------------------------------------------------------------------
+    # Bonus text and modifiers for held item changes to move.
+    #---------------------------------------------------------------------------
+    if battler.item && battler.itemActive?
+      if ![0, 100].include?(acc)  # Held items that alter accuracy.
+        oldAcc = acc
+        accMods[:base_accuracy] = acc
+        accMods[:accuracy_multiplier] = 1.0
+        Battle::ItemEffects.triggerAccuracyCalcFromUser(
+          battler.item, accMods, battler, (target || battler), move, type
+        )
+        acc = [accMods[:base_accuracy] * accMods[:accuracy_multiplier], 100].min
+        if acc != oldAcc
+          if acc > oldAcc || acc == 0
+            bonus = [_INTL("Accuracy boosted by the held {1}.", battler.itemName), BASE_RAISED, SHADOW_RAISED]
+          elsif acc < oldAcc
+            bonus = [_INTL("Accuracy lowered by the held {1}.", battler.itemName), BASE_LOWERED, SHADOW_LOWERED]
+          end
+        end
+      end
+      if power > 0                # Held items that alter base power.
+        oldPower = power
+        powMults[:power_multiplier] = 1.0
+        Battle::ItemEffects.triggerDamageCalcFromUser(
+          battler.item, battler, (target || battler), move, powMults, baseDmg, type
+        )
+        power *= powMults[:power_multiplier]
+        if power > oldPower
+          bonus = [_INTL("Power boosted by the held {1}.", battler.itemName), BASE_RAISED, SHADOW_RAISED]
+        elsif power < oldPower
+          bonus = [_INTL("Power weakened by the held {1}.", battler.itemName), BASE_LOWERED, SHADOW_LOWERED]
         end
       end
     end
