@@ -1,0 +1,10 @@
+Name       = Custom Field Effect
+Version    = 1.0.0
+Essentials = 21.1
+Requires   = v21.1 Hotfixes,1.0.9
+Optional   = Demanding Yellow Custom Scripts,1.0.0
+Optional   = Generation 9 Pack,3.2.5
+Optional   = Deluxe Battle Kit,1.1.4
+Optional   = [DBK] Enhanced Battle UI,2.0
+Optional   = [DBK] Terastallization,1.0.7
+Credits    = Penelope,BIGFriv,phantombass

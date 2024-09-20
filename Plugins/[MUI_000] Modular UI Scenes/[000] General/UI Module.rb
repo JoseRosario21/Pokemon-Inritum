@@ -87,7 +87,7 @@ module PluginManager
   #-----------------------------------------------------------------------------
   # Used to ensure all plugins that rely on Modular UI Scenes are up to date.
   #-----------------------------------------------------------------------------
-  def self.plugin_check_MUI(version = "2.0.6")
+  def self.plugin_check_MUI(version = "2.0.7")
     if self.installed?("Modular UI Scenes", version, true)
       {"[MUI] Enhanced Pokemon UI"   => "1.0.5",
        "[MUI] Pokedex Data Page"     => "2.0.1",

@@ -105,12 +105,20 @@ class Battle::Scene
     #---------------------------------------------------------------------------
     # General UI elements.
     poke = (battler.opposes?) ? battler.displayPokemon : battler.pokemon
-    imagePos = [[@path + "info_bg", 0, 0],
-                [@path + "info_bg_data", 0, 0],
-                [@path + "info_gender", xpos + 146, ypos + 24, poke.gender * 22, 0, 22, 20]]
-    textPos  = [[_INTL("{1}", poke.name), iconX + 82, iconY - 16, :center, BASE_DARK, SHADOW_DARK],
-                [_INTL("Lv. {1}", battler.level), xpos + 16, ypos + 106, :left, BASE_LIGHT, SHADOW_LIGHT],
-                [_INTL("Turn {1}", @battle.turnCount + 1), Graphics.width - xpos - 32, ypos + 6, :center, BASE_LIGHT, SHADOW_LIGHT]]
+    movename = (battler.lastMoveUsed) ? GameData::Move.get(battler.lastMoveUsed).name : "---"
+    movename = movename[0..12] + "..." if movename.length > 16
+    imagePos = [
+      [@path + "info_bg", 0, 0],
+      [@path + "info_bg_data", 0, 0],
+      [@path + "info_level", xpos + 16, ypos + 106],
+      [@path + "info_gender", xpos + 148, ypos + 22, poke.gender * 22, 0, 22, 22]
+    ]
+    textPos  = [
+      [_INTL("{1}", poke.name), iconX + 82, iconY - 20, :center, BASE_DARK, SHADOW_DARK],
+      [battler.level.to_s, xpos + 38, ypos + 104, :left, BASE_LIGHT, SHADOW_LIGHT],
+      [_INTL("Used: {1}", movename), xpos + 349, ypos + 104, :center, BASE_LIGHT, SHADOW_LIGHT],
+      [_INTL("Turn {1}", @battle.turnCount + 1), Graphics.width - xpos - 32, ypos + 8, :center, BASE_DARK, SHADOW_DARK]
+    ]
     #---------------------------------------------------------------------------
     # Battler icon.
     @battle.allBattlers.each do |b|
@@ -119,6 +127,11 @@ class Battle::Scene
       @sprites["info_icon#{b.index}"].visible = (b.index == battler.index)
     end            
     #---------------------------------------------------------------------------
+    # Owner
+    if !battler.wild?
+      imagePos.push([@path + "info_owner", xpos - 34, ypos + 6, 0, 20, 128, 20])
+      textPos.push([@battle.pbGetOwnerFromBattlerIndex(battler.index).name, xpos + 32, ypos + 8, :center, BASE_DARK, SHADOW_DARK])
+    end
     # Battler HP.
     if battler.hp > 0
       w = battler.hp * 96 / battler.totalhp.to_f
@@ -127,7 +140,7 @@ class Battle::Scene
       hpzone = 0
       hpzone = 1 if battler.hp <= (battler.totalhp / 2).floor
       hpzone = 2 if battler.hp <= (battler.totalhp / 4).floor
-      imagePos.push(["Graphics/UI/Battle/overlay_hp", 86, 88, 0, hpzone * 6, w, 6])
+      imagePos.push([@path + "info_hp", 86, 86, 0, hpzone * 6, w, 6])
     end
     # Battler status.
     if battler.status != :NONE
@@ -135,25 +148,14 @@ class Battle::Scene
       imagePos.push(["Graphics/UI/statuses", xpos + 86, ypos + 104, 0, iconPos * 16, 44, 16])
     end
     # Shininess
-    imagePos.push(["Graphics/UI/shiny", xpos + 142, ypos + 104]) if poke.shiny?
-    # Owner
-    if !battler.wild?
-      imagePos.push([@path + "info_owner", xpos - 34, ypos + 4])
-      textPos.push([@battle.pbGetOwnerFromBattlerIndex(battler.index).name, xpos + 32, ypos + 6, :center, BASE_LIGHT, SHADOW_LIGHT])
-    end
-    # Battler's last move used.
-    if battler.lastMoveUsed
-      movename = GameData::Move.get(battler.lastMoveUsed).name
-      movename = movename[0..12] + "..." if movename.length > 16
-      textPos.push([_INTL("Used: {1}", movename), xpos + 348, ypos + 106, :center, BASE_LIGHT, SHADOW_LIGHT])
-    end
+    imagePos.push(["Graphics/UI/shiny", xpos + 142, ypos + 102]) if poke.shiny?
     #---------------------------------------------------------------------------
     # Battler info for player-owned Pokemon.
     if battler.pbOwnedByPlayer?
       imagePos.push(
-        [@path + "info_owner", xpos + 36, iconY + 10],
-        [@path + "info_cursor", panelX, 64, 0, 0, 218, 24],
-        [@path + "info_cursor", panelX, 88, 0, 0, 218, 24]
+        [@path + "info_owner", xpos + 36, iconY + 10, 0, 0, 128, 20],
+        [@path + "info_cursor", panelX, 62, 0, 0, 218, 26],
+        [@path + "info_cursor", panelX, 86, 0, 0, 218, 26]
       )
       textPos.push(
         [_INTL("Abil."), xpos + 272, ypos + 44, :center, BASE_LIGHT, SHADOW_LIGHT],
@@ -237,16 +239,16 @@ class Battle::Scene
             end
           end
         end
-        textPos.push([stat[1], xpos + 17, ypos + 138 + (i * 24), :left, BASE_LIGHT, color])
+        textPos.push([stat[1], xpos + 16, ypos + 138 + (i * 24), :left, BASE_LIGHT, color])
         stage = battler.stages[stat[0]]
       else
-        textPos.push([stat, xpos + 17, ypos + 138 + (i * 24), :left, BASE_LIGHT, SHADOW_LIGHT])
+        textPos.push([stat, xpos + 16, ypos + 138 + (i * 24), :left, BASE_LIGHT, SHADOW_LIGHT])
         stage = [battler.effects[PBEffects::FocusEnergy], 3].min
       end
       if stage != 0
         arrow = (stage > 0) ? 0 : 18
         stage.abs.times do |t| 
-          imagePos.push([@path + "info_stats", xpos + 104 + (t * 18), ypos + 138 + (i * 24), arrow, 0, 18, 18])
+          imagePos.push([@path + "info_stats", xpos + 110 + (t * 18), ypos + 136 + (i * 24), arrow, 0, 18, 18])
         end
       end
     end
@@ -324,20 +326,20 @@ class Battle::Scene
     end
     textPos = []
     imagePos = [
-      [@path + "info_effects", xpos + 240, ypos + 258],
-      [@path + "info_slider_base", panelX + 222, ypos + 134]
+      [@path + "info_effects", xpos + 240, ypos + 256],
+      [@path + "info_slider_base", panelX + 222, ypos + 132]
     ]
     #---------------------------------------------------------------------------
     # Draws the slider.
     #---------------------------------------------------------------------------
     if effects.length > 5
-      imagePos.push([@path + "info_slider", panelX + 222, ypos + 134, 0, 0, 18, 19]) if idxEffect > 3
-      imagePos.push([@path + "info_slider", panelX + 222, ypos + 235, 0, 19, 18, 19]) if idxEffect < idxLast - 1
+      imagePos.push([@path + "info_slider", panelX + 222, ypos + 132, 0, 0, 18, 19]) if idxEffect > 3
+      imagePos.push([@path + "info_slider", panelX + 222, ypos + 233, 0, 19, 18, 19]) if idxEffect < idxLast - 1
       sliderheight = 82
       boxheight = (sliderheight * 4 / idxLast).floor
       boxheight += [(sliderheight - boxheight) / 2, sliderheight / 4].min
       boxheight = [boxheight.floor, 18].max
-      y = ypos + 154
+      y = ypos + 152
       y += ((sliderheight - boxheight) * idxStart / (idxLast - 4)).floor
       imagePos.push([@path + "info_slider", panelX + 222, y, 18, 0, 18, 4])
       i = 0
@@ -355,17 +357,18 @@ class Battle::Scene
     effects[idxStart..idxEnd].each_with_index do |effect, i|
       real_idx = effects.find_index(effect)
       if i == idxDisplay || idxEffect == real_idx
-        imagePos.push([@path + "info_cursor", panelX, ypos + 134 + (i * 24), 0, 48, 218, 24])
+        imagePos.push([@path + "info_cursor", panelX, ypos + 132 + (i * 24), 0, 52, 218, 26])
+        textPos.push([effect[0], xpos + 322, ypos + 138 + (i * 24), :center, BASE_LIGHT, SHADOW_LIGHT, :outline])
       else
-        imagePos.push([@path + "info_cursor", panelX, ypos + 134 + (i * 24), 0, 24, 218, 24])
+        imagePos.push([@path + "info_cursor", panelX, ypos + 132 + (i * 24), 0, 26, 218, 26])
+        textPos.push([effect[0], xpos + 322, ypos + 138 + (i * 24), :center, BASE_DARK, SHADOW_DARK])
       end
-      textPos.push([effect[0], xpos + 322, ypos + 138 + (i * 24), :center, BASE_DARK, SHADOW_DARK],
-                   [effect[1], xpos + 426, ypos + 138 + (i * 24), :center, BASE_LIGHT, SHADOW_LIGHT])
+      textPos.push([effect[1], xpos + 426, ypos + 138 + (i * 24), :center, BASE_LIGHT, SHADOW_LIGHT])
     end
     pbDrawImagePositions(@enhancedUIOverlay, imagePos)
     pbDrawTextPositions(@enhancedUIOverlay, textPos)
     desc = effects[idxEffect][2]
-    drawFormattedTextEx(@enhancedUIOverlay, xpos + 246, ypos + 268, 208, desc, BASE_LIGHT, SHADOW_LIGHT, 18)
+    drawFormattedTextEx(@enhancedUIOverlay, xpos + 246, ypos + 266, 208, desc, BASE_DARK, SHADOW_DARK, 18)
   end
   
   #-----------------------------------------------------------------------------

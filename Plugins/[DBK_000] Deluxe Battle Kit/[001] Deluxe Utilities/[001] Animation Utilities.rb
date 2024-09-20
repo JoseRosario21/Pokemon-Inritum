@@ -210,7 +210,7 @@ class Battle::Scene::Animation::UseItem < Battle::Scene::Animation
     pulse2.setZ(delay, zpos)
     pulse2.setOpacity(delay, 0)
     [pulse, pulse2].each_with_index do |p, i|
-      p.setSE(delay, "Mining found all") if i == 0
+      p.setSE(delay, "Battle item") if i == 0
       p.moveOpacity(delay, 4, 255)
       p.moveZoom(delay, 8, 0)
       delay += 2
@@ -371,7 +371,7 @@ class Battle::Scene::Animation
     when Hash
       s = PokemonSprite.new(@viewport)
       s.setSpeciesBitmap(poke[:species], poke[:gender], poke[:form], poke[:shiny], poke[:shadow], back)
-	  s.hue = poke[:hue] if defined?(s.hue)
+      s.hue = poke[:hue] if defined?(s.hue)
     end
     num = @pictureEx.length
     picture = PictureEx.new(s.z)

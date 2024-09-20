@@ -666,6 +666,7 @@ EventHandlers.add(:on_wild_pokemon_created, :edit_wild_pokemon,
     ["editWildPokemon", "editWildPokemon2", "editWildPokemon3"].each do |rule|
       next if !battleRules[rule]
       battleRules[rule].each do |property, value|
+        next if value.nil?
         if pkmn.respond_to?(property.to_s) || [:shiny, :super_shiny].include?(property)
           pkmn.send("#{property}=", value)
         end

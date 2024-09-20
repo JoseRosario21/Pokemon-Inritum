@@ -37,7 +37,7 @@ class Battle::Scene
   # White text.
   #-----------------------------------------------------------------------------
   BASE_LIGHT     = Color.new(248, 248, 248)
-  SHADOW_LIGHT   = Color.new(72, 72, 72)
+  SHADOW_LIGHT   = Color.new(32, 32, 32)
   #-----------------------------------------------------------------------------
   # Black text.
   #-----------------------------------------------------------------------------
@@ -154,6 +154,7 @@ class Battle::Scene
   end
   
   def pbToggleUIPrompt(toggle = false)
+    return if pbInSafari?
     if toggle
       return if !@sprites["commandWindow"].visible
       pbRefreshUIPrompt
@@ -167,6 +168,11 @@ class Battle::Scene
       end
       promptAnim.dispose
     end
+  end
+  
+  def pbShowingPrompt?
+    return false if pbInSafari?
+    return @sprites["enhancedUIPrompts"] && @sprites["enhancedUIPrompts"].visible
   end
   
   def pbHideUIPrompt
