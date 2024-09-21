@@ -157,24 +157,24 @@ end
 #===============================================================================
 #
 #===============================================================================
-MenuHandlers.add(:pokegear_menu, :map, {
-  "name"      => _INTL("Map"),
-  "icon_name" => "map",
-  "order"     => 10,
-  "effect"    => proc { |menu|
-    pbFadeOutIn do
-      scene = PokemonRegionMap_Scene.new(-1, false)
-      screen = PokemonRegionMapScreen.new(scene)
-      ret = screen.pbStartScreen
-      if ret
-        $game_temp.fly_destination = ret
-        menu.dispose
-        next 99999
-      end
-    end
-    next $game_temp.fly_destination
-  }
-})
+#MenuHandlers.add(:pokegear_menu, :map, {
+#  "name"      => _INTL("Map"),
+#  "icon_name" => "map",
+#  "order"     => 10,
+#  "effect"    => proc { |menu|
+#    pbFadeOutIn do
+#      scene = PokemonRegionMap_Scene.new(-1, false)
+#      screen = PokemonRegionMapScreen.new(scene)
+#      ret = screen.pbStartScreen
+#      if ret
+#        $game_temp.fly_destination = ret
+#        menu.dispose
+#        next 99999
+#      end
+#    end
+#    next $game_temp.fly_destination
+#  }
+#})
 
 MenuHandlers.add(:pokegear_menu, :phone, {
   "name"      => _INTL("Phone"),

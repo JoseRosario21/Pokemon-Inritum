@@ -64,13 +64,13 @@ Pokemon = PONYTA,9
 [BUGCATCHER,Andrew]
 LoseText = Bug Pokémon are still the coolest!
 Pokemon = CATERPIE,7
-Pokemon = METAPOD,7
-Pokemon = BUTTERFREE,7
+Pokemon = METAPOD,9
+Pokemon = BUTTERFREE,12
 #-------------------------------
 [HIKER,Rohan]
 LoseText = Tough match!
-Pokemon = ROGGENROLA,7
-Pokemon = ZUBAT,6
+Pokemon = ROGGENROLA,9
+Pokemon = ZUBAT,11
 #-------------------------------
 [POKEMONTRAINER_May,Meryl,1]
 LoseText = ...
