@@ -28,6 +28,7 @@ SkillLevel = 100
 #-------------------------------
 [RIVAL2]
 Name = Rival
+BattleBGM = Battle of Wits
 Gender = Male
 BaseMoney = 36
 #-------------------------------
@@ -410,5 +411,12 @@ BaseMoney = 200
 [TEAM_REBIRTH_GRUNT_M]
 Name = Team Rebirth
 Gender = Male
+SkillLevel = 100
+BaseMoney = 100
+#-------------------------------
+[TEAM_REBIRTH_ELITE_GRUNT_M]
+Name = Team Rebirth Elite
+Gender = Male
+BattleBGM = By Any Means
 SkillLevel = 100
 BaseMoney = 100
