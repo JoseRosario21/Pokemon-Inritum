@@ -169,7 +169,7 @@ Pokemon = LUNATONE,15
     Item = RINDOBERRY
     IV = 10,10,10,10,10,10
 #-------------------------------
-[TEAM_REBIRTH_GRUNT_M,Grunt,5]
+[TEAM_REBIRTH_ELITE_GRUNT_M,Grunt]
 Items = ZRING
 LoseText = ...
 Pokemon = FROSLASS,74
@@ -181,7 +181,7 @@ Pokemon = FROSLASS,74
 Pokemon = IMPIDIMP,10
 Pokemon = IMPIDIMP,10
 #-------------------------------
-[TEAM_REBIRTH_GRUNT_M,Grunt,6]
+[TEAM_REBIRTH_ELITE_GRUNT_M,Grunt,1]
 Items = ZRING
 LoseText = ...
 Pokemon = ALAKAZAM,73
