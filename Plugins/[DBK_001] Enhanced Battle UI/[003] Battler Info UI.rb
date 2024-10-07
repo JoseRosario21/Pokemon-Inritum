@@ -15,9 +15,9 @@ class Battle::Scene
     end
     maxSize = battlerTotal.length - 1
     idxEffect = 0
-    effects = pbGetDisplayEffects(battler)
-    effctSize = effects.length - 1
-    pbUpdateBattlerInfo(battler, effects, idxEffect)
+    #effects = pbGetDisplayEffects(battler)
+    #effctSize = effects.length - 1
+    pbUpdateBattlerInfo(battler)#, effects, idxEffect)
     cw = @sprites["fightWindow"]
     @sprites["leftarrow"].x = -2
     @sprites["leftarrow"].y = 71
@@ -37,13 +37,13 @@ class Battle::Scene
         idx += 1
         idx = 0 if idx > maxSize
         doFullRefresh = true
-      elsif Input.repeat?(Input::UP) && effects.length > 1
-        idxEffect -= 1
-        idxEffect = effctSize if idxEffect < 0
+      elsif Input.repeat?(Input::UP) #&& effects.length > 1
+        #idxEffect -= 1
+        #idxEffect = effctSize if idxEffect < 0
         doRefresh = true
-      elsif	Input.repeat?(Input::DOWN) && effects.length > 1
-        idxEffect += 1
-        idxEffect = 0 if idxEffect > effctSize
+      elsif	Input.repeat?(Input::DOWN)# && effects.length > 1
+        #idxEffect += 1
+        #idxEffect = 0 if idxEffect > effctSize
         doRefresh = true
       elsif Input.trigger?(Input::JUMPDOWN)
         if cw.visible
@@ -73,14 +73,14 @@ class Battle::Scene
       end
       if doFullRefresh
         battler = battlerTotal[idx]
-        effects = pbGetDisplayEffects(battler)
-        effctSize = effects.length - 1
-        idxEffect = 0
+        #effects = pbGetDisplayEffects(battler)
+        #effctSize = effects.length - 1
+        #idxEffect = 0
         doRefresh = true
       end
       if doRefresh
         pbPlayCursorSE
-        pbUpdateBattlerInfo(battler, effects, idxEffect)
+        pbUpdateBattlerInfo(battler)#, effects, idxEffect)
         doRefresh = false
         doFullRefresh = false
       end
@@ -93,7 +93,7 @@ class Battle::Scene
   #-----------------------------------------------------------------------------
   # Draws the Battle Info UI.
   #-----------------------------------------------------------------------------
-  def pbUpdateBattlerInfo(battler, effects, idxEffect = 0)
+  def pbUpdateBattlerInfo(battler)#, effects, idxEffect = 0)
     @enhancedUIOverlay.clear
     pbUpdateBattlerIcons
     return if @enhancedUIToggle != :battler
@@ -171,7 +171,7 @@ class Battle::Scene
     pbDrawImagePositions(@enhancedUIOverlay, imagePos)
     pbDrawTextPositions(@enhancedUIOverlay, textPos)
     pbAddTypesDisplay(xpos, ypos, battler, poke)
-    pbAddEffectsDisplay(xpos, ypos, panelX, effects, idxEffect)
+    #pbAddEffectsDisplay(xpos, ypos, panelX, effects, idxEffect)
   end
   
   #-----------------------------------------------------------------------------
