@@ -201,4 +201,10 @@ Pokemon = AUDINO,12
     Moves = POUND
 Pokemon = AUDINO,12
     Moves = POUND
-
+#-------------------------------
+[BIKER,Rico]
+LoseText = Screw this, I don't need it.
+Pokemon = ZUBAT,8
+Pokemon = EKANS,10
+Pokemon = CACNEA,11
+Pokemon = SCRAGGY,12

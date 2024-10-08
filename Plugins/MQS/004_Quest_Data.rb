@@ -26,6 +26,7 @@ module QuestModule
     :Location10 => "Stuot Lab",
     :Location11 => "Stuot Lab",
     :QuestDescription => "Chapter 1 story",
+    :RewardString => "nil"
   }
   
   Quest1 = {
@@ -48,11 +49,10 @@ module QuestModule
     :QuestGiver => "Youngster Larry",
     :Stage1 => "Catch a combee",
     :Location1 => "Route 1",
-    :QuestDescription => "I went to Route 1 to look for a dex entry of combee but I just couldn't find one. It was supposed to be easy, they say it appears 95% of the time but I kept getting other Pokémon on the grass. Am I doing something wrong? If anyone could just catch it would be great. I could then copy the information for my Dex.",
+    :QuestDescription => "I went to Route 1 to look for a dex entry of combee but I just couldn't find one. Am I doing something wrong? If anyone could just catch it would be great. I could then copy the information for my Dex.",
     :RewardString => "1500$ + 5 Great Balls"
   }
   
-  # Here's an example of a quest with lots of stages that also doesn't have a stage location defined for every stage
   Quest3 = {
     :ID => "3",
     :Name => "Precious item lost!",
@@ -63,16 +63,15 @@ module QuestModule
     :RewardString => "3 Super Potion, 2500$ and a Lum Berry"
   }
   
-  # Here's an example of not defining the quest giver and reward text
   Quest4 = {
     :ID => "4",
-    :Name => "A new beginning",
-    :QuestGiver => "nil",
-    :Stage1 => "Turning over a new leaf... literally!",
-    :Stage2 => "Help your neighbours.",
-    :Location1 => "Milky Way",
-    :Location2 => "nil",
-    :QuestDescription => "You crash landed on an alien planet. There are other humans here and they look hungry...",
+    :Name => "Old man's glasses",
+    :QuestGiver => "Old man",
+    :Stage1 => "Find the glasses.",
+    :Stage2 => "Deliver the glasses to the old man.",
+    :Location1 => "Stuot Pier",
+    :Location2 => "Stuot Lab",
+    :QuestDescription => "The old man in the lab lost his glasses around the pier. Try to find and deliver them to the old man.",
     :RewardString => "nil"
   }
   
