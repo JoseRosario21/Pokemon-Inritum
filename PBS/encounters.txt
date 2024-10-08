@@ -78,12 +78,11 @@ LandNight,21
     5,GIRAFARIG,7,11
     5,WOOPER_1,7,11
 HeadbuttHigh,21
-    30,BURMY,7,11
-    30,SEEDOT,7,11
-    30,PIDOVE,7,11
+    45,BURMY,7,11
+    45,SEEDOT,7,11
+    10,COMBEE,7,11
 HeadbuttLow,21
-    50,COMBEE,7,11
-    50,PINECO,7,11
+    100,PINECO,7,11
 #-------------------------------
 [040] # Feldspar Cave
 CaveDay,8
