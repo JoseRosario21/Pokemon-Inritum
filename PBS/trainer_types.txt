@@ -22,6 +22,7 @@ BaseMoney = 60
 #-------------------------------
 [RIVAL1]
 Name = Rival
+BattleBGM = Make a Splash!
 Gender = Female
 BaseMoney = 50
 SkillLevel = 100
