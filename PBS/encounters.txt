@@ -1,6 +1,6 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
-[003] # Stuot Pier
+[005] # Stuot Pier
 LandDay,21
     20,WURMPLE,2,5
     20,SPINARAK,2,5

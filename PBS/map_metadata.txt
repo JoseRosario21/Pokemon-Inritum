@@ -3,7 +3,7 @@
 [001]   # Intro
 Name = Intro
 #-------------------------------
-[003]   # Stuot Pier
+[005]   # Stuot Pier
 Outdoor = true
 ShowArea = true
 Bicycle = true
@@ -29,11 +29,3 @@ Bicycle = true
 ShowArea = true
 #-------------------------------
 [016]   # Help Center
-#-------------------------------
-[022]   # Stuot Town
-Name = Stuout Town
-Outdoor = true
-ShowArea = true
-Bicycle = true
-Weather = Sun,80
-SnapEdges = true
