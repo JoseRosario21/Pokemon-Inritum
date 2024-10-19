@@ -16,7 +16,11 @@ class Battle::AI
     :ORANBERRY    => 10,
     :SITRUSBERRY  => 1,   # Actual amount is determined below (pkmn.totalhp / 4)
     :ENERGYPOWDER => (Settings::REBALANCED_HEALING_ITEM_AMOUNTS) ? 60 : 50,
-    :ENERGYROOT   => (Settings::REBALANCED_HEALING_ITEM_AMOUNTS) ? 120 : 200
+    :ENERGYROOT   => (Settings::REBALANCED_HEALING_ITEM_AMOUNTS) ? 120 : 200,
+    :VANICECREAM  => 30,
+    :CHOCICECREAM  => 70,
+    :STWBICECREAM  => 90,
+    :BLUEMOONICECREAM  => 200
   }
   HP_HEAL_ITEMS[:RAGECANDYBAR] = 20 if !Settings::RAGE_CANDY_BAR_CURES_STATUS_PROBLEMS
   FULL_RESTORE_ITEMS = [

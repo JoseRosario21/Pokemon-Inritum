@@ -954,6 +954,8 @@ class Pokemon
       gain = [-10, -10, -15][happiness_range]
     when "revivalherb"
       gain = [-15, -15, -20][happiness_range]
+    when "bluemoonicecream"
+      @happiness = 255
     else
       raise _INTL("Unknown happiness-changing method: {1}", method.to_s)
     end

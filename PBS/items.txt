@@ -6571,3 +6571,39 @@ Pocket = 1
 Price = 400
 Flags = Fling_30
 Description = A treat for wild Pokémon so that you can earn their trust.
+#-------------------------------
+[VANICECREAM]
+Name = Vanilla Ice Cream
+NamePlural = Vanilla Ice Cream
+Pocket = 2
+Price = 800
+FieldUse = OnPokemon
+Flags = Fling_30
+Description = Vanilla Ice Cream heal the Pokémon for 30 HP. Originally from Reborn region.
+#-------------------------------
+[CHOCICECREAM]
+Name = Chocolate Ice Cream
+NamePlural = Chocolate Ice Cream
+Pocket = 2
+Price = 1600
+FieldUse = OnPokemon
+Flags = Fling_30
+Description = Chocolate Ice Cream heal the Pokémon for 70 HP. Originally from Reborn region.
+#-------------------------------
+[STWBICECREAM]
+Name = Strawberry Ice Cream
+NamePlural = Strawberry Ice Cream
+Pocket = 2
+Price = 1900
+FieldUse = OnPokemon
+Flags = Fling_30
+Description = Strawberry Ice Cream heal the Pokémon for 90 HP. Originally from Reborn region.
+#-------------------------------
+[BLUEMOONICECREAM]
+Name = Blue Moon Ice Cream
+NamePlural = Blue Moon Ice Cream
+Pocket = 2
+Price = 1900
+FieldUse = OnPokemon
+Flags = Fling_30
+Description = Blue Moon Ice Cream heal the Pokémon for 200 HP and maxes out the Pokémon's happiness. Originally from Reborn region.

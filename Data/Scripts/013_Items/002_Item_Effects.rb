@@ -452,6 +452,27 @@ ItemHandlers::UseOnPokemon.add(:SITRUSBERRY, proc { |item, qty, pkmn, scene|
   next pbHPItem(pkmn, pkmn.totalhp / 4, scene)
 })
 
+ItemHandlers::UseOnPokemon.add(:VANICECREAM, proc { |item, qty, pkmn, scene|
+  next pbHPItem(pkmn, 30, scene)
+})
+
+ItemHandlers::UseOnPokemon.add(:CHOCICECREAM, proc { |item, qty, pkmn, scene|
+  next pbHPItem(pkmn, 70, scene)
+})
+
+ItemHandlers::UseOnPokemon.add(:STWBICECREAM, proc { |item, qty, pkmn, scene|
+  next pbHPItem(pkmn, 90, scene)
+})
+
+ItemHandlers::UseOnPokemon.add(:BLUEMOONICECREAM, proc { |item, qty, pkmn, scene|
+  pbHPItem(pkmn, 200, scene)
+  next pbRaiseHappiness(
+    pkmn, scene, :HP, qty, [
+      _INTL("{1} adores you!", pkmn.name),
+    ]
+  )
+})
+
 ItemHandlers::UseOnPokemon.add(:AWAKENING, proc { |item, qty, pkmn, scene|
   if pkmn.fainted? || pkmn.status != :SLEEP
     scene.pbDisplay(_INTL("It won't have any effect."))
