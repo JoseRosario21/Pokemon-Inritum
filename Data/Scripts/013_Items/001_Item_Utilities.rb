@@ -483,6 +483,20 @@ def pbRaiseHappinessAndLowerEV(pkmn, scene, stat, qty, messages)
   return true
 end
 
+def pbRaiseHappiness(pkmn, scene, stat, qty, messages)
+  h = pkmn.happiness < 255
+  if !h
+    scene.pbDisplay(_INTL("It won't have any effect."))
+    return false
+  end
+  if h
+    qty.times { |i| pkmn.changeHappiness("bluemoonicecream") }
+  end
+  scene.pbRefresh
+  scene.pbDisplay(messages[0])
+  return true
+end
+
 #===============================================================================
 # Change nature
 #===============================================================================

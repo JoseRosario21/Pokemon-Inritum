@@ -1,4 +1,4 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
-# Pier (3) - City1 (4)
-3,69,0,4,0,6
+# Stuot City (4) - Stuot Pier (5)
+4,10,61,5,0,0
