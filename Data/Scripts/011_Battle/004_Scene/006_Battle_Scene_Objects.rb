@@ -18,8 +18,8 @@ class Battle::Scene::PokemonDataBox < Sprite
   # Height in pixels of a status icon
   STATUS_ICON_HEIGHT = 16
   # Text colors
-  NAME_BASE_COLOR         = Color.new(72, 72, 72)
-  NAME_SHADOW_COLOR       = Color.new(184, 184, 184)
+  NAME_BASE_COLOR         = Color.new(255, 255, 255)
+  NAME_SHADOW_COLOR       = Color.new(54, 54, 54)
   MALE_BASE_COLOR         = Color.new(48, 96, 216)
   MALE_SHADOW_COLOR       = NAME_SHADOW_COLOR
   FEMALE_BASE_COLOR       = Color.new(248, 88, 40)
@@ -44,8 +44,8 @@ class Battle::Scene::PokemonDataBox < Sprite
     onPlayerSide = @battler.index.even?
     # Get the data box graphic and set whether the HP numbers/Exp bar are shown
     if sideSize == 1   # One Pokémon on side, use the regular dara box BG
-      bgFilename = [_INTL("Graphics/UI/Battle/databox_normal"),
-                    _INTL("Graphics/UI/Battle/databox_normal_foe")][@battler.index % 2]
+      bgFilename = [_INTL("Graphics/UI/Battle/battlePlayerBoxS"),
+                    _INTL("Graphics/UI/Battle/battleFoeBoxS")][@battler.index % 2]
       if onPlayerSide
         @show_hp_numbers = true
         @show_exp_bar    = true
