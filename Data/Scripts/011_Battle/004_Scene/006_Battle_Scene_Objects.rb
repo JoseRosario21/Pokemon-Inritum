@@ -51,8 +51,8 @@ class Battle::Scene::PokemonDataBox < Sprite
         @show_exp_bar    = true
       end
     else   # Multiple Pokémon on side, use the thin dara box BG
-      bgFilename = [_INTL("Graphics/UI/Battle/databox_thin"),
-                    _INTL("Graphics/UI/Battle/databox_thin_foe")][@battler.index % 2]
+      bgFilename = [_INTL("Graphics/UI/Battle/battlePlayerBoxD"),
+                    _INTL("Graphics/UI/Battle/battleFoeBoxD")][@battler.index % 2]
     end
     @databoxBitmap&.dispose
     @databoxBitmap = AnimatedBitmap.new(bgFilename)
