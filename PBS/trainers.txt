@@ -72,7 +72,7 @@ LoseText = Tough match!
 Pokemon = ROGGENROLA,9
 Pokemon = ZUBAT,11
 #-------------------------------
-[POKEMONTRAINER_May,Meryl,1]
+[RIVAL1,Meryl,1]
 LoseText = ...
 Pokemon = POPPLIO,14
 Pokemon = DUCKLETT,11
@@ -114,7 +114,7 @@ Pokemon = BELDUM,15
     IV = 31,31,31,31,31,31
     Ball = HEAVYBALL
 #-------------------------------
-[POKEMONTRAINER_May,Meryl,2]
+[RIVAL1,Meryl,2]
 LoseText = ...
 Pokemon = BRIONNE,17
 Pokemon = DUCKLETT,13
