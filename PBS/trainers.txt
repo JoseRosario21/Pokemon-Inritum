@@ -24,28 +24,28 @@ Pokemon = SANDSHREW,5
 #-------------------------------
 [SCIENTIST,Harry]
 LoseText = My prediction was wrong.
-Pokemon = VOLTORB,5
-Pokemon = MAGNEMITE,6
+Pokemon = VOLTORB,3
+Pokemon = MAGNEMITE,4
 #-------------------------------
 [COOLTRAINER_M,Jack]
 LoseText = Next time I won't go so easy on you!
-Pokemon = PURRLOIN,7
+Pokemon = PURRLOIN,5
 #-------------------------------
 [POKEMANIAC,James]
 LoseText = My team needs stronger Pokémon...
-Pokemon = TRUBBISH,5
+Pokemon = TRUBBISH,4
 Pokemon = RATTATA,5
-Pokemon = KOFFING,6
+Pokemon = KOFFING,5
 #-------------------------------
 [POKEMONBREEDER,Sarah]
 LoseText = My cute Pokémon, how dare you?
-Pokemon = FLABEBE,6
-Pokemon = CHERUBI,6
+Pokemon = FLABEBE,4
+Pokemon = CHERUBI,4
 #-------------------------------
 [COOLTRAINER_F,Amelia]
 LoseText = You are not cool!
-Pokemon = MEOWTH_1,5
-Pokemon = MASCHIFF,5
+Pokemon = MEOWTH_1,4
+Pokemon = MASCHIFF,4
 #-------------------------------
 [FISHERMAN,Hugh]
 LoseText = Even the mightiest fisherman has an off day.
