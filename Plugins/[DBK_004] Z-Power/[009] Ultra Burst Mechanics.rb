@@ -75,7 +75,7 @@ MidbattleHandlers.add(:midbattle_global, :wild_ultra_battle,
         battle.disablePokeBalls = true
         battle.sosBattle = false if defined?(battle.sosBattle)
         battle.totemBattle = nil if defined?(battle.totemBattle)
-        foe.damageThreshold = 6
+        foe.damageThreshold = 20
         PBDebug.log("[Midbattle Global] #{logname} gains a Z-Powered aura")
         battle.pbAnimation(:DRAGONDANCE, foe, foe)
         battle.pbDisplay(_INTL("{1}'s aura flared to life!", foe.pbThis))
@@ -348,6 +348,7 @@ class Battle::Battler
   def hasUltra?
     return false if shadowPokemon? || @effects[PBEffects::Transform]
     return false if wild? && ![:zmove, :ultra].include?(@battle.wildBattleMode)
+    return false if @battle.raidBattle? && @battle.raidRules[:style] != :Ultra
     return false if !getActiveState.nil?
     return false if hasEligibleAction?(:primal, :zodiac)
     return false if !@item_id || @item_id != @pokemon&.getUltraItem

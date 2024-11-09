@@ -450,6 +450,11 @@ class Battle::AI
       PBDebug.log("")
       return
     end
+    PBDebug.logonerr { ret = pbChooseToUseSpecialCommand }
+    if ret
+      PBDebug.log("")
+      return
+    end
     if @battle.pbAutoFightMenu(idxBattler)
       PBDebug.log("")
       return

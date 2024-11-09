@@ -7,7 +7,7 @@
 #-------------------------------------------------------------------------------
 MenuHandlers.add(:debug_menu, :deluxe_zmoves, {
   "name"        => _INTL("Toggle Z-Moves"),
-  "parent"      => :deluxe_plugins_menu,
+  "parent"      => :deluxe_gimmick_toggles,
   "description" => _INTL("Toggles the availability of Z-Move functionality."),
   "effect"      => proc {
     $game_switches[Settings::NO_ZMOVE] = !$game_switches[Settings::NO_ZMOVE]
@@ -18,7 +18,7 @@ MenuHandlers.add(:debug_menu, :deluxe_zmoves, {
 
 MenuHandlers.add(:debug_menu, :deluxe_ultra_burst, {
   "name"        => _INTL("Toggle Ultra Burst"),
-  "parent"      => :deluxe_plugins_menu,
+  "parent"      => :deluxe_gimmick_toggles,
   "description" => _INTL("Toggles the availability of Ultra Burst functionality."),
   "effect"      => proc {
     $game_switches[Settings::NO_ULTRA_BURST] = !$game_switches[Settings::NO_ULTRA_BURST]

@@ -107,7 +107,7 @@ MidbattleHandlers.add(:midbattle_global, :wild_dynamax_battle,
         battle.disablePokeBalls = true
         battle.sosBattle = false if defined?(battle.sosBattle)
         battle.totemBattle = nil if defined?(battle.totemBattle)
-        foe.damageThreshold = 6
+        foe.damageThreshold = 20
       else
         battle.wildBattleMode = nil
       end
@@ -431,9 +431,9 @@ class Battle::Battler
   #-----------------------------------------------------------------------------
   # Checks if battler has the option to Dynamax.
   #-----------------------------------------------------------------------------
-  def hasDynamax?
+  def hasDynamax?(check_available = true)
     return false if shadowPokemon?
-    return false if !pbDynamaxAvailable?
+    return false if check_available && !pbDynamaxAvailable?
     return false if !getActiveState.nil?
     return false if hasEligibleAction?(:mega, :primal, :zmove, :ultra, :zodiac)
     return false if defined?(isCommanderHost?) && isCommanderHost?
@@ -456,6 +456,7 @@ class Battle::Battler
   def pbDynamaxAvailable?
     side  = self.idxOwnSide
     owner = @battle.pbGetOwnerIndexFromBattlerIndex(@index)
+    return false if @battle.raidBattle? && @battle.raidRules[:style] != :Max
     return false if @battle.dynamax[side][owner] == -2
     return false if $game_switches[Settings::NO_DYNAMAX]
     map_data = GameData::MapMetadata.try_get($game_map.map_id)

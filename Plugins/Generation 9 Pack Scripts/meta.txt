@@ -1,11 +1,27 @@
 Name = Generation 9 Pack
-Version = 3.2.7
+Version = 3.2.8
 Essentials = 21.1
 Requires = v21.1 Hotfixes,1.0.9
 Website = https://www.reliccastle.com/threads/5817/
 Credits = Caruban
 
 # Change logs
+#############################################
+# 3.2.8
+#############################################
+# - Changed Infernal Parade burn score "b" parameter to "target"
+# - Changed Matcha Gatcha burn score "b" parameter to "target"
+# - Changed Barb Barrage poison score "b" parameter to "target"
+# - Changed Ceaseless Edge's spike score method
+# - Changed Stone Axe's stealth rock score method
+# - Changed Chilly Reception's switch out score method
+# - Changed Frostbite AI handler to FrostbiteTarget
+# - Changed @battle to battle from Neutralizing Gas ability handler (line 416)
+# - Fixed Psyblade's AI move score algorithm
+# - Fixed Syrup Bomb's AI move score method id
+# - Removed "OHKO" check from Stone Axe's MoveFailureAgainstTargetCheck handler
+# - Updated Electro Shot AI move score
+# - Updated Upper Hand AI move score
 #############################################
 # 3.2.7
 #############################################

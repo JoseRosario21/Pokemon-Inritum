@@ -294,8 +294,13 @@ class Battle::Scene
     end
     #---------------------------------------------------------------------------
     # Draws Tera type.
-    showTera = defined?(battler.tera_type) && battler.pokemon.terastal_able?
-    if battler.tera? || showTera && (battler.pbOwnedByPlayer? || !@battle.internalBattle)
+    if battler.tera?
+      showTera = true
+    else
+      showTera = defined?(battler.tera_type) && battler.pokemon.terastal_able?
+      showTera = ((@battle.internalBattle) ? !battler.opposes? : true) if showTera
+    end
+    if showTera
       pkmn = (illusion) ? poke : battler
       pbDrawImagePositions(@enhancedUIOverlay, [[@path + "info_extra", xpos + 182, ypos + 95]])
       pbDisplayTeraType(pkmn, @enhancedUIOverlay, xpos + 186, ypos + 97, true)
@@ -377,6 +382,12 @@ class Battle::Scene
   def pbGetDisplayEffects(battler)
     display_effects = []
     #---------------------------------------------------------------------------
+    # Damage gates for scripted battles.
+    if battler.damageThreshold
+      desc = _INTL("The Pokémon's HP won't fall below {1}% when attacked.", battler.damageThreshold)
+      display_effects.push([_INTL("Damage Gate"), "--", desc])
+    end
+    #---------------------------------------------------------------------------
     # Special states.
     if battler.dynamax?
       if battler.effects[PBEffects::Dynamax] > 0 && !battler.isRaidBoss?
@@ -422,6 +433,7 @@ class Battle::Scene
       when :Sandstorm   then desc = _INTL("Boosts Rock type Sp. Def. Damages unless Rock/Ground/Steel.")
       when :StrongWinds then desc = _INTL("Flying types won't take super effective damage.")
       when :ShadowSky   then desc = _INTL("Boosts Shadow moves. Non-Shadow Pokémon damaged each turn.")
+	  else                   desc = _INTL("Unknown weather.")
       end
       display_effects.push([name, tick, desc])
     end
@@ -436,6 +448,7 @@ class Battle::Scene
       when :Grassy   then desc = _INTL("Grounded Pokémon recover HP each turn. Boosts Grass moves.")
       when :Psychic  then desc = _INTL("Priority moves fail on grounded targets. Boosts Psychic moves.")
       when :Misty    then desc = _INTL("Status can't be changed when grounded. Weakens Dragon moves.")
+	  else                desc = _INTL("Unknown terrain.")
       end
       display_effects.push([name, tick, desc])
     end
@@ -886,8 +899,39 @@ class Battle::Scene
             tick = sprintf("%d/%d", value, 4)
             desc = _INTL("Pokémon that are not Fire types take damage every turn.")
           #---------------------------------------------------------------------
+          when :CheerOffense1
+            name = _INTL("Offense Cheer 1")
+            tick = sprintf("%d/%d", value, 3)
+            desc = _INTL("The Pokémon's attacks deal increased damage.")
+          #---------------------------------------------------------------------
+          when :CheerOffense2
+            name = _INTL("Offense Cheer 2")
+            tick = sprintf("%d/%d", value, 3)
+            desc = _INTL("The Pokémon's attacks will trigger effects & critically hit.")
+          #---------------------------------------------------------------------
+          when :CheerOffense3
+            name = _INTL("Offense Cheer 3")
+            tick = sprintf("%d/%d", value, 3)
+            desc = _INTL("The Pokémon's attacks bypass effects like Protect & Substitute.")
+          #---------------------------------------------------------------------
+          when :CheerDefense1
+            name = _INTL("Defense Cheer 1")
+            tick = sprintf("%d/%d", value, 3)
+            desc = _INTL("The Pokémon takes reduced damage from attacks.")
+          #---------------------------------------------------------------------
+          when :CheerDefense2
+            name = _INTL("Defense Cheer 2")
+            tick = sprintf("%d/%d", value, 3)
+            desc = _INTL("The Pokémon is immune to critical hits and move effects.")
+          #---------------------------------------------------------------------
+          when :CheerDefense3
+            name = _INTL("Defense Cheer 3")
+            tick = sprintf("%d/%d", value, 3)
+            desc = _INTL("The Pokémon will survive all incoming attacks with 1 HP.")
+          #---------------------------------------------------------------------
           else next
           end
+          tick = "--" if type == :counter && value < 0
           display_effects.push([name, tick, desc])
         end
       end

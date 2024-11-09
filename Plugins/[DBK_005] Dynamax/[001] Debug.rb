@@ -7,7 +7,7 @@
 #-------------------------------------------------------------------------------
 MenuHandlers.add(:debug_menu, :deluxe_dynamax, {
   "name"        => _INTL("Toggle Dynamax"),
-  "parent"      => :deluxe_plugins_menu,
+  "parent"      => :deluxe_gimmick_toggles,
   "description" => _INTL("Toggles the availability of Dynamax functionality."),
   "effect"      => proc {
     $game_switches[Settings::NO_DYNAMAX] = !$game_switches[Settings::NO_DYNAMAX]
@@ -16,9 +16,15 @@ MenuHandlers.add(:debug_menu, :deluxe_dynamax, {
   }
 })
 
+MenuHandlers.add(:debug_menu, :deluxe_plugin_settings, {
+  "name"        => _INTL("Plugin settings..."),
+  "parent"      => :deluxe_plugins_menu,
+  "description" => _INTL("Settings for various features implemented by add-on plugins.")
+})
+
 MenuHandlers.add(:debug_menu, :deluxe_dynamax_settings, {
   "name"        => _INTL("Dynamax settings..."),
-  "parent"      => :deluxe_plugins_menu,
+  "parent"      => :deluxe_plugin_settings,
   "description" => _INTL("Edit when and where Dynamax is able to be used."),
   "effect"      => proc {
     loop do
@@ -50,7 +56,7 @@ MenuHandlers.add(:debug_menu, :deluxe_dynamax_settings, {
 
 MenuHandlers.add(:debug_menu, :deluxe_dynamax_metrics, {
   "name"        => _INTL("Dynamax metrics..."),
-  "parent"      => :deluxe_plugins_menu,
+  "parent"      => :deluxe_plugin_settings,
   "description" => _INTL("Reposition Pokémon Dynamax sprites displayed in battle."),
   "effect"      => proc {
     if Settings::SHOW_DYNAMAX_SIZE

@@ -7,7 +7,7 @@
 #-------------------------------------------------------------------------------
 MenuHandlers.add(:debug_menu, :deluxe_tera, {
   "name"        => _INTL("Toggle Terastallization"),
-  "parent"      => :deluxe_plugins_menu,
+  "parent"      => :deluxe_gimmick_toggles,
   "description" => _INTL("Toggles the availability of Terastallization functionality."),
   "effect"      => proc {
     $game_switches[Settings::NO_TERASTALLIZE] = !$game_switches[Settings::NO_TERASTALLIZE]
@@ -16,9 +16,15 @@ MenuHandlers.add(:debug_menu, :deluxe_tera, {
   }
 })
 
+MenuHandlers.add(:debug_menu, :deluxe_plugin_settings, {
+  "name"        => _INTL("Plugin settings..."),
+  "parent"      => :deluxe_plugins_menu,
+  "description" => _INTL("Settings for various features implemented by add-on plugins.")
+})
+
 MenuHandlers.add(:debug_menu, :deluxe_tera_settings, {
   "name"        => _INTL("Terastal settings..."),
-  "parent"      => :deluxe_plugins_menu,
+  "parent"      => :deluxe_plugin_settings,
   "description" => _INTL("Edit the player's Tera Orb and Pokémon Tera types."),
   "effect"      => proc {
     loop do

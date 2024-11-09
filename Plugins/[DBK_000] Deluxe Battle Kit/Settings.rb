@@ -20,7 +20,7 @@ module Settings
   #-----------------------------------------------------------------------------
   # Allows for different battle music to play when the player's Pokemon is at low HP.
   #-----------------------------------------------------------------------------
-  PLAY_LOW_HP_MUSIC = false
+  PLAY_LOW_HP_MUSIC = true
   
   #-----------------------------------------------------------------------------
   # Toggles the appearance of the Mega Evolution animation used by this plugin.
