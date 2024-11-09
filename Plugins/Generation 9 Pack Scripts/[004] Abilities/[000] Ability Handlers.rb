@@ -413,7 +413,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:NEUTRALIZINGGAS,
     battle.allBattlers.each do |b|
       if b.hasActiveItem?(:ABILITYSHIELD)
         itemname = GameData::Item.get(b.item).name
-        @battle.pbDisplay(_INTL("{1}'s Ability is protected by the effects of its {2}!",b.pbThis,itemname))
+        battle.pbDisplay(_INTL("{1}'s Ability is protected by the effects of its {2}!",b.pbThis,itemname))
         next
       end
       b.effects[PBEffects::SlowStart] = 0

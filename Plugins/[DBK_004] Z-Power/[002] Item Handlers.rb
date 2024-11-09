@@ -127,6 +127,26 @@ module GameData
     def zmove_species
       return @zcombo[1..@zcombo.length]
     end
+	
+    #---------------------------------------------------------------------------
+    # Returns a random compatible Z-Crystal for an inputted Pokemon object.
+    #---------------------------------------------------------------------------
+    def self.get_compatible_crystal(pkmn)
+      crystals = []
+      self.each do |item|
+        next if !item.is_zcrystal?
+        if item.has_zmove_combo?
+          species = (item.has_flag?("UsableByAllForms")) ? pkmn.species : pkmn.species_data.id
+          next if !item.zmove_species.include?(species)
+          return item.id if pkmn.moves.include?(item.zmove_base_move)
+        else
+          next if !pkmn.moves.any? { |m| m.power > 0 && m.type == item.zmove_type }
+        end
+        crystals.push(item.id)
+      end
+      return :NORMALIUMZ if crystals.empty?
+      return crystals.sample
+    end
   end
 end
 
@@ -255,7 +275,7 @@ if PluginManager.installed?("Bag Screen w/int. Party")
       item = @sprites["itemlist"].item
       item_data = GameData::Item.try_get(item)
       if item_data && item_data.is_zcrystal? && 
-         @bag.last_viewed_pocket == Settings::ZCRYSTAL_BAG_POCKET
+        @bag.last_viewed_pocket == Settings::ZCRYSTAL_BAG_POCKET
         $player.party.each_with_index do |pkmn, i|
           elig = pkmn.has_zmove?(item)
           annotation = (elig) ? _INTL("ABLE") : _INTL("UNABLE")

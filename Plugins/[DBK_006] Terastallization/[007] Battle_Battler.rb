@@ -13,16 +13,17 @@ class Battle::Battler
   #-----------------------------------------------------------------------------
   # Returns true if the user is capable of Terastallization.
   #-----------------------------------------------------------------------------
-  def hasTera?
+  def hasTera?(check_available = true)
     return false if shadowPokemon?
     return false if wild? && @battle.wildBattleMode != :tera
+    return false if @battle.raidBattle? && @battle.raidRules[:style] != :Tera
     return false if @pokemon.hasTerastalForm? && @effects[PBEffects::Transform]
     return false if @effects[PBEffects::TransformPokemon]&.hasTerastalForm?
     return false if !getActiveState.nil?
     return false if hasEligibleAction?(:mega, :primal, :zmove, :ultra, :dynamax, :style, :zodiac)
     side  = self.idxOwnSide
     owner = @battle.pbGetOwnerIndexFromBattlerIndex(@index)
-    return false if @battle.terastallize[side][owner] == -2
+    return false if check_available && @battle.terastallize[side][owner] == -2
     return !tera_type.nil?
   end
   

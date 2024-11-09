@@ -124,6 +124,7 @@ class Battle::Scene
            "DoublePowerIfTargetNotActed",              # Bolt Beak, Fishious Rend
            "PowerHigherWithTargetHP",                  # Crush Grip, Wring Out
            "PowerHigherWithTargetHP100PowerRange",     # Hard Press
+           "HitThreeTimesPowersUpWithEachHit",         # Triple Kick
            "PowerHigherWithTargetWeight",              # Low Kick, Grass Knot
            "PowerHigherWithUserFasterThanTarget",      # Electro Ball
            "PowerHigherWithTargetFasterThanUser",      # Gyro Ball

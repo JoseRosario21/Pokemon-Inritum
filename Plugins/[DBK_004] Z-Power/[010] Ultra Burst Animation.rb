@@ -60,11 +60,11 @@ class Battle::Scene::Animation::BattlerUltraBurst < Battle::Scene::Animation
     arrPOKE = dxSetPokemonWithOutline(@ultra, delay, !@opposes)
     #---------------------------------------------------------------------------
     # Sets up pulse.
-    pulseData = dxSetSprite(@path + "pulse", delay, center_x, center_y, false, 100, 50)
+    pulseData = dxSetSprite(@path + "pulse", delay, center_x, center_y, PictureOrigin::CENTER, 100, 50)
     picPULSE, sprPULSE = pulseData[0], pulseData[1]
     #---------------------------------------------------------------------------
     # Sets up Ultra icon.
-    iconData = dxSetSprite(@path + "Z-Power/ultra_icon", delay, center_x, center_y, false, 0)
+    iconData = dxSetSprite(@path + "Z-Power/ultra_icon", delay, center_x, center_y, PictureOrigin::CENTER, 0)
     picICON, sprICON = iconData[0], iconData[1]
     #---------------------------------------------------------------------------
     # Sets up particles.
@@ -84,8 +84,8 @@ class Battle::Scene::Animation::BattlerUltraBurst < Battle::Scene::Animation
     picPOKE.setVisible(delay, true)
     picFADE.moveOpacity(delay, 8, 0)
     delay = picFADE.totalDuration
-    picBUTTON.moveXY(delay, 6, 0, Graphics.height - 38)
-    picBUTTON.moveXY(delay + 26, 6, 0, Graphics.height)
+    picBUTTON.moveDelta(delay, 6, 0, -38)
+    picBUTTON.moveDelta(delay + 26, 6, 0, 38)
     #---------------------------------------------------------------------------
     # Darkens background/base tone; begins zooming in ultra particles.
     picPOKE.setSE(delay, "DX Action")
