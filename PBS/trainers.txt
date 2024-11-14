@@ -172,26 +172,28 @@ Pokemon = LUNATONE,15
 [TEAM_REBIRTH_ELITE_GRUNT_M,Grunt]
 Items = ZRING
 LoseText = ...
+Pokemon = PONYTA,15
+    Form = 1
+Pokemon = TINKATINK,17
 Pokemon = FROSLASS,74
     Moves = ICEBEAM,BLIZZARD,SHADOWBALL,DRAININGKISS
     AbilityIndex = 0
     Item = ICIUMZ
     IV = 31,31,31,31,31,31
     EV = 0,0,0,252,252,6
-Pokemon = IMPIDIMP,10
-Pokemon = IMPIDIMP,10
 #-------------------------------
 [TEAM_REBIRTH_ELITE_GRUNT_M,Grunt,1]
 Items = ZRING
 LoseText = ...
+Pokemon = YANMA,14
+Pokemon = SLOWPOKE,17
+    Form = 1
 Pokemon = ALAKAZAM,73
     Moves = PSYCHIC,SHADOWBALL,FOCUSBLAST,CALMMIND
     AbilityIndex = 0
     Item = PSYCHIUMZ
     IV = 31,31,31,31,31,31
     EV = 0,0,0,252,252,6
-Pokemon = IMPIDIMP,10
-Pokemon = IMPIDIMP,10
 #-------------------------------
 [POKEMONBREEDER,Kristen]
 LoseText = Did you level up?

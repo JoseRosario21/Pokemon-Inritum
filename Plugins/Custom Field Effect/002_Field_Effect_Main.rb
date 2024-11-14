@@ -21,6 +21,7 @@ end
 class Battle
   def pbSetDefaultField
 	setDefaultField(:Electric) if [].include?($game_map.map_id)
+	#setDefaultField(:Beach) if [5].include?($game_map.map_id)
 	setDefaultField($field)  if $field && $field != :None
 	$field = :None
   end

@@ -804,6 +804,8 @@ class Battle
       pbDisplay(_INTL("Mist swirled about the battlefield!"))
     when :Psychic
       pbDisplay(_INTL("The battlefield got weird!"))
+    when :Beach
+      pbDisplay(_INTL("A soothing breeze flows through the beach."))
     end
     # Check for abilities/items that trigger upon the terrain changing
     allBattlers.each { |b| b.pbAbilityOnTerrainChange }
