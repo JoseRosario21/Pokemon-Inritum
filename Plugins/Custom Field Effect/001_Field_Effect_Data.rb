@@ -101,6 +101,51 @@ FIELD_EFFECTS = {
 		:move_change_field					=> { [] => [nil, nil] },   ### to-do
 		:field_change_message				=> { "xxx" => [] }   ### to-do
 	},
+	:Beach => {
+		:field_name_bg						=> ["Beach", "BeachField"],
+		:field_DBK_EBUI_display				=> ["Beach Field", "A soothing breeze flows through the beach."],
+		:message_start_continue_end			=> [nil, nil, nil],
+		:weather_terrain_effect				=> { "weather" => [nil, nil], "terrain" => [nil, nil] },
+		:other_weather_terrain_effect		=> { "no weather" => false, "perm weather" => false, "no terrain" => false, "perm terrain" => false }, # true for perm or number for turns
+		:global_field_effect				=> { "Fairy Lock" => 0, "Gravity" => 0, "Inverse Room" => 0, "Magic Room" => 0, "Trick Room" => 0, "Wonder Room" => 0 },
+		:block_status						=> { "sleep" => false, "toxic" => false, "burn" => false, "paralysis" => false, "frozen" => false, "drowsy" => false, "frostbite" => false, "yawn" => false, "confusion" => false },
+		:block_move							=> { "priority" => false, "status" => false, "healing" => false, "protect" => true },
+		:hidden_power_type					=> nil,
+		:other_effect						=> { "inverse battle" => false, "no raise" => false, "no lower" => false, "no switch" => false, "no heal" => false, "no item" => false, "abil un-ltd" => false },
+		:battler_type_change     			=> { [] => [nil, nil, nil] }, # true for all or an array
+		:battler_ability_change     		=> { [] => nil },
+		:battler_ability_add	     		=> { [] => [] }, # multi-ability need other plugin (Innate Abilities/Infinite Ability/All Abilities Mutation, have not tested)
+		:battler_speed_change     			=> { [] => 0.9 },
+		:battler_start_switch_status		=> [nil, { "chance" => nil }, { "badly poisoned" => false }],
+		:battler_start_switch_hp			=> { false => { "hp lost" => nil, "hp gain" => nil } }, # e.g. "hp gain" => 1 / 4.0, true for all or an array
+		:battler_start_switch_buff			=> { [] => { :ATTACK => 1 } },
+		:battler_start_switch_cure			=> { "sleep" => false, "toxic" => false, "burn" => false, "paralysis" => false, "frozen" => false, "drowsy" => false, "frostbite" => false },
+		:battler_start_switch_effect		=> { },   ### to-do
+		:EOR_effect_status					=> [nil, { "chance" => nil }, { "badly poisoned" => false }],
+		:EOR_effect_hp						=> { nil => { "hp lost" => nil, "hp gain" => nil } }, # e.g. "hp gain" => 1 / 4.0, true for all or an array
+		:EOR_effect_buff					=> { [] => { :ATTACK => 1 } },
+		:user_target_boost					=> { [nil, nil] => { "power" => 1.0, "atk" => 1.0, "sp_atk" => 1.0, "dmg" => 1.0 } },
+		:move_target_range					=> [], # moves hit all targets	
+		:move_priority			 			=> { [] => 1 },
+		:move_priority_type			 		=> { [] => 1 },
+		:move_priority_subtype			 	=> { [] => 1 },
+		:move_accuracy						=> { [] => { "base" => nil, "modifier" => 1.0 } },
+		:move_accuracy_type					=> { [] => { "base" => nil, "modifier" => 1.0 } },
+		:move_accuracy_subtype				=> { [] => { "base" => nil, "modifier" => 1.0 } },
+		:move_type_change					=> { [] => nil },
+		:move_type_change_type				=> { [] => nil },
+		:move_type_change_subtype			=> { [] => nil },
+		:move_type_add						=> { [] => nil },
+		:move_type_add_type					=> { [] => nil },
+		:move_type_add_subtype				=> { [] => nil },
+		:move_boost							=> { [] => { "power" => 1.0, "atk" => 1.0, "sp_atk" => 1.0, "dmg" => 1.0 } },
+		:move_boost_type					=> { [] => { "power" => 1.0, "atk" => 1.0, "sp_atk" => 1.0, "dmg" => 1.0 } },
+		:move_boost_subtype					=> { [] => { "power" => 1.0, "atk" => 1.0, "sp_atk" => 1.0, "dmg" => 1.0 } },
+		:move_boost_message					=> { "The field strengthened the attack!" => [], "The field weakened the attack!" => [] },
+		:move_effect_add					=> { },   ### to-do
+		:move_change_field					=> { [] => [nil, nil] },   ### to-do
+		:field_change_message				=> { "xxx" => [] }   ### to-do
+	},
 #===============================================================================
 # Do NOT touch this
 #===============================================================================
@@ -112,7 +157,7 @@ FIELD_EFFECTS = {
 		:other_weather_terrain_effect		=> { "no weather" => false, "perm weather" => false, "no terrain" => false, "perm terrain" => false }, # true for perm or number for turns
 		:global_field_effect				=> { "Fairy Lock" => 0, "Gravity" => 0, "Inverse Room" => 0, "Magic Room" => 0, "Trick Room" => 0, "Wonder Room" => 0 },
 		:block_status						=> { "sleep" => false, "toxic" => false, "burn" => false, "paralysis" => false, "frozen" => false, "drowsy" => false, "frostbite" => false, "yawn" => false, "confusion" => false },
-		:block_move							=> { "priority" => false, "status" => false, "healing" => false, "protect" => true },
+		:block_move							=> { "priority" => false, "status" => false, "healing" => false, "protect" => false },
 		:hidden_power_type					=> nil,
 		:other_effect						=> { "inverse battle" => false, "no raise" => false, "no lower" => false, "no switch" => false, "no heal" => false, "no item" => false, "abil un-ltd" => false },
 		:battler_type_change     			=> { [] => [nil, nil, nil] }, # true for all or an array
