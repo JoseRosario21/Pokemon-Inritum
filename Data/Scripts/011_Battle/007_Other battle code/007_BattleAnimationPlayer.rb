@@ -479,7 +479,7 @@ class PBAnimation < Array
       case i.timingType
       when 2
         if bgGraphic.bitmap.nil?
-          oldbg[2] ||= Color.new(0, 0, 0, 0)  # Ensure oldbg[2] is initialized
+          oldbg[2] ||= 0  # Ensure oldbg[2] is initialized
           oldbg[3] ||= Color.new(0, 0, 0, 0)  # Ensure oldbg[3] is initialized
           fraction ||= 1  # Ensure fraction is initialized
           if i.opacity

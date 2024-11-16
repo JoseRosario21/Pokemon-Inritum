@@ -197,11 +197,11 @@ Pokemon = ALAKAZAM,73
 #-------------------------------
 [POKEMONBREEDER,Kristen]
 LoseText = Did you level up?
-Pokemon = AUDINO,12
+Pokemon = AUDINO,10
     Moves = POUND
-Pokemon = AUDINO,12
+Pokemon = AUDINO,10
     Moves = POUND
-Pokemon = AUDINO,12
+Pokemon = AUDINO,10
     Moves = POUND
 #-------------------------------
 [BIKER,Rico]
@@ -210,3 +210,12 @@ Pokemon = ZUBAT,8
 Pokemon = EKANS,10
 Pokemon = CACNEA,11
 Pokemon = SCRAGGY,12
+#-------------------------------
+[POKEMONBREEDER,Trish]
+LoseText = Did you level up?
+Pokemon = AUDINO,14
+    Moves = POUND
+Pokemon = AUDINO,14
+    Moves = POUND
+Pokemon = AUDINO,14
+    Moves = POUND
