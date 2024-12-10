@@ -697,6 +697,9 @@ class Battle
         Battle::AbilityEffects.triggerEndOfRoundGainItem(battler.ability, battler, self)
       end
     end
+
+    end_of_round_field_process
+
     pbGainExp
     return if @decision > 0
     # Form checks

@@ -280,6 +280,7 @@ class Battle::Move
   #-----------------------------------------------------------------------------
   def pbCalcDamageMultipliers(user, target, numTargets, type, baseDmg, multipliers)
     args = [user, target, numTargets, type, baseDmg]
+    @battle.apply_field_effect(:calc_damage, user, target, numTargets, self, type, baseDmg, multipliers)
     pbCalcDamageMults_Global(*args, multipliers)
     pbCalcDamageMults_Abilities(*args, multipliers)
     pbCalcDamageMults_Items(*args, multipliers)

@@ -219,6 +219,12 @@ def pbHatch(pokemon)
   pokemon.obtain_method  = 1   # hatched from egg
   pokemon.hatched_map    = $game_map.map_id
   pokemon.record_first_moves
+  # Generate 3 random perfect IV's when egg 
+  stats = []
+  GameData::Stat.each_main { |s| stats.push(s.id) }
+  perfect_stats = stats.sample(3)
+  perfect_stats.each { |s| pokemon.iv[s] = Pokemon::IV_STAT_LIMIT }
+  pokemon.calc_stats
   if !pbHatchAnimation(pokemon)
     pbMessage(_INTL("Huh?") + "\1")
     pbMessage(_INTL("...") + "\1")

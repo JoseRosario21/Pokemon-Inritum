@@ -94,6 +94,7 @@ class Battle
     terrain_data = GameData::BattleTerrain.try_get(@field.terrain)
     pbCommonAnimation(terrain_data.animation) if terrain_data
     pbTerrainStartMessage
+    set_default_field
     pbOnAllBattlersEnteringBattle
     pbBattleLoop
   end

@@ -520,11 +520,7 @@ class Battle::Move::WeatherMove < Battle::Move
   end
 
   def pbEffectGeneral(user)
-    duration = 5
-    if user && user.itemActive?
-      duration = Battle::ItemEffects.triggerWeatherExtender(user.item, @weatherType, duration, user, self)
-    end
-    @battle.pbStartWeather(user, @weatherType, duration, true)
+    @battle.pbStartWeather(user, @weatherType, true, false)
   end
 end
 
