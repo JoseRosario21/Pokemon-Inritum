@@ -34,6 +34,9 @@ class Battle::Field_base < Battle::Field
     :switch_in
     :tailwind_duration
     :target_expand
+    :binding_boost
+    :heal_boost
+    :base_type_add
 =end
   end
 end

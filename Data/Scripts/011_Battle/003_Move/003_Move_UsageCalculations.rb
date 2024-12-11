@@ -55,6 +55,11 @@ class Battle::Move
     if !target.airborne? && defType == :FLYING && moveType == :GROUND
       ret = Effectiveness::NORMAL_EFFECTIVE_MULTIPLIER
     end
+    # Check if move gets additional typing
+    add_type = @battle.apply_field_effect(:base_type_add, self)
+    if add_type != nil
+      ret *= Effectiveness.calculate(add_type, defType)
+    end
     return ret
   end
 

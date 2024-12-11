@@ -41,5 +41,21 @@ class Battle::Field_beach < Battle::Field
       next true if %i[DIG].include?(move.id)
     }
 
+    @effects[:binding_boost] = proc { |move|
+      next true if %i[SANDTOMB].include?(move.id)
+    }
+
+    @effects[:heal_boost] = proc { |move|
+      next true if %i[SHOREUP].include?(move.id)
+    }
+
+    @effects[:speed_modify] = proc { |move|
+      next true if %i[SPLASH].include?(move.id)
+    }
+
+    @effects[:base_type_add] = proc { |move|
+      next :GROUND if %i[MUDDYWATER].include?(move.id)
+    }
+
   end
 end
