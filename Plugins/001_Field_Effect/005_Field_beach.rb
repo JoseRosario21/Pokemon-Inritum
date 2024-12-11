@@ -16,17 +16,10 @@ class Battle::Field_beach < Battle::Field
         next true if %i[MUDDYWATER].include?(move.id)
       },
       [:power_multiplier, 1.1, _INTL("The rising tides powered up the move!")] => proc { |user, target, numTargets, move, type, power, mults, aiCheck|
-        next true if %i[SCALD].include?(move.id)
-        next true if %i[SURF].include?(move.id)
-        next true if %i[WATERGUN].include?(move.id)
-        next true if %i[BUBBLEBEAM].include?(move.id)
-        next true if %i[BUBBLE].include?(move.id)
-        next true if %i[WAVECRASH].include?(move.id)
+        next true if %i[SCALD SURF WATERGUN BUBBLEBEAM BUBBLE WAVECRASH].include?(move.id)
       },
       [:power_multiplier, 1.2, _INTL("The damp sand strengthened the attack!")] => proc { |user, target, numTargets, move, type, power, mults, aiCheck|
-        next true if %i[MUDBOMB].include?(move.id)
-        next true if %i[MUDSHOT].include?(move.id)
-        next true if %i[MUDSLAP].include?(move.id)
+        next true if %i[MUDBOMB MUDSHOT MUDSLAP].include?(move.id)
       },
       [:final_damage_multiplier, 0.6, _INTL("The electricity was dispersed in the sand!")] => proc { |user, target, numTargets, move, type, power, mults, aiCheck|
         next true if type == :ELECTRIC && target.affectedByTerrain?

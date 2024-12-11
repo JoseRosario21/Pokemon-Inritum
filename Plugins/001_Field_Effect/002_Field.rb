@@ -33,6 +33,9 @@ class Battle::Field
     :Beach    => [[5],
                 %w[],
                 %i[]],
+    :Cave    => [[40],
+                %w[],
+                %i[]],
   }
 
   def initialize(battle)
@@ -164,5 +167,9 @@ class Battle::Field
 
   def is_beach?
     @id == :Beach
+  end
+
+  def is_cave?
+    @id == :Cave
   end
 end
