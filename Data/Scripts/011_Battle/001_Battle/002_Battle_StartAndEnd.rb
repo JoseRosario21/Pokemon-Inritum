@@ -310,6 +310,7 @@ class Battle
     when :Psychic
       pbDisplay(_INTL("The battlefield is weird!"))
     end
+    set_default_field
     # Abilities upon entering battle
     pbOnAllBattlersEnteringBattle
     # Main battle loop

@@ -58,6 +58,7 @@ end
 class Battle::Move::HealUserDependingOnSandstorm < Battle::Move::HealingMove
   def pbHealAmount(user)
     return (user.totalhp * 2 / 3.0).round if user.effectiveWeather == :Sandstorm
+    return (user.totalhp * 3 / 4.0).round if @battle.apply_field_effect(:heal_boost, self) #75%
     return (user.totalhp / 2.0).round
   end
 end

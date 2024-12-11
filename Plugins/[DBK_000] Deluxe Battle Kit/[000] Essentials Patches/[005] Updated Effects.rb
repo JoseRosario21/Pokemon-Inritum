@@ -992,6 +992,10 @@ class Battle::Move::TwoTurnMove < Battle::Move
           "TwoTurnAttackInvulnerableInSkyTargetCannotAct"].include?(@function)
         @chargingTurn = true
         @damagingTurn = true
+      elsif skipChargingTurn?(user)
+          @powerHerb = false
+          @chargingTurn = true
+          @damagingTurn = true
       else
         @powerHerb = user.hasActiveItem?(:POWERHERB)
         @chargingTurn = true
@@ -999,6 +1003,10 @@ class Battle::Move::TwoTurnMove < Battle::Move
       end
     end
     return !@damagingTurn
+  end
+
+  def skipChargingTurn?(user)
+    return @battle.apply_field_effect(:no_charging, user, self)
   end
 end
 
