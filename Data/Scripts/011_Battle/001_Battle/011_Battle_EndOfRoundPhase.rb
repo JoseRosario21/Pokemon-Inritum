@@ -182,6 +182,7 @@ class Battle
       next if !battler.canHeal?
       hpGain = battler.totalhp / 16
       hpGain = (hpGain * 1.3).floor if battler.hasActiveItem?(:BIGROOT)
+      hpGain = battler.totalhp / 8 if apply_field_effect(:ingrain_boost) #battler is under ingrain effect
       battler.pbRecoverHP(hpGain)
       pbDisplay(_INTL("{1} absorbed nutrients with its roots!", battler.pbThis))
     end

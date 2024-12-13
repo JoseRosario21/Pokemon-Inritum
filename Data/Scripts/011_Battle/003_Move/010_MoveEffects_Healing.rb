@@ -45,6 +45,7 @@ class Battle::Move::HealUserDependingOnWeather < Battle::Move::HealingMove
     else
       @healAmount = (user.totalhp / 4.0).round
     end
+    @healAmount = (user.totalhp * 3 / 4.0).round if @battle.apply_field_effect(:heal_boost, self) #75%
   end
 
   def pbHealAmount(user)

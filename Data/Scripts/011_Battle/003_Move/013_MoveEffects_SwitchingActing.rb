@@ -885,7 +885,7 @@ class Battle::Move::DisableTargetStatusMoves < Battle::Move
   end
 
   def pbEffectAgainstTarget(user, target)
-    target.effects[PBEffects::Taunt] = 4
+    target.effects[PBEffects::Taunt] = @battle.apply_field_effect(:increase_duration, self) || 4
     @battle.pbDisplay(_INTL("{1} fell for the taunt!", target.pbThis))
     target.pbItemStatusCureCheck
   end
