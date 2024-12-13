@@ -33,6 +33,12 @@ class Battle::Field
     :Beach    => [[5],
                 %w[],
                 %i[]],
+    :Urban    => [[4],
+                %w[],
+                %i[]],
+    :Forest    => [[12],
+                %w[],
+                %i[]],
     :Cave    => [[40],
                 %w[],
                 %i[]],
@@ -167,6 +173,14 @@ class Battle::Field
 
   def is_beach?
     @id == :Beach
+  end
+
+  def is_urban?
+    @id == :Urban
+  end
+
+  def is_forest?
+    @id == :Forest
   end
 
   def is_cave?

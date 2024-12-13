@@ -188,6 +188,7 @@ class Battle::Move::TargetStatDownMove < Battle::Move
   def pbAdditionalEffect(user, target)
     return if target.damageState.substitute
     return if !target.pbCanLowerStatStage?(@statDown[0], user, self)
+    @statDown[1] = @battle.apply_field_effect(:effect_boost, self) || @statDown[1]
     target.pbLowerStatStage(@statDown[0], @statDown[1], user)
   end
 end

@@ -23,6 +23,7 @@ class Battle::Move
         @powerBoost = false
       end
     end
+    ret = @battle.apply_field_effect(:base_type_change, self)
     return ret
   end
 
@@ -93,7 +94,7 @@ class Battle::Move
     # "Always hit" effects and "always hit" accuracy
     return true if target.effects[PBEffects::Telekinesis] > 0
     return true if target.effects[PBEffects::Minimize] && tramplesMinimize? && Settings::MECHANICS_GENERATION >= 6
-    baseAcc = pbBaseAccuracy(user, target)
+    baseAcc = @battle.apply_field_effect(:accuracy_modify, self) || pbBaseAccuracy(user, target)
     return true if baseAcc == 0
     # Calculate all multiplier effects
     modifiers = {}

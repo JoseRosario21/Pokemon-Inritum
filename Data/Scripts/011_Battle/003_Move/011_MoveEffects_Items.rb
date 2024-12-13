@@ -4,6 +4,9 @@
 #===============================================================================
 class Battle::Move::UserTakesTargetItem < Battle::Move
   def pbEffectAfterAllHits(user, target)
+    if target.pbCanParalyze?(user, false, self) && @battle.apply_field_effect(:add_status, self)
+      target.pbParalyze(user)
+    end
     return if user.wild?   # Wild Pokémon can't thieve
     return if user.fainted?
     return if target.damageState.unaffected || target.damageState.substitute

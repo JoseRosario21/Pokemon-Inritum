@@ -37,6 +37,10 @@ class Battle::Field_base < Battle::Field
     :binding_boost
     :heal_boost
     :base_type_add
+    :add_status
+    :increase_duration
+    :effect_boost
+    :ingrain_boost
 =end
   end
 end
