@@ -3,11 +3,8 @@
 [001]   # Intro
 Name = Intro
 #-------------------------------
-[005]   # Stuot Pier
+[003]   # Andernach Island
 Outdoor = true
-ShowArea = true
-Bicycle = true
-HealingSpot = 4,22,13
 #-------------------------------
 [004]   # Stuot City
 Name = Stuot City
@@ -16,16 +13,29 @@ ShowArea = true
 Bicycle = true
 HealingSpot = 4,22,13
 #-------------------------------
+[005]   # Stuot Pier
+Name = Stuot Pier
+Outdoor = true
+ShowArea = true
+Bicycle = true
+HealingSpot = 4,22,13
+#-------------------------------
+[007]   # Andernach Island
+Outdoor = true
+#-------------------------------
 [010]   # Stuot Lab
-Name = 
+Name = Stuot Lab
 Flags = PowerSpot
 #-------------------------------
 [012]   # Route1
+Name = Route1
 Outdoor = true
 ShowArea = true
 Bicycle = true
 #-------------------------------
-[040]   # Feldspar Cave
-ShowArea = true
-#-------------------------------
 [016]   # Help Center
+Name = Help Center
+#-------------------------------
+[040]   # Feldspar Cave
+Name = Feldspar Cave
+ShowArea = true
