@@ -3,6 +3,7 @@
 [RIVAL1,Meryl]
 LoseText = Whoa! I was completely defeated!
 Pokemon = POPPLIO,5
+    Moves = POUND,GROWL
 #-------------------------------
 [BUGCATCHER,Rick]
 LoseText = A good battle indeed!
