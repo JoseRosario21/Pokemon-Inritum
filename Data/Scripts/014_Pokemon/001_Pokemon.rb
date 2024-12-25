@@ -1227,3 +1227,36 @@ class Pokemon
     end
   end
 end
+
+def setEVs(pkmn,cmd2)
+  totalev=0
+  GameData::Stat.each_main { |s| totalev += pkmn.ev[s.id] }
+  # Check total EV -> Everything that's not 252 goes to 0
+  if totalev+252>510
+    GameData::Stat.each_main { |s| pkmn.ev[s.id] = 0 if pkmn.ev[s.id] != 252 }
+  end
+  totalev=0
+  GameData::Stat.each_main { |s| totalev += pkmn.ev[s.id] }
+  found=[]
+  found_ids=[]
+  # Check for EV replacement
+  if totalev+252>510
+    GameData::Stat.each_main { |s|
+      if pkmn.ev[s.id] == 252
+        found.push(s.name_brief)
+        found_ids.push(s.id)
+      end
+    }
+    Kernel.pbMessage(_INTL("{1} already has two maximized stats. Which one would you like to replace?", pkmn.species))
+    cmd=0
+    cmd=Kernel.pbShowCommands(nil,found,cmd)
+    pkmn.ev[found_ids[cmd]] = 0
+  end
+  # Increase chosen stat to 252
+  GameData::Stat.each_main { |s|
+    if s.id == cmd2
+      pkmn.ev[s.id] = 252
+      pkmn.calc_stats
+    end
+  }
+end

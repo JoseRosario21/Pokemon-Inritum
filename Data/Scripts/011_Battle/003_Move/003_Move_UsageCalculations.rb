@@ -23,8 +23,8 @@ class Battle::Move
         @powerBoost = false
       end
     end
-    ret = @battle.apply_field_effect(:base_type_change, self)
-    return ret
+    change_ret = @battle.apply_field_effect(:base_type_change, self) || ret
+    return change_ret
   end
 
   #=============================================================================
