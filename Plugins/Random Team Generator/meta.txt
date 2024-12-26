@@ -1,0 +1,5 @@
+Name       = Random Team Generator
+Version    = 1.0.0
+Essentials = 21.1
+Link       = https://eeveeexpo.com/resources/1615/
+Credits    = BloodyNeonz

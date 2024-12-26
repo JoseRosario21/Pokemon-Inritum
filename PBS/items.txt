@@ -6607,3 +6607,17 @@ Price = 1900
 FieldUse = OnPokemon
 Flags = Fling_30
 Description = Blue Moon Ice Cream heal the Pokémon for 200 HP and maxes out the Pokémon's happiness. Originally from Reborn region.
+#-------------------------------
+[EVTICKET]
+Name = EV Ticket
+NamePlural = EV Tickets
+Pocket = 1
+Price = 0
+Description = A ticket to use in the XP-18 - Pokemon Training Module to train a single Pokémon's EV
+#-------------------------------
+[XPTICKET]
+Name = XP Ticket
+NamePlural = XP Tickets
+Pocket = 1
+Price = 0
+Description = A ticket to use in the XP-18 - Pokemon Training Module to level up your party.
