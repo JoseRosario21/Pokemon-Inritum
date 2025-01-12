@@ -97,7 +97,7 @@ module Settings
   }
 
   # Initial opacity of darkness on dark maps
-  INITIAL_DARKNESS_OPACITY = 230#255
+  INITIAL_DARKNESS_OPACITY = 255
 
   # Value of initial opacity based on Map ID
   # This will give a different opacity for every map IDs listed here.

@@ -4,6 +4,7 @@
 Name = Intro
 #-------------------------------
 [003]   # Andernach Island
+Name = Andernach Island
 Outdoor = true
 #-------------------------------
 [004]   # Stuot City
@@ -21,6 +22,7 @@ Bicycle = true
 HealingSpot = 4,22,13
 #-------------------------------
 [007]   # Andernach Island
+Name = Andernach Island
 Outdoor = true
 #-------------------------------
 [010]   # Stuot Lab
@@ -32,6 +34,10 @@ Name = Route1
 Outdoor = true
 ShowArea = true
 Bicycle = true
+#-------------------------------
+[014]   # Ostern Gym Maze
+DarkMap = true
+SnapEdges = true
 #-------------------------------
 [016]   # Help Center
 Name = Help Center
