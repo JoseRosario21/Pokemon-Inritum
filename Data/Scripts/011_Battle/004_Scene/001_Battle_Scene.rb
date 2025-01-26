@@ -393,6 +393,11 @@ class Battle::Scene
     shadowSprite.setPokemonBitmap(pkmn)
     # Set visibility of battler's shadow
     shadowSprite.visible = pkmn.species_data.shows_shadow? if shadowSprite && !back
+    overlayVisible = false
+    @battle.battlers.each do |b|
+      overlayVisible = true if b.zeta?
+    end
+    @sprites["battle_bg_overlay"].visible = overlayVisible
   end
 
   def pbResetCommandsIndex(idxBattler)

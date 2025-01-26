@@ -13,6 +13,7 @@ Outdoor = true
 ShowArea = true
 Bicycle = true
 HealingSpot = 4,22,13
+MapPosition = 0,3,15
 #-------------------------------
 [005]   # Stuot Pier
 Name = Stuot Pier
@@ -36,6 +37,7 @@ ShowArea = true
 Bicycle = true
 #-------------------------------
 [014]   # Ostern Gym Maze
+Name = Ostern Gym Maze
 DarkMap = true
 SnapEdges = true
 #-------------------------------

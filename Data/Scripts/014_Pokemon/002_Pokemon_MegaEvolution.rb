@@ -80,4 +80,17 @@ class Pokemon
       self.form = 0
     end
   end
+
+  #=============================================================================
+  # Zeta Forms
+  # NOTE: These are treated as form changes in Essentials.
+  #=============================================================================
+  def zeta?
+    return species_data.form_name == "Zeta"
+  end
+
+  def zetaName
+    formName = species_data.form_name
+    return (formName && !formName.empty?) ? formName : _INTL("Zeta {1}", species_data.name)
+  end
 end

@@ -160,6 +160,8 @@ class Battle::Battler
 
   def inHyperMode?; return false; end
 
+  def zeta?; return @pokemon&.zeta?; end
+
   #=============================================================================
   # Display-only properties
   #=============================================================================

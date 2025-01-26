@@ -251,3 +251,61 @@ Pokemon = LOMBRE,18
     AbilityIndex = 0
     IV = 31,31,31,31,31,31
     EV = 0,126,0,126,6,252
+#-------------------------------
+[GYM_LEADER_LYRA,Lyra]
+LoseText = You are an awesome battler!
+Pokemon = LITLEO,18
+    Moves = WILLOWISP,ENDEAVOR,SNARL,FIRESPIN
+    AbilityIndex = 1
+    Nature = TIMID
+    Item = FOCUSSASH
+    IV = 31,0,31,31,31,31
+    EV = 0,0,0,252,6,252
+Pokemon = PIDGEOTTO,18
+    Moves = TAILWIND,WINGATTACK,QUICKATTACK,DEFOG
+    AbilityIndex = 0
+    Nature = JOLLY
+    Item = CHARTIBERRY
+    IV = 31,31,31,31,31,31
+    EV = 0,252,6,0,0,252
+Pokemon = BIBAREL,18
+    Moves = AQUAJET,YAWN,BULLDOZE,SWORDSDANCE
+    AbilityIndex = 0
+    Nature = ADAMANT
+    Item = CHOPLEBERRY
+    IV = 31,31,31,31,31,31
+    EV = 6,252,0,0,0,252
+Pokemon = KOMALA,18
+    Moves = YAWN,BODYSLAM,RAPIDSPIN,BULKUP
+    AbilityIndex = 0
+    Nature = IMPISH
+    Item = BERRYJUICE
+    IV = 31,31,31,31,31,31
+    EV = 0,0,0,252,252,6
+Pokemon = STANTLER,18
+    Moves = BODYSLAM,PSYSHIELDBASH,TRAILBLAZE,HYPNOSIS
+    AbilityIndex = 0
+    Nature = JOLLY
+    Item = ZOOMLENS
+    IV = 31,31,31,31,31,31
+    EV = 6,252,0,0,0,252
+Pokemon = ZANGOOSE,18
+    Form = 1
+    Moves = PROTECT,SWORDSDANCE,FACADE,QUICKATTACK
+    AbilityIndex = 1
+    Nature = JOLLY
+    Item = TOXICORB
+    IV = 31,31,31,31,31,31
+    EV = 6,252,0,0,0,252
+#-------------------------------
+[GYM_LEADER_LYRA,Delete,1]
+LoseText = Delete this...
+Pokemon = STANTLER,5
+Pokemon = ZANGOOSE,5
+    Form = 1
+#-------------------------------
+[GYM_LEADER_LYRA,Delete,2]
+LoseText = Delete this...
+Pokemon = ZANGOOSE,5
+    Form = 1
+Pokemon = STANTLER,5

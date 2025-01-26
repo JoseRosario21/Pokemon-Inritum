@@ -422,3 +422,10 @@ Gender = Male
 BattleBGM = By Any Means
 SkillLevel = 100
 BaseMoney = 100
+#-------------------------------
+[GYM_LEADER_LYRA]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+SkillLevel = 100
+BattleBGM = Is That All You Got
