@@ -59,16 +59,11 @@ class PokemonTrainerCard_Scene
     x = 32
     region = pbGetCurrentRegion(0) # Get the current region
     imagePositions = []
-    9.times do |i|
+    18.times do |i|
+      y = 266
+      y = 314 if i > 9
       if $player.badges[i + (region * 8)]
-        imagePositions.push(["Graphics/UI/Trainer Card/icon_badges", x, 266, i * 48, region * 48, 48, 48])
-      end
-      x += 50
-    end
-    x = 32
-    9.times do |i|
-      if $player.badges[i + (region * 8)]
-        imagePositions.push(["Graphics/UI/Trainer Card/icon_badges", x, 314, i * 48, (region + 1) * 48, 48, 48])
+        imagePositions.push(["Graphics/UI/Trainer Card/icon_badges", x, y, i * 48, region * 48, 48, 48])
       end
       x += 50
     end

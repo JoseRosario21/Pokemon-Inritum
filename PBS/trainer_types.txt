@@ -22,16 +22,17 @@ BaseMoney = 60
 #-------------------------------
 [RIVAL1]
 Name = Rival
-BattleBGM = Make a Splash!
 Gender = Female
 BaseMoney = 50
 SkillLevel = 100
+BattleBGM = Make a Splash!
 #-------------------------------
 [RIVAL2]
 Name = Rival
-BattleBGM = Battle of Wits
 Gender = Male
 BaseMoney = 36
+SkillLevel = 100
+BattleBGM = Battle of Wits
 #-------------------------------
 [AROMALADY]
 Name = Aroma Lady
@@ -406,22 +407,22 @@ VictoryBGM = Battle victory leader
 [TEAM_REBIRTH_LEADER]
 Name = Rebirth Leader
 Gender = Male
-SkillLevel = 100
 BaseMoney = 200
+SkillLevel = 100
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M]
 Name = Team Rebirth
 Gender = Male
-BattleBGM = Unburdened
-SkillLevel = 100
 BaseMoney = 100
+SkillLevel = 60
+BattleBGM = Unburdened
 #-------------------------------
 [TEAM_REBIRTH_ELITE_GRUNT_M]
 Name = Team Rebirth Elite
 Gender = Male
-BattleBGM = By Any Means
-SkillLevel = 100
 BaseMoney = 100
+SkillLevel = 100
+BattleBGM = By Any Means
 #-------------------------------
 [GYM_LEADER_LYRA]
 Name = Gym Leader
