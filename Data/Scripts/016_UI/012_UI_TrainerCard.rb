@@ -56,14 +56,16 @@ class PokemonTrainerCard_Scene
       [time, 302, 214, :right, baseColor, shadowColor]
     ]
     pbDrawTextPositions(overlay, textPositions)
-    x = 72
+    x = 32
     region = pbGetCurrentRegion(0) # Get the current region
     imagePositions = []
-    8.times do |i|
+    18.times do |i|
+      y = 266
+      y = 314 if i > 9
       if $player.badges[i + (region * 8)]
-        imagePositions.push(["Graphics/UI/Trainer Card/icon_badges", x, 310, i * 32, region * 32, 32, 32])
+        imagePositions.push(["Graphics/UI/Trainer Card/icon_badges", x, y, i * 48, region * 48, 48, 48])
       end
-      x += 48
+      x += 50
     end
     pbDrawImagePositions(overlay, imagePositions)
   end

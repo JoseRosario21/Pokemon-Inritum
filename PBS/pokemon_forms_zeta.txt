@@ -1,0 +1,21 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[ZANGOOSE,1]
+FormName = Zeta
+BaseStats = 73,138,60,108,60,60
+#-------------------------------
+[CLAUNCHER,1]
+FormName = Zeta
+BaseStats = 50,53,74,44,58,76
+#-------------------------------
+[CLAWITZER,1]
+FormName = Zeta
+BaseStats = 71,73,88,59,144,107
+#-------------------------------
+[NYMBLE,1]
+FormName = Zeta
+BaseStats = 33,55,40,54,21,25
+#-------------------------------
+[LOKIX,1]
+FormName = Zeta
+BaseStats = 71,122,78,110,52,55
