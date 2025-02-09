@@ -136,9 +136,6 @@ class Battle::Scene
     bg = pbAddSprite("battle_bg2", -Graphics.width, 0, battleBG, @viewport)
     bg.z      = 0
     bg.mirror = true
-    overlay   = pbAddSprite("battle_bg_overlay", 0, 0, "Graphics/UI/Battle/zeta_battle_bg", @viewport)
-    overlay.z = 0
-    overlay.visible = false
     2.times do |side|
       baseX, baseY = Battle::Scene.pbBattlerPosition(side)
       base = pbAddSprite("base_#{side}", baseX, baseY,

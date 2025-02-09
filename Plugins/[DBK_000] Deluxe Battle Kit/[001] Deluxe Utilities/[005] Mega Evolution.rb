@@ -205,33 +205,6 @@ class Battle::Scene::PokemonDataBox < Sprite
       base_file = "Graphics/UI/Battle/icon_primal"
       try_file = base_file + "_" + @battler.pokemon.speciesName
       filename = (pbResolveBitmap(try_file)) ? try_file : base_file
-    elsif @battler.zeta?
-      specialX = (@battler.opposes?(0)) ? 200 : -28
-      specialY = 6
-      filename = "Graphics/UI/Battle/icon_zeta"
-    end
-    pbDrawImagePositions(self.bitmap, [[filename, @spriteBaseX + specialX, specialY]]) if filename
-  end
-end
-
-
-class Battle::Scene < Sprite
-  def draw_special_form_icon
-	specialX = (@battler.opposes?(0)) ? 208 : -28
-    if @battler.mega?
-      specialY = 8
-      base_file = "Graphics/UI/Battle/icon_mega"
-      try_file = base_file + "_" + @battler.pokemon.speciesName
-      filename = (pbResolveBitmap(try_file)) ? try_file : base_file
-    elsif @battler.primal?
-      specialY = 4
-      base_file = "Graphics/UI/Battle/icon_primal"
-      try_file = base_file + "_" + @battler.pokemon.speciesName
-      filename = (pbResolveBitmap(try_file)) ? try_file : base_file
-    elsif @battler.zeta?
-      specialX = (@battler.opposes?(0)) ? 200 : -28
-      specialY = 6
-      filename = "Graphics/UI/Battle/icon_zeta"
     end
     pbDrawImagePositions(self.bitmap, [[filename, @spriteBaseX + specialX, specialY]]) if filename
   end
