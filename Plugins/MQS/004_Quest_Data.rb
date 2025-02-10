@@ -43,7 +43,7 @@ module QuestModule
     :Location18 => "Stuot Lab",
     :Location19 => "Andernach Island",
     :Location20 => "Stuot Lab",
-    :QuestDescription => "Prologue story",
+    :QuestDescription => "Chapter 1 story",
     :RewardString => "nil"
   }
 
