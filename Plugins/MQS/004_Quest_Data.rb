@@ -1,7 +1,7 @@
 module QuestModule
   Chapter1 = {
     :ID => "0",
-    :Name => "Prologue - A warm welcome to Hessia",
+    :Name => "Chapter 1 - A sparkling trial",
     :QuestGiver => "nil",
     :Stage1 => "Meet Arthur at the Lab.",
     :Stage2 => "Follow Arthur inside the lab.",
@@ -14,6 +14,15 @@ module QuestModule
     :Stage9 => "Visit Stuot City School.",
     :Stage10 => "Pick the books Karl requested.",
     :Stage11 => "Defend the Lab.",
+    :Stage12 => "Meet Meryl and Karl.",
+    :Stage13 => "Go to Ostern Town's Hotel.",
+    :Stage14 => "Battle Meryl at the Park.",
+    :Stage15 => "Meet Karl at the gym.",
+    :Stage16 => "Meet Prof. Geoge",
+    :Stage17 => "Conquer the first gym!",
+    :Stage18 => "Report to Arthur.",
+    :Stage19 => "Catch the Zeta Pokémon!",
+    :Stage20 => "Deliver Zeta Pokémon.",
     :Location1 => "Stuot Lab",
     :Location2 => "Stuot Lab",
     :Location3 => "Stuot Lab",
@@ -25,6 +34,15 @@ module QuestModule
     :Location9 => "Stuot School",
     :Location10 => "Stuot School",
     :Location11 => "Stuot Lab",
+    :Location12 => "Stuot Lab",
+    :Location13 => "Hill Hotel",
+    :Location14 => "Ostern Park",
+    :Location15 => "Ostern Gym",
+    :Location16 => "Ostern Hotel Restaurant",
+    :Location17 => "Ostern Gym",
+    :Location18 => "Stuot Lab",
+    :Location19 => "Andernach Island",
+    :Location20 => "Stuot Lab",
     :QuestDescription => "Prologue story",
     :RewardString => "nil"
   }
@@ -72,28 +90,6 @@ module QuestModule
     :Location1 => "Stuot Pier",
     :Location2 => "Stuot Lab",
     :QuestDescription => "The old man in the lab lost his glasses around the pier. Try to find and deliver them to the old man.",
-    :RewardString => "nil"
-  }
-
-  Chapter1_2 = {
-    :ID => "5",
-    :Name => "Chapter 1 - A sparkling trial",
-    :QuestGiver => "nil",
-    :Stage1 => "Go to Ostern Town's Hotel.",
-    :Stage2 => "Battle Meryl at the Park.",
-    :Stage3 => "Meet Karl at the gym.",
-    :Stage4 => "Meet Prof. Geoge",
-    :Stage5 => "Conquer the first gym!",
-    :Stage6 => "Report to Arthur.",
-    :Stage7 => "Catch the Zeta Pokémon",
-    :Location1 => "Hill Hotel",
-    :Location2 => "Ostern Park",
-    :Location3 => "Ostern Gym",
-    :Location4 => "Ostern Hotel Restaurant",
-    :Location5 => "Ostern Gym",
-    :Location6 => "Stuot Lab",
-    :Location7 => "Andernach Island",
-    :QuestDescription => "Chapter 1 story",
     :RewardString => "nil"
   }
 
