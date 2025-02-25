@@ -6,6 +6,7 @@ Name = Intro
 [003]   # Andernach Island
 Name = Andernach Island
 Outdoor = true
+MapPosition = 0,2,12
 #-------------------------------
 [004]   # Stuot City
 Name = Stuot City
@@ -25,6 +26,10 @@ HealingSpot = 4,22,13
 [007]   # Andernach Island
 Name = Andernach Island
 Outdoor = true
+MapPosition = 0,2,12
+#-------------------------------
+[008]   # Ostern Town
+MapPosition = 0,10,14
 #-------------------------------
 [010]   # Stuot Lab
 Name = Stuot Lab
@@ -35,6 +40,7 @@ Name = Route1
 Outdoor = true
 ShowArea = true
 Bicycle = true
+MapPosition = 0,7,14
 #-------------------------------
 [014]   # Ostern Gym Maze
 Name = Ostern Gym Maze
@@ -47,3 +53,4 @@ Name = Help Center
 [040]   # Feldspar Cave
 Name = Feldspar Cave
 ShowArea = true
+MapPosition = 0,8,13
