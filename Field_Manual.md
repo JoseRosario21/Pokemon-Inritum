@@ -79,3 +79,14 @@ You can use this website to preview this document: https://markdownlivepreview.c
 - **Bulldoze, Drill Run, Earthquake, Earth Power, Precipice Blades**: Power increased by 10%.
 
 ---
+
+## Normalized Field
+- **Field Announcement**: "The echoes of the cave surround you."
+
+### Normal-Type Moves
+- **All Normal Moves**: Power increased by 20%.
+
+### Normal-Type Pokémon
+- **Stat ups**: On entering the battle, Def+1 if the Pokémon contains Normal type.
+
+---

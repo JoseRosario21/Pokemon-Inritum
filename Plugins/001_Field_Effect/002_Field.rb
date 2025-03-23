@@ -21,25 +21,28 @@ class Battle::Field
     :Electric => [[],           # map ids
                 %w[],           # trainer names
                 %i[]],  # advantageous types (DEACTIVATED)
-    :Grassy   => [[],
+    :Grassy     => [[],
                 %w[],
                 %i[]],
-    :Misty    => [[],
+    :Misty      => [[],
                 %w[],
                 %i[]],
-    :Psychic  => [[],
+    :Psychic    => [[],
                 %w[],
                 %i[]],
-    :Beach    => [[5],
+    :Beach      => [[5],
                 %w[],
                 %i[]],
-    :Urban    => [[4],
+    :Urban      => [[4],
                 %w[],
                 %i[]],
-    :Forest    => [[12],
+    :Forest     => [[12],
                 %w[],
                 %i[]],
-    :Cave    => [[40],
+    :Cave       => [[40],
+                %w[],
+                %i[]],
+    :Normalized => [[],
                 %w[],
                 %i[]],
   }
@@ -185,5 +188,9 @@ class Battle::Field
 
   def is_cave?
     @id == :Cave
+  end
+
+  def is_normalized?
+    @id == :Normalized
   end
 end
