@@ -120,10 +120,6 @@ LoseText = ...
 Pokemon = BRIONNE,17
 Pokemon = DUCKLETT,13
 #-------------------------------
-[TEAM_REBIRTH_LEADER,Astraeus]
-LoseText = ...
-Pokemon = MURKROW,11
-#-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,1]
 LoseText = Don't think you are so strong now.
 Pokemon = BRONZOR,12
@@ -251,6 +247,95 @@ Pokemon = LOMBRE,18
     AbilityIndex = 0
     IV = 31,31,31,31,31,31
     EV = 0,126,0,126,6,252
+#-------------------------------
+[LADY,Kimberly]
+LoseText = I thought my elegance would secure victory!
+Pokemon = BUNNELBY,14
+    Moves = QUICKATTACK,MUDSLAP,TACKLE,FLAIL
+    AbilityIndex = 1
+    Item = ORANBERRY
+Pokemon = DEERLING,15
+    Moves = RAZORLEAF,QUICKATTACK,SANDATTACK,CHARM
+    AbilityIndex = 0
+    Item = SITRUSBERRY
+#-------------------------------
+[YOUNGCOUPLE,Albert]
+LoseText = Our teamwork wasn’t enough…
+Pokemon = TEDDIURSA,15
+    Moves = FAKEOUT,LICK,FURYSWIPES,BABYDOLLEYES
+    AbilityIndex = 0
+    Item = BERRYJUICE
+Pokemon = LILLIGANT,16
+    Form = 1
+    Moves = ABSORB,STUNSPORE,TACKLE,LEAFAGE
+    AbilityIndex = 1
+    Item = CHARTIBERRY
+#-------------------------------
+[COOLTRAINER_F,Rhonda]
+LoseText = Wow, you’re really strong!
+Pokemon = FURRET,16
+    Moves = SLAM,DEFENSECURL,QUICKATTACK,BATONPASS
+    AbilityIndex = 1
+    Item = SILKSCARF
+Pokemon = STANTLER,17
+    Moves = TACKLE,HYPNOSIS,LEER,STOMP
+    AbilityIndex = 0
+    Item = SITRUSBERRY
+Pokemon = GREAVARD,18
+    Moves = HEADBUTT,LICK,BABYDOLLEYES,ROAR
+    AbilityIndex = 1
+    Item = BERRYJUICE
+#-------------------------------
+[SCIENTIST,Allen]
+LoseText = My experiments… failed!
+Pokemon = GIRAFARIG,14
+    Moves = CONFUSION,STOMP,AGILITY,ASTONISH
+    AbilityIndex = 1
+    Item = LUMBERRY
+Pokemon = SMEARGLE,14
+    Moves = SPORE,SKETCH,SCRATCH,TACKLE
+    AbilityIndex = 0
+    Item = MENTALHERB
+#-------------------------------
+[ROCKER,Niel]
+LoseText = You got rhythm, I’ll give you that!
+Pokemon = LOUDRED,15
+    Moves = UPROAR,STOMP,HOWL,BITE
+    AbilityIndex = 1
+    Item = AMULETCOIN
+Pokemon = JIGGLYPUFF,14
+    Moves = SING,DISARMINGVOICE,POUND,DEFENSECURL
+    AbilityIndex = 0
+    Item = SITRUSBERRY
+#-------------------------------
+[BEAUTY,Lea]
+LoseText = Guess I’m not prepared for the gym leader…
+Pokemon = GLAMEOW,16
+    Moves = FAKEOUT,SCRATCH,HYPNOSIS,QUICKATTACK
+    AbilityIndex = 1
+    Item = SITRUSBERRY
+Pokemon = SWABLU,17
+    Moves = DRAGONBREATH,PECK,MIST,SING
+    AbilityIndex = 0
+    Item = SITRUSBERRY
+Pokemon = SHINX,16
+    Moves = SPARK,CHARGE,LEER,TACKLE
+    AbilityIndex = 0
+    Item = ORANBERRY
+#-------------------------------
+[GENTLEMAN,Stephen]
+LoseText = I shall return stronger next time.
+Pokemon = MAREANIE,16
+    Moves = POISONSTING,BITE,TOXICSPIKES,WIDEGUARD
+    AbilityIndex = 1
+    Item = BLACKSLUDGE
+Pokemon = DUSKULL,17
+    Moves = NIGHTSHADE,DISABLE,ASTONISH,LEER
+    AbilityIndex = 0
+    Item = SITRUSBERRY
+Pokemon = SKIPLOOM,17
+    Moves = MEGADRAIN,SLEEPPOWDER,STUNSPORE,TACKLE
+    AbilityIndex = 1
 #-------------------------------
 [GYM_LEADER_LYRA,Lyra]
 LoseText = You are an awesome battler!
