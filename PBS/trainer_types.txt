@@ -430,3 +430,9 @@ Gender = Female
 BaseMoney = 100
 SkillLevel = 100
 BattleBGM = Is That All You Got
+#-------------------------------
+[POLICEMAN]
+Name = Policeman
+Gender = Male
+BaseMoney = 100
+SkillLevel = 65
