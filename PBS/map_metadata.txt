@@ -44,6 +44,7 @@ MapPosition = 0,7,14
 #-------------------------------
 [014]   # Ostern Gym Maze
 Name = Ostern Gym Maze
+TrainerBattleBGM = IF YOU WOKE UP BROKE DONT COME HERE
 DarkMap = true
 SnapEdges = true
 #-------------------------------

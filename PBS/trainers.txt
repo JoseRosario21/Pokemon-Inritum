@@ -337,6 +337,24 @@ Pokemon = SKIPLOOM,17
     Moves = MEGADRAIN,SLEEPPOWDER,STUNSPORE,TACKLE
     AbilityIndex = 1
 #-------------------------------
+[POLICEMAN,Kyle]
+LoseText = That was a good one!
+Pokemon = GROWLITHE,18
+    Moves = FLAMEWHEEL,BITE,MORNINGSUN,EMBER
+    AbilityIndex = 0
+#-------------------------------
+[POKEMANIAC,Brad]
+LoseText = I thought I was invincible...
+Pokemon = MARACTUS,15
+Pokemon = EMOLGA,16
+Pokemon = BOLDORE,17
+#-------------------------------
+[COOLTRAINER_M,Leon]
+LoseText = How did you win?!
+Pokemon = MOTHIM,15
+Pokemon = LUMINEON,16
+Pokemon = LAIRON,17
+#-------------------------------
 [GYM_LEADER_LYRA,Lyra]
 LoseText = You are an awesome battler!
 Pokemon = LITLEO,18
