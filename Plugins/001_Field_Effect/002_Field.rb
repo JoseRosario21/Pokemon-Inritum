@@ -42,7 +42,7 @@ class Battle::Field
     :Cave       => [[40],
                 %w[],
                 %i[]],
-    :Normalized => [[],
+    :Normalized => [[13],
                 %w[],
                 %i[]],
   }

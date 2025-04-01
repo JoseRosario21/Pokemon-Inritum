@@ -7,18 +7,18 @@ class Battle::Field_normalized < Battle::Field
     @fieldback           = "Normalized"
     @nature_power_change = :TRIATTACK
     @secret_power_effect = 4 # tryLowerStat SPEED
-    @field_announcement  = [_INTL("The city comes alive."),
+    @field_announcement  = [_INTL("The battlefield embraces balance!"),
                             _INTL(""),
                             _INTL("")]
 
     @multipliers = {
-      [:power_multiplier, 1.2, _INTL("The streets enhance the blow!")] => proc { |user, target, numTargets, move, type, power, mults, aiCheck|
+      [:power_multiplier, 1.2, _INTL("The attack resonates with the field's balance!")] => proc { |user, target, numTargets, move, type, power, mults, aiCheck|
         next true if type == :NORMAL && user.affectedByTerrain?
       }
     }
 
     @effects[:begin_battle] = proc { |user|
-      next 1
+      next true
     }
 
   end
