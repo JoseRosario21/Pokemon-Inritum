@@ -96,6 +96,20 @@ class Battle
     pbTerrainStartMessage
     set_default_field
     pbOnAllBattlersEnteringBattle
+    # Check for field effect on battle start
+    @battlers.each do |b|
+      next if !b
+      # Ensure field effect applies before selecting a stat
+      next unless apply_field_effect(:begin_battle, b)
+      # Choose a random stat to increase
+      random_stat = [:ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE, :SPEED].sample
+      # Ensure the stat is valid before raising it
+      if random_stat
+        stat_name = GameData::Stat.get(random_stat).name
+        pbDisplay(_INTL("The equilibrium of the field enhances {1}!", stat_name))
+        b.pbRaiseStatStage(random_stat, 1, true)
+      end
+    end
     pbBattleLoop
   end
 
