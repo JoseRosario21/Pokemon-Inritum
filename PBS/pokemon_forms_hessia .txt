@@ -3,15 +3,37 @@
 [PONYTA,2]
 FormName = Hessian
 Types = GRASS,GHOST
+Abilities = FLASHFIRE,RUNAWAY
+HiddenAbilities = HIGHTEMPERATURE
+BaseStats = 50,65,55,85,65,90
+Moves = 1,GROWL,1,POUND,5,LEAFAGE,7,EMBER,12,FLAMECHARGE,15,AGILITY,18,MAGICALLEAF,20,FORESTSCURSE,22,TRAILBLAZE,25,HEX
+Weight = 20.0
+Color = Green
+Pokedex = Its small horn hides a healing power. With a few rubs from this Pokémon's horn, any slight wound you have will be healed.
 #-------------------------------
 [RAPIDASH,2]
 FormName = Hessian
 Types = GRASS,GHOST
+BaseStats = 65,80,70,100,80,105
+Color = Green
 #-------------------------------
 [HOOTHOOT,1]
 FormName = Hessian
 Types = DARK,FAIRY
+HiddenAbilities = PRANKSTER
+Moves = 1,DISARMINGVOICE,1,GUST,7,AIRCUTTER,8,SCREECH,10,THIEF,12,HONECLAWS,15,ALLURINGVOICE,18,CALMMIND,23,PSYCHICNOISE,25,AIRSLASH,30,TAILWIND
+BaseStats = 60,30,30,36,56,50
+Weight = 22.4
+Color = Purple
+Pokedex = Its small horn hides a healing power. With a few rubs from this Pokémon's horn, any slight wound you have will be healed.
 #-------------------------------
 [NOCTOWL,1]
 FormName = Hessian
 Types = DARK,FAIRY
+HiddenAbilities = PRANKSTER
+Moves = 1,DISARMINGVOICE,1,GUST,7,AIRCUTTER,8,SCREECH,10,THIEF,12,HONECLAWS,15,ALLURINGVOICE,18,CALMMIND,20,PSYCHICNOISE,25,AIRSLASH,30,TAILWIND
+BaseStats = 100,50,60,86,96,60
+Weight = 46.3
+Color = Purple
+Evolution = BLUTOWL,LevelNight,40
+Pokedex = Its small horn hides a healing power. With a few rubs from this Pokémon's horn, any slight wound you have will be healed.
