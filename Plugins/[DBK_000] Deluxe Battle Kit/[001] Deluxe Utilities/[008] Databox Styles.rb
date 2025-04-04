@@ -110,10 +110,12 @@ class Battle::Scene::PokemonDataBox
     rule = @battler.battle.databoxStyle
     if rule.is_a?(Array)
       @style = GameData::DataboxStyle.try_get(rule.first)
-      case @battler.index
-      when 1 then @title = rule[1]
-      when 3 then @title = rule[2]
-      when 5 then @title = rule[3]
+      if @battler.wild?
+        case @battler.index
+        when 1 then @title = rule[1]
+        when 3 then @title = rule[2]
+        when 5 then @title = rule[3]
+        end
       end
     else
       @style = GameData::DataboxStyle.try_get(rule)
@@ -180,7 +182,7 @@ class Battle::Scene::PokemonDataBox
     return if !@battler.pokemon
     if @style
       self.bitmap.clear
-      refresh_style
+      update_style
       draw_background
       draw_style_text
       draw_style_icons
@@ -195,15 +197,15 @@ class Battle::Scene::PokemonDataBox
   #-----------------------------------------------------------------------------
   # Used to set a databox's style to default in case the side size is changed mid-battle.
   #-----------------------------------------------------------------------------
-  def refresh_style
-    return if !@battler.index.odd?
+  def update_style
     sideSize = @battler.battle.pbSideSize(@battler.index)
-    if sideSize > @style.max_side_size
+    if sideSize > @style.max_side_size && @style.id != :Basic
       @style = GameData::DataboxStyle.get(:Basic)
       set_style_properties(sideSize)
       @databoxBitmap&.dispose
-      @databoxBitmap = AnimatedBitmap.new(sprintf("%s/%s/databox_foe", @path, @style.id))
-      @hpBarBitmap = AnimatedBitmap.new(sprintf("%s/%s/overlay_hp_foe", @path, @style.id))
+      suffix = (@battler.index.odd?) ? "_foe" : ""
+      @databoxBitmap = AnimatedBitmap.new(sprintf("%s/%s/databox%s", @path, @style.id, suffix))
+      @hpBarBitmap = AnimatedBitmap.new(sprintf("%s/%s/overlay_hp%s", @path, @style.id, suffix))
       @hpBar.bitmap = @hpBarBitmap.bitmap
       @hpBar.src_rect.height = @hpBarBitmap.height / 3
       @sprites["hpBar"] = @hpBar
@@ -212,7 +214,45 @@ class Battle::Scene::PokemonDataBox
       pbSetSmallFont(self.bitmap)
     end
   end
-
+  
+  #-----------------------------------------------------------------------------
+  # Utility for manually changing databox styles mid-battle.
+  #-----------------------------------------------------------------------------
+  def refresh_style
+    old_style = @style
+    sideSize = @battler.battle.pbSideSize(@battler.index)
+    initializeDataBoxGraphic(sideSize)
+    return if @style == old_style
+    if @style
+      try_exp = sprintf("%s/%s/overlay_exp", @path, @style.id)
+      expPath = (pbResolveBitmap(try_exp)) ? @style.id : :Basic
+      @expBarBitmap = AnimatedBitmap.new(sprintf("%s/%s/overlay_exp", @path, expPath))
+      if @battler.index.odd?
+        @hpBarBitmap = AnimatedBitmap.new(sprintf("%s/%s/overlay_hp_foe", @path, @style.id))
+      else
+        @hpBarBitmap = AnimatedBitmap.new(sprintf("%s/%s/overlay_hp", @path, @style.id))
+      end
+    else
+      @hpOffsetXY   = nil
+      @expOffsetXY  = nil
+      @expBarBitmap = AnimatedBitmap.new("Graphics/UI/Battle/overlay_exp")
+      @hpBarBitmap  = AnimatedBitmap.new("Graphics/UI/Battle/overlay_hp")
+    end
+    @expBar.bitmap = @expBarBitmap.bitmap
+    @sprites["expBar"] = @expBar
+    @hpBar.bitmap = @hpBarBitmap.bitmap
+    @hpBar.src_rect.height = @hpBarBitmap.height / 3
+    @sprites["hpBar"] = @hpBar
+    @contents = Bitmap.new(@databoxBitmap.width, @databoxBitmap.height)
+    self.bitmap = @contents
+    if @style
+      pbSetSmallFont(self.bitmap)
+    else
+      pbSetSystemFont(self.bitmap)
+    end
+    refresh
+  end
+  
   #-----------------------------------------------------------------------------
   # Utility for setting values for each databox element based on style.
   #-----------------------------------------------------------------------------
@@ -231,10 +271,11 @@ class Battle::Scene::PokemonDataBox
       @spriteY += @style.offset_y[sideSize - 2][@battler.index]
     end
     side = (@battler.index.even?) ? 0 : 1
-    @spriteBaseX  = @style.sprite_base_x[side].clone
-    @hpOffsetXY   = @style.hp_offset[side].clone
-    @expOffsetXY  = @style.exp_offset.clone
-    @show_exp_bar = @battler.index.even?
+    @spriteBaseX     = @style.sprite_base_x[side].clone
+    @hpOffsetXY      = @style.hp_offset[side].clone
+    @expOffsetXY     = @style.exp_offset.clone
+    @show_exp_bar    = @battler.index.even?
+    @show_hp_numbers = false
     @displayPos   = {
       :name    => @style.name_pos[side].clone,
       :owned   => @style.owned_icon.clone,
@@ -300,7 +341,10 @@ class Battle::Scene::PokemonDataBox
       imagepos.push([_INTL("Graphics/UI/Battle/icon_statuses"), *@displayPos[:status], 0, s * STATUS_ICON_HEIGHT, -1, STATUS_ICON_HEIGHT])
     end
     specialPos = @displayPos[:special]
-    if @battler.mega?
+    if @battler.shadowPokemon? && @battler.inHyperMode?
+      filename = "Graphics/UI/Battle/icon_hyper_mode"
+      imagepos.push([filename, specialPos[0] + 4, specialPos[1] + 4])
+    elsif @battler.mega?
       base_file = "Graphics/UI/Battle/icon_mega"
       try_file = base_file + "_" + @battler.pokemon.speciesName
       filename = (pbResolveBitmap(try_file)) ? try_file : base_file
@@ -320,7 +364,7 @@ class Battle::Scene::PokemonDataBox
       filename = Settings::TERASTAL_GRAPHICS_PATH + "tera_types"
       type_number = GameData::Type.get(@battler.tera_type).icon_position
       imagepos.push([filename, specialPos[0], specialPos[1] + 2, 0, type_number * 32, 32, 32])
-    elsif @battler.hasZCrystal? && @battler.battle.raidBattle?
+    elsif @battler.battle.raidBattle? && @battler.hasZCrystal?
       filename = _INTL("Graphics/Items/#{@battler.item_id}")
       offsetX = (@battler.index.even?) ? 0   : (@style.id == :Basic) ? -12 : -16
       offsetY = (@battler.index.even?) ? -12 : (@style.id == :Basic) ? -24 : -24
@@ -330,6 +374,42 @@ class Battle::Scene::PokemonDataBox
   end
 end
 
+#===============================================================================
+# Utility for changing databox styles mid-battle.
+#===============================================================================
+class Battle::Scene
+  def pbRefreshStyle(style = nil, *titles)
+    return if pbInSafari?
+    if GameData::DataboxStyle.exists?(style)
+      if titles.length > 0
+        args = [style]
+        titles.each { |t| args.push(t) }
+        @battle.databoxStyle = args
+      else
+        @battle.databoxStyle = style
+      end
+    else
+      @battle.databoxStyle = nil
+    end
+    databoxes = []
+    @battle.battlers.each { |b| databoxes.push(@sprites["dataBox_#{b.index}"]) if b }
+    hideAnim = Animation::DataBoxDisappearAll.new(@sprites, @viewport, databoxes)
+    loop do
+      hideAnim.update
+      pbUpdate
+      break if hideAnim.animDone?
+    end
+    hideAnim.dispose
+    databoxes.each { |box| box.refresh_style }
+    showAnim = Animation::DataBoxAppearAll.new(@sprites, @viewport, databoxes)
+    loop do
+      showAnim.update
+      pbUpdate
+      break if showAnim.animDone?
+    end
+    showAnim.dispose
+  end
+end
 
 #===============================================================================
 # Aliases to the show/hide animations for certain databox styles.
@@ -339,7 +419,8 @@ class Battle::Scene::Animation::DataBoxAppear < Battle::Scene::Animation
   def createProcesses
     sprite = @sprites["dataBox_#{@idxBox}"]
     return if !sprite
-    if sprite.style && GameData::DataboxStyle.get(sprite.style).vertical_anim
+    safari = sprite.is_a?(Battle::Scene::SafariDataBox)
+    if !safari && sprite.style && GameData::DataboxStyle.get(sprite.style).vertical_anim
       box = addSprite(sprite)
       box.setVisible(0, true)
       box.setDelta(0, 0, -sprite.height)
@@ -355,13 +436,55 @@ class Battle::Scene::Animation::DataBoxDisappear < Battle::Scene::Animation
   def createProcesses
     sprite = @sprites["dataBox_#{@idxBox}"]
     return if !sprite
-    if sprite.style && GameData::DataboxStyle.get(sprite.style).vertical_anim
+    safari = sprite.is_a?(Battle::Scene::SafariDataBox)
+    if !safari && sprite.style && GameData::DataboxStyle.get(sprite.style).vertical_anim
       box = addSprite(sprite)
-      box.setDelta(0, 0, 0)
       box.moveDelta(0, 8, 0, -sprite.height)
       box.setVisible(8, false)
     else
       dx_createProcesses
+    end
+  end
+end
+
+#===============================================================================
+# Animations to show/hide all visible databoxes all at once.
+#===============================================================================
+class Battle::Scene::Animation::DataBoxAppearAll < Battle::Scene::Animation
+  def initialize(sprites, viewport, boxes)
+    @boxes = boxes
+    super(sprites, viewport)
+  end
+
+  def createProcesses
+    @boxes.each do |box|
+      sprite = addSprite(box)
+      vertical = box.style && GameData::DataboxStyle.get(box.style).vertical_anim
+      dir = (box.battler.index.even?) ? 1 : -1
+      delta = (vertical) ? [0, -box.height] : [dir * Graphics.width / 2, 0]
+      sprite.setXY(0, box.spriteX, box.spriteY)
+      sprite.setDelta(0, *delta)
+      sprite.setVisible(0, true) if !box.battler.fainted?
+      (vertical) ? delta[1] *= -1 : delta[0] *= -1
+      sprite.moveDelta(0, 8, *delta)
+    end
+  end
+end
+
+class Battle::Scene::Animation::DataBoxDisappearAll < Battle::Scene::Animation
+  def initialize(sprites, viewport, boxes)
+    @boxes = boxes
+    super(sprites, viewport)
+  end
+
+  def createProcesses
+    @boxes.each do |box|
+      sprite = addSprite(box)
+      vertical = box.style && GameData::DataboxStyle.get(box.style).vertical_anim
+      dir = (box.battler.index.even?) ? 1 : -1
+      delta = (vertical) ? [0, -box.height] : [dir * Graphics.width / 2, 0]
+      sprite.moveDelta(0, 8, *delta)
+      sprite.setVisible(8, false)
     end
   end
 end

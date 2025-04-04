@@ -694,8 +694,7 @@ Battle::AI::Handlers::PokemonItemEffectScore.add(:FULLRESTORE,
     cureScore = Battle::AI::Handlers.pokemon_item_score(:FULLHEAL, score, pkmn, battler, move, ai, battle)
     if cureScore > Battle::AI::ITEM_USELESS_SCORE
       if healScore > Battle::AI::ITEM_USELESS_SCORE
-        score = cureScore
-        score += healScore - old_score
+        score = cureScore + healScore - old_score
         old_score = score
         score += 10
         PBDebug.log_score_change(score - old_score, "heals #{logName}'s HP and cures a condition")
@@ -710,6 +709,8 @@ Battle::AI::Handlers::PokemonItemEffectScore.add(:FULLRESTORE,
         score -= 10
         PBDebug.log_score_change(score - old_score, "prefers basic healing items")
       end
+    else
+      score = ((healScore + cureScore) / 2).round.to_i
     end
     next score
   }

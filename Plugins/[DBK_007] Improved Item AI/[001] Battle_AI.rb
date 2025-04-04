@@ -63,7 +63,7 @@ class Battle::AI
               moveName = p.moves[idxMove].name
               PBDebug.log_ai("#{@user.name} is considering using item #{itemData.name} on party #{p.name} (party index #{idxParty}) [#{moveName}]...")
               score = Battle::AI::Handlers.pokemon_item_score(item, score, p, ai_battler, idxMove, self, @battle)
-              score = Battle::AI::Handlers.apply_general_item_score_modifiers(score, item, self, @battle)
+              score = Battle::AI::Handlers.apply_general_item_score_modifiers(score, item, idxParty, idxMove, self, @battle)
               choices.push([score, item, idxParty, idxMove])
             end
           else
@@ -73,7 +73,7 @@ class Battle::AI
             score = ITEM_BASE_SCORE
             PBDebug.log_ai("#{@user.name} is considering using item #{itemData.name} on party #{p.name} (party index #{idxParty})...")
             score = Battle::AI::Handlers.pokemon_item_score(item, score, p, ai_battler, nil, self, @battle)
-            score = Battle::AI::Handlers.apply_general_item_score_modifiers(score, item, self, @battle)
+            score = Battle::AI::Handlers.apply_general_item_score_modifiers(score, item, idxParty, nil, self, @battle)
             choices.push([score, item, idxParty])
           end
         end
@@ -91,9 +91,9 @@ class Battle::AI
           next if @battle.pbAlreadyTargetedByItem?(item, @user.index, b.index)
           score = ITEM_BASE_SCORE
           PBDebug.log_ai("#{@user.name} is considering using item #{itemData.name} on battler #{@battlers[b.index].name}...")
-          score = Battle::AI::Handlers.battler_item_score(item, score, @battlers[b.index], self, @battle)
-          score = Battle::AI::Handlers.apply_general_item_score_modifiers(score, item, self, @battle)
           idxTarget = (useType == 3) ? b.pokemonIndex : b.index
+          score = Battle::AI::Handlers.battler_item_score(item, score, @battlers[b.index], self, @battle)
+          score = Battle::AI::Handlers.apply_general_item_score_modifiers(score, item, idxTarget, nil, self, @battle)
           choices.push([score, item, idxTarget])
         end
       #-------------------------------------------------------------------------
@@ -105,10 +105,11 @@ class Battle::AI
         score = ITEM_BASE_SCORE
         PBDebug.log_ai("#{@user.name} is considering using item #{itemData.name}...")
         score = Battle::AI::Handlers.item_score(item, score, @user, self, @battle, firstAction)
-        score = Battle::AI::Handlers.apply_general_item_score_modifiers(score, item, self, @battle)
+        score = Battle::AI::Handlers.apply_general_item_score_modifiers(score, item, nil, nil, self, @battle)
         choices.push([score, item, -1])
       end
     end
+    @battle.lastUsedItems[@user.side][@trainer.trainer_index] = nil
     # Determines if any items are worth using.
     if choices.empty? || !choices.any? { |c| c[0] > ITEM_FAIL_SCORE }
       PBDebug.log_ai("#{@user.name} couldn't find any usable items")
@@ -161,6 +162,7 @@ class Battle::AI
       else        log_msg += " (battler index #{c[2]})" if c[2] >= 0
       end
       PBDebug.log(log_msg)
+      @battle.lastUsedItems[@user.side][@trainer.trainer_index] = c[1..3]
       return c[1], c[2], c[3]
     end
     return nil
@@ -228,45 +230,30 @@ class Battle::AI
             next if m.pp == 0
             if m.is_a?(Battle::Move::StatUpMove)
               case stat
-              when :ATTACK
-                score -= 5 if m.function_code.include?("RaiseUserAttack1")
-                score -= 10 if m.function_code.include?("RaiseUserAttack2")
-                score -= 15 if m.function_code.include?("RaiseUserAttack3")
-                score -= 30 if m.function_code == "MaxUserAttackLoseHalfOfTotalHP"
-              when :DEFENSE
-                score -= 5 if m.function_code.include?("RaiseUserDefense1")
-                score -= 10 if m.function_code.include?("RaiseUserDefense2")
-                score -= 15 if m.function_code.include?("RaiseUserDefense3")
-              when :SPECIAL_ATTACK
-                score -= 5 if m.function_code.include?("RaiseUserSpAtk1")
-                score -= 10 if m.function_code.include?("RaiseUserSpAtk2")
-                score -= 15 if m.function_code.include?("RaiseUserSpAtk3")
-              when :SPECIAL_DEFENSE
-                score -= 5 if m.function_code.include?("RaiseUserSpDef1")
-                score -= 10 if m.function_code.include?("RaiseUserSpDef2")
-                score -= 15 if m.function_code.include?("RaiseUserSpDef3")
-              when :SPEED
-                score -= 5 if m.function_code.include?("RaiseUserSpeed1")
-                score -= 10 if m.function_code.include?("RaiseUserSpeed2")
-                score -= 15 if m.function_code.include?("RaiseUserSpeed3")
-              when :ACCURACY
-                score -= 5 if m.function_code.include?("RaiseUserAccuracy1")
-                score -= 10 if m.function_code.include?("RaiseUserAccuracy2")
-                score -= 15 if m.function_code.include?("RaiseUserAccuracy3")
-              when :EVASION
-                score -= 5 if m.function_code.include?("RaiseUserEvasion1")
-                score -= 10 if m.function_code.include?("RaiseUserEvasion2")
-                score -= 15 if m.function_code.include?("RaiseUserEvasion3")
+              when :ATTACK          then statFunction = "Attack"
+              when :DEFENSE         then statFunction = "Defense"
+              when :SPECIAL_ATTACK  then statFunction = "SpAtk"
+              when :SPECIAL_DEFENSE then statFunction = "SpDef"
+              when :SPEED           then statFunction = "Speed"
+              when :ACCURACY        then statFunction = "Accuracy"
+              when :EVASION         then statFunction = "Evasion"
               end
-              PBDebug.log_score_change(score - old_score, "move #{m.name} can already raise #{statName}")
+              (Battle::Battler::STAT_STAGE_MAXIMUM).downto(1).each do |i|
+                next if !m.function_code.include?("RaiseUser" + statFunction + i.to_s)
+                stage_score = (i >= increment) ? 30 : (increment - i) * 5
+                stage_score *= 2 if m.statusMove? || m.addlEffect == 100
+                score -= stage_score
+                break
+              end
+              PBDebug.log_score_change(score - old_score, "move #{m.name} can already raise #{statName}") if score != old_score
             elsif m.is_a?(Battle::Move::MultiStatUpMove)
-              score -= 20
+              score -= 30
               PBDebug.log_score_change(score - old_score, "move #{m.name} can raise multiple stats at once")
             end
             old_score = score
           end
         end
-        score = get_target_stat_raise_score_one(score, target, stat, increment, desire_mult)
+        score = (get_target_stat_raise_score_one(score, target, stat, increment, desire_mult)).round.to_i
         score = ITEM_USELESS_SCORE if target.opposes?(@user) && score < old_score
         PBDebug.log_score_change(score - old_score, "raising #{target.name}'s #{statName} stat")
         return score
@@ -293,7 +280,7 @@ class Battle::AI
           PBDebug.log_score_change(score - old_score, "#{target.name}'s foes have moves that don't want lowered stats")
           old_score = score
         end
-        score = get_target_stat_drop_score_one(score, target, stat, increment, desire_mult)
+        score = (get_target_stat_drop_score_one(score, target, stat, increment, desire_mult)).round.to_i
         score = ITEM_USELESS_SCORE if !target.opposes?(@user) && score < old_score
         PBDebug.log_score_change(score - old_score, "lowering #{target.name}'s #{statName} stat")
         return score
@@ -343,7 +330,7 @@ end
 # General AI handler for considering inventory counts.
 #-------------------------------------------------------------------------------
 Battle::AI::Handlers::GeneralItemScore.add(:inventory_count,
-  proc { |score, item, ai, battle|
+  proc { |score, item, idxPkmn, idxMove, ai, battle|
     next score if battle.launcherBattle?
     count = -1
     old_score = score
@@ -365,8 +352,41 @@ Battle::AI::Handlers::GeneralItemScore.add(:inventory_count,
       score += 5 * count
       PBDebug.log_score_change(score - old_score, "prefers to use item because there's more in stock")
     else
-      score -= 5
+      score -= 8
       PBDebug.log_score_change(score - old_score, "prefers not to use item because it's last in stock")
+    end
+    next score
+  }
+)
+
+#-------------------------------------------------------------------------------
+# General AI handler for discouraging successive item use.
+#-------------------------------------------------------------------------------
+Battle::AI::Handlers::GeneralItemScore.add(:discourage_successive_use,
+  proc { |score, item, idxPkmn, idxMove, ai, battle|
+    old_score = score
+    lastItem = battle.lastUsedItems[ai.user.side][ai.trainer.trainer_index]
+    next score if !lastItem
+    if ai.trainer.high_skill?
+      score -= 60
+    elsif ai.trainer.medium_skill?
+      score -= 50
+    else
+      score -= 40
+    end
+    PBDebug.log_score_change(score - old_score, "prefers not to use items on successive turns")
+    if idxPkmn && idxPkmn == lastItem[1] && battle.pbAbleCount(ai.user.side) > 1
+      old_score = score
+      if battle.pbItemHealsHP?(item) && battle.pbItemHealsHP?(lastItem[0])
+        score -= 20
+        PBDebug.log_score_change(score - old_score, "prefers not to use HP-restoring items repeatedly on the same Pokemon")
+      elsif battle.pbItemRestoresPP?(item) && battle.pbItemRestoresPP?(lastItem[0])
+        score -= 30
+        PBDebug.log_score_change(score - old_score, "prefers not to use PP-restoring items repeatedly on the same Pokemon")
+      elsif battle.pbItemRaisesStats?(item) && battle.pbItemRaisesStats?(lastItem[0])
+        score -= 20
+        PBDebug.log_score_change(score - old_score, "prefers not to use stat-boosting items repeatedly on the same Pokemon")
+      end
     end
     next score
   }

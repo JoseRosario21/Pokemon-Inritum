@@ -24,6 +24,11 @@ module MidbattleHandlers
   def self.has_any?(midbattle)
     return @@scripts[midbattle]&.keys.length > 0
   end
+  
+  def self.script_keys
+    return [] if !@@scripts.has_key?(:midbattle_scripts)
+    return @@scripts[:midbattle_scripts].keys
+  end
 
   def self.trigger(midbattle, id, battle, idxBattler, idxTarget, params)
     return nil if !@@scripts.has_key?(midbattle)
@@ -51,11 +56,19 @@ end
 #-------------------------------------------------------------------------------
 MidbattleHandlers.add(:midbattle_triggers, "setBattler",
   proc { |battle, idxBattler, idxTarget, params|
-    idxBattler = 0 if idxBattler.nil?
-    idxTarget  = 1 if idxTarget.nil?
+    idxBattler = 0 if idxBattler.nil? || !battle.battlers[idxBattler]
     default_battler = battle.battlers[idxBattler]
-    default_target  = battle.battlers[idxTarget]
-    default_target  = default_battler.pbDirectOpposing if default_target.index == default_battler.index
+    if default_battler.fainted?
+      side = battle.allSameSideBattlers(idxBattler)
+      default_battler = side.first if !side.empty?
+    end
+    idxTarget = 1 if idxTarget.nil? || !battle.battlers[idxTarget]
+    default_target = battle.battlers[idxTarget]
+    if default_target.fainted?
+      side = battle.allSameSideBattlers(idxTarget)
+      default_target = side.first if !side.empty?
+    end
+    default_target = default_battler.pbDirectOpposing(true) if default_target.index == default_battler.index
     case params
     when Integer        then targ = battle.battlers[params] || default_battler
     when :Self          then targ = default_battler
@@ -316,7 +329,7 @@ MidbattleHandlers.add(:midbattle_triggers, "endSpeech",
 MidbattleHandlers.add(:midbattle_triggers, "playSE",
   proc { |battle, idxBattler, idxTarget, params|
     pbSEPlay(params)
-	PBDebug.log("     'playSE': playing SE (#{params})")
+    PBDebug.log("     'playSE': playing SE (#{params})")
   }
 )
 
@@ -862,6 +875,51 @@ MidbattleHandlers.add(:midbattle_triggers, "battlerStatus",
 )
 
 #-------------------------------------------------------------------------------
+# Changes a battler's typing.
+#-------------------------------------------------------------------------------
+MidbattleHandlers.add(:midbattle_triggers, "battlerType",
+  proc { |battle, idxBattler, idxTarget, params|
+    battler = battle.battlers[idxBattler]
+    next if !battler || battler.fainted? || battle.decision > 0 || !battler.canChangeType?
+    changed_types = false
+    old_types = battler.pbTypes
+    params = params[0] if params.is_a?(Array) && params.length == 1
+    case params
+    when :Reset
+      next if battler.types == battler.pokemon.types
+      battler.pbResetTypes
+      PBDebug.log("     'battlerType': #{battler.name} (#{battler.index}) typing reset to normal")
+      battle.pbDisplay(_INTL("{1} reverted to its original typing!", battler.pbThis))
+    when Symbol
+      next if !GameData::Type.exists?(params)
+      next if !battler.pbHasOtherType?(params)
+      battler.pbChangeTypes(params)
+      typeName = GameData::Type.get(params).name
+      PBDebug.log("     'battlerType': #{battler.name} (#{battler.index}) typing became #{typeName}")
+      battle.pbDisplay(_INTL("{1}'s type changed to {2}!", battler.pbThis, typeName))
+    when Array
+      types = []
+      params.each { |type| types.push(type) if GameData::Type.exists?(type) }
+      next if types.empty?
+      new_types = types.sort_by { |t| GameData::Type.get(t).icon_position }
+      old_types = old_types.sort_by { |t| GameData::Type.get(t).icon_position }
+      next if new_types == old_types
+      battler.types = types
+      battler.effects[PBEffects::ExtraType] = nil
+      battler.effects[PBEffects::BurnUp] = false
+      battler.effects[PBEffects::Roost]  = false
+      typeNames = ""
+      types.each_with_index do |t, i|
+        typeNames += ((i == types.length - 1) ? " and " : ", ") if i > 0
+        typeNames += GameData::Type.get(t).name
+      end
+      PBDebug.log("     'battlerType': #{battler.name} (#{battler.index}) typing became #{typeNames}")
+      battle.pbDisplay(_INTL("{1}'s type changed to {2}!", battler.pbThis, typeNames))
+    end
+  }
+)
+
+#-------------------------------------------------------------------------------
 # Changes a battler's form.
 #-------------------------------------------------------------------------------
 MidbattleHandlers.add(:midbattle_triggers, "battlerForm",
@@ -919,7 +977,7 @@ MidbattleHandlers.add(:midbattle_triggers, "battlerSpecies",
     else
       species, msg = params, nil
     end
-	try_species = GameData::Species.try_get(species)
+    try_species = GameData::Species.try_get(species)
     next if !try_species
     battle.scene.pbForceEndSpeech
     speciesName = GameData::Species.get(species).name
@@ -935,9 +993,9 @@ MidbattleHandlers.add(:midbattle_triggers, "battlerSpecies",
       Battle::AbilityEffects.triggerOnBeingHit(battler.ability, nil, battler, nil, battle)
     end
     battler.pokemon.species = try_species.species
-	battler.pokemon.form_simple = try_species.form
+    battler.pokemon.form_simple = try_species.form
     battler.species = try_species.species
-	battler.form = try_species.form
+    battler.form = try_species.form
     battler.pbUpdate(true)
     battler.name = speciesName if !battler.pokemon.nicknamed?
     battle.scene.pbRefreshOne(idxBattler)
@@ -1088,20 +1146,24 @@ MidbattleHandlers.add(:midbattle_triggers, "battlerMoves",
     when Array
       Pokemon::MAX_MOVES.times do |i|
         new_move = params[i]
-        if new_move.nil?
-          PBDebug.log("     'battlerMoves': #{battler.name} (#{battler.index}) forgot the move #{battler.moves[i].name}")
-          battler.moves[i] = nil
-        elsif GameData::Move.exists?(new_move)
-          oldMove = battler.moves[i].name
+        old_move = battler.moves[i]
+        if new_move && GameData::Move.exists?(new_move)
           move = Pokemon::Move.new(new_move)
           battler.moves[i] = Battle::Move.from_pokemon_move(battle, move)
-          PBDebug.log("     'battlerMoves': #{battler.name} (#{battler.index}) replaced the move #{oldMove} with #{battler.moves[i].name}")
+          if old_move
+            PBDebug.log("     'battlerMoves': #{battler.name} (#{battler.index}) replaced the move #{old_move.name} with #{battler.moves[i].name}")
+          else
+            PBDebug.log("     'battlerMoves': #{battler.name} (#{battler.index}) learned the move #{battler.moves[i].name}")
+          end
+        elsif old_move && new_move.nil?
+          PBDebug.log("     'battlerMoves': #{battler.name} (#{battler.index}) forgot the move #{old_move.name}")
+          battler.moves[i] = nil
         end
       end
       battler.moves.compact!
       battler.moves.uniq!
     when :Reset
-      battler.pokemon.reset_moves
+      battler.moves.clear
       battler.pokemon.numMoves.times do |i|
         move = battler.pokemon.moves[i]
         battler.moves[i] = Battle::Move.from_pokemon_move(battle, move)
@@ -1593,5 +1655,20 @@ MidbattleHandlers.add(:midbattle_triggers, "changeBackdrop",
       end
     end
     battle.scene.pbFlashRefresh
+  }
+)
+
+#-------------------------------------------------------------------------------
+# Changes the style applied to all battler's databoxes.
+#-------------------------------------------------------------------------------
+MidbattleHandlers.add(:midbattle_triggers, "changeDataboxes",
+  proc { |battle, idxBattler, idxTarget, params|
+    next if battle.decision > 0
+    old_style = battle.databoxStyle || :None
+    old_style = old_style.first if old_style.is_a?(Array)
+    style = (params.is_a?(Array)) ? params.first : params
+    next if battle.raidBattle? && !GameData::DataboxStyle.exists?(style)
+    battle.scene.pbRefreshStyle(*params)
+    PBDebug.log("     'changeDataboxes': changed databox style (#{old_style}=>#{style})") if style != old_style
   }
 )

@@ -15,9 +15,9 @@ class Battle::Scene
     end
     maxSize = battlerTotal.length - 1
     idxEffect = 0
-    #effects = pbGetDisplayEffects(battler)
-    #effctSize = effects.length - 1
-    pbUpdateBattlerInfo(battler)#, effects, idxEffect)
+    effects = pbGetDisplayEffects(battler)
+    effctSize = effects.length - 1
+    pbUpdateBattlerInfo(battler, effects, idxEffect)
     cw = @sprites["fightWindow"]
     @sprites["leftarrow"].x = -2
     @sprites["leftarrow"].y = 71
@@ -37,13 +37,13 @@ class Battle::Scene
         idx += 1
         idx = 0 if idx > maxSize
         doFullRefresh = true
-      elsif Input.repeat?(Input::UP) #&& effects.length > 1
-        #idxEffect -= 1
-        #idxEffect = effctSize if idxEffect < 0
+      elsif Input.repeat?(Input::UP) && effects.length > 1
+        idxEffect -= 1
+        idxEffect = effctSize if idxEffect < 0
         doRefresh = true
-      elsif	Input.repeat?(Input::DOWN)# && effects.length > 1
-        #idxEffect += 1
-        #idxEffect = 0 if idxEffect > effctSize
+      elsif	Input.repeat?(Input::DOWN) && effects.length > 1
+        idxEffect += 1
+        idxEffect = 0 if idxEffect > effctSize
         doRefresh = true
       elsif Input.trigger?(Input::JUMPDOWN)
         if cw.visible
@@ -73,14 +73,14 @@ class Battle::Scene
       end
       if doFullRefresh
         battler = battlerTotal[idx]
-        #effects = pbGetDisplayEffects(battler)
-        #effctSize = effects.length - 1
-        #idxEffect = 0
+        effects = pbGetDisplayEffects(battler)
+        effctSize = effects.length - 1
+        idxEffect = 0
         doRefresh = true
       end
       if doRefresh
         pbPlayCursorSE
-        pbUpdateBattlerInfo(battler)#, effects, idxEffect)
+        pbUpdateBattlerInfo(battler, effects, idxEffect)
         doRefresh = false
         doFullRefresh = false
       end
@@ -93,7 +93,7 @@ class Battle::Scene
   #-----------------------------------------------------------------------------
   # Draws the Battle Info UI.
   #-----------------------------------------------------------------------------
-  def pbUpdateBattlerInfo(battler)#, effects, idxEffect = 0)
+  def pbUpdateBattlerInfo(battler, effects, idxEffect = 0)
     @enhancedUIOverlay.clear
     pbUpdateBattlerIcons
     return if @enhancedUIToggle != :battler
@@ -105,17 +105,18 @@ class Battle::Scene
     #---------------------------------------------------------------------------
     # General UI elements.
     poke = (battler.opposes?) ? battler.displayPokemon : battler.pokemon
+    level = (battler.isRaidBoss?) ? "???" : battler.level.to_s
     movename = (battler.lastMoveUsed) ? GameData::Move.get(battler.lastMoveUsed).name : "---"
     movename = movename[0..12] + "..." if movename.length > 16
     imagePos = [
       [@path + "info_bg", 0, 0],
       [@path + "info_bg_data", 0, 0],
-      [@path + "info_level", xpos + 16, ypos + 106],
-      [@path + "info_gender", xpos + 148, ypos + 22, poke.gender * 22, 0, 22, 22]
+      [@path + "info_level", xpos + 16, ypos + 106]
     ]
+    imagePos.push([@path + "info_gender", xpos + 148, ypos + 22, poke.gender * 22, 0, 22, 22]) if !battler.isRaidBoss?
     textPos  = [
       [_INTL("{1}", poke.name), iconX + 82, iconY - 20, :center, BASE_DARK, SHADOW_DARK],
-      [battler.level.to_s, xpos + 38, ypos + 104, :left, BASE_LIGHT, SHADOW_LIGHT],
+      [_INTL("{1}", level), xpos + 38, ypos + 104, :left, BASE_LIGHT, SHADOW_LIGHT],
       [_INTL("Used: {1}", movename), xpos + 349, ypos + 104, :center, BASE_LIGHT, SHADOW_LIGHT],
       [_INTL("Turn {1}", @battle.turnCount + 1), Graphics.width - xpos - 32, ypos + 8, :center, BASE_DARK, SHADOW_DARK]
     ]
@@ -171,7 +172,7 @@ class Battle::Scene
     pbDrawImagePositions(@enhancedUIOverlay, imagePos)
     pbDrawTextPositions(@enhancedUIOverlay, textPos)
     pbAddTypesDisplay(xpos, ypos, battler, poke)
-    #pbAddEffectsDisplay(xpos, ypos, panelX, effects, idxEffect)
+    pbAddEffectsDisplay(xpos, ypos, panelX, effects, idxEffect)
   end
   
   #-----------------------------------------------------------------------------
@@ -407,8 +408,6 @@ class Battle::Scene
     weather = battler.effectiveWeather
     if weather != :None
       if weather == :Hail
-        name = GameData::BattleWeather.get(weather).name
-        desc = _INTL("Non-Ice types take damage each turn. Blizzard always hits.")
         if defined?(Settings::HAIL_WEATHER_TYPE)
           case Settings::HAIL_WEATHER_TYPE
           when 1
@@ -418,23 +417,26 @@ class Battle::Scene
             name = _INTL("Hailstorm")
             desc = _INTL("Combined effects of both Hail and Snow.")
           end
+        else
+          name = GameData::BattleWeather.get(weather).name
+          desc = _INTL("Non-Ice types take damage each turn. Blizzard always hits.")
         end
       else
         name = GameData::BattleWeather.get(weather).name
+        case weather
+        when :Sun         then desc = _INTL("Boosts Fire moves and weakens Water moves.")
+        when :HarshSun    then desc = _INTL("Boosts Fire moves and negates Water moves.")
+        when :Rain        then desc = _INTL("Boosts Water moves and weakens Fire moves.")
+        when :HeavyRain   then desc = _INTL("Boosts Water moves and negates Fire moves.")
+        when :Snow        then desc = _INTL("Boosts Def of Ice types. Blizzard always hits.")
+        when :Sandstorm   then desc = _INTL("Boosts Rock type Sp. Def. Damages unless Rock/Ground/Steel.")
+        when :StrongWinds then desc = _INTL("Flying types won't take super effective damage.")
+        when :ShadowSky   then desc = _INTL("Boosts Shadow moves. Non-Shadow Pokémon damaged each turn.")
+        else                   desc = _INTL("Unknown weather.")
+        end
       end
       tick = (weather == @battle.field.weather) ? @battle.field.weatherDuration : 0
       tick = (tick > 0) ? sprintf("%d/%d", tick, 5) : "--"
-      case weather
-      when :Sun         then desc = _INTL("Boosts Fire moves and weakens Water moves.")
-      when :HarshSun    then desc = _INTL("Boosts Fire moves and negates Water moves.")
-      when :Rain        then desc = _INTL("Boosts Water moves and weakens Fire moves.")
-      when :HeavyRain   then desc = _INTL("Boosts Water moves and negates Fire moves.")
-      when :Snow        then desc = _INTL("Boosts Def of Ice types. Blizzard always hits.")
-      when :Sandstorm   then desc = _INTL("Boosts Rock type Sp. Def. Damages unless Rock/Ground/Steel.")
-      when :StrongWinds then desc = _INTL("Flying types won't take super effective damage.")
-      when :ShadowSky   then desc = _INTL("Boosts Shadow moves. Non-Shadow Pokémon damaged each turn.")
-	  else                   desc = _INTL("Unknown weather.")
-      end
       display_effects.push([name, tick, desc])
     end
     #---------------------------------------------------------------------------

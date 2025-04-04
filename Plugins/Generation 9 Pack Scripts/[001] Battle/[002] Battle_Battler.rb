@@ -460,7 +460,7 @@ class Battle::Battler
       user.effects[PBEffects::Charge] = 0 if move.calcType == :ELECTRIC
     end
     if move.damagingMove?
-      if user.status == :DROWSY && move.electrocuteUser?
+      if move.electrocuteUser? && user.status == :DROWSY
         user.pbCureStatus(false)
         @battle.pbDisplay(_INTL("{1} was shocked wide awake!", user.pbThis))
       end
@@ -471,6 +471,7 @@ class Battle::Battler
       targets.each do |b|
         next if b.damageState.unaffected || b.damageState.substitute
         b.pbCureStatus if b.status == :DROWSY && move.electrocuteUser?
+        b.pbCureStatus if b.status == :SLEEP && Settings::ELECTROCUTE_MOVES_CURE_SLEEP && move.electrocuteUser?
         b.pbCureStatus if b.status == :FROSTBITE && move.thawsUser?  
       end
     end

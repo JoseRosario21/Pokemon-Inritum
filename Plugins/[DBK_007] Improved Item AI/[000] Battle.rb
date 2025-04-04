@@ -2,6 +2,14 @@
 # Battle utilities for new item AI.
 #===============================================================================
 class Battle
+  attr_accessor :lastUsedItems
+  
+  alias itemAI_initialize initialize
+  def initialize(*args)
+    itemAI_initialize(*args)
+    @lastUsedItems = [[], []]
+  end
+  
   #-----------------------------------------------------------------------------
   # Utilities for checking for certain types of items.
   #-----------------------------------------------------------------------------

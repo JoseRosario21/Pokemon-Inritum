@@ -64,8 +64,8 @@ class Battle::Scene
     #---------------------------------------------------------------------------
     # Gets move type and category (for display purposes).
     case move.function_code
-    when "CategoryDependsOnHigherDamageTera",
-         "TerapagosCategoryDependsOnHigherDamage"
+    when "CategoryDependsOnHigherDamageTera",                # Tera Blast
+         "TerapagosCategoryDependsOnHigherDamage"            # Tera Starstorm
       if terastal
         case move.function_code
         when "CategoryDependsOnHigherDamageTera"
@@ -80,8 +80,8 @@ class Battle::Scene
         type = move.type
         category = move.calcCategory
       end
-    when "CategoryDependsOnHigherDamagePoisonTarget", 
-         "CategoryDependsOnHigherDamageIgnoreTargetAbility"
+    when "CategoryDependsOnHigherDamagePoisonTarget",        # Shell Side Arm
+         "CategoryDependsOnHigherDamageIgnoreTargetAbility"  # Photon Geyser
       move.pbOnStartUse(battler, [battler.pbDirectOpposing])
       category = move.calcCategory
     end
@@ -111,35 +111,27 @@ class Battle::Scene
         stab = (battler.pbHasType?(type)) ? 1.5 : 1
       end
       stab = 1 if defined?(move.pbFixedDamage(battler, battler.pbDirectOpposing))
-      hidePower = false
+      runDmgCalc = (calcPower > 1)
       case move.function_code
-      when "ThrowUserItemAtTarget"                     # Fling
-        hidePower = true if !battler.item
-      when "TypeAndPowerDependOnUserBerry"             # Natural Gift
-        hidePower = true if !battler.item || !battler.item.is_berry?
-      when "PursueSwitchingFoe",                       # Pursuit
-           "RemoveTargetItem",                         # Knock Off
-           "HitOncePerUserTeamMember",                 # Beat Up
-           "DoublePowerIfTargetActed",                 # Payback
-           "DoublePowerIfTargetNotActed",              # Bolt Beak, Fishious Rend
-           "PowerHigherWithTargetHP",                  # Crush Grip, Wring Out
-           "PowerHigherWithTargetHP100PowerRange",     # Hard Press
-           "HitThreeTimesPowersUpWithEachHit",         # Triple Kick
-           "PowerHigherWithTargetWeight",              # Low Kick, Grass Knot
-           "PowerHigherWithUserFasterThanTarget",      # Electro Ball
-           "PowerHigherWithTargetFasterThanUser",      # Gyro Ball
-           "FixedDamageUserLevelRandom",               # Psywave
-           "RandomlyDamageOrHealTarget",               # Present
-           "RandomlyDealsDoubleDamage",                # Fickle Beam
-           "RandomPowerDoublePowerIfTargetUnderground" # Magnitude
-        hidePower = true if calcPower == 1
+      when "ThrowUserItemAtTarget"                           # Fling
+        runDmgCalc = true if battler.item_id && battler.itemActive?
+      when "TypeAndPowerDependOnUserBerry"                   # Natural Gift
+        runDmgCalc = true if battler.item_id && battler.itemActive? && battler.item.is_berry?
+      when "PursueSwitchingFoe",                             # Pursuit
+           "RemoveTargetItem",                               # Knock Off
+           "DoublePowerIfTargetActed",                       # Payback
+           "DoublePowerIfTargetNotActed",                    # Bolt Beak, Fishious Rend
+           "HitThreeTimesPowersUpWithEachHit",               # Triple Kick, Triple Axel
+           "RandomlyDealsDoubleDamage"                       # Fickle Beam
+        runDmgCalc = false
+        calcPower = move.pbBaseDamageTera(calcPower, battler, type, true) if terastal
       end
-      if !hidePower
+      if runDmgCalc
         calcPower = move.pbBaseDamage(basePower, battler, battler.pbDirectOpposing)
         calcPower = move.pbModifyDamage(calcPower, battler, battler.pbDirectOpposing)
         calcPower = move.pbBaseDamageTera(calcPower, battler, type, true) if terastal
       end
-      hidePower = true if calcPower == 1
+      hidePower = (calcPower == 1)
       powerDiff = (move.function_code == "PowerHigherWithUserHP") ? calcPower - basePower : basePower - calcPower
       calcPower *= stab
       power = (calcPower >= powerDiff) ? calcPower : basePower * stab
@@ -149,9 +141,11 @@ class Battle::Scene
     acc = move.accuracy
     pri = move.priority
     case move.function_code
-    when "ParalyzeFlinchTarget", "BurnFlinchTarget", "FreezeFlinchTarget"
+    when "ParalyzeFlinchTarget",                             # Thunder Fang
+         "BurnFlinchTarget",                                 # Fire Fang
+         "FreezeFlinchTarget"                                # Ice Fang
       chance = 10
-    when "LowerTargetDefense1FlinchTarget"
+    when "LowerTargetDefense1FlinchTarget"                   # Triple Arrows
       chance = 50
     else
       chance = move.addlEffect
@@ -288,7 +282,6 @@ class Battle::Scene
     target = (@battle.pbOpposingBattlerCount == 1) ? battler.pbDirectOpposing(true) : nil
     #---------------------------------------------------------------------------
     # Bonus text and modifiers for ability changes to move.
-    #---------------------------------------------------------------------------
     if battler.abilityActive?
       5.times do |i|
         break if bonus
@@ -348,7 +341,6 @@ class Battle::Scene
     end
     #---------------------------------------------------------------------------
     # Bonus text and modifiers for held item changes to move.
-    #---------------------------------------------------------------------------
     if battler.item && battler.itemActive?
       if ![0, 100].include?(acc)  # Held items that alter accuracy.
         oldAcc = acc
@@ -382,13 +374,11 @@ class Battle::Scene
     end
     #---------------------------------------------------------------------------
     # Special note for Mega Launcher + Heal Pulse.
-    #---------------------------------------------------------------------------
     if battler.hasActiveAbility?(:MEGALAUNCHER) && move.healingMove? && move.pulseMove?
       bonus = [_INTL("Healing boosted by the {1} ability.", battler.abilityName), BASE_RAISED, SHADOW_RAISED]
     end
     #---------------------------------------------------------------------------
     # Bonus text for moves that utilize special battle mechanics.
-    #---------------------------------------------------------------------------
     if showTera && move.damagingMove?
 	    bonus = [_INTL("Power boosted by Terastallization."), BASE_RAISED, SHADOW_RAISED]
     elsif defined?(move.zMove?) && move.zMove? && move.has_zpower?
@@ -411,6 +401,7 @@ class Battle::Scene
       end
       bonus = [text, BASE_RAISED, SHADOW_RAISED] if text
     end
+    battler.effects[PBEffects::GemConsumed] = nil
     return bonus, power, acc, pri, chance
   end
 end

@@ -248,6 +248,7 @@ class SafariBattle
   def wildBattleMode;  return nil;   end
   def pbDeluxeTriggers(*args);       end
   def launcherBattle?; return false; end
+  def databoxStyle;    return nil;   end
 end
 
 class Battle::Move
