@@ -258,7 +258,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("LowerTargetDefense1Flinc
     flinch_score = Battle::AI::Handlers.apply_move_effect_against_target_score("FlinchTarget",
        0, move, user, target, ai, battle)
     score += flinch_score if flinch_score != Battle::AI::MOVE_USELESS_SCORE
-    score = ai.get_score_for_target_stat_drop(score, target, move.move.statDown, false)
+    score = ai.get_score_for_target_stat_drop(score, target, [:DEFENSE, 1], false)
     next score
   }
 )
