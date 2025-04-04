@@ -38,6 +38,10 @@ class GameStats
     return @total_zmove_count - @status_zmove_count
   end
   
+  def wild_zpower_battles_won
+    return @wild_zpower_battles_won || 0
+  end
+  
   def wild_zpower_battles_won=(value)
     @wild_zpower_battles_won = 0 if !@wild_zpower_battles_won
     @wild_zpower_battles_won = value
@@ -337,7 +341,7 @@ class Battle::Battler
   #-----------------------------------------------------------------------------
   def hasZMove?
     return false if shadowPokemon?
-    return false if wild? && @battle.wildBattleMode != :zmove
+    return false if wild? && !(@battle.raidBattle? || @battle.wildBattleMode == :zmove)
     return false if @battle.raidBattle? && @battle.raidRules[:style] != :Ultra
     return false if ![nil, :ultra].include?(self.getActiveState)
     return false if hasEligibleAction?(:primal, :ultra, :zodiac)
@@ -479,8 +483,8 @@ class Pokemon
   # Utility for checking if a Z-Crystal is held.
   #-----------------------------------------------------------------------------
   def hasZCrystal?
-    return false if !@item_id
-    return GameData::Item.get(@item_id).is_zcrystal?
+    return false if !self.item_id
+    return GameData::Item.get(self.item_id).is_zcrystal?
   end
   
   #-----------------------------------------------------------------------------

@@ -125,7 +125,7 @@ class Battle::Scene
             imagePos.push([@path + "info_owner", bgX + 36, iconY + 12, 0, 0, 128, 20])
             textPos.push([@battle.pbGetOwnerFromBattlerIndex(b.index).name, nameX - 10, iconY + 14, :center, BASE_LIGHT, SHADOW_LIGHT])
           end
-          imagePos.push([@path + "info_gender", bgX + 148, iconY - 36, b.displayPokemon.gender * 22, 0, 22, 22])
+          imagePos.push([@path + "info_gender", bgX + 148, iconY - 36, b.displayPokemon.gender * 22, 0, 22, 22]) if !b.isRaidBoss?
         end
         if @battle.opponent
           @battle.opponent.each_with_index { |t, i| trainers.push([t, i]) if t.able_pokemon_count > 0 } 

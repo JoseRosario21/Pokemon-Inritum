@@ -16,8 +16,20 @@ MenuHandlers.add(:debug_menu, :deluxe_dynamax, {
   }
 })
 
+MenuHandlers.add(:battle_rules_menu, :noDynamax, {
+  "name"        => "No Dynamax: [{1}]",
+  "rule"        => "noDynamax",
+  "order"       => 308,
+  "parent"      => :set_battle_rules,
+  "description" => _INTL("Determines which side Dynamax is disabled for."),
+  "effect"      => proc { |menu|
+    next pbApplyBattleRule("noDynamax", :Choose, [:All, :Player, :Opponent], 
+      _INTL("Choose a side to disable Dynamax for."))
+  }
+})
+
 MenuHandlers.add(:debug_menu, :deluxe_plugin_settings, {
-  "name"        => _INTL("Plugin settings..."),
+  "name"        => _INTL("Other plugin settings..."),
   "parent"      => :deluxe_plugins_menu,
   "description" => _INTL("Settings for various features implemented by add-on plugins.")
 })
@@ -55,7 +67,7 @@ MenuHandlers.add(:debug_menu, :deluxe_dynamax_settings, {
 })
 
 MenuHandlers.add(:debug_menu, :deluxe_dynamax_metrics, {
-  "name"        => _INTL("Dynamax metrics..."),
+  "name"        => _INTL("Dynamax species metrics..."),
   "parent"      => :deluxe_plugin_settings,
   "description" => _INTL("Reposition Pokémon Dynamax sprites displayed in battle."),
   "effect"      => proc {

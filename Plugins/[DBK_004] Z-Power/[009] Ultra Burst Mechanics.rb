@@ -423,8 +423,7 @@ class Battle::Peer
     return if !pkmn
     f = MultipleForms.call("getUnUltraForm", pkmn)
     if f && pkmn.form != f && (endBattle || pkmn.fainted?)
-      pkmn.form_simple = f
-      pkmn.ability = nil
+      pkmn.makeUnUltra
       pkmn.hp = pkmn.totalhp if pkmn.hp > pkmn.totalhp
     end
   end
@@ -505,10 +504,12 @@ class Pokemon
   def makeUnUltra
     v = MultipleForms.call("getUnUltraForm", self)
     if !v.nil?
-      self.form_simple = v
+      @form = v
     elsif ultra?
-      self.form_simple = 0
+      @form = 0
     end
+    @ability = nil
+    calc_stats
   end
   
   def getUltraForm

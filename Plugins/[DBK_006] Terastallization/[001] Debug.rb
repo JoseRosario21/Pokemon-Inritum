@@ -16,8 +16,20 @@ MenuHandlers.add(:debug_menu, :deluxe_tera, {
   }
 })
 
+MenuHandlers.add(:battle_rules_menu, :noTerastallize, {
+  "name"        => "No Terastallize: [{1}]",
+  "rule"        => "noTerastallize",
+  "order"       => 309,
+  "parent"      => :set_battle_rules,
+  "description" => _INTL("Determines which side Terastallization is disabled for."),
+  "effect"      => proc { |menu|
+    next pbApplyBattleRule("noTerastallize", :Choose, [:All, :Player, :Opponent], 
+      _INTL("Choose a side to disable Terastallization for."))
+  }
+})
+
 MenuHandlers.add(:debug_menu, :deluxe_plugin_settings, {
-  "name"        => _INTL("Plugin settings..."),
+  "name"        => _INTL("Other plugin settings..."),
   "parent"      => :deluxe_plugins_menu,
   "description" => _INTL("Settings for various features implemented by add-on plugins.")
 })
