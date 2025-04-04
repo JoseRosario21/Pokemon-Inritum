@@ -56,13 +56,19 @@ end
 #-------------------------------------------------------------------------------
 MidbattleHandlers.add(:midbattle_triggers, "setBattler",
   proc { |battle, idxBattler, idxTarget, params|
-    idxBattler = 0 if idxBattler.nil?
-    idxTarget  = 1 if idxTarget.nil?
+    idxBattler = 0 if idxBattler.nil? || !battle.battlers[idxBattler]
     default_battler = battle.battlers[idxBattler]
-    default_battler = battle.allSameSideBattlers(idxBattler).first if !default_battler || default_battler.fainted?
-    default_target  = battle.battlers[idxTarget]
-    default_target  = battle.allSameSideBattlers(idxTarget).first if !default_target || default_target.fainted?
-    default_target  = default_battler.pbDirectOpposing(true) if default_target.index == default_battler.index
+    if default_battler.fainted?
+      side = battle.allSameSideBattlers(idxBattler)
+      default_battler = side.first if !side.empty?
+    end
+    idxTarget = 1 if idxTarget.nil? || !battle.battlers[idxTarget]
+    default_target = battle.battlers[idxTarget]
+    if default_target.fainted?
+      side = battle.allSameSideBattlers(idxTarget)
+      default_target = side.first if !side.empty?
+    end
+    default_target = default_battler.pbDirectOpposing(true) if default_target.index == default_battler.index
     case params
     when Integer        then targ = battle.battlers[params] || default_battler
     when :Self          then targ = default_battler

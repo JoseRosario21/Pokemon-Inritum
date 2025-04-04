@@ -149,9 +149,9 @@ module BattleCreationHelperMethods
       "noZMoves", "noUltraBurst", # Z-Power Add-on
       "noDynamax",                # Dynamax Add-on
       "noTerastallize",           # Terastallization Add-on
-      "noBattleStyles",           # PLA Battle Styles (TBD)
-      "noZodiacPowers",           # Pokemon Birthsigns (TBD)
-      "noFocusMeter"              # Focus Meter System (TBD)
+      #"noBattleStyles",           # PLA Battle Styles (TBD)
+      #"noZodiacPowers",           # Pokemon Birthsigns (TBD)
+      #"noFocusMeter"              # Focus Meter System (TBD)
     ]
     specialActions.each do |rule|
       next if !battleRules[rule]
@@ -161,9 +161,9 @@ module BattleCreationHelperMethods
       when "noUltraBurst"    then action = battle.ultraBurst
       when "noDynamax"       then action = battle.dynamax
       when "noTerastallize"  then action = battle.terastallize
-      when "noBattleStyles"  then action = battle.style
-      when "noZodiacPowers"  then action = battle.zodiac
-      when "noFocusMeter"    then action = battle.focus
+      #when "noBattleStyles"  then action = battle.style
+      #when "noZodiacPowers"  then action = battle.zodiac
+      #when "noFocusMeter"    then action = battle.focus
       end
       case battleRules[rule]
       when :All      then sides = [0, 1]
@@ -252,6 +252,15 @@ class Battle::Battler
       fainted_count += 1
     end
     return if fainted_count >= @battle.pbSideSize(0)
+    if @battle.pbAbleCount(target.index) <= 1
+      @battle.raidCaptureMode = true
+      @battle.field.initialize
+      2.times { |i| @battle.sides[i].initialize }
+      @battle.eachSameSideBattler do |b|
+        b.pbInitEffects(false)
+        @battle.positions[b.index].initialize
+      end
+    end
     @battle.pbPauseAndPlayBGM(bgm)
     @battle.scene.pbHideDatabox(target.index)
     @battle.scene.pbToggleDataboxes if @battle.raidBattle?
@@ -324,6 +333,13 @@ class Battle::Battler
   def pbFaint(showMessage = true)
     if self.canRaidCapture?
       self.hp = 1
+      if defined?(@vanished)
+        @battle.scene.pbAnimateSubstitute(@index, :hide)
+        @effects[PBEffects::Substitute]    = 0
+        @effects[PBEffects::SkyDrop]       = -1
+        @effects[PBEffects::TwoTurnAttack] = nil
+        @battle.scene.pbChangePokemon(self, self.visiblePokemon, true)
+      end
       raid = @battle.raidStyleCapture
       if raid.is_a?(Hash)
         pbRaidStyleCapture(self, raid[:capture_chance], raid[:flee_msg], raid[:capture_bgm])
@@ -332,7 +348,22 @@ class Battle::Battler
       end
     else  
       dx_pbFaint(showMessage)
+      if @battle.pbAllFainted? && @battle.raidStyleCapture && !@battle.canLose
+        @battle.caughtPokemon.clear
+      end
     end
+  end
+  
+  alias dx_itemActive? itemActive?
+  def itemActive?(ignoreFainted = false)
+    return false if @battle.raidCaptureMode
+    return dx_itemActive?(ignoreFainted)
+  end
+  
+  alias dx_abilityActive? abilityActive?
+  def abilityActive?(ignore_fainted = false, check_ability = nil)
+    return false if @battle.raidCaptureMode
+    return dx_abilityActive?(ignore_fainted, check_ability)
   end
 end
 
@@ -362,7 +393,7 @@ end
 # Adds new Battle Rules to the Battle class.
 #===============================================================================
 class Battle
-  attr_accessor :captureSuccess, :tutorialCapture, :raidStyleCapture
+  attr_accessor :caughtPokemon, :captureSuccess, :tutorialCapture, :raidStyleCapture, :raidCaptureMode
   attr_accessor :wildBattleMode, :noBag
   attr_accessor :introText, :slideSpriteStyle, :databoxStyle
   attr_accessor :default_bgm, :playing_bgm, :bgm_paused, :bgm_position, :low_hp_bgm
@@ -373,6 +404,7 @@ class Battle
     @captureSuccess   = nil
     @tutorialCapture  = false
     @raidStyleCapture = false
+    @raidCaptureMode  = false
     @wildBattleMode   = nil
     @noBag            = false
     @introText        = nil
@@ -433,6 +465,15 @@ class Battle
       return false
     end
     return dx_pbItemMenu(idxBattler, firstAction)
+  end
+  
+  #-----------------------------------------------------------------------------
+  # Aliased for battle_rules["raidStyleCapture"]
+  #-----------------------------------------------------------------------------
+  alias dx_pbEORStatusProblemDamage pbEORStatusProblemDamage
+  def pbEORStatusProblemDamage(priority)
+    return if @raidCaptureMode
+    dx_pbEORStatusProblemDamage(priority)
   end
   
   #-----------------------------------------------------------------------------
