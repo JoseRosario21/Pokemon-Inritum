@@ -359,6 +359,13 @@ Battle::AI::Handlers::AbilityRanking.add(:STEELWORKER,
   }
 )
 
+Battle::AI::Handlers::AbilityRanking.add(:HIGHTEMPERATURE,
+  proc { |ability, score, battler, ai|
+    next score if battler.has_damaging_move_of_type?(:FIRE)
+    next 0
+  }
+)
+
 Battle::AI::Handlers::AbilityRanking.add(:SWARM,
   proc { |ability, score, battler, ai|
     next score if battler.has_damaging_move_of_type?(:BUG)

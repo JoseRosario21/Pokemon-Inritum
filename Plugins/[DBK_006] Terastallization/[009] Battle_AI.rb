@@ -18,7 +18,7 @@ class Battle::AI
                   :items => [:FAIRYFEATHER, :PIXIEPLATE]},
     :FIGHTING => {:abils => [],
                   :items => [:BLACKBELT, :FISTPLATE]},
-    :FIRE     => {:abils => [:BLAZE, :FLASHFIRE], 
+    :FIRE     => {:abils => [:BLAZE, :FLASHFIRE, :HIGHTEMPERATURE], 
                   :items => [:CHARCOAL, :FLAMEPLATE]},
     :FLYING   => {:abils => [],
                   :items => [:SHARPBEAK, :SKYPLATE]},

@@ -4,19 +4,19 @@
 # wildParty is an array of Pokémon objects.
 def pbGetWildBattleBGM(_wildParty)
   return $PokemonGlobal.nextBattleBGM.clone if $PokemonGlobal.nextBattleBGM
-  ret = nil
-  if !ret
-    # Check map metadata
-    music = $game_map.metadata&.wild_battle_BGM
-    ret = pbStringToAudioFile(music) if music && music != ""
+  # Check if the wild Pokémon is a Zeta
+  if _wildParty[0]&.species_data&.has_flag?("Zeta")
+    return pbStringToAudioFile("Pull The Trigger")
   end
-  if !ret
-    # Check global metadata
-    music = GameData::Metadata.get.wild_battle_BGM
-    ret = pbStringToAudioFile(music) if music && music != ""
-  end
-  ret = pbStringToAudioFile("Battle wild") if !ret
-  return ret
+  # Check map metadata
+  music = $game_map.metadata&.wild_battle_BGM
+  return pbStringToAudioFile(music) if music && music != ""
+
+  # Check global metadata
+  music = GameData::Metadata.get.wild_battle_BGM
+  return pbStringToAudioFile(music) if music && music != ""
+
+  return pbStringToAudioFile("Battle wild")
 end
 
 def pbGetWildVictoryBGM

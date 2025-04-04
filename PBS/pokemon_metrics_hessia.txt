@@ -1,0 +1,46 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[PONYTA,2]
+BackSprite = 0,54
+FrontSprite = 0,14
+ShadowX = 0
+ShadowSize = 2
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 5,25
+DmaxShadowX = 0
+#-------------------------------
+[RAPIDASH,2]
+BackSprite = 0,46
+FrontSprite = 4,14
+ShadowX = 0
+ShadowSize = 2
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 5,14
+DmaxShadowX = 0
+#-------------------------------
+[HOOTHOOT,1]
+BackSprite = 0,39
+FrontSprite = 4,30
+ShadowX = 0
+ShadowSize = 2
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 5,14
+DmaxShadowX = 0
+#-------------------------------
+[NOCTOWL,1]
+BackSprite = 0,54
+FrontSprite = 4,12
+ShadowX = 0
+ShadowSize = 2
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 5,14
+DmaxShadowX = 0
+#-------------------------------
+[BLUTOWL]
+BackSprite = 0,46
+FrontSprite = 4,14
+ShadowX = 0
+ShadowSize = 2
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 5,14
+DmaxShadowX = 0
