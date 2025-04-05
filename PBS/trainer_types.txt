@@ -436,3 +436,10 @@ Name = Policeman
 Gender = Male
 BaseMoney = 100
 SkillLevel = 65
+#-------------------------------
+[MERCENARY]
+Name = Mercenary
+Gender = Male
+BaseMoney = 100
+SkillLevel = 100
+BattleBGM = Fangs Out

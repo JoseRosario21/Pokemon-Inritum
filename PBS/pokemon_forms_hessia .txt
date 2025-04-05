@@ -9,7 +9,7 @@ BaseStats = 50,65,55,85,65,90
 Moves = 1,GROWL,1,POUND,5,LEAFAGE,7,EMBER,12,FLAMECHARGE,15,AGILITY,18,MAGICALLEAF,20,FORESTSCURSE,22,TRAILBLAZE,25,HEX
 Weight = 20.0
 Color = Green
-Pokedex = Its small horn hides a healing power. With a few rubs from this Pokémon's horn, any slight wound you have will be healed.
+Pokedex = This Pokemon roams the Black Forest at high speed. At night, their green flames can look like small fae in the distance, leading visitors to follow them.
 #-------------------------------
 [RAPIDASH,2]
 FormName = Hessian
@@ -25,7 +25,7 @@ Moves = 1,DISARMINGVOICE,1,GUST,7,AIRCUTTER,8,SCREECH,10,THIEF,12,HONECLAWS,15,A
 BaseStats = 60,30,30,36,56,50
 Weight = 22.4
 Color = Purple
-Pokedex = Its small horn hides a healing power. With a few rubs from this Pokémon's horn, any slight wound you have will be healed.
+Pokedex = A forest trickster, Hessian Hoothoot tend to live in dense and dark forests. They often scare hikers with their ethereal cries.
 #-------------------------------
 [NOCTOWL,1]
 FormName = Hessian
@@ -36,4 +36,4 @@ BaseStats = 100,50,60,86,96,60
 Weight = 46.3
 Color = Purple
 Evolution = BLUTOWL,LevelNight,40
-Pokedex = Its small horn hides a healing power. With a few rubs from this Pokémon's horn, any slight wound you have will be healed.
+Pokedex = Noctowl prefer perching atop the highest trees of a forest. Yet, due to their plump bodies, they struggle to fly up so high, and so they send most of their time grounded and frustrated.
