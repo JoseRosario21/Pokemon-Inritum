@@ -93,16 +93,28 @@ def pbGainExpFromExpCandy(pkmn, base_amt, qty, scene, item)
   if pkmn.level >= GameData::GrowthRate.max_level || pkmn.shadowPokemon?
     scene.pbDisplay(_INTL("It won't have any effect."))
     return false
-  elsif pkmn.crosses_level_cap?
-    scene.pbDisplay(_INTL("{1} refuses to eat the {2}.", pkmn.name, GameData::Item.get(item).name))
-    return false
   end
+  
+  # Berechne die maximale Exp, die das Pokémon erhalten kann
+  max_exp = LevelCapsEX.soft_cap? ? pkmn.growth_rate.minimum_exp_for_level(LevelCapsEX.level_cap) : pkmn.growth_rate.maximum_exp
+  exp_gain = base_amt * qty
+  new_exp = pkmn.exp + exp_gain
+  
+  # Wenn die neue Exp das Level Cap überschreiten würde, begrenze die Exp-Vergabe
+  if new_exp > max_exp
+    exp_gain = max_exp - pkmn.exp
+    if exp_gain <= 0
+      scene.pbDisplay(_INTL("{1} refuses to eat the {2}.", pkmn.name, GameData::Item.get(item).name))
+      return false
+    end
+  end
+  
   pbSEPlay("Pkmn level up")
   scene.scene.pbSetHelpText("") if scene.is_a?(PokemonPartyScreen)
   if qty > 1
     (qty - 1).times { pkmn.changeHappiness("vitamin") }
   end
-  pbChangeExp(pkmn, pkmn.exp + (base_amt * qty), scene)
+  pbChangeExp(pkmn, pkmn.exp + exp_gain, scene)
   scene.pbHardRefresh
   return true
 end

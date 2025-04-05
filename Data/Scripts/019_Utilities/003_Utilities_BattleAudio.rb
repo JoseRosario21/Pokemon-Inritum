@@ -6,7 +6,7 @@ def pbGetWildBattleBGM(_wildParty)
   return $PokemonGlobal.nextBattleBGM.clone if $PokemonGlobal.nextBattleBGM
   # Check if the wild Pokémon is a Zeta
   if _wildParty[0]&.species_data&.has_flag?("Zeta")
-    return pbStringToAudioFile("Pull The Trigger")
+    return pbStringToAudioFile("ZETA")
   end
   # Check map metadata
   music = $game_map.metadata&.wild_battle_BGM

@@ -6,7 +6,7 @@ class Pokemon
     validate value => Integer
     if value < 1 || value > GameData::GrowthRate.max_level
       max_lvl = GameData::GrowthRate.max_level
-      limit = (value < 1)? ["below the minimum  of level 1", "1"] : ["above the maximum of level #{max_lvl}", max_lvl.to_s]
+      limit = (value < 1)? ["below the minimum  of level 1", "1"] : ["above the maximum of level #{max_lvl}", "#{max_lvl}"]
       echoln _INTL("Level {1} for {2} is not a valid level as it goes {3}. The level has been reset to {4}",
                     value, self, limit[0], limit[1])
       value.clamp(1, GameData::GrowthRate.max_level)
@@ -123,7 +123,7 @@ class Battle
       message = _INTL("{1} got {2} Exp. Points!")
       message = _INTL("{1} got a boosted {2} Exp. Points!") if isOutsider
       message = _INTL("{1} got a reduced {2} Exp. Points!") if over_level_cap
-      pbDisplayPaused(_INTL(message, pkmn.name, expGained))
+      pbDisplayPaused(_INTL(message, pkmn.name))
     end
     curLevel = pkmn.level
     newLevel = growth_rate.level_from_exp(expFinal)
