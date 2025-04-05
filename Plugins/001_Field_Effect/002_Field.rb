@@ -45,6 +45,9 @@ class Battle::Field
     :Normalized => [[13],
                 %w[],
                 %i[]],
+    :DarkForest => [[20],
+                %w[],
+                %i[]],
   }
 
   def initialize(battle)
@@ -192,5 +195,9 @@ class Battle::Field
 
   def is_normalized?
     @id == :Normalized
+  end
+
+  def is_darkforest?
+    @id == :DarkForest
   end
 end
