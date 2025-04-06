@@ -1,5 +1,5 @@
 module LevelCapsEX
-  LEVEL_CAP_VARIABLE = 40 # Beispiel-Variable für Level-Cap
+  LEVEL_CAP_VARIABLE = 100 # Beispiel-Variable für Level-Cap
 
   def self.current_level_cap
     return $game_variables[LEVEL_CAP_VARIABLE] || 0

@@ -258,7 +258,7 @@ Pokemon = DEERLING,15
     AbilityIndex = 0
     Item = SITRUSBERRY
 #-------------------------------
-[YOUNGCOUPLE,Albert]
+[TAMER,Albert]
 LoseText = Our teamwork wasn’t enough…
 Pokemon = TEDDIURSA,15
     Moves = FAKEOUT,LICK,FURYSWIPES,BABYDOLLEYES
