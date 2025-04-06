@@ -87,6 +87,22 @@ GameData::DataboxStyle.register({
   :max_side_size => 1
 })
 
+GameData::DataboxStyle.register({
+  :id            => :Zeta,
+  :name          => _INTL("Zeta"),
+  :sprite_x      => [244, -16],
+  :sprite_y      => [191, 12],
+  :sprite_base_x => [34, 16],
+  :offset_x      => [[0, 8, -8, 0],    [0, 16, -8, 8, -16, 0]],
+  :offset_y      => [[-38, -8, 8, 38], [-80, -10, -34, 36, 12, 82]],
+  :hp_offset     => [[136, 40], [118, 58]],
+  :exp_offset    => [114, 40],
+  :name_pos      => [[108, 13, :right], [8, 30, :left]],
+  :owned_icon    => [2, 3],
+  :shiny_icon    => [[-5, 35],  [206, 59]],
+  :status_icon   => [[25, 36], [24, 48]],
+  :special_icon  => [[-34, 12], [276, 20]]
+})
 
 
 #===============================================================================
@@ -157,7 +173,8 @@ class Battle::Scene::PokemonDataBox
       self.bitmap  = @contents
       self.visible = false
       self.z       = 150 + ((@battler.index / 2) * 5)
-      pbSetSmallFont(self.bitmap)
+      #pbSetSmallFont(self.bitmap)
+      pbSetSystemFont(self.bitmap)
     else
       dx_initializeOtherGraphics(viewport)
     end
@@ -211,7 +228,8 @@ class Battle::Scene::PokemonDataBox
       @sprites["hpBar"] = @hpBar
       @contents = Bitmap.new(@databoxBitmap.width, @databoxBitmap.height)
       self.bitmap = @contents
-      pbSetSmallFont(self.bitmap)
+      #pbSetSmallFont(self.bitmap)
+      pbSetSystemFont(self.bitmap)
     end
   end
   
@@ -246,7 +264,8 @@ class Battle::Scene::PokemonDataBox
     @contents = Bitmap.new(@databoxBitmap.width, @databoxBitmap.height)
     self.bitmap = @contents
     if @style
-      pbSetSmallFont(self.bitmap)
+      pbSetSystemFont(self.bitmap)
+      #pbSetSmallFont(self.bitmap)
     else
       pbSetSystemFont(self.bitmap)
     end
@@ -275,7 +294,7 @@ class Battle::Scene::PokemonDataBox
     @hpOffsetXY      = @style.hp_offset[side].clone
     @expOffsetXY     = @style.exp_offset.clone
     @show_exp_bar    = @battler.index.even?
-    @show_hp_numbers = false
+    @show_hp_numbers = @battler.index.even?
     @displayPos   = {
       :name    => @style.name_pos[side].clone,
       :owned   => @style.owned_icon.clone,
@@ -301,13 +320,16 @@ class Battle::Scene::PokemonDataBox
   def draw_style_text
     textpos = []
     namePos = @displayPos[:name]
+    heightOffset = 12
+    heightOffset = 12 + 17 if @battler.zeta? && @battler.opposes?(0)
+    heightOffset = 12 + 30 if @battler.zeta? && @battler.index.even?
+    case @battler.gender
+    when 0 then textpos.push(["♂", @spriteBaseX + 126, heightOffset, :left, MALE_BASE_COLOR, STYLE_SHADOW_COLOR, @nameColors[2]])
+    when 1 then textpos.push(["♀", @spriteBaseX + 126, heightOffset, :left, FEMALE_BASE_COLOR, STYLE_SHADOW_COLOR, @nameColors[2]])
+    end
     if @battler.index.even?
-      case @battler.gender
-      when 0 then textpos.push(["♂", *namePos, MALE_BASE_COLOR, STYLE_SHADOW_COLOR, @nameColors[2]])
-      when 1 then textpos.push(["♀", *namePos, FEMALE_BASE_COLOR, STYLE_SHADOW_COLOR, @nameColors[2]])
-      end
       textpos.push([@battler.name, namePos[0] - 16, namePos[1], namePos[2], *@nameColors])
-      textpos.push([@battler.level.to_s, namePos[0] + 58, namePos[1], :left, STYLE_BASE_COLOR, STYLE_SHADOW_COLOR])
+      #textpos.push([@battler.level.to_s, namePos[0] + 58, namePos[1], :left, STYLE_BASE_COLOR, STYLE_SHADOW_COLOR])
     elsif 
       if !@battler.wild?
         display_name = @battler.name
@@ -329,7 +351,12 @@ class Battle::Scene::PokemonDataBox
   def draw_style_icons
     imagepos = []
     namePos = @displayPos[:name]
-    imagepos.push([@path + "/overlay_lv", namePos[0] + 34, namePos[1] + 2]) if @battler.index.even?
+    heightOffset = 16
+    heightOffset = 16 + 17 if @battler.zeta? && @battler.opposes?(0)
+    heightOffset = 16 + 30 if @battler.zeta? && @battler.index.even?
+    imagepos.push([@path + "/overlay_lv", namePos[0] + 34, heightOffset]) if @battler.index.even?
+    imagepos.push([@path + "/overlay_lv", namePos[0] + 132, heightOffset]) if @battler.opposes?(0)
+    pbDrawNumber(@battler.level, self.bitmap, @spriteBaseX + 162, heightOffset)
     imagepos.push([@path + "/icon_own", *@displayPos[:owned]]) if @battler.owned? && @battler.opposes?(0)
     imagepos.push([@path + "/shiny", *@displayPos[:shiny]]) if @battler.shiny?
     if @battler.status != :NONE
