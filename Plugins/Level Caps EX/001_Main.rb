@@ -123,7 +123,7 @@ class Battle
       message = _INTL("{1} got {2} Exp. Points!")
       message = _INTL("{1} got a boosted {2} Exp. Points!") if isOutsider
       message = _INTL("{1} got a reduced {2} Exp. Points!") if over_level_cap
-      pbDisplayPaused(_INTL(message, pkmn.name))
+      pbDisplayPaused(_INTL(message, pkmn.name, expGained))
     end
     curLevel = pkmn.level
     newLevel = growth_rate.level_from_exp(expFinal)
