@@ -491,6 +491,8 @@ class PBAnimation < Array
           ca = (i.colorAlpha) ? oldbg[3].alpha.to_f + ((i.colorAlpha.to_f - oldbg[3].alpha.to_f) * fraction) : oldbg[3].alpha
           bgColor.color = Color.new(cr, cg, cb, ca)
         else
+          oldbg[2] ||= 0  # Ensure oldbg[2] is initialized
+          oldbg[3] ||= Color.new(0, 0, 0, 0)  # Ensure oldbg[3] is initialized
           bgGraphic.ox      = oldbg[0] - ((i.bgX - oldbg[0]) * fraction) if i.bgX
           bgGraphic.oy      = oldbg[1] - ((i.bgY - oldbg[1]) * fraction) if i.bgY
           bgGraphic.opacity = oldbg[2] + ((i.opacity - oldbg[2]) * fraction) if i.opacity
