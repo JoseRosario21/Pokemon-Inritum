@@ -476,11 +476,13 @@ class PBAnimation < Array
       next if !i.duration || i.duration <= 0
       next if i.frame + i.duration < frame || i.frame >= frame
       fraction = (frame - i.frame).to_f / i.duration
+      oldbg[2] ||= 0  # Ensure oldbg[2] is initialized
+      oldbg[3] ||= Color.new(0, 0, 0, 0)  # Ensure oldbg[3] is initialized
+      oldfo[2] ||= 0  # Ensure oldbg[2] is initialized
+      oldfo[3] ||= Color.new(0, 0, 0, 0)  # Ensure oldbg[3] is initialized
       case i.timingType
       when 2
         if bgGraphic.bitmap.nil?
-          oldbg[2] ||= 0  # Ensure oldbg[2] is initialized
-          oldbg[3] ||= Color.new(0, 0, 0, 0)  # Ensure oldbg[3] is initialized
           fraction ||= 1  # Ensure fraction is initialized
           if i.opacity
             bgColor.opacity = oldbg[2].to_f + ((i.opacity.to_f - oldbg[2].to_f) * fraction)
@@ -491,8 +493,6 @@ class PBAnimation < Array
           ca = (i.colorAlpha) ? oldbg[3].alpha.to_f + ((i.colorAlpha.to_f - oldbg[3].alpha.to_f) * fraction) : oldbg[3].alpha
           bgColor.color = Color.new(cr, cg, cb, ca)
         else
-          oldbg[2] ||= 0  # Ensure oldbg[2] is initialized
-          oldbg[3] ||= Color.new(0, 0, 0, 0)  # Ensure oldbg[3] is initialized
           bgGraphic.ox      = oldbg[0] - ((i.bgX - oldbg[0]) * fraction) if i.bgX
           bgGraphic.oy      = oldbg[1] - ((i.bgY - oldbg[1]) * fraction) if i.bgY
           bgGraphic.opacity = oldbg[2] + ((i.opacity - oldbg[2]) * fraction) if i.opacity
