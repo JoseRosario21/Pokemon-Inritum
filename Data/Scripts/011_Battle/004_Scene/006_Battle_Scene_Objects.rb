@@ -47,7 +47,7 @@ class Battle::Scene::PokemonDataBox < Sprite
       bgFilename = [_INTL("Graphics/UI/Battle/battlePlayerBoxS"),
                     _INTL("Graphics/UI/Battle/battleFoeBoxS")][@battler.index % 2]
       bgFilename = [_INTL("Graphics/UI/Battle/battlePlayerBoxS"),
-                    _INTL("Graphics/UI/Battle/battleZetaFoeBoxS")][@battler.index % 2] if @battler.zeta? && @battler.opposes?(0)
+                    _INTL("Graphics/UI/Battle/battleZetaFoeBoxS")][@battler.index % 2] if @battler.zeta? && @battler.opposes?(0) 
       bgFilename = [_INTL("Graphics/UI/Battle/battleZetaPlayerBoxS"),
                     _INTL("Graphics/UI/Battle/battleFoeBoxS")][@battler.index % 2] if @battler.zeta? && onPlayerSide
       if onPlayerSide
