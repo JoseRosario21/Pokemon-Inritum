@@ -2,7 +2,7 @@
 #-------------------------------
 [PONYTA,2]
 BackSprite = 0,54
-FrontSprite = 0,14
+FrontSprite = 0,21
 ShadowX = 0
 ShadowSize = 2
 DmaxBackSprite = 0,0

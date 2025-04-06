@@ -352,7 +352,7 @@ Pokemon = BOLDORE,17
 LoseText = How did you win?!
 Pokemon = MOTHIM,15
 Pokemon = LUMINEON,16
-Pokemon = LAIRON,17
+Pokemon = ARON,17
 #-------------------------------
 [GYM_LEADER_LYRA,Lyra]
 LoseText = You are going to do great in the future!
