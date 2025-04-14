@@ -85,7 +85,7 @@ HeadbuttLow,21
     100,PINECO,7,11
 #-------------------------------
 [040] # Feldspar Cave
-CaveDay,8
+CaveDay,5
     20,GEODUDE,10,14
     20,ZUBAT,10,14
     15,SILICOBRA,10,14
@@ -98,7 +98,7 @@ CaveDay,8
     10,CLEFAIRY,10,14
     10,SANDSHREW,10,14
     5,NOSEPASS,10,14
-CaveNight,8
+CaveNight,5
     20,GEODUDE,10,14
     20,ZUBAT,10,14
     15,SILICOBRA,10,14

@@ -3,6 +3,9 @@
 [001]   # Intro
 Name = Intro
 #-------------------------------
+[002]   # School
+MapPosition = 0,3,15
+#-------------------------------
 [003]   # Andernach Island
 Name = Andernach Island
 Outdoor = true
@@ -23,17 +26,28 @@ ShowArea = true
 Bicycle = true
 HealingSpot = 4,22,13
 #-------------------------------
+[006]   # Hospital
+MapPosition = 0,3,15
+#-------------------------------
 [007]   # Andernach Island
 Name = Andernach Island
 Outdoor = true
 MapPosition = 0,2,12
 #-------------------------------
 [008]   # Ostern Town
+Name = Ostern Town
+MapPosition = 0,10,14
+#-------------------------------
+[009]   # Ostern Hotel
 MapPosition = 0,10,14
 #-------------------------------
 [010]   # Stuot Lab
 Name = Stuot Lab
+MapPosition = 0,3,15
 Flags = PowerSpot
+#-------------------------------
+[011]   # Fisherman's Hut
+MapPosition = 0,7,14
 #-------------------------------
 [012]   # Route1
 Name = Route1
@@ -42,14 +56,41 @@ ShowArea = true
 Bicycle = true
 MapPosition = 0,7,14
 #-------------------------------
+[013]   # Ostern Gym
+MapPosition = 0,10,14
+#-------------------------------
 [014]   # Ostern Gym Maze
 Name = Ostern Gym Maze
-TrainerBattleBGM = IF YOU WOKE UP BROKE DONT COME HERE
+MapPosition = 0,10,14
 DarkMap = true
 SnapEdges = true
+TrainerBattleBGM = IF YOU WOKE UP BROKE DONT COME HERE
 #-------------------------------
 [016]   # Help Center
 Name = Help Center
+MapPosition = 0,3,15
+#-------------------------------
+[017]   # Ostern Hotel Restaurant
+MapPosition = 0,10,14
+#-------------------------------
+[018]   # Interiors - Ostern
+MapPosition = 0,10,14
+#-------------------------------
+[020]   # Dark Forest
+MapPosition = 0,10,15
+SnapEdges = true
+#-------------------------------
+[030]   # Stuot Lab
+MapPosition = 0,3,15
+#-------------------------------
+[031]   # TrainStation
+MapPosition = 0,3,15
+#-------------------------------
+[032]   # Route 1 Poké Center
+MapPosition = 0,7,14
+#-------------------------------
+[038]   # Interiors
+MapPosition = 0,3,15
 #-------------------------------
 [040]   # Feldspar Cave
 Name = Feldspar Cave
