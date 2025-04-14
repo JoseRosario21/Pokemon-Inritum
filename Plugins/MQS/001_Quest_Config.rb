@@ -2,13 +2,13 @@
 # Modern Questing System + UI
 # If you like quests, this is the resource for you!
 #===============================================================================
-# Original implemenation by mej71
+# Original implementation by mej71
 # Updated for v17.2 and v18/18.1 by derFischae
 # Heavily edited for v19/19.1 by ThatWelshOne_
 # Some UI components borrowed (with permission) from Marin's Easy Questing Interface
 # 
 #===============================================================================
-# Things you can currently customise without editing the scripts themselves
+# Things you can currently customize without editing the scripts themselves
 #===============================================================================
 
 # If true, includes a page of failed quests on the UI

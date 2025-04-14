@@ -18,7 +18,7 @@ module QuestModule
     :Stage13 => "Go to Ostern Town's Hotel.",
     :Stage14 => "Battle Meryl at the Park.",
     :Stage15 => "Meet Karl at the gym.",
-    :Stage16 => "Meet Prof. Geoge",
+    :Stage16 => "Meet Prof. George",
     :Stage17 => "Conquer the first gym!",
     :Stage18 => "Report to Arthur.",
     :Stage19 => "Catch the Zeta Pokémon!",
@@ -63,11 +63,11 @@ module QuestModule
 
   Quest2 = {
     :ID => "2",
-    :Name => "I need a combee!",
+    :Name => "I need a Combee!",
     :QuestGiver => "Youngster Larry",
-    :Stage1 => "Catch a combee",
+    :Stage1 => "Catch a Combee",
     :Location1 => "Route 1",
-    :QuestDescription => "I went to Route 1 to look for a dex entry of combee but I just couldn't find one. Am I doing something wrong? If anyone could just catch it would be great. I could then copy the information for my Dex.",
+    :QuestDescription => "I went to Route 1 to look for a dex entry of Combee but I just couldn't find one. Am I doing something wrong? If anyone could just catch it would be great. I could then copy the information for my Dex.",
     :RewardString => "1500$ + 5 Great Balls"
   }
 

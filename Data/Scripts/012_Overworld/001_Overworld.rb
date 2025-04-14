@@ -91,8 +91,8 @@ EventHandlers.add(:on_player_step_taken_can_transfer, :poison_party,
       next if pkmn.status != :POISON || pkmn.hasAbility?(:IMMUNITY)
       if !flashed
         pbSEPlay("Poison step")
-        pbFlash(Color.new(255, 0, 0, 128), 8)
-        flashed = true
+        #pbFlash(Color.new(255, 0, 0, 128), 8) Disable Poison flash
+        #flashed = true
       end
       pkmn.hp -= 1 if pkmn.hp > 1 || Settings::POISON_FAINT_IN_FIELD
       if pkmn.hp == 1 && !Settings::POISON_FAINT_IN_FIELD

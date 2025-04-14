@@ -6,7 +6,7 @@
 
 module Settings
   # The version of your game. It has to adhere to the MAJOR.MINOR.PATCH format.
-  GAME_VERSION = "0.5.0"
+  GAME_VERSION = "1.1.0"
 
   # The generation that the battle system follows. Used throughout the battle
   # scripts, and also by some other settings which are used in and out of battle
@@ -14,7 +14,7 @@ module Settings
   # Note that this isn't perfect. Essentials doesn't accurately replicate every
   # single generation's mechanics. It's considered to be good enough. Only
   # generations 5 and later are reasonably supported.
-  MECHANICS_GENERATION = 8
+  MECHANICS_GENERATION = 9
 
   #-----------------------------------------------------------------------------
   # Credits
@@ -34,6 +34,9 @@ module Settings
       "Silly Robot Man",
       "Sunny",
       "Syntaxx",
+      "Dada",
+      "just_a_gameaddict",
+      "Wilder"
     ]
   end
 

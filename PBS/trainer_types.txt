@@ -442,4 +442,4 @@ Name = Mercenary
 Gender = Male
 BaseMoney = 100
 SkillLevel = 100
-BattleBGM = Fangs Out
+BattleBGM = Knuckle Down
