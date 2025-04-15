@@ -43,7 +43,7 @@ class Battle::Scene::PokemonDataBox < Sprite
   def initializeDataBoxGraphic(sideSize)
     onPlayerSide = @battler.index.even?
     # Get the data box graphic and set whether the HP numbers/Exp bar are shown
-    if sideSize == 1   # One Pokémon on side, use the regular dara box BG
+    if sideSize == 1   # One Pokémon on side, use the regular data box BG
       bgFilename = [_INTL("Graphics/UI/Battle/battlePlayerBoxS"),
                     _INTL("Graphics/UI/Battle/battleFoeBoxS")][@battler.index % 2]
       bgFilename = [_INTL("Graphics/UI/Battle/battlePlayerBoxS"),
@@ -62,16 +62,12 @@ class Battle::Scene::PokemonDataBox < Sprite
     @databoxBitmap = AnimatedBitmap.new(bgFilename)
     # Determine the co-ordinates of the data box and the left edge padding width
     if onPlayerSide
-      @spriteX = Graphics.width - 244
-      @spriteX = Graphics.width - 304 if @battler.zeta?
-      @spriteY = Graphics.height - 192
-      @spriteY = Graphics.height - 192 - 29 if @battler.zeta?
-      @spriteBaseX = 34
-      @spriteBaseX = 34 + 60 if @battler.zeta?
+      @spriteX = Graphics.width - 304
+      @spriteY = Graphics.height - 192 - 29
+      @spriteBaseX = 34 + 60
     else
       @spriteX = -16
-      @spriteY = 36
-      @spriteY = 19 if @battler.zeta?
+      @spriteY = 19
       @spriteBaseX = 16
     end
     case sideSize
@@ -129,15 +125,12 @@ class Battle::Scene::PokemonDataBox < Sprite
 
   def y=(value)
     super
-    @hpBar.y     = value + 40
-    @hpBar.y     = value + 40 + 18 if @battler.zeta? && @battler.opposes?(0)
-    @hpBar.y     = value + 40 + 30 if @battler.zeta? && @battler.index.even?
-    @expBar.y    = value + 74
-    @expBar.y    = value + 74 + 18 if @battler.zeta? && @battler.opposes?(0)
-    @expBar.y    = value + 74 + 30 if @battler.zeta? && @battler.index.even?
-    @hpNumbers.y = value + 52
-    @hpNumbers.y = value + 52 + 18 if @battler.zeta? && @battler.opposes?(0)
-    @hpNumbers.y = value + 52 + 30 if @battler.zeta? && @battler.index.even?
+    @hpBar.y     = value + 40 + 18 if @battler.opposes?(0)
+    @hpBar.y     = value + 40 + 30 if @battler.index.even?
+    @expBar.y    = value + 74 + 18 if @battler.opposes?(0)
+    @expBar.y    = value + 74 + 30 if @battler.index.even?
+    @hpNumbers.y = value + 52 + 18 if @battler.opposes?(0)
+    @hpNumbers.y = value + 52 + 30 if @battler.index.even?
   end
 
   def z=(value)
@@ -237,9 +230,8 @@ class Battle::Scene::PokemonDataBox < Sprite
     nameWidth = self.bitmap.text_size(@battler.name).width
     nameOffset = 0
     nameOffset = nameWidth - 116 if nameWidth > 116
-    heightOffset = 12
-    heightOffset = 12 + 17 if @battler.zeta? && @battler.opposes?(0)
-    heightOffset = 12 + 30 if @battler.zeta? && @battler.index.even?
+    heightOffset = 12 + 17 if @battler.opposes?(0)
+    heightOffset = 12 + 30 if @battler.index.even?
     pbDrawTextPositions(self.bitmap, [[@battler.name, @spriteBaseX + 8 - nameOffset, heightOffset, :left,
                                        NAME_BASE_COLOR, NAME_SHADOW_COLOR]]
     )
@@ -247,9 +239,8 @@ class Battle::Scene::PokemonDataBox < Sprite
 
   def draw_level
     # "Lv" graphic
-    heightOffset = 16
-    heightOffset = 16 + 17 if @battler.zeta? && @battler.opposes?(0)
-    heightOffset = 16 + 30 if @battler.zeta? && @battler.index.even?
+    heightOffset = 16 + 17 if @battler.opposes?(0)
+    heightOffset = 16 + 30 if @battler.index.even?
     pbDrawImagePositions(self.bitmap, [[_INTL("Graphics/UI/Battle/overlay_lv"), @spriteBaseX + 140, heightOffset]])
     # Level number
     pbDrawNumber(@battler.level, self.bitmap, @spriteBaseX + 162, heightOffset)
@@ -261,9 +252,8 @@ class Battle::Scene::PokemonDataBox < Sprite
     gender_text  = (gender == 0) ? _INTL("♂") : _INTL("♀")
     base_color   = (gender == 0) ? MALE_BASE_COLOR : FEMALE_BASE_COLOR
     shadow_color = (gender == 0) ? MALE_SHADOW_COLOR : FEMALE_SHADOW_COLOR
-    heightOffset = 12
-    heightOffset = 12 + 17 if @battler.zeta? && @battler.opposes?(0)
-    heightOffset = 12 + 30 if @battler.zeta? && @battler.index.even?
+    heightOffset = 12 + 17 if @battler.opposes?(0)
+    heightOffset = 12 + 30 if @battler.index.even?
     pbDrawTextPositions(self.bitmap, [[gender_text, @spriteBaseX + 126, heightOffset, :left, base_color, shadow_color]])
   end
 
@@ -275,9 +265,8 @@ class Battle::Scene::PokemonDataBox < Sprite
       s = GameData::Status.get(@battler.status).icon_position
     end
     return if s < 0
-    heightOffset = 36
-    heightOffset = 36 + 17 if @battler.zeta? && @battler.opposes?(0)
-    heightOffset = 36 + 30 if @battler.zeta? && @battler.index.even?
+    heightOffset = 36 + 18 if @battler.opposes?(0)
+    heightOffset = 36 + 30 if @battler.index.even?
     pbDrawImagePositions(self.bitmap, [[_INTL("Graphics/UI/Battle/icon_statuses"), @spriteBaseX + 24, heightOffset,
                                         0, s * STATUS_ICON_HEIGHT, -1, STATUS_ICON_HEIGHT]])
   end
@@ -285,15 +274,16 @@ class Battle::Scene::PokemonDataBox < Sprite
   def draw_shiny_icon
     return if !@battler.shiny?
     shiny_x = (@battler.opposes?(0)) ? 206 : -6   # Foe's/player's
-    pbDrawImagePositions(self.bitmap, [["Graphics/UI/shiny", @spriteBaseX + shiny_x, 36]])
+    heightOffset = 36 + 17 if @battler.opposes?(0)
+    heightOffset = 36 + 30 if @battler.index.even?
+    pbDrawImagePositions(self.bitmap, [["Graphics/UI/shiny", @spriteBaseX + shiny_x, heightOffset]])
   end
 
   def draw_special_form_icon
     # Mega Evolution/Primal Reversion icon
     if @battler.mega?
-      heightOffset = 34
-      heightOffset = 34 + 17 if @battler.zeta? && @battler.opposes?(0)
-      heightOffset = 34 + 30 if @battler.zeta? && @battler.index.even?
+      heightOffset = 34 + 17 if @battler.opposes?(0)
+      heightOffset = 34 + 30 if @battler.index.even?
       pbDrawImagePositions(self.bitmap, [["Graphics/UI/Battle/icon_mega", @spriteBaseX + 8, heightOffset]])
     elsif @battler.primal?
       filename = nil
@@ -302,18 +292,16 @@ class Battle::Scene::PokemonDataBox < Sprite
       elsif @battler.isSpecies?(:KYOGRE)
         filename = "Graphics/UI/Battle/icon_primal_Kyogre"
       end
-      heightOffset = 4
-      heightOffset = 4 + 17 if @battler.zeta? && @battler.opposes?(0)
-      heightOffset = 4 + 30 if @battler.zeta? && @battler.index.even?
+      heightOffset = 4 + 17 if @battler.opposes?(0)
+      heightOffset = 4 + 30 if @battler.index.even?
       primalX = (@battler.opposes?) ? 208 : -28   # Foe's/player's
       pbDrawImagePositions(self.bitmap, [[filename, @spriteBaseX + primalX, heightOffset]]) if filename
     end
   end
 
   def draw_owned_icon
-    heightOffset = 36
-    heightOffset = 36 + 17 if @battler.zeta?
     return if !@battler.owned? || !@battler.opposes?(0)   # Draw for foe Pokémon only
+    heightOffset = 36 + 17
     pbDrawImagePositions(self.bitmap, [["Graphics/UI/Battle/icon_own", @spriteBaseX + 8, heightOffset]])
   end
 

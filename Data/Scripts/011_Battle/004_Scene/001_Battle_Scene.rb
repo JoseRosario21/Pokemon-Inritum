@@ -394,7 +394,7 @@ class Battle::Scene
     # Set visibility of battler's shadow
     shadowSprite.visible = pkmn.species_data.shows_shadow? if shadowSprite && !back
     @battle.battlers.each_with_index do |b, i|
-      @sprites["dataBox_#{i}"].initializeDataBoxGraphic(@battle.pbSideSize(i)) if @sprites["dataBox_#{1}"].visible
+      @sprites["dataBox_#{i}"].initializeDataBoxGraphic(@battle.pbSideSize(i))
     end
   end
 
