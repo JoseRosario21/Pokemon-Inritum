@@ -24,3 +24,8 @@ Flags = Zeta
 FormName = Zeta
 BaseStats = 71,122,78,110,52,55
 Flags = Zeta
+#-------------------------------
+[TOXEL,1]
+FormName = Zeta
+BaseStats = 40,38,35,48,65,35
+Flags = Zeta
