@@ -1,6 +1,6 @@
 def pbRandomTeamGenerator(partySize)
   # Sets Trainer Class, Name, and other properties...
-  opp = NPCTrainer.new("XP-18 Simulation", :YOUNGSTER)
+  opp = NPCTrainer.new("Joey", :XP18Simulation)
   opp.lose_text = "Simulated battle over..."
 
   # Creates a hash of Pokemon with their respective details
