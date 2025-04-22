@@ -424,6 +424,13 @@ BaseMoney = 100
 SkillLevel = 100
 BattleBGM = By Any Means
 #-------------------------------
+[TEAM_REBIRTH_ELITE_GRUNT2_M]
+Name = Team Rebirth Elite
+Gender = Male
+BaseMoney = 100
+SkillLevel = 100
+BattleBGM = By Any Means
+#-------------------------------
 [GYM_LEADER_LYRA]
 Name = Gym Leader
 Gender = Female
@@ -443,3 +450,9 @@ Gender = Male
 BaseMoney = 100
 SkillLevel = 100
 BattleBGM = Knuckle Down
+#-------------------------------
+[XP18Simulation]
+Name = XP-18 Simulation
+Gender = Male
+BaseMoney = 0
+SkillLevel = 50

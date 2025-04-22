@@ -67,7 +67,7 @@ module QuestModule
     :QuestGiver => "Youngster Larry",
     :Stage1 => "Catch a Combee",
     :Location1 => "Route 1",
-    :QuestDescription => "I went to Route 1 to look for a dex entry of Combee but I just couldn't find one. Am I doing something wrong? If anyone could just catch it would be great. I could then copy the information for my Dex.",
+    :QuestDescription => "I went to Route 1 to look for a dex entry of Combee but I just couldn't find one. Am I doing something wrong? If anyone could just catch it, that would be great. I could then copy the information for my Dex.",
     :RewardString => "1500$ + 5 Great Balls"
   }
 
@@ -77,7 +77,7 @@ module QuestModule
     :QuestGiver => "Beauty Trish",
     :Stage1 => "Look for the Big Pearl",
     :Location1 => "Stuot City",
-    :QuestDescription => "I lost my Big Pearl somewhere in the City but I can't find it. It was a gift from my boyfriend and it's worth a lot of money. I'm afraid if someone finds it he will try to sell it. Please help me!",
+    :QuestDescription => "I lost my Big Pearl somewhere in the city but I can't find it. It was a gift from my boyfriend and it's worth a lot of money. I'm afraid if someone finds it they will try to sell it. Please help me!",
     :RewardString => "3 Super Potion, 2500$ and a Lum Berry"
   }
 

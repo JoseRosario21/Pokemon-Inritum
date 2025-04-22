@@ -4,12 +4,14 @@
 Name = Intro
 #-------------------------------
 [002]   # School
+Name = School
 MapPosition = 0,3,15
 #-------------------------------
 [003]   # Andernach Island
 Name = Andernach Island
 Outdoor = true
 MapPosition = 0,2,12
+BattleBack = field
 #-------------------------------
 [004]   # Stuot City
 Name = Stuot City
@@ -27,18 +29,22 @@ Bicycle = true
 HealingSpot = 4,22,13
 #-------------------------------
 [006]   # Hospital
+Name = Hospital
 MapPosition = 0,3,15
 #-------------------------------
 [007]   # Andernach Island
 Name = Andernach Island
 Outdoor = true
 MapPosition = 0,2,12
+BattleBack = field
 #-------------------------------
 [008]   # Ostern Town
 Name = Ostern Town
 MapPosition = 0,10,14
+BattleBack = field
 #-------------------------------
 [009]   # Ostern Hotel
+Name = Ostern Hotel
 MapPosition = 0,10,14
 #-------------------------------
 [010]   # Stuot Lab
@@ -47,6 +53,7 @@ MapPosition = 0,3,15
 Flags = PowerSpot
 #-------------------------------
 [011]   # Fisherman's Hut
+Name = Fisherman's Hut
 MapPosition = 0,7,14
 #-------------------------------
 [012]   # Route1
@@ -57,6 +64,7 @@ Bicycle = true
 MapPosition = 0,7,14
 #-------------------------------
 [013]   # Ostern Gym
+Name = Ostern Gym
 MapPosition = 0,10,14
 #-------------------------------
 [014]   # Ostern Gym Maze
@@ -71,25 +79,32 @@ Name = Help Center
 MapPosition = 0,3,15
 #-------------------------------
 [017]   # Ostern Hotel Restaurant
+Name = Ostern Hotel Restaurant
 MapPosition = 0,10,14
 #-------------------------------
 [018]   # Interiors - Ostern
+Name = Interiors - Ostern
 MapPosition = 0,10,14
 #-------------------------------
 [020]   # Dark Forest
+Name = Dark Forest
 MapPosition = 0,10,15
 SnapEdges = true
 #-------------------------------
 [030]   # Stuot Lab
+Name = Stuot Lab
 MapPosition = 0,3,15
 #-------------------------------
 [031]   # TrainStation
+Name = TrainStation
 MapPosition = 0,3,15
 #-------------------------------
 [032]   # Route 1 Poké Center
+Name = Route 1 Poké Center
 MapPosition = 0,7,14
 #-------------------------------
 [038]   # Interiors
+Name = Interiors
 MapPosition = 0,3,15
 #-------------------------------
 [040]   # Feldspar Cave

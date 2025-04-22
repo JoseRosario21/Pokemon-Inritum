@@ -10,7 +10,7 @@ LoseText = A good battle indeed!
 Pokemon = PINSIR,7
 #-------------------------------
 [LASS,Sophia]
-LoseText = You might think he's weak, but he is very capable of winning in the big leagues!
+LoseText = You might think Pachirisu's weak, but Pachirisu is very capable of winning in the big leagues!
 Pokemon = PACHIRISU,6
 #-------------------------------
 [YOUNGSTER,Andre]
@@ -89,7 +89,7 @@ Pokemon = LOUDRED,11
 Pokemon = PATRAT,12
 #-------------------------------
 [HIKER,Duncan]
-LoseText = My rock Pokémons weren't hard enough.
+LoseText = My Rock Pokémon weren't hard enough.
 Pokemon = GEODUDE,10
 Pokemon = ONIX,12
 #-------------------------------
@@ -106,7 +106,7 @@ Pokemon = INKAY,12
 Pokemon = SIGILYPH,13
 #-------------------------------
 [RIVAL2,Karl]
-LoseText = My beldum needs to improve a lot!
+LoseText = My Beldum needs to improve a lot!
 Pokemon = BELDUM,15
     Moves = TAKEDOWN
     AbilityIndex = 0
@@ -179,7 +179,7 @@ Pokemon = FROSLASS,74
     IV = 31,31,31,31,31,31
     EV = 0,0,0,252,252,6
 #-------------------------------
-[TEAM_REBIRTH_ELITE_GRUNT_M,Grunt,1]
+[TEAM_REBIRTH_ELITE_GRUNT2_M,Grunt]
 Items = ZRING
 LoseText = ...
 Pokemon = YANMA,14
@@ -308,7 +308,7 @@ Pokemon = JIGGLYPUFF,14
     Item = SITRUSBERRY
 #-------------------------------
 [BEAUTY,Lea]
-LoseText = Guess I’m not prepared for the gym leader…
+LoseText = Guess I’m not prepared for the Gym Leader…
 Pokemon = GLAMEOW,16
     Moves = FAKEOUT,SCRATCH,HYPNOSIS,QUICKATTACK
     AbilityIndex = 2
