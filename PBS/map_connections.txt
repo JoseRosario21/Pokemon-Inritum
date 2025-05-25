@@ -2,3 +2,5 @@
 #-------------------------------
 # Stuot City (4) - Stuot Pier (5)
 4,10,61,5,0,0
+# Dark Forest 2 (15) - Dark Forest (20)
+15,South,0,20,North,18
