@@ -95,6 +95,12 @@ def pbGainExpFromExpCandy(pkmn, base_amt, qty, scene, item)
     return false
   end
   
+  # Hard cap check - completely prevent exp gain if level cap is reached
+  if LevelCapsEX.hard_cap? && pkmn.level >= LevelCapsEX.level_cap
+    scene.pbDisplay(_INTL("{1} refuses to eat the {2}.", pkmn.name, GameData::Item.get(item).name))
+    return false
+  end
+  
   # Berechne die maximale Exp, die das Pokémon erhalten kann
   max_exp = LevelCapsEX.soft_cap? ? pkmn.growth_rate.minimum_exp_for_level(LevelCapsEX.level_cap) : pkmn.growth_rate.maximum_exp
   exp_gain = base_amt * qty
@@ -186,10 +192,16 @@ module LevelCapsEX
   def hard_level_cap
     max_lv = Settings::MAXIMUM_LEVEL
     return max_lv if !$game_variables
-    lv_cap_mode = $game_variables[LEVEL_CAP_MODE_VARIABLE]
-    lv_cap = $game_variables[LevelCapsEX::LEVEL_CAP_VARIABLE]
+    lv_cap_mode = $game_variables[LevelCapsEX::LEVEL_CAP_MODE_VARIABLE]
+    lv_cap = $game_variables[LEVEL_CAP_VARIABLE]
     return max_lv if lv_cap > max_lv 
     return lv_cap if lv_cap > 0 && lv_cap_mode == 1
     return max_lv
+  end
+  
+  # Add a new method to check if a Pokemon can gain EXP
+  def can_gain_exp?(pokemon)
+    return false if hard_cap? && pokemon.level >= level_cap
+    return true
   end
 end
