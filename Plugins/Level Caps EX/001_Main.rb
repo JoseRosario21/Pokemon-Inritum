@@ -14,8 +14,8 @@ class Pokemon
       value = value.clamp(1, GameData::GrowthRate.max_level)
     end
     
-    # Additional check for hard level cap
-    if LevelCapsEX.hard_cap? && value > LevelCapsEX.level_cap
+    # Additional check for hard level cap - but respect bypass switch
+    if LevelCapsEX.hard_cap? && value > LevelCapsEX.level_cap && !$game_switches[LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH]
       value = LevelCapsEX.level_cap
     end
     
@@ -46,6 +46,35 @@ end
 # Soft Level Cap related Additions
 #-------------------------------------------------------------------------------
 class Battle
+  alias __level_caps_initialize initialize unless method_defined?(:__level_caps_initialize)
+  
+  def initialize(*args)
+    __level_caps_initialize(*args)
+    
+    # Debug logging
+    echoln("[Level Caps EX] Battle initialization")
+    echoln("[Level Caps EX] Bypass switch #{LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH} = #{$game_switches[LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH]}")
+    
+    # Early return if bypass switch is ON
+    if $game_switches[LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH]
+      echoln("[Level Caps EX] Bypass switch is ON - skipping level cap enforcement")
+      return
+    end
+    
+    # Apply level caps to opponent Pokemon only if bypass is OFF
+    if opponent && opponent.respond_to?(:party)
+      echoln("[Level Caps EX] Checking opponent Pokemon levels")
+      opponent.party.each do |pkmn|
+        next if !pkmn
+        if pkmn.level > LevelCapsEX.level_cap
+          old_level = pkmn.level
+          pkmn.level = LevelCapsEX.level_cap
+          pkmn.calc_stats
+          echoln("[Level Caps EX] Adjusted #{pkmn.name} from Lv.#{old_level} to Lv.#{LevelCapsEX.level_cap}")
+        end
+      end
+    end
+  end
 
   def pbGainExpOne(idxParty, defeatedBattler, numPartic, expShare, expAll, showMessages = true)
     pkmn = pbParty(0)[idxParty]   # The Pokémon gaining Exp from defeatedBattler
@@ -282,6 +311,38 @@ module GameData
         end
         # Normal gameplay - use the level cap
         return LevelCapsEX.hard_level_cap
+      end
+    end
+  end
+end
+
+class Pokemon_Trainer
+  alias __level_caps_initialize initialize unless method_defined?(:__level_caps_initialize)
+  
+  def initialize(*args)
+    echoln("Trainer initialization started")  # Debug line
+    echoln("Level Cap Bypass Switch #{LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH} state: #{$game_switches[LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH]}")
+    __level_caps_initialize(*args)
+    enforce_level_cap
+  end
+
+  def enforce_level_cap
+    echoln("Enforcing level cap check started")  # Debug line
+    echoln("Current level cap: #{LevelCapsEX.level_cap}")
+    echoln("Bypass switch #{LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH} is: #{$game_switches[LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH] ? 'ON' : 'OFF'}")
+    
+    return if $game_switches[LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH]
+    return unless LevelCapsEX.hard_cap? || LevelCapsEX.soft_cap?
+    
+    cap = LevelCapsEX.level_cap
+    @party&.each_with_index do |pkmn, index|
+      next if !pkmn
+      echoln("Checking Pokemon #{index + 1}: #{pkmn.name} Level #{pkmn.level}")
+      if pkmn.level > cap
+        old_level = pkmn.level
+        pkmn.level = cap
+        pkmn.calc_stats
+        echoln("Adjusted #{pkmn.name} from level #{old_level} to #{cap}")
       end
     end
   end
