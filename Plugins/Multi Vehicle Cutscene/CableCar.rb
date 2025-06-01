@@ -60,7 +60,7 @@ class CableCarScene
     pbBGMFade(0.1)
     @sprites = {}
     @sprites["Black"] = Sprite.new
-    @sprites["Black"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/black")
+    @sprites["Black"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/black")
     @sprites["Black"].z = 99999
     @sprites["Black"].opacity = 0
     for i in 0..14
@@ -75,54 +75,54 @@ class CableCarScene
     pbBGMPlay(CABLE_CAR_BGM)
     pbWait(0.1)
     @sprites["BG"] = Sprite.new
-    @sprites["BG"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/bg")
+    @sprites["BG"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/bg")
     @sprites["BG"].z = 90000
     if going_up
       @sprites["Trees"] = Sprite.new
-      @sprites["Trees"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/trees")
+      @sprites["Trees"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/trees")
       @sprites["Trees"].x = -1024
       @sprites["Trees"].y = 190
       @sprites["Trees"].z = 92000
       if hiker
         hiker2="hiker1"
         @sprites["Hiker"] = Sprite.new
-        @sprites["Hiker"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/"+hiker_name)
+        @sprites["Hiker"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/"+hiker_name)
         @sprites["Hiker"].x = 200
         @sprites["Hiker"].y = 286
         @sprites["Hiker"].z = 93000
       end
       @sprites["Ground"] = Sprite.new
-      @sprites["Ground"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/ground")
+      @sprites["Ground"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/ground")
       @sprites["Ground"].x = -1792
       @sprites["Ground"].y = -160
       @sprites["Ground"].z = 94000
       @sprites["CC"] = Sprite.new
-      @sprites["CC"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/cable_car")
+      @sprites["CC"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/cable_car")
       @sprites["CC"].x = 406
       @sprites["CC"].y = 98
       @sprites["CC"].z = 96000
       @sprites["Player"] = Sprite.new
       if !$player.female?
-        @sprites["Player"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/player_male")
+        @sprites["Player"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/player_male")
       else
-        @sprites["Player"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/player_female")
+        @sprites["Player"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/player_female")
       end
       @sprites["Player"].x = 438
       @sprites["Player"].y = 158
       @sprites["Player"].z = 96100
       @sprites["Door"] = Sprite.new
-      @sprites["Door"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/door")
+      @sprites["Door"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/door")
       @sprites["Door"].x = 454
       @sprites["Door"].y = 210
       @sprites["Door"].z = 96200
       @sprites["Poles"] = Sprite.new
-      @sprites["Poles"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/pole")
+      @sprites["Poles"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/pole")
       @sprites["Poles"].x = -1024
       @sprites["Poles"].y = -638
       @sprites["Poles"].z = 98000
       if weather
         @sprites["Ash"] = Sprite.new
-        @sprites["Ash"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/ash")
+        @sprites["Ash"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/ash")
         @sprites["Ash"].opacity = 0
         @sprites["Ash"].x = -1650
         @sprites["Ash"].y = -650
@@ -199,49 +199,49 @@ class CableCarScene
       end
     else
       @sprites["Trees"] = Sprite.new
-      @sprites["Trees"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/trees")
+      @sprites["Trees"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/trees")
       @sprites["Trees"].x = -922
       @sprites["Trees"].y = 292
       @sprites["Trees"].z = 92000
       if hiker
         @sprites["Hiker"] = Sprite.new
-        @sprites["Hiker"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/"+hiker_name)
+        @sprites["Hiker"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/"+hiker_name)
         @sprites["Hiker"].x = 190
         @sprites["Hiker"].y = 276
         @sprites["Hiker"].z = 93000
       end
       @sprites["Ground"] = Sprite.new
-      @sprites["Ground"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/ground")
+      @sprites["Ground"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/ground")
       @sprites["Ground"].x = -976
       @sprites["Ground"].y = 44
       @sprites["Ground"].z = 94000
       @sprites["CC"] = Sprite.new
-      @sprites["CC"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/cable_car")
+      @sprites["CC"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/cable_car")
       @sprites["CC"].x = 202
       @sprites["CC"].y = -4
       @sprites["CC"].z = 96000
       @sprites["Player"] = Sprite.new
       if !$player.female?
-        @sprites["Player"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/player_male")
+        @sprites["Player"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/player_male")
       else
-        @sprites["Player"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/player_female")
+        @sprites["Player"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/player_female")
       end
       @sprites["Player"].x = 234
       @sprites["Player"].y = 56
       @sprites["Player"].z = 96100
       @sprites["Door"] = Sprite.new
-      @sprites["Door"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/door")
+      @sprites["Door"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/door")
       @sprites["Door"].x = 250
       @sprites["Door"].y = 108
       @sprites["Door"].z = 96200
       @sprites["Poles"] = Sprite.new
-      @sprites["Poles"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/pole")
+      @sprites["Poles"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/pole")
       @sprites["Poles"].x = 200
       @sprites["Poles"].y = -26
       @sprites["Poles"].z = 98000
       if weather
         @sprites["Ash"] = Sprite.new
-        @sprites["Ash"].bitmap = Bitmap.new("Graphics/Pictures/CableCar/ash")
+        @sprites["Ash"].bitmap = Bitmap.new("Graphics/Plugins/Vehicles/CableCar/ash")
         @sprites["Ash"].opacity = 250
         @sprites["Ash"].x = -18
         @sprites["Ash"].y = -38

@@ -1,0 +1,5 @@
+﻿Name       = Multi Vehicles Cutscenes
+Version    = 1.0
+Essentials = 20, 20.1
+Website    = https://eeveeexpo.com/resources/536/
+Credits    = BloodyNeonz, PurpleZaffre
