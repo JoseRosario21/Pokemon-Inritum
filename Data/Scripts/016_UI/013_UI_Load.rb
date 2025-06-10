@@ -279,6 +279,7 @@ class PokemonLoadScreen
   end
 
   def pbStartLoadScreen
+    check_for_updates
     if $DEBUG && !FileTest.exist?("Game.rgssad") && Settings::SKIP_CONTINUE_SCREEN
       if @save_data.empty?
         Game.start_new

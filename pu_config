@@ -1,0 +1,6 @@
+CURRENT_GAME_VERSION=2.0
+VERSION_PASTEBIN=https://pastebin.com/raw/zCinzQpd
+UPDATER_FILENAME=./poke_updater/poke_updater.exe
+FORCE_VERSION_CHECK=true
+FORCE_UPDATE=false
+MANUAL_DOWNLOAD_LINK=https://www.mediafire.com/file/y6ub5b8falk7pn5/Pok%25C3%25A9mon_Inritum.zip/file
