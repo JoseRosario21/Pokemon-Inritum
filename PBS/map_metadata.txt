@@ -75,6 +75,8 @@ SnapEdges = true
 TrainerBattleBGM = IF YOU WOKE UP BROKE DONT COME HERE
 #-------------------------------
 [015]   # Dark Forest 2
+Name = Dark Forest 2
+SnapEdges = true
 #-------------------------------
 [016]   # Help Center
 Name = Help Center
@@ -91,6 +93,7 @@ MapPosition = 0,10,14
 [020]   # Dark Forest
 Name = Dark Forest
 MapPosition = 0,10,15
+SnapEdges = true
 #-------------------------------
 [030]   # Stuot Lab
 Name = Stuot Lab
