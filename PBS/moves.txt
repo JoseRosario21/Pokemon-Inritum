@@ -4871,7 +4871,7 @@ Target = NearOther
 FunctionCode = ConfuseTarget
 Flags = Contact,CanProtect,CanMirrorMove
 EffectChance = 20
-Description = The user attacks the target by smashing into it with incredible force. It may also confuse the target.
+Description = The user attacks the target by smashing into it with incredible force. It may also confuse the target. It can also be used to scale rocky walls.
 #-------------------------------
 [TAKEDOWN]
 Name = Take Down
