@@ -1,0 +1,6 @@
+Name       = Overworld Rock Climb EX
+Version    = 1.3
+Essentials = 21.1
+Conflicts  = Advanced Items - Field Moves
+Website    = https://reliccastle.com/resources/1513/
+Credits    = Ulithium_Dragon,DarrylBD99
