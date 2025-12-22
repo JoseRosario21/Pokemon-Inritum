@@ -228,6 +228,7 @@ class Battle::Battler
   def hasTera?;        return false; end
   def hasZodiacPower?; return false; end
   def isRivalSpecies?(arg); return false; end
+  def hasRaidShield?;  return false; end
 end
 
 class Battle::FakeBattler

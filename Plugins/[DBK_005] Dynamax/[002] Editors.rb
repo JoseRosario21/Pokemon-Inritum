@@ -317,12 +317,12 @@ def pbDynamaxAutoPositionAll(spriteStyle = 0)
     bitmap2 = GameData::Species.sprite_bitmap(sp.species, sp.form)
     if bitmap1&.bitmap
       metrics.dmax_back_sprite[0] = 0
-      metrics.dmax_back_sprite[1] = (bitmap1.height - (findBottom(bitmap1.bitmap) + 1)) / 2
+      metrics.dmax_back_sprite[1] = ((bitmap1.height - (findBottom(bitmap1.bitmap) + 1)) / 2).floor
       metrics.dmax_back_sprite[1] += 54 if spriteStyle == 1
     end
     if bitmap2&.bitmap
       metrics.dmax_front_sprite[0] = 0
-      metrics.dmax_front_sprite[1] = (bitmap2.height - (findBottom(bitmap2.bitmap) + 1)) / 2
+      metrics.dmax_front_sprite[1] = ((bitmap2.height - (findBottom(bitmap2.bitmap) + 1)) / 2).foor
       metrics.dmax_front_sprite[1] += (metrics.dmax_front_sprite[1] * 1.5).round - metrics.dmax_front_sprite[1]
       metrics.dmax_front_sprite[1] += 6
     end
@@ -332,4 +332,37 @@ def pbDynamaxAutoPositionAll(spriteStyle = 0)
   end
   GameData::SpeciesMetrics.save
   Compiler.write_pokemon_metrics
+end
+
+#-------------------------------------------------------------------------------
+# Calls the Dynamax sprite editor in the debug menu.
+#-------------------------------------------------------------------------------
+def pbDynamaxSpriteEditor
+  if !Settings::SHOW_DYNAMAX_SIZE
+    pbMessage(_INTL("SHOW_DYNAMAX_SIZE is set to 'false', so no Dynamax metrics need to be set."))
+  else
+    filterCommands = [_INTL("All sprites"), _INTL("Gigantamax sprites"), _INTL("Sprites by generation...")]
+    filterCommand = pbMessage(_INTL("Which sprites do you want to edit?"), filterCommands, -1)
+    return if filterCommand < 0
+    case filterCommand
+    when 1
+      filterCommand = -1
+    when 2
+      params = ChooseNumberParams.new
+      params.setRange(1, 99)
+      params.setDefaultValue(1)
+      params.setCancelValue(-1)
+      filterCommand = pbMessageChooseNumber(_INTL("Select a generation."), params)
+    end
+    styleCommands = [_INTL("Half back sprites (Gen 4 style)"), _INTL("Full back sprites (Gen 5 style)")]
+    styleCommand = pbMessage(_INTL("What style of back sprites are you using?"), styleCommands, -1)
+    return if styleCommand < 0
+    pbFadeOutIn {
+      scene = DynamaxSpritePositioner.new
+      scene.setSpriteFilter(filterCommand)
+      scene.setBackSpriteStyle(styleCommand)
+      screen = DynamaxSpritePositionerScreen.new(scene)
+      screen.pbStart
+    }
+  end
 end

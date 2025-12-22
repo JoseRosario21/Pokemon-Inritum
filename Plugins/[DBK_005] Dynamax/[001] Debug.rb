@@ -3,6 +3,77 @@
 #===============================================================================
 
 #-------------------------------------------------------------------------------
+# Rewrites to existing Debug options.
+#-------------------------------------------------------------------------------
+MenuHandlers.add(:debug_menu, :position_sprites, {
+  "name"        => _INTL("Edit pokemon_metrics.txt"),
+  "parent"      => :pbs_editors_menu,
+  "description" => _INTL("Reposition Pokémon sprites in battle."),
+  "effect"      => proc {
+    cmd = 0
+    cmds = [
+      _INTL("Normal sprites"),
+      _INTL("Dynamax sprites")
+    ]
+    loop do
+      cmd = pbShowCommands(nil, cmds, -1, cmd)
+      break if cmd < 0
+      case cmd
+      when 0 # Normal sprites
+        pbFadeOutIn do
+          sp = SpritePositioner.new
+          sps = SpritePositionerScreen.new(sp)
+          sps.pbStart
+        end
+      when 1 # Dynamax sprites
+        pbDynamaxSpriteEditor
+      end
+    end
+  }
+})      
+
+MenuHandlers.add(:debug_menu, :auto_position_sprites, {
+  "name"        => _INTL("Auto-set pokemon_metrics.txts"),
+  "parent"      => :pbs_editors_menu,
+  "description" => _INTL("Automatically reposition all Pokémon sprites in battle. Don't use lightly."),
+  "effect"      => proc {
+    cmd = 0
+    cmds = [
+      _INTL("Normal sprites"),
+      _INTL("Dynamax sprites")
+    ]
+    loop do
+      cmd = pbShowCommands(nil, cmds, -1, cmd)
+      break if cmd < 0
+      case cmd
+      when 0 # Normal sprites
+        if pbConfirmMessage(_INTL("Are you sure you want to reposition all sprites?"))
+          msgwindow = pbCreateMessageWindow
+          pbMessageDisplay(msgwindow, _INTL("Repositioning all sprites. Please wait."), false)
+          Graphics.update
+          pbAutoPositionAll
+          pbDisposeMessageWindow(msgwindow)
+        end
+      when 1 # Dynamax sprites
+        if !Settings::SHOW_DYNAMAX_SIZE
+          pbMessage(_INTL("SHOW_DYNAMAX_SIZE is set to 'false', so no Dynamax metrics need to be set."))
+        elsif pbConfirmMessage(_INTL("Are you sure you want to reposition all Dynamax sprites?"))
+          styleCommands = [_INTL("Half back sprites (Gen 4 style)"), _INTL("Full back sprites (Gen 5 style)")]
+          styleCommand = pbMessage(_INTL("What style of back sprites are you using?"), styleCommands, -1)
+          next if styleCommand < 0
+          msgwindow = pbCreateMessageWindow
+          pbMessageDisplay(msgwindow, _INTL("Repositioning all Dynamax sprites. Please wait."), false)
+          Graphics.update
+          pbDynamaxAutoPositionAll(styleCommand)
+          pbDisposeMessageWindow(msgwindow)
+        end
+      end
+    end
+  }
+})
+
+
+#-------------------------------------------------------------------------------
 # General Debug options
 #-------------------------------------------------------------------------------
 MenuHandlers.add(:debug_menu, :deluxe_dynamax, {
@@ -28,97 +99,51 @@ MenuHandlers.add(:battle_rules_menu, :noDynamax, {
   }
 })
 
-MenuHandlers.add(:debug_menu, :deluxe_plugin_settings, {
-  "name"        => _INTL("Other plugin settings..."),
-  "parent"      => :deluxe_plugins_menu,
-  "description" => _INTL("Settings for various features implemented by add-on plugins.")
-})
-
 MenuHandlers.add(:debug_menu, :deluxe_dynamax_settings, {
   "name"        => _INTL("Dynamax settings..."),
-  "parent"      => :deluxe_plugin_settings,
-  "description" => _INTL("Edit when and where Dynamax is able to be used."),
+  "parent"      => :deluxe_plugins_menu,
+  "description" => _INTL("Edit Dynamax availability and Dynamax metrics."),
   "effect"      => proc {
     loop do
       commands = [
         _INTL("Dynamax usable on every map [{1}]",    ($game_switches[Settings::DYNAMAX_ON_ANY_MAP])      ? _INTL("YES") : _INTL("NO")),
-        _INTL("Dynamax usable in wild battles [{1}]", ($game_switches[Settings::DYNAMAX_IN_WILD_BATTLES]) ? _INTL("YES") : _INTL("NO"))
+        _INTL("Dynamax usable in wild battles [{1}]", ($game_switches[Settings::DYNAMAX_IN_WILD_BATTLES]) ? _INTL("YES") : _INTL("NO")),
+        _INTL("Edit Dynamax metrics"),
+        _INTL("Auto-set Dynamax metrics")
       ]
       command = pbShowCommands(nil, commands, -1, 0)
       break if command < 0
       case command
-      when 0
+      when 0 # Dynamax map availability.
         $game_switches[Settings::DYNAMAX_ON_ANY_MAP] = !$game_switches[Settings::DYNAMAX_ON_ANY_MAP]
         if $game_switches[Settings::DYNAMAX_ON_ANY_MAP]
           pbMessage(_INTL("Dynamax is now usable on every map."))
         else
           pbMessage(_INTL("Dynamax is now only usable on maps with the 'PowerSpot' flag."))
         end
-      when 1
+      when 1 # Dynamax availability in wild battles.
         $game_switches[Settings::DYNAMAX_IN_WILD_BATTLES] = !$game_switches[Settings::DYNAMAX_IN_WILD_BATTLES]
         if $game_switches[Settings::DYNAMAX_IN_WILD_BATTLES]
           pbMessage(_INTL("Dynamax is now also usable in wild battles."))
         else
           pbMessage(_INTL("Dynamax is now only usable in trainer battles."))
         end
-      end
-    end
-  }
-})
-
-MenuHandlers.add(:debug_menu, :deluxe_dynamax_metrics, {
-  "name"        => _INTL("Dynamax species metrics..."),
-  "parent"      => :deluxe_plugin_settings,
-  "description" => _INTL("Reposition Pokémon Dynamax sprites displayed in battle."),
-  "effect"      => proc {
-    if Settings::SHOW_DYNAMAX_SIZE
-      loop do
-        commands = [
-          _INTL("Edit Dynamax metrics"),
-          _INTL("Auto-set Dynamax metrics")
-        ]
-        command = pbShowCommands(nil, commands, -1, 0)
-        break if command < 0
-        case command
-        when 0  # Edit Dynamax metrics
-          filterCommands = [_INTL("All sprites"), _INTL("Gigantamax sprites"), _INTL("Sprites by generation...")]
-          filterCommand = pbMessage(_INTL("Which sprites do you want to edit?"), filterCommands, -1)
-          next if filterCommand < 0
-          case filterCommand
-          when 1
-            filterCommand = -1
-          when 2
-            params = ChooseNumberParams.new
-            params.setRange(1, 99)
-            params.setDefaultValue(1)
-            params.setCancelValue(-1)
-            filterCommand = pbMessageChooseNumber(_INTL("Select a generation."), params)
-          end
+      when 2 # Edit Dynamax metrics
+        pbDynamaxSpriteEditor
+      when 3 # Auto-set Dynamax metrics
+        if !Settings::SHOW_DYNAMAX_SIZE
+          pbMessage(_INTL("SHOW_DYNAMAX_SIZE is set to 'false', so no Dynamax metrics need to be set."))
+        elsif pbConfirmMessage(_INTL("Are you sure you want to reposition all Dynamax sprites?"))
           styleCommands = [_INTL("Half back sprites (Gen 4 style)"), _INTL("Full back sprites (Gen 5 style)")]
           styleCommand = pbMessage(_INTL("What style of back sprites are you using?"), styleCommands, -1)
           next if styleCommand < 0
-          pbFadeOutIn {
-            scene = DynamaxSpritePositioner.new
-            scene.setSpriteFilter(filterCommand)
-            scene.setBackSpriteStyle(styleCommand)
-            screen = DynamaxSpritePositionerScreen.new(scene)
-            screen.pbStart
-          }
-        when 1  # Auto-set Dynamax metrics
-          if pbConfirmMessage(_INTL("Are you sure you want to automatically reposition all Dynamax sprites?"))
-            styleCommands = [_INTL("Half back sprites (Gen 4 style)"), _INTL("Full back sprites (Gen 5 style)")]
-            styleCommand = pbMessage(_INTL("What style of back sprites are you using?"), styleCommands, -1)
-            next if styleCommand < 0
-            msgwindow = pbCreateMessageWindow
-            pbMessageDisplay(msgwindow, _INTL("Repositioning all Dynamax sprites. Please wait."), false)
-            Graphics.update
-            pbDynamaxAutoPositionAll(styleCommand)
-            pbDisposeMessageWindow(msgwindow)
-          end
+          msgwindow = pbCreateMessageWindow
+          pbMessageDisplay(msgwindow, _INTL("Repositioning all Dynamax sprites. Please wait."), false)
+          Graphics.update
+          pbDynamaxAutoPositionAll(styleCommand)
+          pbDisposeMessageWindow(msgwindow)
         end
       end
-    else
-      pbMessage(_INTL("SHOW_DYNAMAX_SIZE is set to 'false', so no Dynamax metrics need to be set."))
     end
   }
 })

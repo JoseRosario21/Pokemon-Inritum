@@ -163,7 +163,7 @@ class Battle::Battler
     owner = @battle.pbGetOwnerIndexFromBattlerIndex(self.index)
     if @selectedMoveIsZMove && choice[2].damagingMove?
       @powerMoveIndex = choice[1]
-      choice[2] = choice[2].convert_zmove(self, @battle, specialUsage)
+      choice[2] = choice[2].convert_zmove(self, @battle, @powerMoveIndex, specialUsage)
       pbUseMove(choice, specialUsage)
     else
       pbUseMove(choice, specialUsage)
@@ -178,7 +178,7 @@ class Battle::Battler
     @lastMoveUsedIsZMove = false
     if choice[2].zMove? & !choice[2].specialUseZMove
       @powerMoveIndex = choice[1]
-      choice[2] = choice[2].convert_zmove(self, @battle, specialUsage)
+      choice[2] = choice[2].convert_zmove(self, @battle, @powerMoveIndex, specialUsage)
     end
     zmove_pbUseMove(choice, specialUsage)
     if @lastMoveUsed && !@lastMoveUsedIsZMove

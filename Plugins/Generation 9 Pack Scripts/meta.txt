@@ -1,11 +1,43 @@
 Name = Generation 9 Pack
-Version = 3.3.0
+Version = 3.3.3
 Essentials = 21.1
 Requires = v21.1 Hotfixes,1.0.9
 Website = https://www.eeveeexpo.com/threads/5817/
 Credits = Caruban
 
 # Change logs
+#############################################
+# 3.3.3
+#############################################
+# - Added New Mega Evolution forms PBS from base Pokemon Legends Z-A
+# - Added Nihil Light move PBS
+# - Added new alias for apply_rough_accuracy_modifiers to bypass evasion modifier of Nihil Light
+# - Added several new mega stone and mega pokemon form sprites
+# - Added the Commander's ability effect condition to allow Mega Evolution
+# - Fixed error when catching a pokemon at Pokemon Safari
+# - Fixed Fillet Away's target from NearOthers to User
+# - Fixed the unstopable ability condition from AIBattler instead of Battler for Doodle AI move handler
+#############################################
+# 3.3.2
+#############################################
+# - Added function to restore party's original held items after battle
+# - Added function to send player's stolen
+# - Edited Egg generator and form inharitance from getFormOnEggCreation handler
+# - Edited HitTwoToFiveTimes and HitTenTimes move handlers to change rand() into @battle.pbRandom()
+# - Fixed Commander Ability to hide tatsugiri's shadow while actived
+# - Removed double space from Ability Shield's description text
+# - Fixed several Pokémon icon's woobling animation
+#############################################
+# 3.3.1
+#############################################
+# - Added Chilly Reception move failure check, so it fails if the Pokémon cannot switch and under Hail or Primodial weather
+# - Added Silk Trap effect in pbEndOfRoundPhase
+# - Fixed Charge effect to ends only after using an Electric-type damaging move
+# - Fixed Chilly Reception MoveFailureCheck AI method
+# - Fixed pbCanInflictStatus? to preventing fainted Pokémon from being inflicted by Drowsy and Frostbite
+# - Fixed Psycho Shift error when used on the Pokémon that has a status condition other than Drowsy and Frostbite
+# - Simplified Chilly Reception MoveEffectScore AI method
+# - Updated Hoopa getForm and onSetForm handler
 #############################################
 # 3.3.0
 #############################################

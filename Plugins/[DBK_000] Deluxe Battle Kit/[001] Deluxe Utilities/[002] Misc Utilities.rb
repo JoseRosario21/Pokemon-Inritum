@@ -291,7 +291,7 @@ class Battle::Battler
     pbUpdate(true)
     @hp = @totalhp - oldDmg
     @effects[PBEffects::WeightChange] = 0 if Settings::MECHANICS_GENERATION >= 6
-    @mosaicChange = true if defined?(@mosaicChange)
+	self.battlerSprite.prepare_mosaic = true if defined?(self.battlerSprite)
     @battle.scene.pbChangePokemon(self, @pokemon)
     @battle.scene.pbRefreshOne(@index)
     @battle.pbDisplay(msg) if msg && msg != ""
@@ -448,6 +448,49 @@ class Battle::Battler
         break
       end
       pbSimpleFormChange(newForm, _INTL("{1} put on its {2}!", pbThis, maskName))
+    end
+  end
+end
+
+#===============================================================================
+# Trainer battle call that has the player select a number of Pokemon for battle.
+#===============================================================================
+class TrainerBattle
+  def self.select_start(size, *args)
+	size = 1 if size < 1
+	size = Settings::MAX_PARTY_SIZE if size > Settings::MAX_PARTY_SIZE
+    gender = (args[0].is_a?(NPCTrainer)) ? args[0].gender : GameData::TrainerType.get(args[0]).gender
+    g = (gender == 0) ? "\\b" : (gender == 1) ? "\\r" : ""
+    if $player.able_pokemon_count < size
+      pbMessage(_INTL("#{g}You don't have enough Pokémon in your party that can participate..."))
+      pbMessage(_INTL("#{g}Come back when you have enough Pokémon to battle with."))
+      return nil
+    else
+      new_party = nil
+      ruleset = PokemonRuleSet.new
+      ruleset.setNumber(size)
+      ruleset.addPokemonRule(AblePokemonRestriction.new)
+      pbFadeOutIn {
+        scene = PokemonParty_Scene.new
+        screen = PokemonPartyScreen.new(scene, $player.party)
+        new_party = screen.pbPokemonMultipleEntryScreenEx(ruleset)
+      }
+      if new_party
+        reserve = []
+        $player.party.each do |pkmn|
+          pID = pkmn.personalID
+          next if new_party.any? { |p| p.personalID == pID }
+          reserve.push(pkmn)
+        end
+        $player.party = new_party
+        outcome = TrainerBattle.start_core(*args)
+        $player.party += reserve
+        return outcome == 1
+      else
+        pbMessage(_INTL("#{g}Huh? Changed your mind?"))
+        pbMessage(_INTL("#{g}Come back when you have the right Pokéméon you want to battle with."))
+        return nil
+      end
     end
   end
 end
@@ -651,7 +694,7 @@ class PokemonEvolutionScene
       moves_to_learn.push(i[1])
     end
     if battler.pbOwnedByPlayer?
-	  pbBGMPlay("Evolution")
+      pbBGMPlay("Evolution")
       @pokemon.ready_to_evolve = false
       was_owned = $player.owned?(@newspecies)
       $player.pokedex.register(@pokemon) 
@@ -669,14 +712,14 @@ class PokemonEvolutionScene
           pbEndScreen(false) if moves_to_learn.length == 0
         end
       end
-	else
-	  $player.pokedex.set_seen(@newspecies)
+    else
+      $player.pokedex.set_seen(@newspecies)
     end
     moves_to_learn.each do |move|
       if battler.pbOwnedByPlayer?
         pbLearnMove(@pokemon, move, true) { pbUpdate }
-	  else
-	    @pokemon.learn_move(move)
+      else
+        @pokemon.learn_move(move)
       end
     end
     battler.moves.clear

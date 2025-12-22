@@ -999,7 +999,7 @@ MidbattleHandlers.add(:midbattle_triggers, "battlerSpecies",
     battler.pbUpdate(true)
     battler.name = speciesName if !battler.pokemon.nicknamed?
     battle.scene.pbRefreshOne(idxBattler)
-    battler.mosaicChange = true if defined?(battler.mosaicChange)
+    battler.battlerSprite.prepare_mosaic = true if defined?(battler.battlerSprite)
     battle.scene.pbChangePokemon(battler, battler.pokemon)
     battle.pbDisplay(msg.gsub(/\\PN/i, battle.pbPlayer.name)) if msg.is_a?(String)
     battler.pbOnLosingAbility(old_ability)
@@ -1287,6 +1287,10 @@ MidbattleHandlers.add(:midbattle_triggers, "battlerEffects",
         battler.effects[effect] = value
         PBDebug.log("     'battlerEffects': #{battler.name} (#{battler.index})'s #{id} effect set to #{value}")
         battle.pbDisplay(_INTL(msg, battler_name)) if msg
+        if id == :SmackDown && value && defined?(battler.battlerSprite)
+          next if battler.battlerSprite.vanishMode != 2
+          battle.scene.pbChangePokemon(battler, battler.visiblePokemon, 0)
+        end
       elsif $DELUXE_PBEFFECTS[:battler][:counter].include?(id)
         next if battler.effects[effect] == 0 && value == 0
         case id
@@ -1356,6 +1360,31 @@ MidbattleHandlers.add(:midbattle_triggers, "battlerEffects",
         battle.pbDisplay(_INTL(msg, battler_name)) if msg
       end
     end
+  }
+)
+
+#-------------------------------------------------------------------------------
+# Sets the Wish effect on a battler's position.
+#-------------------------------------------------------------------------------
+MidbattleHandlers.add(:midbattle_triggers, "battlerWish",
+  proc { |battle, idxBattler, idxTarget, params|
+    battler = battle.battlers[idxBattler]
+    next if !battler || battle.decision > 0
+    next if battle.positions[idxBattler].effects[PBEffects::Wish] > 0
+    if params.is_a?(Array)
+      count, amount = *params
+    elsif params.is_a?(Integer)
+      count = params
+      amount = (battler.totalhp / 2.0).round
+    else
+      count = 2
+      amount = (battler.totalhp / 2.0).round
+    end
+    battle.positions[idxBattler].effects[PBEffects::Wish]       = count
+    battle.positions[idxBattler].effects[PBEffects::WishAmount] = amount
+    battle.positions[idxBattler].effects[PBEffects::WishMaker]  = battler.pokemonIndex
+    PBDebug.log("     'battlerWish': Wish effect to trigger in #{count} turns on #{battler.name} (#{battler.index})'s position")
+    battle.pbDisplay(_INTL("{1} made a wish!", battler.pbThis))
   }
 )
 
@@ -1488,6 +1517,10 @@ MidbattleHandlers.add(:midbattle_triggers, "fieldEffects",
                 showMessage = true
               end
               battle.pbDisplay(_INTL("{1} couldn't stay airborne because of gravity!", b.pbThis)) if showMessage
+              if defined?(b.battlerSprite)
+                next if b.battlerSprite.vanishMode != 2
+                battle.scene.pbChangePokemon(b, b.visiblePokemon, 0)
+              end
             end
           end
         else
@@ -1663,12 +1696,14 @@ MidbattleHandlers.add(:midbattle_triggers, "changeBackdrop",
 #-------------------------------------------------------------------------------
 MidbattleHandlers.add(:midbattle_triggers, "changeDataboxes",
   proc { |battle, idxBattler, idxTarget, params|
-    next if battle.decision > 0
-    old_style = battle.databoxStyle || :None
+    next if battle.decision > 0 || battle.raidBattle?
+    old_style = battle.databoxStyle
     old_style = old_style.first if old_style.is_a?(Array)
     style = (params.is_a?(Array)) ? params.first : params
-    next if battle.raidBattle? && !GameData::DataboxStyle.exists?(style)
+    next if style == old_style
+    next if !style.nil? && !GameData::DataboxStyle.exists?(style)
+    next if style.nil? && battle.battlers.any? { |b| b.hasRaidShield? }
     battle.scene.pbRefreshStyle(*params)
-    PBDebug.log("     'changeDataboxes': changed databox style (#{old_style}=>#{style})") if style != old_style
+    PBDebug.log("     'changeDataboxes': changed databox style (#{old_style}=>#{style})")
   }
 )

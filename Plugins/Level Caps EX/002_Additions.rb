@@ -2,8 +2,17 @@
 # Rare Candy edits for Level Caps
 #-------------------------------------------------------------------------------
 ItemHandlers::UseOnPokemonMaximum.add(:RARECANDY, proc { |item, pkmn|
-  max_lv = LevelCapsEX.soft_cap? ? LevelCapsEX.level_cap : GameData::GrowthRate.max_level
-  next max_lv - pkmn.level
+  # Calculate maximum based on level caps
+  if LevelCapsEX.hard_cap? || LevelCapsEX.soft_cap?
+    max_lv = LevelCapsEX.level_cap
+    # Don't allow any if already at or above cap
+    next 0 if pkmn.level >= max_lv
+    next max_lv - pkmn.level
+  else
+    # No level cap active, use game maximum
+    max_lv = GameData::GrowthRate.max_level
+    next max_lv - pkmn.level
+  end
 })
 
 ItemHandlers::UseOnPokemon.add(:RARECANDY, proc { |item, qty, pkmn, scene|
@@ -29,9 +38,78 @@ ItemHandlers::UseOnPokemon.add(:RARECANDY, proc { |item, qty, pkmn, scene|
     scene.pbDisplay(_INTL("{1} refuses to eat the {2}.", pkmn.name, GameData::Item.get(item).name))
     next false
   end
-  # Level up
+  # Level up - respect level caps by leveling one at a time
   pbSEPlay("Pkmn level up")
-  pbChangeLevel(pkmn, pkmn.level + qty, scene)
+  target_level = pkmn.level + qty
+  actual_levels_gained = 0
+  
+  # Debug output
+  echoln "[Level Caps EX] DEBUG - Starting level: #{pkmn.level}, Target: #{target_level}, Qty: #{qty}"
+  echoln "[Level Caps EX] DEBUG - Hard cap: #{LevelCapsEX.hard_cap?}, Soft cap: #{LevelCapsEX.soft_cap?}"
+  echoln "[Level Caps EX] DEBUG - Level cap: #{LevelCapsEX.level_cap}, Bypass switch: #{$game_switches[LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH]}"
+  echoln "[Level Caps EX] DEBUG - Level cap mode: #{LevelCapsEX.level_cap_mode}"
+  echoln "[Level Caps EX] DEBUG - Variable #{LevelCapsEX::LEVEL_CAP_VARIABLE}: #{$game_variables[LevelCapsEX::LEVEL_CAP_VARIABLE]}, Variable #{LevelCapsEX::LEVEL_CAP_MODE_VARIABLE}: #{$game_variables[LevelCapsEX::LEVEL_CAP_MODE_VARIABLE]}"
+  # Debug: Check if constants exist and their values
+  if defined?(LevelCapsEX::LEVEL_CAP_VARIABLE)
+    echoln "[Level Caps EX] DEBUG - LEVEL_CAP_VARIABLE defined as: #{LevelCapsEX::LEVEL_CAP_VARIABLE}"
+  else
+    echoln "[Level Caps EX] DEBUG - LEVEL_CAP_VARIABLE not defined!"
+  end
+  if defined?(LevelCapsEX::LEVEL_CAP_MODE_VARIABLE)
+    echoln "[Level Caps EX] DEBUG - LEVEL_CAP_MODE_VARIABLE defined as: #{LevelCapsEX::LEVEL_CAP_MODE_VARIABLE}"
+  else
+    echoln "[Level Caps EX] DEBUG - LEVEL_CAP_MODE_VARIABLE not defined!"
+  end
+  
+  # Debug: Show what the level_cap method is actually using
+  echoln "[Level Caps EX] DEBUG - level_cap method result: #{LevelCapsEX.level_cap}"
+  echoln "[Level Caps EX] DEBUG - level_cap_mode method result: #{LevelCapsEX.level_cap_mode}"
+  
+  # Level up one at a time to respect level caps
+  qty.times do |i|
+    break if pkmn.level >= target_level
+    # Check level cap for both hard and soft caps
+    if LevelCapsEX.hard_cap? && pkmn.level >= LevelCapsEX.level_cap
+      echoln "[Level Caps EX] DEBUG - Stopped by hard cap at level #{pkmn.level}"
+      break
+    elsif LevelCapsEX.soft_cap? && pkmn.level >= LevelCapsEX.level_cap
+      echoln "[Level Caps EX] DEBUG - Stopped by soft cap at level #{pkmn.level}"
+      break  
+    end
+    
+    old_level = pkmn.level
+    echoln "[Level Caps EX] DEBUG - Attempt #{i+1}: Level #{old_level} -> #{old_level + 1}"
+    # Use direct level assignment to trigger level cap checks
+    pkmn.level = pkmn.level + 1
+    pkmn.calc_stats
+    echoln "[Level Caps EX] DEBUG - After level assignment: #{pkmn.level}"
+    actual_levels_gained += 1 if pkmn.level > old_level
+    
+    # Learn all moves learned at this level
+    moveList = pkmn.getMoveList
+    moveList.each do |m|
+      next if m[0] != pkmn.level
+      pbLearnMove(pkmn, m[1]) { scene.pbUpdate if scene.respond_to?(:pbUpdate) }
+    end
+    
+    # Check for evolution at new level
+    new_species = pkmn.check_evolution_on_level_up
+    if new_species
+      pbFadeOutInWithMusic do
+        evo = PokemonEvolutionScene.new
+        evo.pbStartScreen(pkmn, new_species)
+        evo.pbEvolution
+        evo.pbEndScreen
+        scene.pbRefresh if scene.respond_to?(:pbRefresh)
+      end
+    end
+  end
+  
+  # Show single message about total levels gained if multiple were used
+  if qty > 1 && actual_levels_gained > 0
+    scene.pbDisplay(_INTL("{1} gained {2} level(s) from {3} Rare Candies!", pkmn.name, actual_levels_gained, qty)) if scene.respond_to?(:pbDisplay)
+  end
+  
   scene.pbHardRefresh
   next true
 })
@@ -101,12 +179,17 @@ def pbGainExpFromExpCandy(pkmn, base_amt, qty, scene, item)
     return false
   end
   
-  # Berechne die maximale Exp, die das Pokémon erhalten kann
-  max_exp = LevelCapsEX.soft_cap? ? pkmn.growth_rate.minimum_exp_for_level(LevelCapsEX.level_cap) : pkmn.growth_rate.maximum_exp
+  # Calculate the maximum Exp the Pokemon can receive
+  # For both hard cap and soft cap, limit to level cap EXP
+  if LevelCapsEX.hard_cap? || LevelCapsEX.soft_cap?
+    max_exp = pkmn.growth_rate.minimum_exp_for_level(LevelCapsEX.level_cap)
+  else
+    max_exp = pkmn.growth_rate.maximum_exp
+  end
   exp_gain = base_amt * qty
   new_exp = pkmn.exp + exp_gain
   
-  # Wenn die neue Exp das Level Cap überschreiten würde, begrenze die Exp-Vergabe
+  # If the new Exp would exceed the level cap, limit the Exp gain
   if new_exp > max_exp
     exp_gain = max_exp - pkmn.exp
     if exp_gain <= 0
@@ -133,13 +216,16 @@ class Game_Variables
   def []=(variable_id, value)
     old_value = self[variable_id]
     ret = __level_caps__set_variable(variable_id, value)
+    
+    # Logging for level cap variables
     if value != old_value && LevelCapsEX::LOG_LEVEL_CAP_CHANGES
+      # Use direct numbers to avoid constant issues
       if variable_id == LevelCapsEX::LEVEL_CAP_VARIABLE
         echoln "Current Level Cap updated from Lv. #{old_value} to Lv. #{value}"
-      elsif variable_id == LevelCapsEX::LEVEL_CAP_MODE_VARIABLE && self[LevelCapsEX::LEVEL_CAP_VARIABLE] != 0
+      elsif variable_id == LevelCapsEX::LEVEL_CAP_MODE_VARIABLE
         mode_names = [
           "None",
-          "Hard Cap",
+          "Hard Cap", 
           "EXP Cap",
           "Obedience Cap"
         ]
@@ -167,7 +253,9 @@ end
 # Main Level Cap Module
 #-------------------------------------------------------------------------------
 module LevelCapsEX
-
+  # The constants should be loaded from 000_Config.rb
+  # Don't redefine them here - they come from the config file
+  
   module_function
 
   def level_cap
@@ -182,7 +270,9 @@ module LevelCapsEX
   end
 
   def hard_cap?
-    return level_cap_mode == 1 && $game_variables[LEVEL_CAP_VARIABLE] > 0
+    result = level_cap_mode == 1 && $game_variables[LEVEL_CAP_VARIABLE] > 0
+    echoln "[Level Caps EX] hard_cap? called: mode=#{level_cap_mode}, cap=#{$game_variables[LEVEL_CAP_VARIABLE]}, result=#{result}"
+    return result
   end
 
   def soft_cap?
@@ -192,7 +282,7 @@ module LevelCapsEX
   def hard_level_cap
     max_lv = Settings::MAXIMUM_LEVEL
     return max_lv if !$game_variables
-    lv_cap_mode = $game_variables[LevelCapsEX::LEVEL_CAP_MODE_VARIABLE]
+    lv_cap_mode = $game_variables[LEVEL_CAP_MODE_VARIABLE]
     lv_cap = $game_variables[LEVEL_CAP_VARIABLE]
     return max_lv if lv_cap > max_lv 
     return lv_cap if lv_cap > 0 && lv_cap_mode == 1
@@ -204,4 +294,48 @@ module LevelCapsEX
     return false if hard_cap? && pokemon.level >= level_cap
     return true
   end
+  
+  # Helper method for compatibility
+  def current_level_cap
+    cap_value = $game_variables ? $game_variables[LEVEL_CAP_VARIABLE] : nil
+    return cap_value if cap_value && cap_value > 0
+    return Settings::MAXIMUM_LEVEL
+  end
+  
+  # Check if Voltseon's Pause Menu exists
+  def voltseons_pause_menu_exists?
+    return defined?(VoltseonsPauseMenu_Scene)
+  end
+end
+
+#-------------------------------------------------------------------------------
+# Voltseon's Pause Menu Integration (if available)
+#-------------------------------------------------------------------------------
+if LevelCapsEX.voltseons_pause_menu_exists?
+  class VPM_LevelCapHud < Component
+    def start_component(viewport, menu)
+      super(viewport, menu)
+      @sprites["overlay"] = BitmapSprite.new(Graphics.width / 2, 32, viewport)
+      @sprites["overlay"].ox = @sprites["overlay"].bitmap.width
+      @sprites["overlay"].x = Graphics.width
+      @sprites["overlay"].y = 90
+      @base_color = $PokemonSystem.from_current_menu_theme(MENU_TEXTCOLOR, Color.new(248, 248, 248))
+      @shdw_color = $PokemonSystem.from_current_menu_theme(MENU_TEXTOUTLINE, Color.new(48, 48, 48))
+    end
+
+    def should_draw?; return true; end
+
+    def refresh
+      level_cap = LevelCapsEX.current_level_cap
+      text = _INTL("Current Lvl Cap: {1}", level_cap)
+      @sprites["overlay"].bitmap.clear
+      pbSetSystemFont(@sprites["overlay"].bitmap)
+      pbDrawTextPositions(@sprites["overlay"].bitmap, [
+        [text, (Graphics.width / 2) - 8, 12, 1, @base_color, @shdw_color]
+      ])
+    end
+  end
+
+  # Add the component to the menu if MENU_COMPONENTS is defined
+  MENU_COMPONENTS << :VPM_LevelCapHud if defined?(MENU_COMPONENTS)
 end

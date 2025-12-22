@@ -12,155 +12,155 @@ $DELUXE_PBEFFECTS = {
   # Effects that apply to the entire battlefield.
   #-----------------------------------------------------------------------------
   :field => {
-    :counter => [
-      :MudSportField,
-      :WaterSportField,
-      :Gravity,
-      :MagicRoom, 
-      :TrickRoom, 
-      :WonderRoom,
-      :FairyLock, 
-      :PayDay
-    ],
     :boolean => [
       :HappyHour,
       :IonDeluge
+    ],
+    :counter => [
+      :PayDay,
+      :FairyLock,
+      :Gravity,
+      :MagicRoom,
+      :WonderRoom,
+      :TrickRoom,
+      :MudSportField,
+      :WaterSportField
     ]
   },
   #-----------------------------------------------------------------------------
   # Effects that apply to one side of the field.
   #-----------------------------------------------------------------------------
   :team => {
+    :boolean => [
+      :CraftyShield,
+      :QuickGuard,
+      :WideGuard,
+      :MatBlock,
+      :StealthRock,
+      :Steelsurge,
+      :StickyWeb
+    ],
     :counter => [
+      :Spikes, 
+      :ToxicSpikes,
+      :Volcalith,
+      :VineLash,
+      :Wildfire,
+      :Cannonade,
+      :SeaOfFire,
+      :Rainbow, 
+      :Swamp, 
+      :Tailwind,
       :AuroraVeil,
-      :CheerDefense1,
-      :CheerDefense2,
-      :CheerDefense3,
-      :CheerOffense1,
-      :CheerOffense2,
-      :CheerOffense3,
       :Reflect,
       :LightScreen,
       :Safeguard,
       :Mist,
       :LuckyChant,
-      :Tailwind,
-      :Rainbow, 
-      :Swamp, 
-      :SeaOfFire,
-      :Spikes, 
-      :ToxicSpikes,
-      :Cannonade,
-      :VineLash, 
-      :Volcalith, 
-      :Wildfire
-    ],
+      :CheerDefense1,
+      :CheerDefense2,
+      :CheerDefense3,
+      :CheerOffense1,
+      :CheerOffense2,
+      :CheerOffense3
+    ]
+  },
+  #-----------------------------------------------------------------------------
+  # Effects that apply to a battler position.
+  #-----------------------------------------------------------------------------
+  :position => {
     :boolean => [
-      :StealthRock,
-      :Steelsurge,
-      :StickyWeb,
-      :CraftyShield,
-      :MatBlock,
-      :QuickGuard,
-      :WideGuard
+      :HealingWish,
+      :LunarDance,
+      :ZHealing
+    ],
+    :counter => [
+      :FutureSightCounter,
+      :Wish
     ]
   },
   #-----------------------------------------------------------------------------
   # Effects that apply to a battler.
   #-----------------------------------------------------------------------------
   :battler => {
-    :counter => [
-      :MagnetRise,
-      :HealBlock,
-      :Embargo,
-      :Taunt,
-      :Disable,
-      :Encore,
-      :Telekinesis,
-      :Splinters,
-      :Yawn,
-      :ThroatChop,
-      :LockOn,
-      :LaserFocus,
-      :HyperBeam,
-      :GlaiveRush,
-      :Stockpile,
-      :SlowStart,
-      :PerishSong,
-      :Syrupy,
-      :Charge,
-      :FocusEnergy,
-      :Toxic,
-      :Confusion,
-      :Outrage,
-      :Trapping,
-      :Uproar,
-      :WeightChange,
-      :Substitute,
-    ],
     :index => [
-      :Attract,
       :LeechSeed,
+      :Attract,
       :MeanLook,
       :JawLock, 
       :Octolock,
       :SkyDrop
     ],
     :boolean => [
-      :TwoTurnAttack,
+      :Endure,
       :AquaRing,
       :Ingrain,
       :Curse,
       :Nightmare,
       :SaltCure,
-      :Rage,
+      :Flinch,
       :Torment,
-      :GastroAcid,
       :Imprison,
+      :Snatch,
+      :Quash,
+      :Grudge,
+      :DestinyBond,
+      :GastroAcid,
+      :ExtraType,
+      :Electrify,
+      :Powder,
       :TarShot,
+      :MudSport,
+      :WaterSport,
+      :SmackDown,
+      :Roost,
+      :BurnUp,
+      :DoubleShock,
       :Foresight,
       :MiracleEye,
       :Minimize,
-      :NoRetreat,
-      :MudSport,
-      :WaterSport,
-      :Flinch,
-      :Snatch,
-      :Quash,
+      :Rage,
+      :HelpingHand,
+      :PowerTrick,
+      :MagicCoat,
       :Protect,
-      :Obstruct,
-      :KingsShield,
       :SpikyShield,
       :BanefulBunker,
-      :SilkTrap,
       :BurningBulwark,
-      :HelpingHand,
-      :PowerTrick, 
-      :Endure,
-      :Grudge,
-      :DestinyBond,
-      :Roost,
-      :SmackDown,
-      :BurnUp,
-      :DoubleShock,
-      :Electrify,
-      :ExtraType,
-      :MagicCoat,
-      :Powder
+      :KingsShield,
+      :Obstruct,
+      :SilkTrap,
+      :NoRetreat,
+      :TwoTurnAttack
     ],
-  },
-  #-----------------------------------------------------------------------------
-  # Effects that apply to a battler position.
-  #-----------------------------------------------------------------------------
-  :position => {
     :counter => [
-      :Wish,
-      :FutureSightCounter
-    ],
-    :boolean => [
-      :HealingWish,
-      :LunarDance,
-      :ZHealing
+      :Substitute,
+      :Toxic,
+      :Splinters,
+      :HealBlock,
+      :Confusion,
+      :Outrage,
+      :Uproar,
+      :ThroatChop,
+      :Encore,
+      :Disable,
+      :Taunt,
+      :Embargo,
+      :Charge,
+      :MagnetRise,
+      :Telekinesis,
+      :GlaiveRush,
+      :Syrupy,
+      :LockOn,
+      :LaserFocus,
+      :FocusEnergy,
+      :Stockpile,
+      :WeightChange,
+      :Trapping,
+      :HyperBeam,
+      :Yawn,
+      :PerishSong,
+      :SlowStart
     ]
   }
 }

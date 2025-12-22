@@ -487,7 +487,7 @@ end
 #-------------------------------------------------------------------------------
 class Pokemon  
   def hasUltraForm?
-    v = MultipleForms.hasFunction?(@species, "getUltraForm")
+    v = MultipleForms.call("getUltraForm", self)
     return !v.nil?
   end
   

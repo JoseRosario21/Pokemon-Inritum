@@ -216,3 +216,24 @@ MidbattleHandlers.add(:midbattle_triggers, "disableTera",
     PBDebug.log("     'disableTera': Terastallization #{value} for #{trainerName}")
   }
 )
+
+#-------------------------------------------------------------------------------
+# Changes a battler's Tera type.
+#-------------------------------------------------------------------------------
+MidbattleHandlers.add(:midbattle_triggers, "battlerTeraType",
+  proc { |battle, idxBattler, idxTarget, params|
+    battler = battle.battlers[idxBattler]
+    next if !battler || battler.fainted? || battle.decision > 0
+    next if params == battler.tera_type || battler.pokemon.has_forced_tera_type?
+    next if !GameData::Type.exists?(params) || GameData::Type.get(params).pseudo_type?
+    battler.pokemon.tera_type = params
+    if battler.tera?
+      battler.pokemon.makeTerastalForm
+      battler.pbUpdate
+      battle.scene.pbChangePokemon(idxBattler, battler.visiblePokemon)
+    end
+    typeName = GameData::Type.get(params).name
+    PBDebug.log("     'battlerTeraType': #{battler.name} (#{battler.index}) Tera type became #{typeName}")
+    battle.pbDisplay(_INTL("{1}'s Tera type changed to {2}!", battler.pbThis, typeName))
+  }
+)
