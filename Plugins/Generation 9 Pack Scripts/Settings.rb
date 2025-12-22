@@ -34,6 +34,17 @@ module Settings
   # (Spark, Volt Tackle, and Wild Charge)
   #-----------------------------------------------------------------------------
   ELECTROCUTE_MOVES_CURE_SLEEP = false
+
+  
+  #=============================================================================
+  # Held Item Settings
+  #=============================================================================
+  # When true, the party's original held items will be restored after battle,
+  # even if they were consumed or removed. Doesn't apply to consumed Berries.
+  # In addition, any items stolen from or received by wild Pokemon will be
+  # sent directly to the bag at the end of battle.
+  #-----------------------------------------------------------------------------
+  RESTORE_ITEMS_AFTER_BATTLE = true
   
 
   #=============================================================================

@@ -318,6 +318,52 @@ EventHandlers.add(:on_player_step_taken, :mirrorherb_step, proc {
   end
 })
 
+################################################################################
+# 
+# Edits to Egg generation for Tauros regional form inheritence.
+# 
+################################################################################
+
+class DayCare
+  module EggGenerator
+    module_function
+    
+    def generate(mother, father)
+      if mother.male? || father.female? || mother.genderless?
+        mother, father = father, mother
+      end
+      mother_data = [mother, mother.species_data.egg_groups.include?(:Ditto)]
+      father_data = [father, father.species_data.egg_groups.include?(:Ditto)]
+      species_parent = (mother_data[1]) ? father : mother
+      baby_species = determine_egg_species(species_parent.species, mother, father)
+      mother_data.push(mother.species_data.breeding_can_produce?(baby_species))
+      father_data.push(father.species_data.breeding_can_produce?(baby_species))
+      egg = generate_basic_egg(baby_species, species_parent)
+      inherit_form(egg, species_parent, mother_data, father_data)
+      inherit_nature(egg, mother, father)
+      inherit_ability(egg, mother_data, father_data)
+      inherit_moves(egg, mother_data, father_data)
+      inherit_IVs(egg, mother, father)
+      inherit_poke_ball(egg, mother_data, father_data)
+      set_shininess(egg, mother, father)
+      set_pokerus(egg)
+      egg.calc_stats
+      return egg
+    end
+    
+    def generate_basic_egg(species, species_parent)
+      egg = Pokemon.new(species, Settings::EGG_LEVEL)
+      egg.name           = _INTL("Egg")
+      egg.steps_to_hatch = egg.species_data.hatch_steps
+      egg.obtain_text    = _INTL("Day-Care Couple")
+      egg.happiness      = 120
+      egg.form           = 0 if species == :SINISTEA
+      new_form = MultipleForms.call("getFormOnEggCreation", egg, species_parent)
+      egg.form = new_form if new_form
+      return egg
+    end
+  end
+end
 
 ################################################################################
 # 
@@ -329,11 +375,55 @@ EventHandlers.add(:on_player_step_taken, :mirrorherb_step, proc {
 #-------------------------------------------------------------------------------
 # Regional forms upon creating an egg.
 #-------------------------------------------------------------------------------
+MultipleForms.register(:RATTATA, {
+  "getFormOnEggCreation" => proc { |pkmn, parent|
+    if $game_map
+      map_pos = $game_map.metadata&.town_map_position
+      if map_pos
+        form = 0
+        case map_pos[0]
+        #-----------------------------------------------------------------------
+        when 1  # Alola region
+          case pkmn.species
+          when :RATTATA, :SANDSHREW, :VULPIX, :DIGLETT, :MEOWTH, :GEODUDE, :GRIMER
+            form = 1
+          end
+        #-----------------------------------------------------------------------
+        when 2  # Galar region
+          case pkmn.species
+          when :PONYTA, :SLOWPOKE, :FARFETCHD, :ARTICUNO, :ZAPDOS, :MOLTRES, :CORSOLA, :ZIGZAGOON, :YAMASK, :STUNFISK
+            form = 1
+          when :MEOWTH, :DARUMAKA
+            form = 2
+          end
+        #-----------------------------------------------------------------------
+        when 3  # Hisui region
+          case pkmn.species
+          when :GROWLITHE, :VOLTORB, :QWILFISH, :SNEASEL, :ZORUA
+            form = 1
+          end
+        #-----------------------------------------------------------------------
+        when 4  # Paldea region
+          case pkmn.species
+          when :WOOPER
+            form = 1
+          when :TAUROS
+            form = (parent.form == 0) ? 1 : parent.form
+          end
+        end
+        next form if form > 0 && GameData::Species.get_species_form(pkmn.species, form).form == form
+      end
+    end
+    next 0
+  }
+})
+
 MultipleForms.copy(:RATTATA, :SANDSHREW, :VULPIX, :DIGLETT, :MEOWTH, :GEODUDE, :GRIMER,      # Alolan
-                   :PONYTA, :FARFETCHD, :CORSOLA, :ZIGZAGOON, :DARUMAKA, :YAMASK, :STUNFISK, # Galarian                                   
+                   :PONYTA, :FARFETCHD, :CORSOLA, :ZIGZAGOON, :YAMASK, :STUNFISK,            # Galarian                                   
                    :SLOWPOKE, :ARTICUNO, :ZAPDOS, :MOLTRES,                                  # Galarian (DLC)
-                   :WOOPER, :TAUROS                                                          # Paldean
-                  )                                                
+                   :GROWLITHE, :VOLTORB, :QWILFISH, :SNEASEL, :ZORUA,                        # Hisuian
+                   :TAUROS, :WOOPER                                                          # Paldean
+                  )                                             
 
 #-------------------------------------------------------------------------------
 # Species with regional evolutions (Hisuian forms).
@@ -403,6 +493,50 @@ MultipleForms.register(:GIRATINA, {
 MultipleForms.register(:SHAYMIN, {
   "getForm" => proc { |pkmn|
     next 0 if pkmn.fainted? || [:FROZEN, :FROSTBITE].include?(pkmn.status) || PBDayNight.isNight?
+  }
+})
+
+#-------------------------------------------------------------------------------
+# Hoopa - Unbound form.
+#-------------------------------------------------------------------------------
+MultipleForms.register(:HOOPA, {
+  "getForm" => proc { |pkmn|
+    if Settings::MECHANICS_GENERATION < 9 && (!pkmn.time_form_set ||
+       pbGetTimeNow.to_i > pkmn.time_form_set.to_i + (60 * 60 * 24 * 3))   # 3 days
+      next 0
+    end
+  },
+  "onSetForm" => proc { |pkmn, form, oldForm|
+    pkmn.time_form_set = (form > 0) ? pbGetTimeNow.to_i : nil if Settings::MECHANICS_GENERATION < 9
+    # Move Change
+    form_moves = [
+      :HYPERSPACEHOLE,    # Confined form
+      :HYPERSPACEFURY,    # Unbound form
+    ]
+    # Find a known move that should be forgotten
+    old_move_index = -1
+    pkmn.moves.each_with_index do |move, i|
+      next if !form_moves.include?(move.id)
+      old_move_index = i
+      break
+    end
+    # Determine which new move to learn (if any)
+    new_move_id = form_moves[form]
+    new_move_id = nil if !GameData::Move.exists?(new_move_id)
+    new_move_id = nil if pkmn.hasMove?(new_move_id)
+    # Forget a known move (if relevant) and learn a new move (if relevant)
+    if old_move_index >= 0
+      old_move_name = pkmn.moves[old_move_index].name
+      if new_move_id.nil?
+        # Just forget the old move
+        pkmn.forget_move_at_index(old_move_index)
+      else
+        # Replace the old move with the new move (keeps the same index)
+        pkmn.moves[old_move_index].id = new_move_id
+        new_move_name = pkmn.moves[old_move_index].name
+        pbMessage("\\se[]" + _INTL("{1} learned {2}!", pkmn.name, new_move_name) + "\\se[Pkmn move learnt]")
+      end
+    end
   }
 })
 
@@ -529,5 +663,39 @@ MultipleForms.register(:TERAPAGOS, {
   "getDataPageInfo" => proc { |pkmn|
     next if pkmn.form < 2
     next [pkmn.form, 1]
+  }
+})
+
+# Zygarde - Mega Zygarde form.
+#-------------------------------------------------------------------------------
+MultipleForms.register(:ZYGARDE, {
+  "changePokemonOnMegaEvolve" => proc { |battler, battle|
+    if GameData::Move.exists?(:NIHILLIGHT)
+      if [4, 5].include?(battler.form)
+        battler.eachMoveWithIndex do |m, i|
+          next if m.id != :COREENFORCER
+          pokemon_move = battler.pokemon.moves[i]
+          pokemon_move.id = :NIHILLIGHT
+          battler_move = Battle::Move.from_pokemon_move(battle, pokemon_move)
+          battler.moves[i] = battler_move
+          if battle.choices[battler.index][1] == i
+            battle.choices[battler.index][2] = battler_move 
+            battle.pbDisplay(_INTL("{1}'s {2} transform into {3}!", battler.pbThis,
+                              GameData::Move.get(:COREENFORCER).name, 
+                              GameData::Move.get(:NIHILLIGHT).name
+                            ))
+            break
+          end
+        end
+      end
+    end
+  },
+  "getMegaMoves" => proc { |pkmn|
+    next { :COREENFORCER => :NIHILLIGHT }
+  },
+  "changePokemonOnLeavingBattle" => proc { |pkmn, battle, usedInBattle, endBattle|
+    if GameData::Move.exists?(:COREENFORCER) && endBattle
+      pkmn.moves.each { |move| move.id = :COREENFORCER if move.id == :NIHILLIGHT }
+    end
   }
 })
