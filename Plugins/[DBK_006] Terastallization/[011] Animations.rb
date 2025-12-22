@@ -25,19 +25,18 @@ class Battle::Scene::Animation::BattlerTerastallize < Battle::Scene::Animation
     #---------------------------------------------------------------------------
     # Gets trainer data from battler index (non-wild only).
     if !@battler.wild?
-      items = []
       trainer_item = :TERAORB
       trainer = @battle.pbGetOwnerFromBattlerIndex(idxBattler)
-      @trainer_file = GameData::TrainerType.front_sprite_filename(trainer.trainer_type)
-      GameData::Item.each { |item| items.push(item.id) if item.has_flag?("TeraOrb") }
       if @battle.pbOwnedByPlayer?(idxBattler)
-        items.each do |item|
+        @trainer_file = GameData::TrainerType.player_front_sprite_filename(trainer.trainer_type)
+        @battle.tera_orbs.each do |item|
           next if !$bag.has?(item)
           trainer_item = item
         end
       else
+        @trainer_file = GameData::TrainerType.front_sprite_filename(trainer.trainer_type)
         trainer_items = @battle.pbGetOwnerItems(idxBattler)
-        items.each do |item|
+        @battle.tera_orbs.each do |item|
           next if !trainer_items&.include?(item)
           trainer_item = item
         end

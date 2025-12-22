@@ -28,15 +28,9 @@ MenuHandlers.add(:battle_rules_menu, :noTerastallize, {
   }
 })
 
-MenuHandlers.add(:debug_menu, :deluxe_plugin_settings, {
-  "name"        => _INTL("Other plugin settings..."),
-  "parent"      => :deluxe_plugins_menu,
-  "description" => _INTL("Settings for various features implemented by add-on plugins.")
-})
-
 MenuHandlers.add(:debug_menu, :deluxe_tera_settings, {
   "name"        => _INTL("Terastal settings..."),
-  "parent"      => :deluxe_plugin_settings,
+  "parent"      => :deluxe_plugins_menu,
   "description" => _INTL("Edit the player's Tera Orb and Pokémon Tera types."),
   "effect"      => proc {
     loop do

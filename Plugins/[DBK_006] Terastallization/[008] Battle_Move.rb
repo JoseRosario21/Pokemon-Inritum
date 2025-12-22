@@ -88,11 +88,24 @@ class Battle::Move
   #-----------------------------------------------------------------------------
   alias tera_pbDisplayUseMessage pbDisplayUseMessage
   def pbDisplayUseMessage(user)
-    if user.tera? && damagingMove? && user.typeTeraBoosted?(pbCalcType(user))
+    if user.tera? && damagingMove? && user.typeTeraBoosted?(pbCalcType(user)) && !(chargingTurnMove? && @chargingTurn)
       @battle.pbDeluxeTriggers(user.index, nil, "BeforeTeraMove", user.species, user.tera_type, @id)
       @battle.scene.pbTeraBurst(user.index)
     end
     tera_pbDisplayUseMessage(user)
+  end
+  
+  #-----------------------------------------------------------------------------
+  # Updates the display type of Tera Blast/Starstorm in the fight menu.
+  #-----------------------------------------------------------------------------
+  alias tera_display_type display_type
+  def display_type(battler)
+    case @function_code
+    when "CategoryDependsOnHigherDamageTera",      # Tera Blast
+         "TerapagosCategoryDependsOnHigherDamage"  # Tera Starstorm
+      return pbBaseType(battler)
+    end
+    return tera_display_type(battler)
   end
 end
 
@@ -212,7 +225,7 @@ end
 class Battle::Move::TypeIsUserFirstType < Battle::Move
   def pbBaseType(user)
     userTypes = user.pokemon.types
-    return userTypes[1] || userTypes[0] || @type
+    return userTypes.first || @type
   end
 end
 

@@ -2,6 +2,7 @@
 # Additions to the Battle class.
 #===============================================================================
 class Battle
+  attr_reader   :tera_orbs
   attr_accessor :terastallize, :boosted_tera_types
   
   #-----------------------------------------------------------------------------

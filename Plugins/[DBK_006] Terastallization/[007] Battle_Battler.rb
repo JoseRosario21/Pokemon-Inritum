@@ -146,13 +146,14 @@ class Battle::Battler
   # Utility for calculating a battler's stats to determine Tera Blast's category.
   #----------------------------------------------------------------------------- 
   def getOffensiveStats
-    stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8]
-    stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2]
+    max_stage  = STAT_STAGE_MAXIMUM
+    stageMul   = STAT_STAGE_MULTIPLIERS
+    stageDiv   = STAT_STAGE_DIVISORS
     atk        = self.attack
-    atkStage   = self.stages[:ATTACK] + 6
+    atkStage   = self.stages[:ATTACK] + max_stage
     realAtk    = (atk.to_f * stageMul[atkStage] / stageDiv[atkStage]).floor
     spAtk      = self.spatk
-    spAtkStage = self.stages[:SPECIAL_ATTACK] + 6
+    spAtkStage = self.stages[:SPECIAL_ATTACK] + max_stage
     realSpAtk  = (spAtk.to_f * stageMul[spAtkStage] / stageDiv[spAtkStage]).floor
     return realAtk, realSpAtk
   end
