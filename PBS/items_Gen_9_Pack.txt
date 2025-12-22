@@ -243,7 +243,7 @@ NamePlural = Ability Shields
 Pocket = 1
 Price = 20000
 Flags = Fling_30
-Description = An item to be held by a Pokémon. This  shield protects the holder from having its Ability changed by others.
+Description = An item to be held by a Pokémon. This shield protects the holder from having its Ability changed by others.
 #-------------------------------
 [CLEARAMULET]
 Name = Clear Amulet
@@ -523,3 +523,896 @@ Pocket = 8
 Price = 0
 Flags = KeyItem
 Description = A proof copy of the exploration notes, along with Briar's thoughts covering the Area Zero Underdepths.
+#-------------------------------
+# Pokemon Legends Z-A
+#-------------------------------
+[CLEFABLITE]
+Name = Clefablite
+NamePlural = Clefablites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Clefable hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[VICTREEBELITE]
+Name = Victreebelite
+NamePlural = Victreebelites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Victreebel hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[STARMINITE]
+Name = Starminite
+NamePlural = Starminites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Starmie hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[DRAGONINITE]
+Name = Dragoninite
+NamePlural = Dragoninites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Dragonite hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MEGANIUMITE]
+Name = Meganiumite
+NamePlural = Meganiumites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Meganium hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[FERALIGITE]
+Name = Feraligite
+NamePlural = Feraligites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Feraligatr hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[SKARMORITE]
+Name = Skarmorite
+NamePlural = Skarmorites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Skarmory hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[FROSLASSITE]
+Name = Froslassite
+NamePlural = Froslassites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Froslass hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[EMBOARITE]
+Name = Emboarite
+NamePlural = Emboarites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Haven Emboar hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[EXCADRITE]
+Name = Excadrite
+NamePlural = Excadrites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Haven Excadrill hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[SCOLIPITE]
+Name = Scolipite
+NamePlural = Scolipites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Scolipede hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[SCRAFTINITE]
+Name = Scraftinite
+NamePlural = Scraftinites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Scrafty hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[EELEKTROSSITE]
+Name = Eelektrossite
+NamePlural = Eelektrossites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Eelektross hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[CHANDELURITE]
+Name = Chandelurite
+NamePlural = Chandelurites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Chandelure hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[CHESNAUGHTITE]
+Name = Chesnaughtite
+NamePlural = Chesnaughtites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Chesnaught hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[DELPHOXITE]
+Name = Delphoxite
+NamePlural = Delphoxites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Delphox hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[GRENINJITE]
+Name = Greninjite
+NamePlural = Greninjites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Greninja hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[PYROARITE]
+Name = Pyroarite
+NamePlural = Pyroarites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Pyroar hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[FLOETTITE]
+Name = Floettite
+NamePlural = Floettites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have special Floette hold it to Mega Evolve.
+#-------------------------------
+[MALAMARITE]
+Name = Malamarite
+NamePlural = Malamarites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Malamar hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[BARBARACITE]
+Name = Barbaracite
+NamePlural = Barbaracites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Barbaracle hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[DRAGALGITE]
+Name = Dragalgite
+NamePlural = Dragalgites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Dragalge hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[HAWLUCHANITE]
+Name = Hawluchanite
+NamePlural = Hawluchanites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Hawlucha hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[ZYGARDITE]
+Name = Zygardite
+NamePlural = Zygardites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Complete Forme Zygarde hold it to Mega Evolve.
+#-------------------------------
+[DRAMPANITE]
+Name = Drampanite
+NamePlural = Drampanites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Drampa hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[FALINKSITE]
+Name = Falinksite
+NamePlural = Falinksites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Falinks hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MEGASHARD]
+Name = Mega Shard
+NamePlural = Mega Shards
+Pocket = 1
+Price = 0
+Description = A mysterious shard found by smashing Mega Crystals. It seems that some people collect these shards.
+#-------------------------------
+[REDCANARIPLUSHLV1]
+Name = Red Canari Plush
+NamePlural = Red Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a red charm. It slightly boosts the Exp. Points that Pokémon can get.
+#-------------------------------
+[REDCANARIPLUSHLV2]
+Name = Red Canari Plush
+NamePlural = Red Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a red charm. It boosts the Exp. Points that Pokémon can get.
+#-------------------------------
+[REDCANARIPLUSHLV3]
+Name = Red Canari Plush
+NamePlural = Red Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a red charm. It greatly boosts the Exp. Points that Pokémon can get.
+#-------------------------------
+[GOLDCANARIPLUSHLV1]
+Name = Gold Canari Plush
+NamePlural = Gold Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a gold charm. It slightly increases the battle's prize money you get.
+#-------------------------------
+[GOLDCANARIPLUSHLV2]
+Name = Gold Canari Plush
+NamePlural = Gold Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a gold charm. It increases the battle's prize money you get.
+#-------------------------------
+[GOLDCANARIPLUSHLV3]
+Name = Gold Canari Plush
+NamePlural = Gold Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a gold charm. It greatly increases the battle's prize money you get.
+#-------------------------------
+[PINKCANARIPLUSHLV1]
+Name = Pink Canari Plush
+NamePlural = Pink Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a pink charm. It slightly increases the number of Mega Shards you get.
+#-------------------------------
+[PINKCANARIPLUSHLV2]
+Name = Pink Canari Plush
+NamePlural = Pink Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a pink charm. It increases the number of Mega Shards you get.
+#-------------------------------
+[PINKCANARIPLUSHLV3]
+Name = Pink Canari Plush
+NamePlural = Pink Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a pink charm. It greatly increases the number of Mega Shards you get.
+#-------------------------------
+[GREENCANARIPLUSHLV1]
+Name = Green Canari Plush
+NamePlural = Green Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a green charm. It makes you a little less likely to black out from taking damage.
+#-------------------------------
+[GREENCANARIPLUSHLV2]
+Name = Green Canari Plush
+NamePlural = Green Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a green charm. It makes you a less likely to black out from taking damage.
+#-------------------------------
+[GREENCANARIPLUSHLV3]
+Name = Green Canari Plush
+NamePlural = Green Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a green charm. It makes you a lot less likely to black out from taking damage.
+#-------------------------------
+[BLUECANARIPLUSHLV1]
+Name = Blue Canari Plush
+NamePlural = Blue Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a blue charm. It slightly boosts your chance of catching Pokémon.
+#-------------------------------
+[BLUECANARIPLUSHLV2]
+Name = Blue Canari Plush
+NamePlural = Blue Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a blue charm. It boosts your chance of catching Pokémon.
+#-------------------------------
+[BLUECANARIPLUSHLV3]
+Name = Blue Canari Plush
+NamePlural = Blue Canari Plushies
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A Canari plush holding a blue charm. It greatly boosts your chance of catching Pokémon.
+#-------------------------------
+[HEATRANITE]
+Name = Heatranite
+NamePlural = Heatranites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Heatran hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[DARKRANITE]
+Name = Darkranite
+NamePlural = Darkranites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Darkrai hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[ZERAORITE]
+Name = Zeraorite
+NamePlural = Zeraorites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Zeraora hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[RAICHUNITEX]
+Name = Raichunite X
+NamePlural = Raichunite Xs
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Raichu hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[RAICHUNITEY]
+Name = Raichunite Y
+NamePlural = Raichunite Ys
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Raichu hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[CHIMECHITE]
+Name = Chimechite
+NamePlural = Chimechites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Chimecho hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[ABSOLITEZ]
+Name = Absolite Z
+NamePlural = Absolite Zs
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Absol hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[STARAPTITE]
+Name = Staraptite
+NamePlural = Staraptites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Staraptor hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[GARCHOMPITEZ]
+Name = Garchompite Z
+NamePlural = Garchompite Zs
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Garchomp hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[LUCARIONITEZ]
+Name = Lucarionite Z
+NamePlural = Lucarionite Zs
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Lucario hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[GOLURKITE]
+Name = Golurkite
+NamePlural = Golurkites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Golurk hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MEOWSTICITE]
+Name = Meowsticite
+NamePlural = Meowsticites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Meowstic hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[CRABOMINITE]
+Name = Crabominite
+NamePlural = Crabominites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Crabominable hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[GOLISOPITE]
+Name = Golisopite
+NamePlural = Golisopites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Golisopod hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MAGEARNITE]
+Name = Magearnite
+NamePlural = Magearnites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Magearna hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[SCOVILLAINITE]
+Name = Scovillainite
+NamePlural = Scovillainites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Scovillain hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[BAXCALIBRITE]
+Name = Baxcalibrite
+NamePlural = Baxcalibrites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Baxcalibur hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[TATSUGIRINITE]
+Name = Tatsugirinite
+NamePlural = Tatsugirinites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Tatsugiri hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[GLIMMORANITE]
+Name = Glimmoranite
+NamePlural = Glimmoranites
+Pocket = 1
+Price = 0
+BPPrice = 50
+Flags = MegaStone,Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Glimmora hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[HYPERCHERIBERRY]
+Name = Hyper Cheri Berry
+NamePlural = Hyper Cheri Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. Its spicy kick is great when added to curries.
+#-------------------------------
+[HYPERCHESTOBERRY]
+Name = Hyper Chesto Berry
+NamePlural = Hyper Chesto Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. Its dry flavor offers a good balance in sweet cream.
+#-------------------------------
+[HYPERPECHABERRY]
+Name = Hyper Pecha Berry
+NamePlural = Hyper Pecha Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. Its sweet flavor makes it a great ingredient for meringue.
+#-------------------------------
+[HYPERRAWSTBERRY]
+Name = Hyper Rawst Berry
+NamePlural = Hyper Rawst Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. Its bitter bite works beautifully in chocolate.
+#-------------------------------
+[HYPERASPEARBERRY]
+Name = Hyper Aspear Berry
+NamePlural = Hyper Aspear Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. Its sour bite makes it perfect for stewing into a confiture.
+#-------------------------------
+[HYPERORANBERRY]
+Name = Hyper Oran Berry
+NamePlural = Hyper Oran Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in curries, meringue, chocolate, and confitures.
+#-------------------------------
+[HYPERPERSIMBERRY]
+Name = Hyper Persim Berry
+NamePlural = Hyper Persim Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in curries, cream, chocolate, and confitures.
+#-------------------------------
+[HYPERLUMBERRY]
+Name = Hyper Lum Berry
+NamePlural = Hyper Lum Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in curries, cream, meringue, and confitures.
+#-------------------------------
+[HYPERSITRUSBERRY]
+Name = Hyper Sitrus Berry
+NamePlural = Hyper Sitrus Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in curries, cream, meringue, and chocolate.
+#-------------------------------
+[HYPERPOMEGBERRY]
+Name = Hyper Pomeg Berry
+NamePlural = Hyper Pomeg Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in curries and meringue.
+#-------------------------------
+[HYPERKELPSYBERRY]
+Name = Hyper Kelpsy Berry
+NamePlural = Hyper Kelpsy Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in cream and chocolate.
+#-------------------------------
+[HYPERQUALOTBERRY]
+Name = Hyper Qualot Berry
+NamePlural = Hyper Qualot Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in meringue and confitures.
+#-------------------------------
+[HYPERHONDEWBERRY]
+Name = Hyper Hondew Berry
+NamePlural = Hyper Hondew Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in cream and confitures.
+#-------------------------------
+[HYPERGREPABERRY]
+Name = Hyper Grepa Berry
+NamePlural = Hyper Grepa Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in curries.
+#-------------------------------
+[HYPERTAMATOBERRY]
+Name = Hyper Tamato Berry
+NamePlural = Hyper Tamato Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in cream.
+#-------------------------------
+[HYPEROCCABERRY]
+Name = Hyper Occa Berry
+NamePlural = Hyper Occa Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in meringue.
+#-------------------------------
+[HYPERPASSHOBERRY]
+Name = Hyper Passho Berry
+NamePlural = Hyper Passho Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in chocolate.
+#-------------------------------
+[HYPERWACANBERRY]
+Name = Hyper Wacan Berry
+NamePlural = Hyper Wacan Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in confitures.
+#-------------------------------
+[HYPERRINDOBERRY]
+Name = Hyper Rindo Berry
+NamePlural = Hyper Rindo Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in curries.
+#-------------------------------
+[HYPERYACHEBERRY]
+Name = Hyper Yache Berry
+NamePlural = Hyper Yache Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in cream.
+#-------------------------------
+[HYPERCHOPLEBERRY]
+Name = Hyper Chople Berry
+NamePlural = Hyper Chople Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in meringue.
+#-------------------------------
+[HYPERKEBIABERRY]
+Name = Hyper Kebia Berry
+NamePlural = Hyper Kebia Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in chocolate.
+#-------------------------------
+[HYPERSHUCABERRY]
+Name = Hyper Shuca Berry
+NamePlural = Hyper Shuca Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in confitures.
+#-------------------------------
+[HYPERCOBABERRY]
+Name = Hyper Coba Berry
+NamePlural = Hyper Coba Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in curries.
+#-------------------------------
+[HYPERPAYAPABERRY]
+Name = Hyper Payapa Berry
+NamePlural = Hyper Payapa Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in cream.
+#-------------------------------
+[HYPERTANGABERRY]
+Name = Hyper Tanga Berry
+NamePlural = Hyper Tanga Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in meringue.
+#-------------------------------
+[HYPERCHARTIBERRY]
+Name = Hyper Charti Berry
+NamePlural = Hyper Charti Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in chocolate.
+#-------------------------------
+[HYPERKASIBBERRY]
+Name = Hyper Kasib Berry
+NamePlural = Hyper Kasib Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in confitures.
+#-------------------------------
+[HYPERHABANBERRY]
+Name = Hyper Haban Berry
+NamePlural = Hyper Haban Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in cream and meringue.
+#-------------------------------
+[HYPERCOLBURBERRY]
+Name = Hyper Colbur Berry
+NamePlural = Hyper Colbur Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in cream and confitures.
+#-------------------------------
+[HYPERBABIRIBERRY]
+Name = Hyper Babiri Berry
+NamePlural = Hyper Babiri Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in chocolate and confitures.
+#-------------------------------
+[HYPERCHILANBERRY]
+Name = Hyper Chilan Berry
+NamePlural = Hyper Chilan Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in curries and chocolate.
+#-------------------------------
+[HYPERROSELIBERRY]
+Name = Hyper Roseli Berry
+NamePlural = Hyper Roseli Berries
+Pocket = 5
+Price = 0
+Flags = Berry
+Description = A mysterious Berry found in Hyperspace Lumiose. It goes well in curries and confitures.
+#-------------------------------
+[CANARIBREAD]
+Name = Canari Bread
+NamePlural = Canari Breads
+Pocket = 2
+Price = 0
+FieldUse = OnPokemon
+BattleUse = OnPokemon
+Flags = Fling_30
+Description = A bun made to look like Canari's face. It can be used to restore 100 HP to a Pokémon.
+#-------------------------------
+[LUMIOSIANBUTTER]
+Name = Lumiosian Butter
+NamePlural = Lumiosian Butters
+PortionName = pack of Lumiosian Butter
+PortionNamePlural = packs of Lumiosian Butter
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = Some of the best butter produced in the Kalos region. Highly sought after by the cooks of Lumiose.
+#-------------------------------
+[NICEBUTTER]
+Name = Nice Butter
+NamePlural = Nice Butters
+PortionName = pack of Nice Butter
+PortionNamePlural = packs of Nice Butter
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A nice pack of butter found in Hyperspace Lumiose. With it, you could make higher quality donuts.
+#-------------------------------
+[GREATBUTTER]
+Name = Great Butter
+NamePlural = Great Butters
+PortionName = pack of Great Butter
+PortionNamePlural = packs of Great Butter
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A great pack of butter found in Hyperspace Lumiose. With it, you could make higher quality donuts.
+#-------------------------------
+[AMAZINGBUTTER]
+Name = Amazing Butter
+NamePlural = Amazing Butters
+PortionName = pack of Amazing Butter
+PortionNamePlural = packs of Amazing Butter
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = An amazing pack of butter found in Hyperspace Lumiose. With it, you could make higher quality donuts.
+#-------------------------------
+[SUPREMEBUTTER]
+Name = Supreme Butter
+NamePlural = Supreme Butters
+PortionName = pack of Supreme Butter
+PortionNamePlural = packs of Supreme Butter
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A supreme pack of butter found in Hyperspace Lumiose. With it, you could make higher quality donuts.
+#-------------------------------
+[HYPERSPACEBUTTER]
+Name = Hyperspace Butter
+NamePlural = Hyperspace Butters
+PortionName = pack of Hyperspace Butter
+PortionNamePlural = packs of Hyperspace Butter
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = The absolute ultimate butter found in Hyperspace Lumiose. With it, you could make higher quality donuts.
+#-------------------------------
+[HOENNIANSALT]
+Name = Hoennian Salt
+NamePlural = Hoennian Salts
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A coarse salt harvested in the Hoenn region. A tiny pinch will impart a wondrous depth of flavor.
+#-------------------------------
+[EPICENOIRE]
+Name = Épice Noire
+NamePlural = Épice Noires
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A mysterious, highly prized spice of the Rust Syndicate that elevates any dish to dreamlike perfection.
+#-------------------------------
+[ARBOLIVAOIL]
+Name = Arboliva Oil
+NamePlural = Arboliva Oils
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = Oil from Paldea's Arboliva, said to taste heavenly. How Corbeau obtained it remains a mystery.
+#-------------------------------
