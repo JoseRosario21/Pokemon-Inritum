@@ -408,19 +408,23 @@ class Battle::Scene::Animation
     battleBG = addSprite(@sprites["battle_bg"])
     battleBG.moveTone(delay, 4, tone)
     battle.allBattlers.each do |b|
-      battler = addSprite(@sprites["pokemon_#{b.index}"], PictureOrigin::BOTTOM)
-      box = addSprite(@sprites["dataBox_#{b.index}"])
-      if !PluginManager.installed?("[DBK] Animated Pokémon System")
-        shadow = addSprite(@sprites["shadow_#{b.index}"], PictureOrigin::CENTER)
-        shadow.moveTone(delay, 4, tone)
+      if @sprites["pokemon_#{b.index}"].visible
+        battler = addSprite(@sprites["pokemon_#{b.index}"], PictureOrigin::BOTTOM)
+        if !PluginManager.installed?("[DBK] Animated Pokémon System")
+          shadow = addSprite(@sprites["shadow_#{b.index}"], PictureOrigin::CENTER)
+          shadow.moveTone(delay, 4, tone)
+        end
+        if b.index == idxBattler
+          battler.setSE(delay, sound) if sound
+          battler.moveTone(delay, 4, Tone.new(255, 255, 255, 255))
+        else
+          battler.moveTone(delay, 4, tone)
+        end
       end
-      if b.index == idxBattler
-        battler.setSE(delay, sound) if sound
-        battler.moveTone(delay, 4, Tone.new(255, 255, 255, 255))
-      else
-        battler.moveTone(delay, 4, tone)
-      end 
-      box.moveTone(delay, 4, tone)
+      if @sprites["dataBox_#{b.index}"].visible
+        box = addSprite(@sprites["dataBox_#{b.index}"])
+        box.moveTone(delay, 4, tone)
+      end
     end
   end
   
@@ -432,16 +436,20 @@ class Battle::Scene::Animation
     battleBG = addSprite(@sprites["battle_bg"])
     battleBG.moveTone(delay, 6, tone)
     battle.allBattlers.each do |b|
-      battler = addSprite(@sprites["pokemon_#{b.index}"], PictureOrigin::BOTTOM)
-      box = addSprite(@sprites["dataBox_#{b.index}"])
-      if !PluginManager.installed?("[DBK] Animated Pokémon System")
-        shadow = addSprite(@sprites["shadow_#{b.index}"], PictureOrigin::CENTER)
-        shadow.moveOpacity(delay, 6, 255)
-        shadow.moveTone(delay, 6, tone)
+      if @sprites["pokemon_#{b.index}"].visible
+        battler = addSprite(@sprites["pokemon_#{b.index}"], PictureOrigin::BOTTOM)
+        battler.moveOpacity(delay, 6, 255)
+        battler.moveTone(delay, 6, tone) 
+        if !PluginManager.installed?("[DBK] Animated Pokémon System")
+          shadow = addSprite(@sprites["shadow_#{b.index}"], PictureOrigin::CENTER)
+          shadow.moveOpacity(delay, 6, 255)
+          shadow.moveTone(delay, 6, tone)
+        end
       end
-      battler.moveOpacity(delay, 6, 255)
-      battler.moveTone(delay, 6, tone) 
-      box.moveTone(delay, 6, tone)
+      if @sprites["dataBox_#{b.index}"].visible
+        box = addSprite(@sprites["dataBox_#{b.index}"])
+        box.moveTone(delay, 6, tone)
+      end
     end
   end
   
@@ -525,6 +533,9 @@ class Battle::Scene::Animation
     trainer_x, trainer_y = @pictureSprites[spriteTRAINER].x, @pictureSprites[spriteTRAINER].y
     pictureTRAINER.setXY(delay, trainer_x, trainer_y)
     pictureTRAINER.setZ(delay, @pictureSprites[spriteTRAINER].z)
+    if defined?(@pictureSprites[spriteTRAINER].to_last_frame)
+      @pictureSprites[spriteTRAINER].to_last_frame
+    end
     pictureITEM = []
     for i in [ [2, 0], [-2, 0], [0, 2], [0, -2], [2, 2], [-2, -2], [2, -2], [-2, 2], [0, 0] ]
       outline = addNewSprite(0, 0, item, PictureOrigin::BOTTOM)

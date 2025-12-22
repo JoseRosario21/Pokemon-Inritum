@@ -95,6 +95,17 @@ class Battle::Battler
   end
   
   #-----------------------------------------------------------------------------
+  # Defines whether the battler is considered to have special boss immunities.
+  #-----------------------------------------------------------------------------
+  def hasBossImmunity?(*args)
+    return true if isRaidBoss?
+    return true if hasRaidShield?
+    return false if args.length == 0
+    args.each { |arg| return true if @pokemon&.immunities.include?(arg) }
+    return false
+  end
+  
+  #-----------------------------------------------------------------------------
   # Aliased to make PP infinite if HP has been boosted.
   #-----------------------------------------------------------------------------
   alias dx_pbReducePP pbReducePP
@@ -237,7 +248,7 @@ class Battle::Battler
         target.effects[PBEffects::Grudge] = false
       end
       if target.effects[PBEffects::DestinyBond] && target.fainted? &&
-         (user.dynamax? || user.pokemon.immunities.include?(:OHKO))
+         (user.dynamax? || user.hasBossImmunity?(:OHKO))
         target.effects[PBEffects::DestinyBond] = false
       end
     end
@@ -276,7 +287,7 @@ class Battle
   alias dx_pbCanRun? pbCanRun?
   def pbCanRun?(idxBattler)
     battler = @battlers[idxBattler]
-    return false if battler.pokemon.immunities.include?(:ESCAPE) || battler.isRaidBoss?
+    return false if battler.hasBossImmunity?(:ESCAPE)
     return dx_pbCanRun?(idxBattler)
   end
   

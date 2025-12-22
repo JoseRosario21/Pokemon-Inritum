@@ -707,12 +707,14 @@ class Battle::Battler
   alias dx_pbBeginTurn pbBeginTurn
   def pbBeginTurn(_choice)
     dx_pbBeginTurn(_choice)
+	return if !@pokemon
     @battle.pbDeluxeTriggers(self, nil, "TurnStart", @turnCount, @species, *@pokemon.types)
   end
   
   alias dx_pbEndTurn pbEndTurn
   def pbEndTurn(_choice)
     dx_pbEndTurn(_choice)
+	return if !@pokemon
     @battle.pbDeluxeTriggers(self, nil, "TurnEnd", @turnCount, @species, *@pokemon.types)
   end
 end
