@@ -93,4 +93,24 @@ module QuestModule
     :RewardString => "nil"
   }
 
+  Chapter2 = {
+    :ID => "5",
+    :Name => "Chapter 2 - Uncover the truth",
+    :QuestGiver => "nil",
+    :Stage1 => "Travel to the Dark Forest",
+    :Stage2 => "Search Zapffe Falls",
+    :Stage3 => "Escape the cave",
+    :Stage4 => "Fight Howard",
+    :Stage5 => "Catch the boat in Lumoria Town",
+    :Stage6 => "Report to George",
+    :Location1 => "Stuot Lab",
+    :Location2 => "Stuot Lab",
+    :Location3 => "Stuot Lab",
+    :Location4 => "Olive Residency",
+    :Location5 => "Route 1 Park",
+    :Location6 => "Feldspar Cave",
+    :QuestDescription => "Chapter 2 story",
+    :RewardString => "nil"
+  }
+
 end
