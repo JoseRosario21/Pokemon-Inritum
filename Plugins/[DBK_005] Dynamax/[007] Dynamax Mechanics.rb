@@ -176,6 +176,7 @@ MidbattleHandlers.add(:midbattle_triggers, "disableDynamax",
 ################################################################################
 
 class Battle
+  attr_reader   :dynamax_bands
   attr_accessor :dynamax
   
   #-----------------------------------------------------------------------------

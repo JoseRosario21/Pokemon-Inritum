@@ -131,21 +131,28 @@ module GameData
     #---------------------------------------------------------------------------
     # Returns a random compatible Z-Crystal for an inputted Pokemon object.
     #---------------------------------------------------------------------------
-    def self.get_compatible_crystal(pkmn)
+    def self.get_compatible_crystal(pkmn, get_array = false)
       crystals = []
       self.each do |item|
         next if !item.is_zcrystal?
+        next if pkmn.item_id == item.id
         if item.has_zmove_combo?
           species = (item.has_flag?("UsableByAllForms")) ? pkmn.species : pkmn.species_data.id
           next if !item.zmove_species.include?(species)
-          return item.id if pkmn.moves.include?(item.zmove_base_move)
+          next if !pkmn.hasMove?(item.zmove_base_move)
         else
-          next if !pkmn.moves.any? { |m| m.power > 0 && m.type == item.zmove_type }
+          move_types = []
+          if !get_array && pkmn.moves.any? { |m| m.power > 0 }
+            pkmn.moves.each { |m| move_types.push(m.type) if m.power > 0 }
+          else
+            pkmn.moves.each { |m| move_types.push(m.type) }
+          end
+          next if !move_types.include?(item.zmove_type)
         end
         crystals.push(item.id)
       end
-      return :NORMALIUMZ if crystals.empty?
-      return crystals.sample
+      crystals.push(:NORMALIUMZ) if crystals.empty?
+      return (get_array) ? crystals : crystals.sample
     end
   end
 end

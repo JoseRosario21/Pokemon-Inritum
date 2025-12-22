@@ -52,8 +52,10 @@ class Battle::Scene
     xpos = 0
     ypos = 78
     move = battler.moves[cw.index].clone
-    if battler.dynamax? || specialAction == :dynamax && cw.mode == 2
-      move = move.convert_dynamax_move(battler, @battle)
+    if specialAction == :zmove && cw.mode == 2
+      move = move.convert_zmove(battler, @battle, cw.index, false)
+    elsif battler.dynamax? || specialAction == :dynamax && cw.mode == 2
+      move = move.convert_dynamax_move(battler, @battle, cw.index)
     end
     powBase   = accBase   = priBase   = effBase   = BASE_LIGHT
     powShadow = accShadow = priShadow = effShadow = SHADOW_LIGHT

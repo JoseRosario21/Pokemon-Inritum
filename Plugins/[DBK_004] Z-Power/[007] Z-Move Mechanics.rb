@@ -175,6 +175,7 @@ MidbattleHandlers.add(:midbattle_triggers, "disableZMoves",
 ################################################################################
 
 class Battle
+  attr_reader   :z_rings
   attr_accessor :zMove
   
   #-----------------------------------------------------------------------------

@@ -51,24 +51,25 @@ class Battle::Scene::Animation::BattlerDynamax < Battle::Scene::Animation
     setPokemonSpriteData
     #---------------------------------------------------------------------------
     # Gets trainer data from battler index.
-    items = []
-    trainer_item = :DYNAMAXBAND
-    trainer = @battle.pbGetOwnerFromBattlerIndex(idxBattler)
-    @trainer_file = GameData::TrainerType.front_sprite_filename(trainer.trainer_type)
-    GameData::Item.each { |item| items.push(item.id) if item.has_flag?("DynamaxBand") }
-    if @battle.pbOwnedByPlayer?(idxBattler)
-      items.each do |item|
-        next if !$bag.has?(item)
-        trainer_item = item
+    if !@battler.wild?
+      trainer_item = :DYNAMAXBAND
+      trainer = @battle.pbGetOwnerFromBattlerIndex(idxBattler)
+      if @battle.pbOwnedByPlayer?(idxBattler)
+        @trainer_file = GameData::TrainerType.player_front_sprite_filename(trainer.trainer_type)
+        @battle.dynamax_bands.each do |item|
+          next if !$bag.has?(item)
+          trainer_item = item
+        end
+      else
+        @trainer_file = GameData::TrainerType.front_sprite_filename(trainer.trainer_type)
+        trainer_items = @battle.pbGetOwnerItems(idxBattler)
+        @battle.dynamax_bands.each do |item|
+          next if !trainer_items&.include?(item)
+          trainer_item = item
+        end
       end
-    else
-      trainer_items = @battle.pbGetOwnerItems(idxBattler)
-      items.each do |item|
-        next if !trainer_items&.include?(item)
-        trainer_item = item
-      end
+      @item_file = "Graphics/Items/" + trainer_item.to_s
     end
-    @item_file = "Graphics/Items/" + trainer_item.to_s
     #---------------------------------------------------------------------------
     # Gets background and animation data.
     @path = Settings::DELUXE_GRAPHICS_PATH

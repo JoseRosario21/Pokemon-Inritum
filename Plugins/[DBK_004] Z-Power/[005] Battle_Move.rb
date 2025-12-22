@@ -51,8 +51,8 @@ class Battle::Move
   # Returns true if this move is a Z-Move or a Z-Powered status move.
   #-----------------------------------------------------------------------------
   def zMove?
-	move = GameData::Move.try_get(@id)
-	return false if !move
+    move = GameData::Move.try_get(@id)
+    return false if !move
     return move.zMove? || @status_zmove
   end
   
@@ -142,12 +142,13 @@ class Battle::Move
   #-----------------------------------------------------------------------------
   # For converting a selected Z-Move into a Z-Move of a different type.
   #-----------------------------------------------------------------------------
-  def convert_zmove(battler, battle, specialUsage)
+  def convert_zmove(battler, battle, idxMove = -1, specialUsage)
     if ["TypeDependsOnUserIVs", 
         "TypeAndPowerDependOnUserBerry"].include?(@function_code)
       newtype = @type
     else
-      newtype = pbCalcType(battler)
+      baseMove = battler.baseMoves[idxMove] || self
+      newtype = baseMove.pbCalcType(battler)
     end
     if specialUsage || newtype != @type && GameData::Type.exists?(newtype)
       zhash = GameData::Move.get_generic_zmoves
@@ -171,7 +172,7 @@ class Battle::Move
       zmove.power = self.calc_zmove_power if zmove.power == 1
       zmove.category = self.realMove.category 
     end
-    if statusMove? && id == zmove.id
+    if statusMove? && @id == zmove.id
       zmove.name = "Z-" + @name
       zmove.short_name = (Settings::SHORTEN_MOVES && zmove.name.length > 16) ? zmove.name[0..12] + "..." : zmove.name
     end
