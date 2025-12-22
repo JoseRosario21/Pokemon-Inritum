@@ -456,3 +456,9 @@ Name = XP-18 Simulation
 Gender = Male
 BaseMoney = 0
 SkillLevel = 50
+#-------------------------------
+[GYM_LEADER_HOWARD]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+SkillLevel = 100
