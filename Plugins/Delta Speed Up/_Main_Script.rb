@@ -89,10 +89,10 @@ def pbGetInterpreter
 end
 
 def pbResetInterpreterWaitCount
-  @interpreter.pbRefreshWaitCount if @interpreter && IsParallel
+  @interpreter.pbRefreshWaitCount if @interpreter && parallel?
 end
 
-def IsParallel
+def parallel?
   return @trigger == 4
 end  
 end  
