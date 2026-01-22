@@ -152,6 +152,11 @@ Name = Scientist
 Gender = Male
 BaseMoney = 48
 #-------------------------------
+[SCIENTIST_F]
+Name = Scientist
+Gender = Female
+BaseMoney = 48
+#-------------------------------
 [SUPERNERD]
 Name = Super Nerd
 Gender = Male

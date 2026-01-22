@@ -23,7 +23,7 @@ LoseText = Pft, you just got lucky!
 Pokemon = RATTATA,7
 Pokemon = SANDSHREW,5
 #-------------------------------
-[SCIENTIST,Harry]
+[SCIENTIST_F,Henrietta]
 LoseText = My prediction was wrong.
 Pokemon = VOLTORB,3
 Pokemon = MAGNEMITE,4
