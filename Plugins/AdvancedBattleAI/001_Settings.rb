@@ -35,6 +35,9 @@ module AdvancedBattleAI
   # Win condition identification - AI identifies how to win and plays toward it
   ENABLE_WIN_CONDITION = true
 
+  # Move prediction - AI predicts what opponent will do and plays around it
+  ENABLE_MOVE_PREDICTION = true
+
   #-----------------------------------------------------------------------------
   # Skill Thresholds - Minimum skill level for features to activate
   # Default Essentials skill ranges: 0=Wild, 1-31=Basic, 32-47=Medium, 48-99=High, 100+=Best
@@ -123,6 +126,7 @@ end
 # HazardSmart      - Enables advanced hazard management
 # FieldAware       - Enables field effect integration
 # WinConditionAware - Enables win condition identification and strategy
+# PredictMoves     - Enables move prediction system
 
 #===============================================================================
 # Utility methods for checking if features are enabled
@@ -182,6 +186,11 @@ module AdvancedBattleAI
       return false unless ENABLE_WIN_CONDITION
       return true if ai_trainer.has_skill_flag?("WinConditionAware")
       return skill >= SKILL_THRESHOLD_SETUP
+
+    when :move_prediction
+      return false unless ENABLE_MOVE_PREDICTION
+      return true if ai_trainer.has_skill_flag?("PredictMoves")
+      return skill >= SKILL_THRESHOLD_FULL  # High skill requirement for prediction
     end
 
     return false
