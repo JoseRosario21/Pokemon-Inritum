@@ -169,12 +169,12 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("DoublePowerIfTargetStatu
 #===============================================================================
 Battle::AI::Handlers::MoveFailureCheck.add("SplintersTargetGen8AddSpikesGen9",
   proc { |move, user, ai, battle|
-    next user.pbOpposingSide.effects[PBEffects::Spikes] >= 3 && Settings::MECHANICS_GENERATION >= 9
+    next false  # Damaging move - never fails (damage always works)
   }
 )
-Battle::AI::Handlers::MoveFailureAgainstTargetCheck.add("SplintersTargetGen8AddStealthRocksGen9",
+Battle::AI::Handlers::MoveFailureAgainstTargetCheck.add("SplintersTargetGen8AddSpikesGen9",
   proc { |move, user, target, ai, battle|
-    next Settings::MECHANICS_GENERATION < 9 && target.effects[PBEffects::Splinters] > 0
+    next false  # Damaging move - never fails against target (damage always works)
   }
 )
 Battle::AI::Handlers::MoveEffectScore.add("SplintersTargetGen8AddSpikesGen9",
@@ -209,14 +209,17 @@ Battle::AI::Handlers::MoveEffectScore.add("SplintersTargetGen8AddSpikesGen9",
 #===============================================================================
 # Stone Axe
 #===============================================================================
+# NOTE: Stone Axe is a 90 power damaging move that also sets Stealth Rock.
+# It should NEVER be marked as "failed" - the damage always works even if
+# Stealth Rock is already on the field. The original check was incorrect.
 Battle::AI::Handlers::MoveFailureCheck.add("SplintersTargetGen8AddStealthRocksGen9",
   proc { |move, user, ai, battle|
-    next user.pbOpposingSide.effects[PBEffects::StealthRock] && Settings::MECHANICS_GENERATION >= 9
+    next false  # Damaging move - never fails (damage always works)
   }
 )
 Battle::AI::Handlers::MoveFailureAgainstTargetCheck.add("SplintersTargetGen8AddStealthRocksGen9",
   proc { |move, user, target, ai, battle|
-    next Settings::MECHANICS_GENERATION < 9 && target.effects[PBEffects::Splinters] > 0
+    next false  # Damaging move - never fails against target (damage always works)
   }
 )
 Battle::AI::Handlers::MoveEffectScore.add("SplintersTargetGen8AddStealthRocksGen9",

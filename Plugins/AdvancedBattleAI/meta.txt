@@ -1,0 +1,5 @@
+Name         = Advanced Battle AI
+Version      = 1.0.0
+Essentials   = 21.1
+Website      = https://github.com/pokemon-inritum/advanced-battle-ai
+Credits      = BloodyNeonz
