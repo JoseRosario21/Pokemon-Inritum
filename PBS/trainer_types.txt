@@ -152,6 +152,11 @@ Name = Scientist
 Gender = Male
 BaseMoney = 48
 #-------------------------------
+[SCIENTIST_F]
+Name = Scientist
+Gender = Female
+BaseMoney = 48
+#-------------------------------
 [SUPERNERD]
 Name = Super Nerd
 Gender = Male
@@ -462,3 +467,11 @@ Name = Gym Leader
 Gender = Male
 BaseMoney = 100
 SkillLevel = 100
+BattleBGM = As The Cicada's Cry
+#-------------------------------
+[INQUISITOR]
+Name = Inquisitor
+Gender = Male
+BaseMoney = 100
+SkillLevel = 100
+BattleBGM = Crisis of Faith

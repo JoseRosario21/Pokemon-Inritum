@@ -16,7 +16,7 @@ class Battle::Field_darkforest < Battle::Field
         next true if type == :GRASS
       },
       [:power_multiplier, 1.2, _INTL("The forest amplifies the buzz!")] => proc { |user, target, numTargets, move, type, power, mults, aiCheck|
-        next true if %i[BUGBITE BUGBUZZ LEECHLIFE PINMISSILE SILVERWIND STRUGGLEBUG].include?(move.id)
+        next true if %i[BUGBITE BUGBUZZ LEECHLIFE PINMISSILE SILVERWIND STRUGGLEBUG POLLENPUFF].include?(move.id)
       },
       [:power_multiplier, 1.2, _INTL("The tree of life grows...")] => proc { |user, target, numTargets, move, type, power, mults, aiCheck|
         next true if %i[ALLURINGVOICE DISARMINGVOICE FAIRYWIND MOONBLAST SPIRITBREAK SPRINGTIDESTORM].include?(move.id)

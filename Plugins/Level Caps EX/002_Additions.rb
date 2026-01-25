@@ -271,7 +271,6 @@ module LevelCapsEX
 
   def hard_cap?
     result = level_cap_mode == 1 && $game_variables[LEVEL_CAP_VARIABLE] > 0
-    echoln "[Level Caps EX] hard_cap? called: mode=#{level_cap_mode}, cap=#{$game_variables[LEVEL_CAP_VARIABLE]}, result=#{result}"
     return result
   end
 
