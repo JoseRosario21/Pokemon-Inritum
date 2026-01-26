@@ -94,7 +94,7 @@ class PokemonSummary_Scene
     case @page
     when 4
       commands[cmdCheckMoves = commands.length] = _INTL("Check Moves") if !@pokemon.moves.empty?
-      commands[cmdLearnMoves = commands.length] = _INTL("Remember Moves") if @pokemon.can_relearn_move?
+      commands[cmdLearnMoves = commands.length] = _INTL("Remember Moves") if Settings::SUMMARY_MOVE_RELEARNER && @pokemon.can_relearn_move?
       commands[cmdForgetMove = commands.length] = _INTL("Forget Moves") if @pokemon.moves.length > 1
       commands[cmdTeachTMs   = commands.length] = _INTL("Use TM's")
     else

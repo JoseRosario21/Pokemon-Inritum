@@ -395,7 +395,7 @@ Pokemon = ZANGOOSE,18
     AbilityIndex = 2
     Item = TOXICORB
     Nature = JOLLY
-    IV = 31,31,31,31,31,31
+    IV = 20,20,20,20,20,20
     EV = 6,126,0,126,0,0
 #-------------------------------
 [MERCENARY,Will]
@@ -495,3 +495,20 @@ Pokemon = RIBOMBEE,25
     Nature = MODEST
     IV = 31,0,31,31,31,31
     EV = 6,0,0,252,252,0
+#-------------------------------
+[INQUISITOR,Code M]
+LoseText = You had to resist didn't you...
+Pokemon = MURKROW,19
+    Moves = CONFUSERAY,WINGATTACK,THIEF
+    AbilityIndex = 2
+    IV = 0,15,0,15,0,0
+    EV = 0,126,0,126,0,0
+Pokemon = DROWZEE,19
+    Moves = HYPNOSIS,CONFUSION,DISABLE
+    AbilityIndex = 0
+    IV = 0,0,0,15,15,0
+    EV = 126,0,0,0,0,126
+Pokemon = GASTLY,20
+    Moves = NIGHTSHADE,HYPNOSIS,MEANLOOK,CURSE
+    IV = 0,0,0,15,15,0
+    EV = 0,0,0,126,126,0
