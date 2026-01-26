@@ -111,7 +111,7 @@ class PokemonSummary_Scene
       when :nickname then commands[cmd] = _INTL("Nickname")      if Settings::MECHANICS_GENERATION >= 9 && !@pokemon.foreign?
       when :pokedex  then commands[cmd] = _INTL("View Pokédex")  if $player.has_pokedex
       when :moves    then commands[cmd] = _INTL("Check Moves")   if Settings::MECHANICS_GENERATION >= 9 && !@pokemon.moves.empty?
-      when :remember then commands[cmd] = _INTL("Remember Move") if Settings::MECHANICS_GENERATION >= 9 && @pokemon.can_relearn_move?
+      when :remember then commands[cmd] = _INTL("Remember Move") if Settings::MECHANICS_GENERATION >= 9 && @pokemon.can_relearn_move? && Settings::SUMMARY_MOVE_RELEARNER
       when :forget   then commands[cmd] = _INTL("Forget Move")   if Settings::MECHANICS_GENERATION >= 9 && @pokemon.moves.length > 1
       when :tms      then commands[cmd] = _INTL("Use TM's")      if Settings::MECHANICS_GENERATION >= 9 && $bag.has_compatible_tm?(@pokemon)
       when :mark     then commands[cmd] = _INTL("Mark")

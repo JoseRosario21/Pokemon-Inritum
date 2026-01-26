@@ -37,6 +37,15 @@ module Settings
 
   
   #=============================================================================
+  # Summary Screen Settings
+  #=============================================================================
+  # When true, allows Pokemon to relearn moves directly from the Summary screen
+  # without needing to visit the Move Relearner NPC.
+  #-----------------------------------------------------------------------------
+  SUMMARY_MOVE_RELEARNER = false
+
+
+  #=============================================================================
   # Held Item Settings
   #=============================================================================
   # When true, the party's original held items will be restored after battle,
