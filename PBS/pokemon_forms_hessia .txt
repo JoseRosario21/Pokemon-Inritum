@@ -44,18 +44,23 @@ Types = STEEL,ELECTRIC
 #-------------------------------
 [METANG,1]
 FormName = Hessian
+Types = STEEL,ELECTRIC
 #-------------------------------
 [METAGROSS,2]
 FormName = Hessian
+Types = STEEL,ELECTRIC
 #-------------------------------
 [ARON,1]
 FormName = Hessian
+Types = ROCK,FAIRY
 #-------------------------------
 [LAIRON,1]
 FormName = Hessian
+Types = ROCK,FAIRY
 #-------------------------------
 [AGGRON,2]
 FormName = Hessian
+Types = ROCK,FAIRY
 #-------------------------------
 [POOCHYENA,1]
 FormName = Hessian
@@ -67,9 +72,12 @@ BaseStats = 85,105,95,40,40,55
 #-------------------------------
 [LITWICK,1]
 FormName = Hessian
+Types = WATER,GRASS
 #-------------------------------
 [LAMPENT,1]
 FormName = Hessian
+Types = WATER,GRASS
 #-------------------------------
 [CHANDELURE,2]
 FormName = Hessian
+Types = WATER,GRASS
