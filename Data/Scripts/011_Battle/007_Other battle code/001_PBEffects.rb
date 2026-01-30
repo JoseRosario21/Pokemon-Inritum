@@ -132,7 +132,8 @@ module PBEffects
   Wish                      = 706
   WishAmount                = 707
   WishMaker                 = 708
-  NeuralLink                = 709
+  # Note: 709 is used by Z-Power plugin for ZHealing
+  NeuralLink                = 710
 
   #=============================================================================
   # These effects apply to a side

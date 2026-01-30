@@ -72,7 +72,8 @@ $DELUXE_PBEFFECTS = {
     :boolean => [
       :HealingWish,
       :LunarDance,
-      :ZHealing
+      :ZHealing,
+      :NeuralLink
     ],
     :counter => [
       :FutureSightCounter,

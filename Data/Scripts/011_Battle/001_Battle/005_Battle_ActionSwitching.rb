@@ -425,8 +425,8 @@ class Battle
       if battler.pbCanRaiseStatStage?(:ATTACK, battler) ||
          battler.pbCanRaiseStatStage?(:DEFENSE, battler)
         pbDisplay(_INTL("{1} received data from its predecessor's neural link!", battler.pbThis))
-        battler.pbRaiseStatStage(:ATTACK, 1, battler, false)
-        battler.pbRaiseStatStage(:DEFENSE, 1, battler, false)
+        battler.pbRaiseStatStage(:ATTACK, 1, battler, true)
+        battler.pbRaiseStatStage(:DEFENSE, 1, battler, true)
       end
       position.effects[PBEffects::NeuralLink] = false
     end
