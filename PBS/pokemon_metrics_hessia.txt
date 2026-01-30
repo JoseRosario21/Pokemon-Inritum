@@ -44,3 +44,102 @@ ShadowSize = 2
 DmaxBackSprite = 0,0
 DmaxFrontSprite = 5,14
 DmaxShadowX = 0
+#-------------------------------
+[BELDUM,1]
+BackSprite = 0,54
+FrontSprite = -1,14
+ShadowX = 0
+ShadowSize = 1
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,23
+DmaxShadowX = 0
+#-------------------------------
+[METANG,1]
+BackSprite = 0,56
+FrontSprite = 0,16
+ShadowX = 0
+ShadowSize = 2
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 2,21
+DmaxShadowX = 0
+#-------------------------------
+[METAGROSS,2]
+BackSprite = 0,62
+FrontSprite = -1,29
+ShadowX = 0
+ShadowSize = 3
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 1,41
+DmaxShadowX = 0
+#-------------------------------
+[ARON,1]
+BackSprite = 0,58
+FrontSprite = -1,37
+ShadowX = 0
+ShadowSize = 1
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,41
+DmaxShadowX = 0
+#-------------------------------
+[LAIRON,1]
+BackSprite = 0,54
+FrontSprite = 0,30
+ShadowX = 0
+ShadowSize = 2
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -1,36
+DmaxShadowX = 0
+#-------------------------------
+[AGGRON,2]
+BackSprite = 0,48
+FrontSprite = -7,16
+ShadowX = 0
+ShadowSize = 3
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -6,15
+DmaxShadowX = 0
+#-------------------------------
+[POOCHYENA,1]
+BackSprite = 0,54
+FrontSprite = 0,32
+ShadowX = 0
+ShadowSize = 1
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,34
+DmaxShadowX = 0
+#-------------------------------
+[MIGHTYENA,1]
+BackSprite = 0,48
+FrontSprite = 2,22
+ShadowX = 0
+ShadowSize = 2
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -1,23
+DmaxShadowX = 0
+#-------------------------------
+[LITWICK,1]
+BackSprite = 0,52
+FrontSprite = -2,33
+ShadowX = 0
+ShadowSize = 1
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -3,49
+DmaxShadowX = 0
+#-------------------------------
+[LAMPENT,1]
+BackSprite = 0,54
+FrontSprite = 0,17
+ShadowX = 0
+ShadowSize = 2
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 6,28
+DmaxShadowX = 0
+#-------------------------------
+[CHANDELURE,2]
+BackSprite = 0,32
+FrontSprite = -3,5
+ShadowX = 0
+ShadowSize = 2
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,21
+DmaxShadowX = 0

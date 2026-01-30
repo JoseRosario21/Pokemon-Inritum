@@ -6,7 +6,7 @@
 
 module Settings
   # The version of your game. It has to adhere to the MAJOR.MINOR.PATCH format.
-  GAME_VERSION = "1.1.1"
+  GAME_VERSION = "2.0.0"
 
   # The generation that the battle system follows. Used throughout the battle
   # scripts, and also by some other settings which are used in and out of battle
@@ -32,9 +32,6 @@ module Settings
       "Ajax Lasnamae",
       "Gothmonkey",
       "Silly Robot Man",
-      "Sunny",
-      "Syntaxx",
-      "Dada",
       "just_a_gameaddict",
       "Wilder"
     ]

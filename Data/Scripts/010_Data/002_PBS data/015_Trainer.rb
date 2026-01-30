@@ -39,7 +39,8 @@ module GameData
       "Shiny"        => [:shininess,       "b"],
       "SuperShiny"   => [:super_shininess, "b"],
       "Shadow"       => [:shadowness,      "b"],
-      "Ball"         => [:poke_ball,       "e", :Item]
+      "Ball"         => [:poke_ball,       "e", :Item],
+      "Zeta"         => [:zeta,            "b"]
     }
 
     extend ClassMethodsSymbols
@@ -143,6 +144,7 @@ module GameData
         pkmn.gender = pkmn_data[:gender] || ((trainer.male?) ? 0 : 1)
         pkmn.shiny = (pkmn_data[:shininess]) ? true : false
         pkmn.super_shiny = (pkmn_data[:super_shininess]) ? true : false
+        pkmn.zeta = (pkmn_data[:zeta]) ? true : false
         if pkmn_data[:nature]
           pkmn.nature = pkmn_data[:nature]
         else   # Make the nature random but consistent for the same species used by the same trainer type

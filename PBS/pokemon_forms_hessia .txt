@@ -37,3 +37,47 @@ Weight = 46.3
 Color = Purple
 Evolution = BLUTOWL,LevelNight,40
 Pokedex = Noctowl prefer perching atop the highest trees of a forest. Yet, due to their plump bodies, they struggle to fly up so high, and so they send most of their time grounded and frustrated.
+#-------------------------------
+[BELDUM,1]
+FormName = Hessian
+Types = STEEL,ELECTRIC
+#-------------------------------
+[METANG,1]
+FormName = Hessian
+Types = STEEL,ELECTRIC
+#-------------------------------
+[METAGROSS,2]
+FormName = Hessian
+Types = STEEL,ELECTRIC
+#-------------------------------
+[ARON,1]
+FormName = Hessian
+Types = ROCK,FAIRY
+#-------------------------------
+[LAIRON,1]
+FormName = Hessian
+Types = ROCK,FAIRY
+#-------------------------------
+[AGGRON,2]
+FormName = Hessian
+Types = ROCK,FAIRY
+#-------------------------------
+[POOCHYENA,1]
+FormName = Hessian
+BaseStats = 40,65,45,20,15,30
+#-------------------------------
+[MIGHTYENA,1]
+FormName = Hessian
+BaseStats = 85,105,95,40,40,55
+#-------------------------------
+[LITWICK,1]
+FormName = Hessian
+Types = WATER,GRASS
+#-------------------------------
+[LAMPENT,1]
+FormName = Hessian
+Types = WATER,GRASS
+#-------------------------------
+[CHANDELURE,2]
+FormName = Hessian
+Types = WATER,GRASS
