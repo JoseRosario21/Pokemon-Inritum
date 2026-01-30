@@ -266,7 +266,7 @@ CaveNight,5
     15,CHINGLING,19,22
     10,CUBONE,19,22
     10,NOSEPASS,19,22
-    15,BONSLY,19,22
+    5,BONSLY,19,22
     5,NACLI,19,22
 #-------------------------------
 [026] # Zapffe Falls Cave Depths
