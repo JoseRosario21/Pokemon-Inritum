@@ -1,5 +1,16 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
+[RAPIDASH,2]
+FormName = Hessian
+Types = GRASS,GHOST
+Abilities = FLASHFIRE,RUNAWAY
+HiddenAbilities = HIGHTEMPERATURE
+BaseStats = 65,80,70,100,80,105
+Moves = 0,SMARTSTRIKE,1,HORNLEECH,1,SHADOWSNEAK,1,TACKLE,1,QUICKATTACK,1,GROWL,1,LEAFAGE,15,FLAMECHARGE,20,AGILITY,25,MAGICALLEAF,30,STOMP,35,FORESTSCURSE,43,PHANTOMFORCE,49,HEX,56,LEAFSTORM,63,WOODHAMMER
+Weight = 75.0
+Color = Green
+Pokedex = Hessian Rapidash are guardians of ancient forests. Their ghostly green flames burn with the essence of nature itself, and those who follow them too deep into the woods are never seen again.
+#-------------------------------
 [PONYTA,2]
 FormName = Hessian
 Types = GRASS,GHOST
@@ -9,75 +20,167 @@ BaseStats = 50,65,55,85,65,90
 Moves = 1,GROWL,1,POUND,5,LEAFAGE,7,EMBER,12,FLAMECHARGE,15,AGILITY,18,MAGICALLEAF,20,FORESTSCURSE,22,TRAILBLAZE,25,HEX
 Weight = 20.0
 Color = Green
+Flags = InheritFormWithEverstone
+Evolution = RAPIDASH_2,Level,40
 Pokedex = This Pokemon roams the Black Forest at high speed. At night, their green flames can look like small fae in the distance, leading visitors to follow them.
 #-------------------------------
-[RAPIDASH,2]
+[NOCTOWL,1]
 FormName = Hessian
-Types = GRASS,GHOST
-BaseStats = 65,80,70,100,80,105
-Color = Green
+Types = DARK,FAIRY
+Abilities = KEENEYE,INSOMNIA
+HiddenAbilities = PRANKSTER
+Moves = 1,DISARMINGVOICE,1,GUST,7,AIRCUTTER,8,SCREECH,10,THIEF,12,HONECLAWS,15,ALLURINGVOICE,18,CALMMIND,20,PSYCHICNOISE,25,AIRSLASH,30,TAILWIND,35,DARKPULSE,40,MOONBLAST,48,NASTYPLOT
+BaseStats = 100,50,60,86,96,60
+Weight = 46.3
+Color = Purple
+Flags = InheritFormWithEverstone
+Evolution = BLUTOWL,LevelNight,40
+Pokedex = Noctowl prefer perching atop the highest trees of a forest. Yet, due to their plump bodies, they struggle to fly up so high, and so they send most of their time grounded and frustrated.
 #-------------------------------
 [HOOTHOOT,1]
 FormName = Hessian
 Types = DARK,FAIRY
+Abilities = KEENEYE,INSOMNIA
 HiddenAbilities = PRANKSTER
 Moves = 1,DISARMINGVOICE,1,GUST,7,AIRCUTTER,8,SCREECH,10,THIEF,12,HONECLAWS,15,ALLURINGVOICE,18,CALMMIND,23,PSYCHICNOISE,25,AIRSLASH,30,TAILWIND
 BaseStats = 60,30,30,36,56,50
 Weight = 22.4
 Color = Purple
+Flags = InheritFormWithEverstone
+Evolution = NOCTOWL_1,Level,20
 Pokedex = A forest trickster, Hessian Hoothoot tend to live in dense and dark forests. They often scare hikers with their ethereal cries.
-#-------------------------------
-[NOCTOWL,1]
-FormName = Hessian
-Types = DARK,FAIRY
-HiddenAbilities = PRANKSTER
-Moves = 1,DISARMINGVOICE,1,GUST,7,AIRCUTTER,8,SCREECH,10,THIEF,12,HONECLAWS,15,ALLURINGVOICE,18,CALMMIND,20,PSYCHICNOISE,25,AIRSLASH,30,TAILWIND
-BaseStats = 100,50,60,86,96,60
-Weight = 46.3
-Color = Purple
-Evolution = BLUTOWL,LevelNight,40
-Pokedex = Noctowl prefer perching atop the highest trees of a forest. Yet, due to their plump bodies, they struggle to fly up so high, and so they send most of their time grounded and frustrated.
-#-------------------------------
-[BELDUM,1]
-FormName = Hessian
-Types = STEEL,ELECTRIC
-#-------------------------------
-[METANG,1]
-FormName = Hessian
-Types = STEEL,ELECTRIC
 #-------------------------------
 [METAGROSS,2]
 FormName = Hessian
 Types = STEEL,ELECTRIC
+Abilities = NEURALLINK
+HiddenAbilities = ANALYTIC
+BaseStats = 80,135,130,70,95,90
+Moves = 0,HAMMERARM,1,THUNDERSHOCK,1,METALCLAW,1,BULLETPUNCH,1,TACKLE,1,THUNDERWAVE,6,CHARGEBEAM,12,MAGNETRISE,18,FLASHCANNON,26,TAKEDOWN,34,DISCHARGE,42,SCARYFACE,52,WILDCHARGE,62,IRONDEFENSE,72,AGILITY,82,ZAPCANNON
+Weight = 520.0
+Color = Yellow
+Pokedex = Four neural cores linked by electric currents give Hessian Metagross processing power rivaling the most advanced supercomputers. It can hack into any electronic system by touch, downloading or uploading data instantaneously.
 #-------------------------------
-[ARON,1]
+[METANG,1]
 FormName = Hessian
-Types = ROCK,FAIRY
+Types = STEEL,ELECTRIC
+Abilities = NEURALLINK
+HiddenAbilities = ANALYTIC
+BaseStats = 60,75,100,50,55,80
+Moves = 0,THUNDERSHOCK,0,METALCLAW,1,BULLETPUNCH,1,TACKLE,1,THUNDERWAVE,6,CHARGEBEAM,12,MAGNETRISE,18,FLASHCANNON,26,TAKEDOWN,34,DISCHARGE,42,SCARYFACE,50,WILDCHARGE,58,IRONDEFENSE,66,AGILITY,74,ZAPCANNON
+Weight = 190.0
+Color = Yellow
+Flags = InheritFormWithEverstone
+Evolution = METAGROSS_2,Level,45
+Pokedex = The merger of two Hessian Beldum creates a powerful processor. Metang generates strong electromagnetic fields that disrupt nearby electronics, but can also be used to interface with machinery.
 #-------------------------------
-[LAIRON,1]
+[BELDUM,1]
 FormName = Hessian
-Types = ROCK,FAIRY
+Types = STEEL,ELECTRIC
+Abilities = NEURALLINK
+HiddenAbilities = ANALYTIC
+BaseStats = 40,55,80,30,35,60
+Moves = 1,TACKLE,1,THUNDERWAVE
+Weight = 85.0
+Color = Yellow
+Flags = InheritFormWithEverstone
+Evolution = METANG_1,Level,20
+Pokedex = These Beldum are found near abandoned power stations and data centers. They communicate through electrical impulses and form vast networks spanning entire regions.
 #-------------------------------
 [AGGRON,2]
 FormName = Hessian
 Types = ROCK,FAIRY
+Abilities = STURDY,MAGICGUARD
+HiddenAbilities = FILTER
+BaseStats = 70,110,180,50,60,60
+Moves = 1,TACKLE,1,HARDEN,1,ROCKTHROW,1,FAIRYWIND,12,ROAR,16,HEADBUTT,20,PROTECT,24,ANCIENTPOWER,28,DRAININGKISS,35,METALSOUND,40,TAKEDOWN,48,POWERGEM,56,MOONBLAST,64,STONEEDGE,72,PLAYROUGH,80,DAZZLINGGLEAM,88,DIAMONDSTORM
+Weight = 320.0
+Color = Pink
+Pokedex = Hessian Aggron are revered as mountain guardians in Hessian mythology. Their crystalline bodies can refract light into dazzling displays, and they fiercely protect the geode caverns where young Aron are born.
 #-------------------------------
-[POOCHYENA,1]
+[LAIRON,1]
 FormName = Hessian
-BaseStats = 40,65,45,20,15,30
+Types = ROCK,FAIRY
+Abilities = STURDY,MAGICGUARD
+HiddenAbilities = FILTER
+BaseStats = 60,90,140,40,50,50
+Moves = 1,TACKLE,1,HARDEN,1,ROCKTHROW,1,FAIRYWIND,12,ROAR,16,HEADBUTT,20,PROTECT,24,ANCIENTPOWER,28,DRAININGKISS,35,METALSOUND,40,TAKEDOWN,46,POWERGEM,52,MOONBLAST,58,STONEEDGE,64,PLAYROUGH,70,DAZZLINGGLEAM
+Weight = 110.0
+Color = Pink
+Flags = InheritFormWithEverstone
+Evolution = AGGRON_2,Level,42
+Pokedex = The crystals on Hessian Lairon's body grow larger as it ages, eventually covering its entire armored hide. These crystals resonate with magical energy, creating beautiful harmonic sounds when struck.
+#-------------------------------
+[ARON,1]
+FormName = Hessian
+Types = ROCK,FAIRY
+Abilities = STURDY,MAGICGUARD
+HiddenAbilities = FILTER
+BaseStats = 50,70,100,30,40,40
+Moves = 1,TACKLE,1,HARDEN,4,ROCKTHROW,8,FAIRYWIND,12,ROAR,16,HEADBUTT,20,PROTECT,24,ANCIENTPOWER,28,DRAININGKISS,33,METALSOUND,36,TAKEDOWN,40,POWERGEM,44,MOONBLAST,48,STONEEDGE,52,PLAYROUGH
+Weight = 55.0
+Color = Pink
+Flags = InheritFormWithEverstone
+Evolution = LAIRON_1,Level,32
+Pokedex = Hessian Aron are born from crystalline geodes deep within Hessian mountains. Their bodies shimmer with an inner light, and local folklore claims they bring good fortune to miners.
 #-------------------------------
 [MIGHTYENA,1]
 FormName = Hessian
+Types = GHOST,DARK
+Abilities = INTIMIDATE,CURSEDBODY
+HiddenAbilities = JUSTIFIED
 BaseStats = 85,105,95,40,40,55
+Moves = 0,SNARL,1,SHADOWCLAW,1,PHANTOMFORCE,1,CRUNCH,1,THIEF,1,TACKLE,1,HOWL,1,ASTONISH,1,BITE,13,SHADOWSNEAK,16,ROAR,20,CONFUSERAY,24,ASSURANCE,28,SCARYFACE,32,NIGHTSHADE,36,TAUNT,40,CRUNCH,44,SPITE,48,SHADOWBALL,52,SUCKERPUNCH,56,POLTERGEIST
+Weight = 35.0
+Color = Black
+Pokedex = Hessian Mightyena lead spectral packs through the mist-shrouded forests. Their chilling howls can freeze prey in terror, and they phase through solid objects to ambush their victims.
 #-------------------------------
-[LITWICK,1]
+[POOCHYENA,1]
 FormName = Hessian
-Types = WATER,GRASS
-#-------------------------------
-[LAMPENT,1]
-FormName = Hessian
-Types = WATER,GRASS
+Types = GHOST,DARK
+Abilities = INTIMIDATE,CURSEDBODY
+HiddenAbilities = JUSTIFIED
+BaseStats = 40,65,45,20,15,30
+Moves = 1,TACKLE,1,LEER,4,HOWL,7,ASTONISH,10,BITE,13,SHADOWSNEAK,16,ROAR,19,CONFUSERAY,22,ASSURANCE,25,SCARYFACE,28,NIGHTSHADE,31,TAUNT,34,CRUNCH,37,SPITE,40,SHADOWBALL,43,SUCKERPUNCH
+Weight = 12.0
+Color = Black
+Flags = InheritFormWithEverstone
+Evolution = MIGHTYENA_1,Level,18
+Pokedex = Hessian Poochyena are said to be the spirits of wolves that died protecting their packs. They howl mournfully on moonless nights, and their glowing eyes can be seen watching travelers from the shadows.
 #-------------------------------
 [CHANDELURE,2]
 FormName = Hessian
 Types = WATER,GRASS
+Abilities = WATERABSORB,EFFECTSPORE
+HiddenAbilities = STORMDRAIN
+BaseStats = 60,55,90,80,145,90
+Moves = 1,CONFUSERAY,1,BUBBLEBEAM,1,LEECHSEED,1,WATERPULSE,1,MEGADRAIN,1,AQUARING,1,ENERGYBALL,1,SURF,1,INGRAIN,1,GIGADRAIN,1,HYDROPUMP,1,LEAFSTORM,1,ABSORB,1,BUBBLE,1,WATERGUN,1,GROWTH
+Weight = 30.0
+Color = Blue
+Pokedex = Hessian Chandelure are the apex predators of deep swamp ecosystems. Their massive root systems span entire wetlands, and their hypnotic blue glow has led countless travelers to watery graves. Ancient texts speak of entire villages swallowed by marshes where these creatures dwell.
+#-------------------------------
+[LAMPENT,1]
+FormName = Hessian
+Types = WATER,GRASS
+Abilities = WATERABSORB,EFFECTSPORE
+HiddenAbilities = STORMDRAIN
+BaseStats = 60,40,60,55,95,60
+Moves = 1,ABSORB,1,BUBBLE,1,WATERGUN,1,GROWTH,12,CONFUSERAY,16,BUBBLEBEAM,20,LEECHSEED,24,WATERPULSE,28,MEGADRAIN,32,AQUARING,36,ENERGYBALL,42,SURF,48,INGRAIN,54,GIGADRAIN,60,HYDROPUMP,66,LEAFSTORM
+Weight = 11.5
+Color = Blue
+Flags = InheritFormWithEverstone
+Evolution = CHANDELURE_2,Item,LEAFSTONE
+Pokedex = Hessian Lampent float above bog surfaces, their lantern-like bodies filled with glowing algae. They lure in prey with their mesmerizing light, then entangle them in underwater root networks.
+#-------------------------------
+[LITWICK,1]
+FormName = Hessian
+Types = WATER,GRASS
+Abilities = WATERABSORB,EFFECTSPORE
+HiddenAbilities = STORMDRAIN
+BaseStats = 50,30,55,20,65,55
+Moves = 1,ABSORB,1,BUBBLE,4,WATERGUN,8,GROWTH,12,CONFUSERAY,16,BUBBLEBEAM,20,LEECHSEED,24,WATERPULSE,28,MEGADRAIN,32,AQUARING,36,ENERGYBALL,40,SURF,44,INGRAIN,48,GIGADRAIN,52,HYDROPUMP
+Weight = 2.8
+Color = Blue
+Flags = InheritFormWithEverstone
+Evolution = LAMPENT_1,Item,WATERSTONE
+Pokedex = Hessian Litwick are bioluminescent organisms found in Hessian marshlands. Their soft blue glow attracts insects, which they absorb for nutrients. Despite their appearance, they are actually a form of aquatic plant.

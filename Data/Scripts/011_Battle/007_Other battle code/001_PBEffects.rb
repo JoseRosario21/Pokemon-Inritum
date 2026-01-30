@@ -132,6 +132,7 @@ module PBEffects
   Wish                      = 706
   WishAmount                = 707
   WishMaker                 = 708
+  NeuralLink                = 709
 
   #=============================================================================
   # These effects apply to a side

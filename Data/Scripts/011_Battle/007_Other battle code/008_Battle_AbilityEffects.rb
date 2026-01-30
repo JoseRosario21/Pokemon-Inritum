@@ -3116,6 +3116,14 @@ Battle::AbilityEffects::OnSwitchOut.add(:REGENERATOR,
   }
 )
 
+Battle::AbilityEffects::OnSwitchOut.add(:NEURALLINK,
+  proc { |ability, battler, endOfBattle|
+    next if endOfBattle
+    PBDebug.log("[Ability triggered] #{battler.pbThis}'s #{battler.abilityName}")
+    battler.battle.positions[battler.index].effects[PBEffects::NeuralLink] = true
+  }
+)
+
 Battle::AbilityEffects::OnSwitchOut.add(:WATERVEIL,
   proc { |ability, battler, endOfBattle|
     next if battler.status != :BURN

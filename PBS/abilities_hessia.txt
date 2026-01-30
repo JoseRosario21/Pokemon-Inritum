@@ -3,3 +3,7 @@
 [HIGHTEMPERATURE]
 Name = High Temperature
 Description = Powers up Fire-type moves.
+#-------------------------------
+[NEURALLINK]
+Name = Neural Link
+Description = On switch-out, boosts the replacement's Attack and Defense.

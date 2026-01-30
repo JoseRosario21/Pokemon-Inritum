@@ -420,6 +420,16 @@ class Battle
         position.effects[PBEffects::LunarDance] = false
       end
     end
+    # Neural Link
+    if position.effects[PBEffects::NeuralLink]
+      if battler.pbCanRaiseStatStage?(:ATTACK, battler) ||
+         battler.pbCanRaiseStatStage?(:DEFENSE, battler)
+        pbDisplay(_INTL("{1} received data from its predecessor's neural link!", battler.pbThis))
+        battler.pbRaiseStatStage(:ATTACK, 1, battler, false)
+        battler.pbRaiseStatStage(:DEFENSE, 1, battler, false)
+      end
+      position.effects[PBEffects::NeuralLink] = false
+    end
   end
 
   def pbEntryHazards(battler)
