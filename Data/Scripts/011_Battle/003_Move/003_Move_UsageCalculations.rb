@@ -23,8 +23,7 @@ class Battle::Move
         @powerBoost = false
       end
     end
-    change_ret = @battle.apply_field_effect(:base_type_change, self) || ret
-    return change_ret
+    return ret
   end
 
   #=============================================================================
@@ -55,11 +54,6 @@ class Battle::Move
     # Grounded Flying-type Pokémon become susceptible to Ground moves
     if !target.airborne? && defType == :FLYING && moveType == :GROUND
       ret = Effectiveness::NORMAL_EFFECTIVE_MULTIPLIER
-    end
-    # Check if move gets additional typing
-    add_type = @battle.apply_field_effect(:base_type_add, self)
-    if add_type != nil
-      ret *= Effectiveness.calculate(add_type, defType)
     end
     return ret
   end
@@ -94,7 +88,7 @@ class Battle::Move
     # "Always hit" effects and "always hit" accuracy
     return true if target.effects[PBEffects::Telekinesis] > 0
     return true if target.effects[PBEffects::Minimize] && tramplesMinimize? && Settings::MECHANICS_GENERATION >= 6
-    baseAcc = @battle.apply_field_effect(:accuracy_modify, self) || pbBaseAccuracy(user, target)
+    baseAcc = pbBaseAccuracy(user, target)
     return true if baseAcc == 0
     # Calculate all multiplier effects
     modifiers = {}

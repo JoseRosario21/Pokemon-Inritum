@@ -18,34 +18,34 @@ class Battle::Field
                    end_field_battle end_field_battler]
 
   DEFAULT_FIELD = {
-    :Electric => [[],           # map ids
+    :ELECTRIC => [[],           # map ids
                 %w[],           # trainer names
                 %i[]],  # advantageous types (DEACTIVATED)
-    :Grassy     => [[],
+    :GRASSY     => [[],
                 %w[],
                 %i[]],
-    :Misty      => [[],
+    :MISTY      => [[],
                 %w[],
                 %i[]],
-    :Psychic    => [[],
+    :PSYCHIC    => [[],
                 %w[],
                 %i[]],
-    :Beach      => [[5],
+    :BEACH      => [[5],
                 %w[],
                 %i[]],
-    :Urban      => [[4],
+    :URBAN      => [[4],
                 %w[],
                 %i[]],
-    :Forest     => [[12],
+    :FOREST     => [[12],
                 %w[],
                 %i[]],
-    :Cave       => [[40],
+    :CAVE       => [[40],
                 %w[],
                 %i[]],
-    :Normalized => [[13],
+    :NORMALIZED => [[13],
                 %w[],
                 %i[]],
-    :DarkForest => [[20],
+    :DARKFOREST => [[20],
                 %w[],
                 %i[]],
   }
@@ -60,16 +60,34 @@ class Battle::Field
     @always_online             = []
 
     @effects[:calc_damage] = proc { |user, target, numTargets, move, type, power, mults, aiCheck|
+      # Mark that calc_damage was called (for standalone hook detection)
+      @battle.field_calc_damage_called = true if @battle.respond_to?(:field_calc_damage_called=)
+
       @multipliers.each do |mult, calc_proc|
-        next if mult[1] == 1.0
+
+        # Handle both old format [key, value, message] and new format [:type/:move, id, key, value, message]
+        if mult[0] == :type || mult[0] == :move
+          # New format: [:type/:move, type/move_id, mult_key, value, message]
+          mult_key = mult[2]
+          mult_value = mult[3]
+          mult_message = mult[4]
+        else
+          # Old format: [mult_key, value, message]
+          mult_key = mult[0]
+          mult_value = mult[1]
+          mult_message = mult[2]
+        end
+
+        next if mult_value == 1.0
         ret = calc_proc&.call(user, target, numTargets, move, type, power, mults, aiCheck)
         next if !ret
-        mults[mult[0]] *= mult[1]
-        #echoln(mults)
+
+        mults[mult_key] *= mult_value
+
         next if aiCheck
-        multiplier = (mult[0] == :defense_multiplier) ? (1.0 / mult[1]) : mult[1]
-        if mult[2] && !mult[2].empty?
-          @battle.pbDisplay(mult[2])
+        multiplier = (mult_key == :defense_multiplier) ? (1.0 / mult_value) : mult_value
+        if mult_message && !mult_message.empty?
+          @battle.pbDisplay(mult_message)
         elsif multiplier > 1.0
           if !@strengthened_message_displayed
             if @strengthened_message && !@strengthened_message.empty?
@@ -113,7 +131,21 @@ class Battle::Field
   def apply_field_effect(key, *args)
     return if is_base? && !Battle::Field::BASE_KEYS.include?(key)
     #echoln("[Field effect apply] #{@name}'s key #{key.upcase} applied!")
-    @effects[key]&.call(*args)
+    effect = @effects[key]
+    return nil if effect.nil?
+
+    # Handle both single procs and arrays of procs
+    if effect.is_a?(Array)
+      # For arrays, call each proc and return first truthy result
+      effect.each do |proc|
+        result = proc.call(*args)
+        return result if result
+      end
+      return nil
+    else
+      # Single proc
+      return effect.call(*args)
+    end
   end
 
   def add_duration(amount = 0)
@@ -158,46 +190,46 @@ class Battle::Field
   end
 
   def is_base?
-    @id == :Base
+    @id == :BASE
   end
 
   def is_electric?
-    @id == :Electric
+    @id == :ELECTRIC
   end
 
   def is_grassy?
-    @id == :Grassy
+    @id == :GRASSY
   end
 
   def is_misty?
-    @id == :Misty
+    @id == :MISTY
   end
 
   def is_psychic?
-    @id == :Psychic
+    @id == :PSYCHIC
   end
 
   def is_beach?
-    @id == :Beach
+    @id == :BEACH
   end
 
   def is_urban?
-    @id == :Urban
+    @id == :URBAN
   end
 
   def is_forest?
-    @id == :Forest
+    @id == :FOREST
   end
 
   def is_cave?
-    @id == :Cave
+    @id == :CAVE
   end
 
   def is_normalized?
-    @id == :Normalized
+    @id == :NORMALIZED
   end
 
   def is_darkforest?
-    @id == :DarkForest
+    @id == :DARKFOREST
   end
 end

@@ -72,10 +72,7 @@ class Battle::Move
   # About the move
   #=============================================================================
   def pbTarget(_user)
-    targetData = GameData::Target.get(@target)
-    ret = @battle.apply_field_effect(:target_expand, _user, self, targetData)
-    return GameData::Target.get(:AllNearFoes) if ret
-    return targetData
+    return GameData::Target.get(@target)
   end
 
   def total_pp

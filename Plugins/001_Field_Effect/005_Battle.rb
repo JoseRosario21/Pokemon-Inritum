@@ -6,12 +6,67 @@ def default_field
   $field
 end
 
+#===============================================================================
+# Counter Management Methods for Battle class
+#===============================================================================
+module Battle::FieldCounterMethods
+  def initialize_field_counters
+    @field_counters = {}
+    @field_combo_history = []
+  end
+
+  def field_counters
+    @field_counters ||= {}
+    return @field_counters
+  end
+
+  def field_combo_history
+    @field_combo_history ||= []
+    return @field_combo_history
+  end
+
+  def field_combo_history=(value)
+    @field_combo_history = value
+  end
+
+  def increment_field_counter(name, amount = 1)
+    @field_counters ||= {}
+    @field_counters[name] ||= 0
+    @field_counters[name] += amount
+  end
+
+  def decrement_field_counter(name, amount = 1)
+    @field_counters ||= {}
+    return unless @field_counters[name]
+    @field_counters[name] = [@field_counters[name] - amount, 0].max
+  end
+
+  def reset_field_counter(name)
+    @field_counters ||= {}
+    @field_counters[name] = 0
+  end
+
+  def reset_field_counters
+    @field_counters = {}
+  end
+
+  def get_field_counter(name)
+    @field_counters ||= {}
+    return @field_counters[name] || 0
+  end
+end
+
 class Battle
-  attr_reader :stacked_fields 
+  attr_reader :stacked_fields
   attr_reader :current_field
+  attr_accessor :field_counters
+  attr_accessor :field_combo_history
+
+  # Include counter management methods
+  include Battle::FieldCounterMethods
 
   def create_base_field
-    create_new_field(:Base)
+    create_new_field(:BASE)
   end
 
   def set_default_field
@@ -53,7 +108,7 @@ class Battle
   end
 
   def set_test_field
-    create_new_field(:Psychic, 3)
+    create_new_field(:PSYCHIC, 3)
   end
 
   def create_new_field(id, *args)
@@ -62,9 +117,11 @@ class Battle
 
     formatted_name = id.to_s.downcase.gsub(/_/, '')
     field_class_name = "Battle::Field_#{formatted_name}"
-    return if try_create_base_field?(field_class_name) && !can_create_base_field? 
+    return if try_create_base_field?(field_class_name) && !can_create_base_field?
 
-    if has_field? && try_create_current_field?(field_class_name)
+    # Check if trying to create the same field that's already active
+    # Use field ID comparison instead of class name for data-driven fields
+    if has_field? && (try_create_current_field?(field_class_name) || @current_field.id == id.to_sym)
       return if is_infinite_field?
       if try_create_infinite_field?(args[0])
         remove_field(remove_all: true)
@@ -84,8 +141,9 @@ class Battle
       return
     end
 
-    return if !Object.const_defined?(field_class_name)
-    new_field = Object.const_get(field_class_name).new(self, *args)
+    # Use Field Factory to create fields (supports both Ruby classes and PBS data)
+    new_field = Battle::FieldFactory.create(self, id, *args)
+    return if new_field.nil?
 
     end_field if has_field?
 
@@ -97,6 +155,9 @@ class Battle
     set_current_field(new_field)
 
     add_field_duration(removed_field.duration) if removed_field
+
+    # Reset counters when field changes
+    reset_field_counters if respond_to?(:reset_field_counters)
 
     set_fieldback if has_field?
     field_announcement(:start) if has_field?
@@ -254,6 +315,7 @@ class Battle
   end
 
   def apply_field_effect(key, *args, apply_all: false)
+    result = nil
     if apply_all
       @stacked_fields.each { |field| field.apply_field_effect(key, *args) if !Battle::Field::PARADOX_KEYS.include?(key) }
     else
@@ -263,8 +325,9 @@ class Battle
         next if field.is_on_top?
         field.apply_field_effect(key, *args)
       end
-      @current_field.apply_field_effect(key, *args)
+      result = @current_field.apply_field_effect(key, *args)
     end
+    return result
   end
 
   def field_announcement(announcement_type)
@@ -338,6 +401,61 @@ class Battle
 
   def is_infinite_field?
     has_field? && @current_field.infinite?
+  end
+
+  #-----------------------------------------------------------------------------
+  # Helper method to check and apply field-based status effects
+  # Returns the status info hash if the move should apply a status, nil otherwise
+  # Usage in move: status_info = @battle.field_status_for_move(self)
+  #                if status_info && rand(100) < status_info[:chance]
+  #                  target.pbInflictStatus(status_info[:status], user)
+  #                end
+  #-----------------------------------------------------------------------------
+  def field_status_for_move(move)
+    return nil unless has_field?
+    result = apply_field_effect(:add_status, move)
+    return result if result.is_a?(Hash) && result[:status]
+    return nil
+  end
+
+  #-----------------------------------------------------------------------------
+  # Applies field-based status effect to target if applicable
+  # Returns true if status was applied, false otherwise
+  # Usage in move's pbEffectAfterAllHits:
+  #   @battle.apply_field_status(self, user, target)
+  #-----------------------------------------------------------------------------
+  def apply_field_status(move, user, target)
+    status_info = field_status_for_move(move)
+    return false unless status_info
+
+    # Check chance
+    return false unless rand(100) < status_info[:chance]
+
+    # Apply the status
+    case status_info[:status]
+    when :BURN
+      return false unless target.pbCanBurn?(user, false, move)
+      target.pbBurn(user)
+    when :PARALYSIS
+      return false unless target.pbCanParalyze?(user, false, move)
+      target.pbParalyze(user)
+    when :POISON
+      return false unless target.pbCanPoison?(user, false, move)
+      target.pbPoison(user)
+    when :FREEZE
+      return false unless target.pbCanFreeze?(user, false, move)
+      target.pbFreeze(user)
+    when :SLEEP
+      return false unless target.pbCanSleep?(user, false, move)
+      target.pbSleep(user)
+    when :TOXIC
+      return false unless target.pbCanPoison?(user, false, move)
+      target.pbPoison(user, nil, true)  # true for toxic
+    else
+      return false
+    end
+
+    return true
   end
 
   def is_field?(field)

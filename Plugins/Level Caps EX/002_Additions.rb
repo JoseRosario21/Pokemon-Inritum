@@ -43,46 +43,14 @@ ItemHandlers::UseOnPokemon.add(:RARECANDY, proc { |item, qty, pkmn, scene|
   target_level = pkmn.level + qty
   actual_levels_gained = 0
   
-  # Debug output
-  echoln "[Level Caps EX] DEBUG - Starting level: #{pkmn.level}, Target: #{target_level}, Qty: #{qty}"
-  echoln "[Level Caps EX] DEBUG - Hard cap: #{LevelCapsEX.hard_cap?}, Soft cap: #{LevelCapsEX.soft_cap?}"
-  echoln "[Level Caps EX] DEBUG - Level cap: #{LevelCapsEX.level_cap}, Bypass switch: #{$game_switches[LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH]}"
-  echoln "[Level Caps EX] DEBUG - Level cap mode: #{LevelCapsEX.level_cap_mode}"
-  echoln "[Level Caps EX] DEBUG - Variable #{LevelCapsEX::LEVEL_CAP_VARIABLE}: #{$game_variables[LevelCapsEX::LEVEL_CAP_VARIABLE]}, Variable #{LevelCapsEX::LEVEL_CAP_MODE_VARIABLE}: #{$game_variables[LevelCapsEX::LEVEL_CAP_MODE_VARIABLE]}"
-  # Debug: Check if constants exist and their values
-  if defined?(LevelCapsEX::LEVEL_CAP_VARIABLE)
-    echoln "[Level Caps EX] DEBUG - LEVEL_CAP_VARIABLE defined as: #{LevelCapsEX::LEVEL_CAP_VARIABLE}"
-  else
-    echoln "[Level Caps EX] DEBUG - LEVEL_CAP_VARIABLE not defined!"
-  end
-  if defined?(LevelCapsEX::LEVEL_CAP_MODE_VARIABLE)
-    echoln "[Level Caps EX] DEBUG - LEVEL_CAP_MODE_VARIABLE defined as: #{LevelCapsEX::LEVEL_CAP_MODE_VARIABLE}"
-  else
-    echoln "[Level Caps EX] DEBUG - LEVEL_CAP_MODE_VARIABLE not defined!"
-  end
-  
-  # Debug: Show what the level_cap method is actually using
-  echoln "[Level Caps EX] DEBUG - level_cap method result: #{LevelCapsEX.level_cap}"
-  echoln "[Level Caps EX] DEBUG - level_cap_mode method result: #{LevelCapsEX.level_cap_mode}"
-  
   # Level up one at a time to respect level caps
   qty.times do |i|
     break if pkmn.level >= target_level
-    # Check level cap for both hard and soft caps
-    if LevelCapsEX.hard_cap? && pkmn.level >= LevelCapsEX.level_cap
-      echoln "[Level Caps EX] DEBUG - Stopped by hard cap at level #{pkmn.level}"
-      break
-    elsif LevelCapsEX.soft_cap? && pkmn.level >= LevelCapsEX.level_cap
-      echoln "[Level Caps EX] DEBUG - Stopped by soft cap at level #{pkmn.level}"
-      break  
-    end
     
     old_level = pkmn.level
-    echoln "[Level Caps EX] DEBUG - Attempt #{i+1}: Level #{old_level} -> #{old_level + 1}"
     # Use direct level assignment to trigger level cap checks
     pkmn.level = pkmn.level + 1
     pkmn.calc_stats
-    echoln "[Level Caps EX] DEBUG - After level assignment: #{pkmn.level}"
     actual_levels_gained += 1 if pkmn.level > old_level
     
     # Learn all moves learned at this level

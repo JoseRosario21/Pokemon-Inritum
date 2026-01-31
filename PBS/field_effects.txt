@@ -1,0 +1,275 @@
+# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+# Field Effects PBS File
+# All values use | as delimiter (no commas)
+# Format examples:
+#   MoveMultiplier = MOVE|value|message
+#   TypeMultiplier = TYPE|key|value|condition|message
+#   Effect = effect_name|arg1|arg2|arg3
+#   StatusImmunity = STATUS|condition
+#-------------------------------
+
+#-------------------------------
+# ELECTRIC FIELD
+# Boosts Electric moves, prevents Sleep
+#-------------------------------
+[ELECTRIC]
+Name = Electric Field
+Category = Terrain
+Tags = Indoor,Artificial
+Fieldback = Electric
+NaturePower = THUNDERBOLT
+SecretPower = 1
+Duration = 5
+Announcement = The field is hyper-charged!|An electric current is running across the field!|The electric current disappeared from the field!
+TypeMultiplier = ELECTRIC|1.3|grounded
+MoveMultiplier = RISINGVOLTAGE|2.0|grounded
+StatusImmunity = SLEEP|grounded
+
+#-------------------------------
+# GRASSY FIELD
+# Boosts Grass moves, heals grounded Pokemon, weakens Earthquake/Bulldoze
+#-------------------------------
+[GRASSY]
+Name = Grassy Field
+Category = Terrain
+Tags = Outdoor,Natural
+Fieldback = Grassy
+NaturePower = ENERGYBALL
+SecretPower = 2
+Duration = 5
+Announcement = The field is in full bloom!|Grass is covering the field!|The grass disappeared from the field!
+TypeMultiplier = GRASS|1.3|grounded
+MoveMultiplier = EARTHQUAKE|final_damage|0.5
+MoveMultiplier = BULLDOZE|final_damage|0.5
+
+#-------------------------------
+# MISTY FIELD
+# Halves Dragon damage, prevents status conditions
+#-------------------------------
+[MISTY]
+Name = Misty Field
+Category = Terrain
+Tags = Outdoor,Natural,Magical
+Fieldback = Misty
+NaturePower = MOONBLAST
+SecretPower = 3
+Duration = 5
+Announcement = Mist settles on the field!|Mist is swirling about the field!|The mist disappeared from the field!
+TypeMultiplier = DRAGON|final_damage|0.5|grounded
+StatusImmunity = ALL|grounded
+
+#-------------------------------
+# PSYCHIC FIELD
+# Boosts Psychic moves, blocks priority moves
+#-------------------------------
+[PSYCHIC]
+Name = Psychic Field
+Category = Terrain
+Tags = Indoor,Magical
+Fieldback = Psychic
+NaturePower = PSYCHIC
+SecretPower = 4
+Duration = 5
+Announcement = The field is charged with psychic energy!|Psychic energy is swirling about!|The psychic energy faded!
+TypeMultiplier = PSYCHIC|1.3|grounded
+
+#-------------------------------
+# BEACH FIELD
+# Mixed Water/Ground terrain, unique interactions
+#-------------------------------
+[BEACH]
+Name = Beach Field
+Category = Mixed
+Tags = Outdoor,Natural,Coastal
+Fieldback = Beach
+NaturePower = MUDDYWATER
+SecretPower = 4
+Duration = -1
+Announcement = A soothing breeze flows through the beach.|The beach stretches out before you!|The beach terrain faded!
+# Move power boosts
+MoveMultiplier = MUDDYWATER|1.2|The rising tides powered up the move!
+MoveMultiplier = SCALD|1.1|The rising tides powered up the move!
+MoveMultiplier = SURF|1.1|The rising tides powered up the move!
+MoveMultiplier = WATERGUN|1.1|The rising tides powered up the move!
+MoveMultiplier = BUBBLEBEAM|1.1|The rising tides powered up the move!
+MoveMultiplier = BUBBLE|1.1|The rising tides powered up the move!
+MoveMultiplier = WAVECRASH|1.1|The rising tides powered up the move!
+MoveMultiplier = MUDBOMB|1.2|The damp sand strengthened the attack!
+MoveMultiplier = MUDSHOT|1.2|The damp sand strengthened the attack!
+MoveMultiplier = MUDSLAP|1.2|The damp sand strengthened the attack!
+# Electric type weakened
+TypeMultiplier = ELECTRIC|final_damage|0.6|The electricity was dispersed in the sand!
+# Effects
+Effect = target_all|SANDATTACK
+Effect = no_charge|DIG
+Effect = binding_boost|SANDTOMB
+Effect = heal_boost|SHOREUP
+Effect = type_add|MUDDYWATER|GROUND
+Effect = speed_boost_move|SPLASH|2|{1} gained momentum from the waves!
+
+#-------------------------------
+# URBAN FIELD
+# City environment with street fighting and dark alley bonuses
+#-------------------------------
+[URBAN]
+Name = Urban Field
+Category = Artificial
+Tags = Indoor,Artificial
+Fieldback = Urban
+NaturePower = REVENGE
+SecretPower = 4
+Duration = -1
+Announcement = The city comes alive.|Concrete and steel everywhere!|The urban environment faded!
+# Street fighting moves boosted
+MoveMultiplier = DOUBLEKICK|1.1|The streets enhance the blow!
+MoveMultiplier = MACHPUNCH|1.1|The streets enhance the blow!
+MoveMultiplier = LOWKICK|1.1|The streets enhance the blow!
+MoveMultiplier = CLOSECOMBAT|1.1|The streets enhance the blow!
+MoveMultiplier = DOUBLESLAP|1.1|The streets enhance the blow!
+MoveMultiplier = DOUBLEHIT|1.1|The streets enhance the blow!
+MoveMultiplier = FAKEOUT|1.1|The streets enhance the blow!
+MoveMultiplier = SCRATCH|1.1|The streets enhance the blow!
+MoveMultiplier = TACKLE|1.1|The streets enhance the blow!
+# Dark alley moves boosted
+MoveMultiplier = BITE|1.2|Darkness thrives in the cityscape!
+MoveMultiplier = CRUNCH|1.2|Darkness thrives in the cityscape!
+MoveMultiplier = FEINTATTACK|1.2|Darkness thrives in the cityscape!
+MoveMultiplier = FOULPLAY|1.2|Darkness thrives in the cityscape!
+MoveMultiplier = PURSUIT|1.2|Darkness thrives in the cityscape!
+MoveMultiplier = THROATCHOP|1.2|Darkness thrives in the cityscape!
+MoveMultiplier = SUCKERPUNCH|1.2|Darkness thrives in the cityscape!
+# Effects
+Effect = type_add|REVENGE|DARK
+Effect = effect_chance_boost|LOWSWEEP
+Effect = effect_duration|TAUNT|6
+Effect = add_status|THIEF|PARALYSIS|100
+
+#-------------------------------
+# FOREST FIELD
+# Dense forest with Grass/Bug bonuses
+#-------------------------------
+[FOREST]
+Name = Forest Field
+Category = Natural
+Tags = Outdoor,Natural
+Fieldback = Forest
+NaturePower = BUGBUZZ
+SecretPower = 4
+Duration = -1
+Announcement = The woods grow dense.|Trees tower all around!|The forest scenery faded!
+# Type boosts
+TypeMultiplier = GRASS|1.2|Nature sharpens the strike!
+# Bug moves boosted
+MoveMultiplier = BUGBITE|1.2|The forest amplifies the buzz!
+MoveMultiplier = BUGBUZZ|1.2|The forest amplifies the buzz!
+MoveMultiplier = LEECHLIFE|1.2|The forest amplifies the buzz!
+MoveMultiplier = PINMISSILE|1.2|The forest amplifies the buzz!
+MoveMultiplier = SILVERWIND|1.2|The forest amplifies the buzz!
+MoveMultiplier = STRUGGLEBUG|1.2|The forest amplifies the buzz!
+# Fire feeds on the dry brush
+MoveMultiplier = FLAMECHARGE|1.1|The forest ignites fueling the blaze!
+MoveMultiplier = INCINERATE|1.1|The forest ignites fueling the blaze!
+MoveMultiplier = HEATCRASH|1.1|The forest ignites fueling the blaze!
+MoveMultiplier = FLAREBLITZ|1.1|The forest ignites fueling the blaze!
+# Effects
+Effect = binding_boost|INFESTATION
+Effect = heal_boost|SYNTHESIS
+Effect = accuracy_set|STUNSPORE|85
+Effect = accuracy_set|POISONPOWDER|85
+Effect = accuracy_set|SLEEPPOWDER|85
+Effect = accuracy_set|LEECHSEED|100
+Effect = accuracy_set|GRASSWHISTLE|100
+Effect = type_change|CUT|GRASS
+Effect = ingrain_boost
+
+#-------------------------------
+# CAVE FIELD
+# Underground with Rock/Ground/Dark benefits
+#-------------------------------
+[CAVE]
+Name = Cave Field
+Category = Underground
+Tags = Indoor,Natural,Dark
+Fieldback = Cave
+NaturePower = ROCKSLIDE
+SecretPower = 4
+Duration = -1
+Announcement = The echoes of the cave surround you.|Stalactites hang from the ceiling!|The cave environment faded!
+# Ground moves boosted
+MoveMultiplier = BULLDOZE|1.1|The ground trembles violently!
+MoveMultiplier = DRILLRUN|1.1|The ground trembles violently!
+MoveMultiplier = EARTHQUAKE|1.1|The ground trembles violently!
+MoveMultiplier = EARTHPOWER|1.1|The ground trembles violently!
+MoveMultiplier = PRECIPICEBLADES|1.1|The ground trembles violently!
+# Rock moves boosted
+MoveMultiplier = ROCKBLAST|1.2|The cave strengthens the attack!
+MoveMultiplier = ROCKSLIDE|1.2|The cave strengthens the attack!
+MoveMultiplier = ROCKTHROW|1.2|The cave strengthens the attack!
+MoveMultiplier = ROCKTOMB|1.2|The cave strengthens the attack!
+MoveMultiplier = STONEEDGE|1.2|The cave strengthens the attack!
+MoveMultiplier = SMACKDOWN|1.2|The cave strengthens the attack!
+
+#-------------------------------
+# NORMALIZED FIELD
+# Balanced field that boosts Normal-type moves
+#-------------------------------
+[NORMALIZED]
+Name = Normalized Field
+Category = Neutral
+Tags = Indoor,Artificial
+Fieldback = Normalized
+NaturePower = TRIATTACK
+SecretPower = 4
+Duration = -1
+Announcement = The battlefield embraces balance!|The field remains balanced!|The balance faded!
+TypeMultiplier = NORMAL|1.2|grounded|The attack resonates with the field's balance!
+Effect = begin_random_stat_boost|1|The equilibrium of the field enhances {1}!
+
+#-------------------------------
+# DARK FOREST FIELD
+# Corrupted forest with Ghost/Dark boosts
+#-------------------------------
+[DARKFOREST]
+Name = Dark Forest Field
+Category = Corrupted
+Tags = Outdoor,Natural,Dark,Corrupted
+Fieldback = DarkForest
+NaturePower = MOONBLAST
+SecretPower = 4
+Duration = -1
+Announcement = The nature's magic is intensified.|Shadows dance among the trees!|The dark presence lifted!
+# Type boosts
+TypeMultiplier = GRASS|1.2|Nature sharpens the strike!
+# Bug moves boosted
+MoveMultiplier = BUGBITE|1.2|The forest amplifies the buzz!
+MoveMultiplier = BUGBUZZ|1.2|The forest amplifies the buzz!
+MoveMultiplier = LEECHLIFE|1.2|The forest amplifies the buzz!
+MoveMultiplier = PINMISSILE|1.2|The forest amplifies the buzz!
+MoveMultiplier = SILVERWIND|1.2|The forest amplifies the buzz!
+MoveMultiplier = STRUGGLEBUG|1.2|The forest amplifies the buzz!
+MoveMultiplier = POLLENPUFF|1.2|The forest amplifies the buzz!
+# Fairy moves boosted
+MoveMultiplier = ALLURINGVOICE|1.2|The tree of life grows...
+MoveMultiplier = DISARMINGVOICE|1.2|The tree of life grows...
+MoveMultiplier = FAIRYWIND|1.2|The tree of life grows...
+MoveMultiplier = MOONBLAST|1.2|The tree of life grows...
+MoveMultiplier = SPIRITBREAK|1.2|The tree of life grows...
+MoveMultiplier = SPRINGTIDESTORM|1.2|The tree of life grows...
+# Dark moves boosted
+MoveMultiplier = DARKPULSE|1.2|The darkness strengthens...
+MoveMultiplier = NIGHTDAZE|1.2|The darkness strengthens...
+MoveMultiplier = SNARL|1.2|The darkness strengthens...
+MoveMultiplier = FEINTATTACK|1.2|The darkness strengthens...
+MoveMultiplier = PURSUIT|1.2|The darkness strengthens...
+# Effects
+Effect = binding_boost|INFESTATION
+Effect = heal_boost|SYNTHESIS
+Effect = heal_boost|MOONLIGHT
+Effect = accuracy_set|STUNSPORE|85
+Effect = accuracy_set|POISONPOWDER|85
+Effect = accuracy_set|SLEEPPOWDER|85
+Effect = accuracy_set|LEECHSEED|100
+Effect = accuracy_set|GRASSWHISTLE|100
+Effect = accuracy_set|DARKVOID|80
+Effect = ingrain_boost
