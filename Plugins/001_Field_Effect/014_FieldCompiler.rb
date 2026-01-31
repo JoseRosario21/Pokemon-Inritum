@@ -25,13 +25,21 @@ module Compiler
       raise _INTL("Unknown move '{1}' for NaturePower.", hash[:nature_power]) + "\n" + FileLineData.linereport
     end
 
+    # Helper to get first | delimited part from entry
+    get_first_part = lambda do |entry|
+      str = entry.is_a?(Array) ? entry.join("|") : entry.to_s
+      str.split("|").first&.strip
+    end
+
     # Validate type multipliers reference valid types
     if hash[:type_multipliers]
       hash[:type_multipliers].each do |entry|
-        next unless entry.is_a?(Array) && entry.length >= 3
-        type_sym = entry[0].to_s.upcase.to_sym
+        next if entry.nil? || entry.empty?
+        type_str = get_first_part.call(entry)
+        next if type_str.nil? || type_str.empty?
+        type_sym = type_str.upcase.to_sym
         if !GameData::Type.exists?(type_sym)
-          raise _INTL("Unknown type '{1}' in TypeMultiplier.", entry[0]) + "\n" + FileLineData.linereport
+          raise _INTL("Unknown type '{1}' in TypeMultiplier.", type_str) + "\n" + FileLineData.linereport
         end
       end
     end
@@ -39,10 +47,12 @@ module Compiler
     # Validate move multipliers reference valid moves
     if hash[:move_multipliers]
       hash[:move_multipliers].each do |entry|
-        next unless entry.is_a?(Array) && entry.length >= 3
-        move_sym = entry[0].to_s.upcase.to_sym
+        next if entry.nil? || entry.empty?
+        move_str = get_first_part.call(entry)
+        next if move_str.nil? || move_str.empty?
+        move_sym = move_str.upcase.to_sym
         if !GameData::Move.exists?(move_sym)
-          raise _INTL("Unknown move '{1}' in MoveMultiplier.", entry[0]) + "\n" + FileLineData.linereport
+          raise _INTL("Unknown move '{1}' in MoveMultiplier.", move_str) + "\n" + FileLineData.linereport
         end
       end
     end
@@ -50,10 +60,12 @@ module Compiler
     # Validate transformation trigger moves exist
     if hash[:transformations]
       hash[:transformations].each do |entry|
-        next unless entry.is_a?(Array) && entry.length >= 2
-        move_sym = entry[0].to_s.upcase.to_sym
+        next if entry.nil? || entry.empty?
+        move_str = get_first_part.call(entry)
+        next if move_str.nil? || move_str.empty?
+        move_sym = move_str.upcase.to_sym
         if !GameData::Move.exists?(move_sym)
-          raise _INTL("Unknown move '{1}' in TransformOn.", entry[0]) + "\n" + FileLineData.linereport
+          raise _INTL("Unknown move '{1}' in TransformOn.", move_str) + "\n" + FileLineData.linereport
         end
       end
     end
@@ -61,10 +73,12 @@ module Compiler
     # Validate destroy trigger moves exist
     if hash[:destroy_triggers]
       hash[:destroy_triggers].each do |entry|
-        next unless entry.is_a?(Array) && !entry.empty?
-        move_sym = entry[0].to_s.upcase.to_sym
+        next if entry.nil? || entry.empty?
+        move_str = get_first_part.call(entry)
+        next if move_str.nil? || move_str.empty?
+        move_sym = move_str.upcase.to_sym
         if !GameData::Move.exists?(move_sym)
-          raise _INTL("Unknown move '{1}' in DestroyOn.", entry[0]) + "\n" + FileLineData.linereport
+          raise _INTL("Unknown move '{1}' in DestroyOn.", move_str) + "\n" + FileLineData.linereport
         end
       end
     end
@@ -72,8 +86,9 @@ module Compiler
     # Validate combo moves exist
     if hash[:combos]
       hash[:combos].each do |entry|
-        next unless entry.is_a?(Array) && entry.length >= 2
-        moves_str = entry[0].to_s
+        next if entry.nil? || entry.empty?
+        moves_str = get_first_part.call(entry)
+        next if moves_str.nil? || moves_str.empty?
         moves_str.split("+").each do |move|
           move_sym = move.strip.upcase.to_sym
           if !GameData::Move.exists?(move_sym)
@@ -86,10 +101,12 @@ module Compiler
     # Validate effects reference valid effect names
     if hash[:effects]
       hash[:effects].each do |entry|
-        next unless entry.is_a?(Array) && !entry.empty?
-        effect_name = entry[0].to_s.downcase.to_sym
+        next if entry.nil? || entry.empty?
+        effect_str = get_first_part.call(entry)
+        next if effect_str.nil? || effect_str.empty?
+        effect_name = effect_str.downcase.to_sym
         if !Battle::FieldEffectsLibrary.exists?(effect_name)
-          raise _INTL("Unknown effect '{1}' in Effect.", entry[0]) + "\n" + FileLineData.linereport
+          raise _INTL("Unknown effect '{1}' in Effect.", effect_str) + "\n" + FileLineData.linereport
         end
       end
     end
@@ -151,50 +168,50 @@ module Compiler
           f.write("Announcement = #{field.announcements.join("|")}\r\n")
         end
         field.type_multipliers.each do |mult|
-          line = "TypeMultiplier = #{mult[:type]},#{mult[:key]},#{mult[:value]}"
-          line += ",#{mult[:condition]}" if mult[:condition]
-          line += ",#{mult[:message]}" if mult[:message]
+          line = "TypeMultiplier = #{mult[:type]}|#{mult[:key]}|#{mult[:value]}"
+          line += "|#{mult[:condition]}" if mult[:condition]
+          line += "|#{mult[:message]}" if mult[:message]
           f.write(line + "\r\n")
         end
         field.move_multipliers.each do |mult|
-          line = "MoveMultiplier = #{mult[:move]},#{mult[:key]},#{mult[:value]}"
-          line += ",#{mult[:condition]}" if mult[:condition]
-          line += ",#{mult[:message]}" if mult[:message]
+          line = "MoveMultiplier = #{mult[:move]}|#{mult[:key]}|#{mult[:value]}"
+          line += "|#{mult[:condition]}" if mult[:condition]
+          line += "|#{mult[:message]}" if mult[:message]
           f.write(line + "\r\n")
         end
         field.status_immunities.each do |imm|
           line = "StatusImmunity = #{imm[:status]}"
-          line += ",#{imm[:condition]}" if imm[:condition]
+          line += "|#{imm[:condition]}" if imm[:condition]
           f.write(line + "\r\n")
         end
         field.transformations.each do |trans|
-          line = "TransformOn = #{trans[:trigger_move]},#{trans[:new_field] || "NONE"}"
-          line += ",#{trans[:message]}" if trans[:message]
-          line += ",#{trans[:condition]}" if trans[:condition]
+          line = "TransformOn = #{trans[:trigger_move]}|#{trans[:new_field] || "NONE"}"
+          line += "|#{trans[:message]}" if trans[:message]
+          line += "|#{trans[:condition]}" if trans[:condition]
           f.write(line + "\r\n")
         end
         if field.destroy_triggers && !field.destroy_triggers.empty?
           field.destroy_triggers.each do |destroy|
             line = "DestroyOn = #{destroy[:trigger_move]}"
-            line += ",#{destroy[:message]}" if destroy[:message]
-            line += ",#{destroy[:condition]}" if destroy[:condition]
+            line += "|#{destroy[:message]}" if destroy[:message]
+            line += "|#{destroy[:condition]}" if destroy[:condition]
             f.write(line + "\r\n")
           end
         end
         field.counters.each do |counter|
-          line = "Counter = #{counter[:name]},#{counter[:threshold]},#{counter[:trigger]},#{counter[:result_field] || "NONE"}"
-          line += ",#{counter[:message]}" if counter[:message]
+          line = "Counter = #{counter[:name]}|#{counter[:threshold]}|#{counter[:trigger]}|#{counter[:result_field] || "NONE"}"
+          line += "|#{counter[:message]}" if counter[:message]
           f.write(line + "\r\n")
         end
         field.combos.each do |combo|
-          line = "ComboTrigger = #{combo[:moves].join("+")},#{combo[:result_field] || "NONE"}"
-          line += ",#{combo[:message]}" if combo[:message]
+          line = "ComboTrigger = #{combo[:moves].join("+")}|#{combo[:result_field] || "NONE"}"
+          line += "|#{combo[:message]}" if combo[:message]
           f.write(line + "\r\n")
         end
         if field.effects && !field.effects.empty?
           field.effects.each do |effect|
             line = "Effect = #{effect[:name]}"
-            line += ",#{effect[:args].join(",")}" if effect[:args] && !effect[:args].empty?
+            line += "|#{effect[:args].join("|")}" if effect[:args] && !effect[:args].empty?
             f.write(line + "\r\n")
           end
         end
