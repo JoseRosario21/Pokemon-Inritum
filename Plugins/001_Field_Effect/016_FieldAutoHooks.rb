@@ -417,21 +417,22 @@ class Battle::Battler
 end
 
 #===============================================================================
-# Battle Start Effects
+# Battle Start Effects - Hook into pbOnAllBattlersEnteringBattle
+# This runs after set_default_field so the field is properly initialized
 #===============================================================================
 class Battle
-  alias_method :pbOnActiveAll_field_hooks, :pbOnActiveAll if method_defined?(:pbOnActiveAll)
+  alias_method :pbOnAllBattlersEnteringBattle_field_hooks, :pbOnAllBattlersEnteringBattle
 
-  def pbOnActiveAll
-    # Initialize field if not already done
+  def pbOnAllBattlersEnteringBattle
+    # Initialize field counters
     @field_counters ||= {}
     @field_combo_history ||= []
 
-    if respond_to?(:pbOnActiveAll_field_hooks, true)
-      pbOnActiveAll_field_hooks
-    end
+    # Call original
+    pbOnAllBattlersEnteringBattle_field_hooks
 
-    # Apply begin battle effects
+    # Apply begin battle effects AFTER all battlers have entered
+    return unless has_field?
     eachBattler do |b|
       apply_field_effect(:begin_battle, b)
     end
