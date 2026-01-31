@@ -1043,10 +1043,6 @@ class Battle::Move::TwoTurnMove < Battle::Move
     end
     return !@damagingTurn
   end
-
-  def skipChargingTurn?(user)
-    return @battle.apply_field_effect(:no_charging, user, self)
-  end
 end
 
 #===============================================================================

@@ -53,26 +53,20 @@ class Battle
   def initialize(*args)
     __level_caps_initialize(*args)
     
-    # Debug logging
-    echoln("[Level Caps EX] Battle initialization")
-    echoln("[Level Caps EX] Bypass switch #{LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH} = #{$game_switches[LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH]}")
     
     # Early return if bypass switch is ON
     if $game_switches[LevelCapsEX::LEVEL_CAP_BYPASS_SWITCH]
-      echoln("[Level Caps EX] Bypass switch is ON - skipping level cap enforcement")
       return
     end
     
     # Apply level caps to opponent Pokemon only if bypass is OFF
     if opponent && opponent.respond_to?(:party)
-      echoln("[Level Caps EX] Checking opponent Pokemon levels")
       opponent.party.each do |pkmn|
         next if !pkmn
         if pkmn.level > LevelCapsEX.level_cap
           old_level = pkmn.level
           pkmn.level = LevelCapsEX.level_cap
           pkmn.calc_stats
-          echoln("[Level Caps EX] Adjusted #{pkmn.name} from Lv.#{old_level} to Lv.#{LevelCapsEX.level_cap}")
         end
       end
     end
@@ -83,7 +77,6 @@ class Battle
   alias __level_caps_pbGainExp pbGainExp unless method_defined?(:__level_caps_pbGainExp)
   
   def pbGainExp
-    echoln "[Level Caps EX] pbGainExp called - filtering Pokemon for level cap compliance"
     
     # Filter out Pokemon that shouldn't gain EXP due to hard cap BEFORE calling pbGainExpOne
     if LevelCapsEX.hard_cap?
@@ -97,7 +90,6 @@ class Battle
         b.participants.delete_if do |partic|
           pkmn = p1[partic]
           if pkmn && pkmn.level >= LevelCapsEX.level_cap
-            echoln "[Level Caps EX] Removing #{pkmn.name} (Lv.#{pkmn.level}) from participants - at/above cap"
             true
           else
             false
@@ -116,16 +108,8 @@ class Battle
     pkmn = pbParty(0)[idxParty]   # The Pokémon gaining Exp from defeatedBattler
     growth_rate = pkmn.growth_rate
     
-    # Debug logging for level cap check
-    echoln "[Level Caps EX] pbGainExpOne called for #{pkmn.name} (Lv.#{pkmn.level})"
-    echoln "[Level Caps EX] hard_cap? = #{LevelCapsEX.hard_cap?}, level_cap = #{LevelCapsEX.level_cap}"
-    echoln "[Level Caps EX] level_cap_mode = #{LevelCapsEX.level_cap_mode}"
-    echoln "[Level Caps EX] Variable #{LevelCapsEX::LEVEL_CAP_VARIABLE} = #{$game_variables[LevelCapsEX::LEVEL_CAP_VARIABLE]}"
-    echoln "[Level Caps EX] Variable #{LevelCapsEX::LEVEL_CAP_MODE_VARIABLE} = #{$game_variables[LevelCapsEX::LEVEL_CAP_MODE_VARIABLE]}"
-    
     # Hard level cap check - completely block exp gain
     if LevelCapsEX.hard_cap? && pkmn.level >= LevelCapsEX.level_cap
-      echoln "[Level Caps EX] BLOCKING EXP GAIN - Pokemon at/above level cap in hard cap mode"
       return
     end
     
@@ -238,7 +222,6 @@ class Battle
     
     # Additional safety check: prevent level-up loop if at hard cap
     if LevelCapsEX.hard_cap? && newLevel > LevelCapsEX.level_cap
-      echoln "[Level Caps EX] WARNING - Attempted to level beyond cap! Capping at #{LevelCapsEX.level_cap}"
       newLevel = LevelCapsEX.level_cap
     end
     battler = pbFindBattler(idxParty)

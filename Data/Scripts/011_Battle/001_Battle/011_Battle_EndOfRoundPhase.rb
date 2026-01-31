@@ -182,7 +182,6 @@ class Battle
       next if !battler.canHeal?
       hpGain = battler.totalhp / 16
       hpGain = (hpGain * 1.3).floor if battler.hasActiveItem?(:BIGROOT)
-      hpGain = battler.totalhp / 8 if apply_field_effect(:ingrain_boost) #battler is under ingrain effect
       battler.pbRecoverHP(hpGain)
       pbDisplay(_INTL("{1} absorbed nutrients with its roots!", battler.pbThis))
     end
@@ -300,9 +299,6 @@ class Battle
     hpLoss = (Settings::MECHANICS_GENERATION >= 6) ? battler.totalhp / 8 : battler.totalhp / 16
     if @battlers[battler.effects[PBEffects::TrappingUser]].hasActiveItem?(:BINDINGBAND)
       hpLoss = (Settings::MECHANICS_GENERATION >= 6) ? battler.totalhp / 6 : battler.totalhp / 8
-    end
-    if apply_field_effect(:binding_boost, GameData::Move.get(battler.effects[PBEffects::TrappingMove]))
-      hpLoss = battler.totalhp / 6 
     end
     @scene.pbDamageAnimation(battler)
     battler.pbTakeEffectDamage(hpLoss, false) do |hp_lost|

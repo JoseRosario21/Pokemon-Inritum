@@ -39,12 +39,7 @@ class Battle::Move::DoesNothingUnusableInGravity < Battle::Move
   def unusableInGravity?; return true; end
 
   def pbEffectGeneral(user)
-    if @battle.apply_field_effect(:speed_modify, self)
-      @battle.pbDisplay(_INTL("{1} gained momentum!", user.name))
-      user.pbRaiseStatStage(:SPEED, 2, user)
-    else
-      @battle.pbDisplay(_INTL("But nothing happened!"))
-    end
+    @battle.pbDisplay(_INTL("But nothing happened!"))
   end
 end
 
