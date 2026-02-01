@@ -485,6 +485,14 @@ class Battle
   def is_beach_field?
     @current_field.is_beach?
   end
+
+  def is_fairygrove_field?
+    @current_field.is_fairygrove?
+  end
+
+  def is_crystalcave_field?
+    @current_field.is_crystalcave?
+  end
 end
 
 class Battle::Scene

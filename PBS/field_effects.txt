@@ -273,3 +273,75 @@ Effect = accuracy_set|LEECHSEED|100
 Effect = accuracy_set|GRASSWHISTLE|100
 Effect = accuracy_set|DARKVOID|80
 Effect = ingrain_boost
+
+#-------------------------------
+# FAIRY GROVE FIELD
+# Enchanted fairy grove with magical properties
+#-------------------------------
+[FAIRYGROVE]
+Name = Fairy Grove Field
+Category = Magical
+Tags = Outdoor,Natural,Magical,Fairy
+Fieldback = FairyGrove
+NaturePower = MOONBLAST
+SecretPower = 3
+Duration = -1
+Announcement = The grove sparkles with fairy magic!|Magical energy fills the air!|The fairy magic faded away...
+# Fairy type boost
+TypeMultiplier = FAIRY|1.3|grounded|The fairy magic empowers the attack!
+# Dragon type weakened
+TypeMultiplier = DRAGON|final_damage|0.5|grounded|The fairy magic suppresses the dragon's power!
+# Fairy moves boosted
+MoveMultiplier = MOONBLAST|1.2|The moonlight intensifies!
+MoveMultiplier = DAZZLINGGLEAM|1.2|The grove sparkles brilliantly!
+MoveMultiplier = PLAYROUGH|1.2|The fairies join in the fun!
+MoveMultiplier = DRAININGKISS|1.2|The magical kiss drains more energy!
+MoveMultiplier = DISARMINGVOICE|1.2|The voice echoes through the grove!
+MoveMultiplier = FAIRYWIND|1.2|The fairy wind swirls stronger!
+MoveMultiplier = SPARKLINGARIA|1.2|The aria resonates beautifully!
+MoveMultiplier = MISTYEXPLOSION|1.3|The mist explodes with fairy power!
+# Sound moves boosted (fairies love music)
+MoveMultiplier = HYPERVOICE|1.1|The grove amplifies the sound!
+MoveMultiplier = SING|1.1|The grove amplifies the sound!
+MoveMultiplier = PERISHSONG|1.1|The grove amplifies the sound!
+MoveMultiplier = ROUND|1.1|The grove amplifies the sound!
+# Effects
+Effect = heal_boost|MOONLIGHT
+Effect = heal_boost|WISH
+Effect = heal_boost|HEALINGWISH
+StatusImmunity = ALL|grounded
+
+#-------------------------------
+# CRYSTAL CAVE FIELD
+# Crystalline cave with prismatic light effects
+#-------------------------------
+[CRYSTALCAVE]
+Name = Crystal Cave Field
+Category = Underground
+Tags = Indoor,Natural,Magical,Crystal
+Fieldback = CrystalCave
+NaturePower = POWERGEM
+SecretPower = 4
+Duration = -1
+Announcement = Crystals shimmer all around!|Prismatic light refracts through the crystals!|The crystal glow faded...
+# Rock type boost
+TypeMultiplier = ROCK|1.2|The crystals amplify the attack!
+# Fairy type boost
+TypeMultiplier = FAIRY|1.2|The crystals refract the magic!
+# Light-based moves boosted
+MoveMultiplier = POWERGEM|1.3|The gems resonate with power!
+MoveMultiplier = DAZZLINGGLEAM|1.3|The crystals refract the light brilliantly!
+MoveMultiplier = FLASHCANNON|1.2|The light bounces off the crystals!
+MoveMultiplier = AURORABEAM|1.2|The prismatic light intensifies!
+MoveMultiplier = PRISMATICLASER|1.3|The crystals amplify the laser!
+MoveMultiplier = LIGHTSCREEN|1.1|The crystals strengthen the barrier!
+MoveMultiplier = REFLECT|1.1|The crystals strengthen the barrier!
+# Rock moves boosted
+MoveMultiplier = DIAMONDSTORM|1.3|The cave erupts with crystal shards!
+MoveMultiplier = ANCIENTPOWER|1.2|Ancient energy flows through the crystals!
+MoveMultiplier = ROCKSLIDE|1.1|The crystals join the rockslide!
+MoveMultiplier = STONEEDGE|1.1|The crystals sharpen the edge!
+MoveMultiplier = STEALTHROCK|1.1|Crystal shards scatter around the field!
+# Effects
+Effect = hazard_type_change|STEALTHROCK|FAIRY
+Effect = crit_boost|POWERGEM|DIAMONDSTORM
