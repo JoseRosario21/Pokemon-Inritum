@@ -117,4 +117,14 @@ module QuestModule
     :RewardString => "nil"
   }
 
+  Quest5 = {
+    :ID => "6",
+    :Name => "Defeat the Durant Colony",
+    :QuestGiver => "nil",
+    :Stage1 => "Defeat the Durant Colony",
+    :Location1 => "Dark Forest",
+    :QuestDescription => "A terrifying colony of Durant is causing massive damage to the habitat of many pokémon in Dark Forest. Locate the colony and defeat them!",
+    :RewardString => "???"
+  }
+
 end

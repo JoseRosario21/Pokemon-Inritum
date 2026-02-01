@@ -36,16 +36,22 @@ class Battle::Field
     :URBAN      => [[4],
                 %w[],
                 %i[]],
-    :FOREST     => [[12],
+    :FOREST     => [[12,3,7],
                 %w[],
                 %i[]],
-    :CAVE       => [[40],
+    :CAVE       => [[40,24],
                 %w[],
                 %i[]],
     :NORMALIZED => [[13],
                 %w[],
                 %i[]],
-    :DARKFOREST => [[20],
+    :DARKFOREST => [[15,20,21,22,23,25],
+                %w[],
+                %i[]],
+    :FAIRYGROVE => [[27],
+                %w[],
+                %i[]],
+    :CRYSTALCAVE => [[26],
                 %w[],
                 %i[]],
   }
@@ -231,5 +237,13 @@ class Battle::Field
 
   def is_darkforest?
     @id == :DARKFOREST
+  end
+
+  def is_fairygrove?
+    @id == :FAIRYGROVE
+  end
+
+  def is_crystalcave?
+    @id == :CRYSTALCAVE
   end
 end

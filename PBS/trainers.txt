@@ -460,6 +460,227 @@ Pokemon = DWEBBLE,23
     Nature = IMPISH
     IV = 20,20,20,20,20,20
     EV = 34,34,34,34,34,34
+Pokemon = KLEAVOR,25
+    Moves = STONEAXE,FURYCUTTER,SLASH,QUICKATTACK
+    AbilityIndex = 2
+    Item = LUMBERRY
+    Nature = JOLLY
+    IV = 20,20,20,20,20,20
+    EV = 40,40,40,40,40,40
+Pokemon = RIBOMBEE,25
+    Moves = POLLENPUFF,DRAININGKISS,CALMMIND,ENERGYBALL
+    Zeta = true
+    AbilityIndex = 1
+    Item = FOCUSSASH
+    Nature = MODEST
+    IV = 31,0,31,31,31,31
+    EV = 40,40,40,40,40,40
+#-------------------------------
+[INQUISITOR,Code M]
+LoseText = Your mind is too weak to resist...
+Pokemon = KADABRA,24
+    Moves = PSYBEAM,SHADOWBALL,CALMMIND,THUNDERWAVE
+    AbilityIndex = 0
+    IV = 20,20,20,20,20,20
+    EV = 40,40,40,40,40,40
+Pokemon = METANG,25
+    Form = 1
+    Moves = FLASHCANNON,CHARGEBEAM,VOLTSWITCH,BULLETPUNCH
+    AbilityIndex = 2
+    Zeta = true
+    IV = 20,20,20,20,20,20
+    EV = 40,40,40,40,40,40
+Pokemon = SNEASEL,24
+    Moves = ICESHARD,KNOCKOFF,FAKEOUT,ICEPUNCH
+    AbilityIndex = 0
+    IV = 20,20,20,20,20,20
+    EV = 40,40,40,40,40,40
+Pokemon = PAWNIARD,25
+    Moves = IRONHEAD,ASSURANCE,SUCKERPUNCH,SWORDSDANCE
+    AbilityIndex = 0
+    IV = 20,20,20,20,20,20
+    EV = 40,40,40,40,40,40
+Pokemon = ABSOL,25
+    Moves = NIGHTSLASH,PLAYROUGH,SLASH,FOCUSENERGY
+    AbilityIndex = 0
+    Item = SITRUSBERRY
+    IV = 25,25,25,25,25,25
+    EV = 40,40,40,40,40,40
+#-------------------------------
+[POKEGANG,Durant]
+LoseText = ...
+Pokemon = DURANT,23
+    Moves = BUGBITE,BITE,METALCLAW,SANDATTACK
+    AbilityIndex = 0
+    IV = 20,20,20,20,20,20
+    EV = 0,126,0,126,0,0
+Pokemon = DURANT,23
+    Moves = BUGBITE,BITE,METALCLAW,SANDATTACK
+    AbilityIndex = 0
+    IV = 20,20,20,20,20,20
+    EV = 0,126,0,126,0,0
+Pokemon = DURANT,24
+    Zeta = true
+    AbilityIndex = 0
+    Moves = BUGBITE,BITE,METALCLAW,SANDATTACK
+    IV = 20,20,20,20,20,20
+    EV = 0,126,0,126,0,0
+#-------------------------------
+[BUGCATCHER,Marcus]
+LoseText = The bugs of this forest are something else...
+Pokemon = ARIADOS,22
+    Moves = POISONSTING,SHADOWSNEAK,FELLSTINGER,SCARYFACE
+Pokemon = WHIRLIPEDE,22
+    Moves = ROLLOUT,PINMISSILE,SCREECH,POISONJAB
+Pokemon = JOLTIK,22
+    Moves = ELECTROWEB,BUGBITE,POISONSTING,STRINGSHOT
+Pokemon = PARASECT,24
+    AbilityIndex = 1
+    Moves = XSCISSOR,LEECHSEED,VENOSHOCK,STUNSPORE
+#-------------------------------
+[BLACKBELT,Takeshi]
+LoseText = Your fighting spirit is strong!
+Pokemon = MAKUHITA,22
+    AbilityIndex = 2
+    Moves = ARMTHRUST,FAKEOUT,BULKUP,KNOCKOFF
+Pokemon = MEDITITE,22
+    Moves = CONFUSION,DETECT,FORCEPALM,BULLETPUNCH
+Pokemon = PANCHAM,22
+    Moves = BRICKBREAK,BULKUP,FIREPUNCH,BULLDOZE
+Pokemon = GRAPPLOCT,24
+    AbilityIndex = 2
+    Moves = OCTOLOCK,POWERUPPUNCH,CIRCLETHROW
+#-------------------------------
+[PSYCHIC_M,Vincent]
+LoseText = I didn't foresee this outcome...
+Pokemon = SPOINK,22
+    Moves = PSYBEAM,CONFUSERAY,MAGICCOAT,HYPNOSIS
+Pokemon = ESPURR,22
+    AbilityIndex = 1
+    Moves = PSYBEAM,LIGHTSCREEN,COVET,FAKEOUT
+Pokemon = NATU,22
+    AbilityIndex = 2
+    Moves = PSYCHIC,NIGHTSHADE,CONFUSERAY,AIRSLASH
+Pokemon = BRUXISH,24
+    AbilityIndex = 1
+    Moves = AQUAJET,BITE,PSYCHICFANGS,ICEFANG
+#-------------------------------
+[CHANNELER,Morticia]
+LoseText = The spirits were not in my favor today...
+Pokemon = PHANTUMP,26
+    Moves = ASTONISH,BRANCHPOKE,WILLOWISP,CONFUSERAY
+Pokemon = MISDREAVUS,27
+    Moves = SHADOWBALL,PSYBEAM,MEANLOOK,CONFUSERAY
+Pokemon = PONYTA,27
+    Form = 2
+    Moves = MAGICALLEAF,TRAILBLAZE,HEX,AGILITY
+#-------------------------------
+[FISHERMAN,Wade]
+LoseText = Guess the fish weren't biting today!
+Pokemon = BARBOACH,26
+    Moves = MUDDYWATER,EARTHQUAKE,SPARK,AQUATAIL
+Pokemon = BASCULIN,27
+    Moves = AQUAJET,CRUNCH,HEADBUTT,SCARYFACE
+Pokemon = WISHIWASHI,28
+    Moves = LIQUIDATION,BEATUP,TEARFULLOOK,BRINE
+#-------------------------------
+[TEAM_REBIRTH_GRUNT_M,Grunt,6]
+LoseText = You'll regret crossing us...
+Pokemon = DROWZEE,23
+    Moves = HYPNOSIS,PSYBEAM,DISABLE,HEADBUTT
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+Pokemon = IMPIDIMP,24
+    Moves = DARKPULSE,DRAININGKISS,FAKEOUT,TORMENT
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+Pokemon = SIGILYPH,25
+    Moves = PSYBEAM,AIRSLASH,LIGHTSCREEN,TAILWIND
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+#-------------------------------
+[TEAM_REBIRTH_GRUNT_M,Grunt,7]
+LoseText = This isn't the end...
+Pokemon = NATU,23
+    Moves = AIRSLASH,NIGHTSHADE,CONFUSERAY,WISH
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+Pokemon = KIRLIA,24
+    Moves = PSYBEAM,DRAININGKISS,CALMMIND,TELEPORT
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+Pokemon = MURKROW,25
+    Moves = NIGHTSLASH,WINGATTACK,CONFUSERAY,PURSUIT
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+#-------------------------------
+# 2v1 Battles - Grunt,8, Grunt,9, Grunt,10
+[TEAM_REBIRTH_GRUNT_M,Grunt,8]
+LoseText = Our cause will prevail regardless!
+Pokemon = GRANBULL,23
+    Moves = PLAYROUGH,CRUNCH,CHARM,ROAR
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+Pokemon = INKAY,24
+    Moves = PSYBEAM,NIGHTSLASH,HYPNOSIS,PLUCK
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+Pokemon = ESPURR,24
+    Moves = PSYBEAM,LIGHTSCREEN,COVET,FAKEOUT
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+Pokemon = VULLABY,25
+    Moves = PLUCK,KNOCKOFF,NASTYPLOT,FLATTER
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+#-------------------------------
+[TEAM_REBIRTH_GRUNT_M,Grunt,9]
+LoseText = The shadows will consume you eventually...
+Pokemon = SNEASEL,23
+    Moves = ICYWIND,FAKEOUT,BEATUP,FEINTATTACK
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+Pokemon = MAWILE,24
+    Moves = PLAYROUGH,IRONHEAD,CRUNCH,SUCKERPUNCH
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+Pokemon = BRONZOR,24
+    Moves = PSYWAVE,GYROBALL,LIGHTSCREEN,REFLECT
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+Pokemon = SABLEYE,25
+    Moves = SHADOWSNEAK,FAKEOUT,WILLOWISP,KNOCKOFF
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+#-------------------------------
+[TEAM_REBIRTH_GRUNT_M,Grunt,10]
+LoseText = You haven't seen the last of us...
+Pokemon = FLOETTE,23
+    Moves = FAIRYWIND,MAGICALLEAF,WISH,AROMATHERAPY
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+Pokemon = PAWNIARD,24
+    Moves = METALCLAW,NIGHTSLASH,SWORDSDANCE,PURSUIT
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+Pokemon = MRMIME,24
+    Moves = PSYBEAM,DAZZLINGGLEAM,LIGHTSCREEN,REFLECT
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+Pokemon = HATENNA,25
+    Moves = PSYBEAM,DISARMINGVOICE,AROMATHERAPY,HEALINGWISH
+    AbilityIndex = 0
+    IV = 10,10,10,10,10,10
+#-------------------------------
+[GYM_LEADER_HOWARD,Howard,1]
+LoseText = ...
+Pokemon = DWEBBLE,23
+    Moves = STEALTHROCK,ROCKSLIDE,BUGBITE,DIG
+    AbilityIndex = 0
+    Item = EVIOLITE
+    Nature = IMPISH
+    IV = 20,20,20,20,20,20
+    EV = 34,34,34,34,34,34
 Pokemon = WHIRLIPEDE,23
     Moves = PROTECT,TOXICSPIKES,POISONJAB,ROLLOUT
     AbilityIndex = 2
@@ -496,39 +717,3 @@ Pokemon = RIBOMBEE,25
     Nature = MODEST
     IV = 31,0,31,31,31,31
     EV = 40,40,40,40,40,40
-#-------------------------------
-[INQUISITOR,Code M]
-LoseText = You had to resist didn't you...
-Pokemon = MURKROW,19
-    Moves = CONFUSERAY,WINGATTACK,THIEF
-    AbilityIndex = 2
-    IV = 0,15,0,15,0,0
-    EV = 0,126,0,126,0,0
-Pokemon = DROWZEE,19
-    Moves = HYPNOSIS,CONFUSION,DISABLE
-    AbilityIndex = 0
-    IV = 0,0,0,15,15,0
-    EV = 126,0,0,0,0,126
-Pokemon = GASTLY,20
-    Moves = NIGHTSHADE,HYPNOSIS,MEANLOOK,CURSE
-    IV = 0,0,0,15,15,0
-    EV = 0,0,0,126,126,0
-#-------------------------------
-[POKEGANG,Durant]
-LoseText = ...
-Pokemon = DURANT,23
-    Moves = BUGBITE,BITE,METALCLAW,SANDATTACK
-    AbilityIndex = 0
-    IV = 20,20,20,20,20,20
-    EV = 0,126,0,126,0,0
-Pokemon = DURANT,23
-    Moves = BUGBITE,BITE,METALCLAW,SANDATTACK
-    AbilityIndex = 0
-    IV = 20,20,20,20,20,20
-    EV = 0,126,0,126,0,0
-Pokemon = DURANT,24
-    Zeta = true
-    AbilityIndex = 0
-    Moves = BUGBITE,BITE,METALCLAW,SANDATTACK
-    IV = 20,20,20,20,20,20
-    EV = 0,126,0,126,0,0
