@@ -2,7 +2,9 @@ class Battle
   #=============================================================================
   # Aliased to add Tatsugiri commander effect.
   #=============================================================================
-  alias za_pbCanMegaEvolve? pbCanMegaEvolve?
+  unless method_defined?(:za_pbCanMegaEvolve?)
+    alias za_pbCanMegaEvolve? pbCanMegaEvolve?
+  end
   def pbCanMegaEvolve?(idxBattler)
     return za_pbCanMegaEvolve?(idxBattler) &&
            !@battlers[idxBattler].effects[PBEffects::Commander]
@@ -11,7 +13,9 @@ class Battle
   #=============================================================================
   # Mega Evolving a battler
   #=============================================================================
-  alias za_pbMegaEvolve pbMegaEvolve
+  unless method_defined?(:za_pbMegaEvolve)
+    alias za_pbMegaEvolve pbMegaEvolve
+  end
   def pbMegaEvolve(idxBattler)
     battler = @battlers[idxBattler]
     return if !battler || !battler.pokemon
@@ -25,7 +29,9 @@ class Battle
   #=============================================================================
   # Added Canari charms effects
   #=============================================================================
-  alias za_pbGainExpOne pbGainExpOne
+  unless method_defined?(:za_pbGainExpOne)
+    alias za_pbGainExpOne pbGainExpOne
+  end
   def pbGainExpOne(idxParty, defeatedBattler, numPartic, expShare, expAll, showMessages = true)
     canari_plushies = [:REDCANARIPLUSHLV3, :REDCANARIPLUSHLV2, :REDCANARIPLUSHLV1]
     if canari_plushies.none?{ |i| GameData::Item.exists?(i) }
@@ -177,7 +183,9 @@ class Battle
   #=============================================================================
   # Added Canari charms effects
   #=============================================================================
-  alias za_pbGainMoney pbGainMoney
+  unless method_defined?(:za_pbGainMoney)
+    alias za_pbGainMoney pbGainMoney
+  end
   def pbGainMoney
     return if !@internalBattle || !@moneyGain
     canari_plushies = [:GOLDCANARIPLUSHLV3, :GOLDCANARIPLUSHLV2, :GOLDCANARIPLUSHLV1]
@@ -227,19 +235,28 @@ class Battle
   #=============================================================================
   # Calculate how many shakes a thrown Poké Ball will make (4 = capture)
   #=============================================================================
-  alias za_pbCaptureCalc pbCaptureCalc
+  unless method_defined?(:za_pbCaptureCalc)
+    alias za_pbCaptureCalc pbCaptureCalc
+  end
   def pbCaptureCalc(pkmn, battler, catch_rate, ball)
-    return 4 if $DEBUG && Input.press?(Input::CTRL)
-    # Get a catch rate if one wasn't provided
-    catch_rate = pkmn.species_data.catch_rate if !catch_rate
-    
-    canari_plushies = [:BLUECANARIPLUSHLV3, :BLUECANARIPLUSHLV2, :BLUECANARIPLUSHLV1]
-    # Canari Charm increases catch rate
-    canari_plushies.each_with_index do |plush, i|
-      next if !GameData::Item.exists?(plush) || !$bag.has?(plush)
-      catch_rate = catch_rate * [1.35, 1.20, 1.10][i]
-      break
+    # Prevent infinite recursion after F12 reset
+    return za_pbCaptureCalc(pkmn, battler, catch_rate, ball) if @za_capture_calc_running
+    @za_capture_calc_running = true
+    begin
+      return 4 if $DEBUG && Input.press?(Input::CTRL)
+      # Get a catch rate if one wasn't provided
+      catch_rate = pkmn.species_data.catch_rate if !catch_rate
+
+      canari_plushies = [:BLUECANARIPLUSHLV3, :BLUECANARIPLUSHLV2, :BLUECANARIPLUSHLV1]
+      # Canari Charm increases catch rate
+      canari_plushies.each_with_index do |plush, i|
+        next if !GameData::Item.exists?(plush) || !$bag.has?(plush)
+        catch_rate = catch_rate * [1.35, 1.20, 1.10][i]
+        break
+      end
+      return za_pbCaptureCalc(pkmn, battler, catch_rate, ball)
+    ensure
+      @za_capture_calc_running = false
     end
-    return za_pbCaptureCalc(pkmn, battler, catch_rate, ball)
   end
 end
