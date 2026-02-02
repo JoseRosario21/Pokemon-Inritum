@@ -614,7 +614,6 @@ Pokemon = MURKROW,25
     AbilityIndex = 0
     IV = 10,10,10,10,10,10
 #-------------------------------
-# 2v1 Battles - Grunt,8, Grunt,9, Grunt,10
 [TEAM_REBIRTH_GRUNT_M,Grunt,8]
 LoseText = Our cause will prevail regardless!
 Pokemon = GRANBULL,23
