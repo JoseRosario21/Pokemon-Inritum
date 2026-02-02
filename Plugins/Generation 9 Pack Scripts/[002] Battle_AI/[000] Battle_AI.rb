@@ -631,7 +631,9 @@ class Battle::AI::AIMove
   end
 
   # Added evasion check for Nihil Light
-  alias za_apply_rough_accuracy_modifiers apply_rough_accuracy_modifiers
+  unless method_defined?(:za_apply_rough_accuracy_modifiers)
+    alias za_apply_rough_accuracy_modifiers apply_rough_accuracy_modifiers
+  end
   def apply_rough_accuracy_modifiers(user, target, calc_type, modifiers)
     za_apply_rough_accuracy_modifiers(user, target, calc_type, modifiers)
     modifiers[:evasion_stage] = 0 if function_code == "IgnoreTargetDefSpDefEvaStatStagesHitFairyType"   # Nihil Light
