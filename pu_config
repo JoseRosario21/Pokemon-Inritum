@@ -1,4 +1,4 @@
-CURRENT_GAME_VERSION=2.0.0
+CURRENT_GAME_VERSION=2.1.0
 VERSION_PASTEBIN=https://gist.githubusercontent.com/JoseRosario21/9dd86019f894c1f7599890d41b907480/raw/gistfile1.txt
 UPDATER_FILENAME=./poke_updater/poke_updater.exe
 FORCE_VERSION_CHECK=true
