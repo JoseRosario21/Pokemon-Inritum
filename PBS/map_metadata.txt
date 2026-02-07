@@ -74,8 +74,11 @@ DarkMap = true
 SnapEdges = true
 TrainerBattleBGM = IF YOU WOKE UP BROKE DONT COME HERE
 #-------------------------------
-[015]   # Dark Forest 2
-Name = Dark Forest 2
+[015]   # Dark Forest
+Name = Dark Forest
+Outdoor = true
+ShowArea = true
+MapPosition = 0,10,15
 SnapEdges = true
 #-------------------------------
 [016]   # Help Center
@@ -92,8 +95,43 @@ MapPosition = 0,10,14
 #-------------------------------
 [020]   # Dark Forest
 Name = Dark Forest
-MapPosition = 0,10,15
+Outdoor = true
+ShowArea = true
+MapPosition = 0,10,16
 SnapEdges = true
+#-------------------------------
+[021]   # Dark Forest
+Name = Dark Forest
+Outdoor = true
+MapPosition = 0,9,16
+#-------------------------------
+[022]   # Dark Forest
+Name = Dark Forest
+Outdoor = true
+ShowArea = true
+MapPosition = 0,9,17
+#-------------------------------
+[023]   # Zapffe Falls
+Name = Zapffe Falls
+Outdoor = true
+ShowArea = true
+MapPosition = 0,8,16
+#-------------------------------
+[024]   # Zapffe Falls Cave
+Name = Zapffe Falls Cave
+ShowArea = true
+#-------------------------------
+[025]   # Dark Forest
+Name = Dark Forest
+Outdoor = true
+ShowArea = true
+MapPosition = 0,8,17
+#-------------------------------
+[027]   # Lumoria
+Name = Lumoria
+Outdoor = true
+ShowArea = true
+MapPosition = 0,7,17
 #-------------------------------
 [030]   # Stuot Lab
 Name = Stuot Lab
@@ -106,6 +144,12 @@ MapPosition = 0,3,15
 [032]   # Route 1 Poké Center
 Name = Route 1 Poké Center
 MapPosition = 0,7,14
+#-------------------------------
+[035]   # Lumoria Docks
+Name = Lumoria Docks
+Outdoor = true
+ShowArea = true
+MapPosition = 0,7,17
 #-------------------------------
 [038]   # Interiors
 Name = Interiors

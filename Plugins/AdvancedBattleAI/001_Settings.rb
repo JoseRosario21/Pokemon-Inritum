@@ -21,7 +21,7 @@ module AdvancedBattleAI
 
   # Role-based switching decisions (SWEEPER, WALL, CLERIC, etc.)
   # Now with safeguards: HP thresholds, stat boost preservation, better reserve checks
-  ENABLE_ROLE_SWITCHING = true
+  ENABLE_ROLE_SWITCHING = false
 
   # Advanced double battle tactics (focus fire, partner protection)
   ENABLE_DOUBLES_COORDINATION = true

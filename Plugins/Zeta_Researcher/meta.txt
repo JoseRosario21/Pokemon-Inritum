@@ -1,0 +1,5 @@
+Name       = Zeta Researcher
+Version    = 1.0.0
+Essentials = 21.1
+Requires   = Zeta Pokemon
+Credits    = BloodyNeonz
