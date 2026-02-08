@@ -1,0 +1,43 @@
+{| style="margin:auto; max-width:400px; background: #{{{{{type1|Unknown}}} color}}; border: 3px solid #{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; padding:2px; {{roundy|15px}}"
+|-
+| 
+  {| width="100%" style="background: #{{{{{type1|Unknown}}} color}}; border-collapse:collapse;"
+  ! colspan="2" style="background:#{{{{{type1|Unknown}}} color light}}; {{roundytop|10px}}" | <span style="color:#000;">Availability</span>
+  |- {{#if: {{{none|}}}|| {{#if: {{{common|}}}{{{uncommon|}}}{{{rare|}}}{{{fossil|}}}{{{one|}}}|style="display:none;"|}} }}
+  | style="background:#{{{{{type1|Unknown}}} color light}}; padding:2px; {{roundybottom|10px}}" |
+    {| width="100%" style="background:#{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; {{roundy|10px}}"
+    ! width="80px" style="text-align: center;" | {{color|{{#switch: {{{type2|{{{type1|Unknown}}}}}}|Light=000|FFF}}|None}}
+    | style="vertical-align: middle; background:#FFF; padding:3px; {{roundyright|10px}}" | {{color|000|{{{none|This Pokémon cannot be found in the wild.}}}}}
+    |}
+  |- {{#if: {{{common|}}}||style="display:none;"}}
+  | style="background:#{{{{{type1|Unknown}}} color light}}; padding:2px; {{#if: {{{uncommon|}}}{{{fossil|}}}{{{rare|}}}{{{one|}}}||{{roundybottom|10px}}}}" |
+    {| width="100%" style="background:#{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; {{roundy|10px}}"
+    ! width="80px" style="text-align: center;" | {{color|{{#switch: {{{type2|{{{type1|Unknown}}}}}}|Light=000|FFF}}|Common}}
+    | style="vertical-align: middle; background:#FFF; padding:3px; {{roundyright|10px}}" | {{color|000|{{{common|}}}}}
+    |}
+  |- {{#if: {{{uncommon|}}}||style="display:none;"}}
+  | style="background:#{{{{{type1|Unknown}}} color light}}; padding:2px; {{#if: {{{fossil|}}}{{{rare|}}}{{{one|}}}||{{roundybottom|10px}}}}" |
+    {| width="100%" style="background:#{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; {{roundy|10px}}"
+    ! width="80px" style="text-align: center;" | {{color|{{#switch: {{{type2|{{{type1|Unknown}}}}}}|Light=000|FFF}}|Uncommon}}
+    | style="vertical-align: middle; background:#FFF; padding:3px; {{roundyright|10px}}" | {{color|000|{{{uncommon|}}}}}
+    |}
+  |- {{#if: {{{fossil|}}}||style="display:none;"}}
+  | style="background:#{{{{{type1|Unknown}}} color light}}; padding:2px; {{#if: {{{rare|}}}{{{one|}}}||{{roundybottom|10px}}}}" |
+    {| width="100%" style="background:#{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; {{roundy|10px}}"
+    ! width="80px" style="text-align: center;" | {{color|{{#switch: {{{type2|{{{type1|Unknown}}}}}}|Light=000|FFF}}|Fossil}}
+    | style="vertical-align: middle; background:#FFF; padding:3px; {{roundyright|10px}}" | {{color|000|{{{fossil|}}}}}
+    |}
+  |- {{#if: {{{rare|}}}||style="display:none;"}}
+  | style="background:#{{{{{type1|Unknown}}} color light}}; padding:2px; {{#if: {{{one|}}}||{{roundybottom|10px}}}}" |
+    {| width="100%" style="background:#{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; {{roundy|10px}}"
+    ! width="80px" style="text-align: center;" | {{color|{{#switch: {{{type2|{{{type1|Unknown}}}}}}|Light=000|FFF}}|Rare}}
+    | style="vertical-align: middle; background:#FFF; padding:3px; {{roundyright|10px}}" | {{color|000|{{{rare|}}}}}
+    |}
+    |- {{#if: {{{one|}}}||style="display:none;"}}
+  | style="background:#{{{{{type1|Unknown}}} color light}}; padding:2px; {{roundybottom|10px}}" |
+    {| width="100%" style="background:#{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; {{roundy|10px}}"
+    ! width="80px" style="text-align: center;" | {{color|{{#switch: {{{type2|{{{type1|Unknown}}}}}}|Light=000|FFF}}|Event}}
+    | style="vertical-align: middle; background:#FFF; padding:3px; {{roundyright|10px}}" | {{color|000|{{{one|}}}}}
+    |}
+  |}
+|}<noinclude>[[Category:Table templates]]</noinclude>

@@ -1,0 +1,11 @@
+<noinclude>{{Learnlist/header|Level}}</noinclude>
+|- style="background: #1D2034"
+! style="font-family:Monospace;" | <span style="color:#FFF;">{{{1|—}}}</span>
+| align="left" | {{MoveIP|{{{2|Struggle}}}}}
+| style="background:#{{{{{3|Unknown}}} color}}" align="center" | <span class="plainlinks">[//bulbapedia.bulbagarden.net/wiki/{{{3|Unknown}}}_(type) <span style="color:#FFFFFF">{{{3|???}}}</span>]</span>
+| style="background:#{{{{{4|Status}}} color}}" align="center" | <span class="plainlinks">[//bulbapedia.bulbagarden.net/wiki/{{{3|Status}}}_move <span style="color:#{{{{{4|Status}}} textcolor}}">{{{4|Status}}}</span>]</span>
+| align="center" | <span style="color:#FFF;">{{{5|—}}}</span>
+| align="center" | <span style="color:#FFF;">{{{6|—}}}%</span>
+| align="center" | <span style="color:#FFF;">{{{7|0}}}</span><noinclude>
+|}
+[[Category:Table templates]]</noinclude>

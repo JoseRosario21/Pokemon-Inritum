@@ -1,0 +1,38 @@
+
+{| style="margin:auto; max-width:300px; background: #{{{{{type1|Unknown}}} color}}; border: 3px solid #{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; padding:2px; {{roundy|15px}};"
+|-
+| 
+  {| width="100%" style="background: #{{{{{type1|Unknown}}} color}}; border-collapse:collapse;"
+  ! colspan="2" style="background: #{{{{{type1|Unknown}}} color light}}; {{roundytop|10px}}" | [[List of Pokémon by wild held item|{{color|000|Held item(s)}}]]
+  |- {{#if: {{{common|}}}{{{uncommon|}}}{{{rare|}}}{{{always|}}}|style="display:none;"|}}
+  | style="background:#{{{{{type1|Unknown}}} color light}}; padding:2px; {{roundybottom|10px}}" |
+    {| width="100%" style="background:#{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; {{roundy|10px}}"
+    ! width="80px" style="text-align: center;" | {{color|{{#switch: {{{type2|{{{type1|Unknown}}}}}}|Light=000|FFF}}|None}}
+    | style="vertical-align: middle; background:#FFF; padding:3px; {{roundyright|10px}}" | {{color|000|This Pokémon cannot be found holding an item.}}
+    |}
+  |- {{#if: {{{common|}}}||style="display:none;"}}
+  | style="background:#{{{{{type1|Unknown}}} color light}}; padding:2px; {{#if: {{{uncommon|}}}{{{rare|}}}{{{always|}}}||{{roundybottom|10px}}}}" |
+    {| width="100%" style="background:#{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; {{roundy|10px}}"
+    ! width="80px" style="text-align: center;" | {{color|{{#switch: {{{type2|{{{type1|Unknown}}}}}}|Light=000|FFF}}|{{tt|Common|50% chance}}}}
+    | style="vertical-align: middle; background:#FFF; padding:3px; {{roundyright|10px}}" | {{color|000|{{{common|}}}}}
+    |}
+  |- {{#if: {{{uncommon|}}}||style="display:none;"}}
+  | style="background:#{{{{{type1|Unknown}}} color light}}; padding:2px; {{#if: {{{rare|}}}{{{always|}}}||{{roundybottom|10px}}}}" |
+    {| width="100%" style="background:#{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; {{roundy|10px}}"
+    ! width="80px" style="text-align: center;" | {{color|{{#switch: {{{type2|{{{type1|Unknown}}}}}}|Light=000|FFF}}|{{tt|Uncommon|5% chance}}}}
+    | style="vertical-align: middle; background:#FFF; padding:3px; {{roundyright|10px}}" | {{color|000|{{{uncommon|}}}}}
+    |}
+  |- {{#if: {{{rare|}}}||style="display:none;"}}
+  | style="background:#{{{{{type1|Unknown}}} color light}}; padding:2px; {{#if: {{{always|}}}||{{roundybottom|10px}}}}" |
+    {| width="100%" style="background:#{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; {{roundy|10px}}"
+    ! width="80px" style="text-align: center;" | {{color|{{#switch: {{{type2|{{{type1|Unknown}}}}}}|Light=000|FFF}}|{{tt|Rare|1% chance}}}}
+    | style="vertical-align: middle; background:#FFF; padding:3px; {{roundyright|10px}}" | {{color|000|{{{rare|}}}}}
+    |}
+  |- {{#if: {{{always|}}}||style="display:none;"}}
+  | style="background:#{{{{{type1|Unknown}}} color light}}; padding:2px; {{roundybottom|10px}}" |
+    {| width="100%" style="background:#{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; {{roundy|10px}}"
+    ! width="80px" style="text-align: center;" | {{color|{{#switch: {{{type2|{{{type1|Unknown}}}}}}|Light=000|FFF}}|{{tt|Always|100% chance}}}}
+    | style="vertical-align: middle; background:#FFF; padding:3px; {{roundyright|10px}}" | {{color|000|{{{always|}}}}}
+    |}
+  |}
+|}<includeonly>{{#if: {{{common|}}}{{{uncommon|}}}{{{rare|}}}{{{always|}}}|[[Category:Pokémon with wild held items]]|[[Category:Pokémon without wild held items]]}}</includeonly><noinclude>[[Category:Table templates]]</noinclude>

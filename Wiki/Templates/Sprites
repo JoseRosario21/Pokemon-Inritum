@@ -1,0 +1,26 @@
+{| align="center" style="background: #{{{{{type|Unknown}}} color}}; {{roundy|10px}} border: 3px solid #{{ {{#if: {{{type2|}}}|{{{type2|Unknown}}} color|{{{type|Unknown}}} color dark}} }};"
+|-
+! {{#ifexist: File:{{{1|000}}}f{{{form|}}}.png|colspan="2"|{{#ifexist: File:{{{1|000}}}f_1.png|colspan="2"|}}}} bgcolor="#{{{{{type|Unknown}}} color dark}}" style="{{roundytl|10px}}" | {{color|Front|Front}}
+! bgcolor="#{{{{{type|Unknown}}} color dark}}" style="{{roundytr|10px}}" | {{color|Back|Back}}
+|- style="background:#{{{{{type|Unknown}}} color light}}"
+| align="center" {{#ifexist: File:{{{1|000}}}f{{{form|}}}.png||style="display: none"}} | [[File:GenderM.png|192px]]
+| align="center" | [[Image:{{{1|BULBASAUR}}}{{{form|}}}.png|192px]]
+| align="center" | [[Image:Back{{{1|BULBASAUR}}}{{{form|}}}.png|192px]]
+{{#ifexist: File:{{{1|000}}}f{{{form|}}}.png|{{!}}- style="background:#{{{{{type|Unknown}}} color light}}"
+{{!}} align="center" {{!}} [[File:GenderF.png]]
+{{!}} align="center" {{!}} [[Image:{{{1|BULBASAUR}}}f{{{form|}}}.png|192px]]
+{{!}} align="center" {{!}} [[Image:{{{1|BULBASAUR}}}fb{{{form|}}}.png|192px]]
+}}
+|-
+! {{#ifexist: File:{{{1|000}}}f{{{form|}}}.png|colspan="2"|{{#ifexist: File:{{{1|000}}}f_1.png|colspan="2"|}}}} bgcolor="#{{{{{type|Unknown}}} color dark}}" | {{color|Front shiny|Front shiny}}
+! bgcolor="#{{{{{type|Unknown}}} color dark}}" | {{color|Back shiny|Back shiny}}
+|- style="background:#{{{{{type|Unknown}}} color light}}"
+| align="center" {{#ifexist: File:{{{1|000}}}f{{{form|}}}.png||style="display: none"}} | [[File:GenderM.png]]
+| align="center" | [[Image:Shiny{{{1|BULBASAUR}}}{{{form|}}}.png|192px]]
+| align="center" | [[Image:BackShiny{{{1|BULBASAUR}}}{{{form|}}}.png|192px]]
+{{#ifexist: File:{{{1|000}}}f{{{form|}}}.png|{{!}}- style="background:#{{{{{type|Unknown}}} color light}}"
+{{!}} align="center" {{!}} [[File:GenderF.png]]
+{{!}} align="center" {{!}} [[Image:{{{1|BULBASAUR}}}fs{{{form|}}}.png|192px]]
+{{!}} align="center" {{!}} [[Image:{{{1|BULBASAUR}}}fsb{{{form|}}}.png|192px]]
+}}
+|}<noinclude>[[Category:Templates]]</noinclude>

@@ -1,0 +1,11 @@
+<noinclude>{| align="center" style="{{roundy|10px}};"
+|-
+|
+{|</noinclude>
+|- class="sortbottom"
+| style="{{roundybottom|10px}}; background:#{{Special Attack color}}; font-size: 90%; line-height:10px;" colspan="7" | 
+*{{color|000|A level of "0" indicates a move that will be learned by a {{{1|Missingno.}}} upon evolving}}
+*{{color|000|'''Bold''' indicates a move that gets STAB when used by {{{1|Missingno.}}}}}
+*{{color|000|''Italic'' indicates a move that gets STAB only when used by an evolution of {{{1|Missingno.}}}}}
+|}<noinclude>
+[[Category:Table templates]][[Category:Templates]]</noinclude>

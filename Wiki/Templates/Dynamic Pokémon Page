@@ -1,0 +1,15 @@
+<includeonly><tabber>
+|-|Warning= 
+This page was created dynamically from the game's files and cannot be edited.
+</tabber>
+{{#invoke:Database|Navbox|{{{Pokemon|{{PAGENAME}}}}}}}
+{{#invoke:Database|PokemonInfobox|{{{Pokemon|{{PAGENAME}}}}}|{{{ImageCaption|}}}|{{{Image2|}}}|{{{Caption2|}}}}}
+{{#invoke:Database|EvoData|{{{Pokemon|{{PAGENAME}}}}}}}
+{{{Info|}}}
+{{#invoke:Database|DexEntry|{{{Pokemon|{{PAGENAME}}}}}}}
+{{#invoke:Database|HeldItems|{{{Pokemon|{{PAGENAME}}}}}}}
+{{#invoke:Database|location|{{{Pokemon|{{PAGENAME}}}}}|{{{availability|none}}}}}
+{{#invoke:Database|BaseStats|{{{Pokemon|{{PAGENAME}}}}}}}
+{{#invoke:Database|WeaknessAndResistance|{{{Pokemon|{{PAGENAME}}}}}}}
+{{#invoke:Database|CreateMovesSection|{{{Pokemon|{{PAGENAME}}}}}}}
+{{#invoke:Database|Sprites|{{{Pokemon|{{PAGENAME}}}}}}}

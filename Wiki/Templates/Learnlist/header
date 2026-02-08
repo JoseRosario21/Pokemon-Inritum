@@ -1,0 +1,11 @@
+{|style="margin:auto; text-align:center; background: #{{Special Attack color}}; border: 3px solid #{{Shadow color dark}}; padding:2px; {{roundy|10px}};" cellspacing="1" class="sortable"
+|- style=" background:#{{Special Attack color dark}};"
+! {{#ifeq: {{{1|Level}}}|TM|colspan="2"}} | <span style="color:#FFF;">{{#switch:{{{1|Level}}}|Level=Lvl|Breed=-|TM=TM|Tutor=Location|Prior Evo=Stage|Event=Event}}</span>
+! <span style="color:#FFF;">Move</span>
+! <span style="color:#FFF;">Type</span>
+! <span style="color:#FFF;">Cat.</span>
+! <span style="color:#FFF;">Pwr.</span>
+! <span style="color:#FFF;">Acc.</span>
+! <span style="color:#FFF;">PP</span><noinclude>
+|}
+[[Category:Table templates]]</noinclude>

@@ -1,0 +1,5 @@
+{| width="125px" style="{{roundy|40px}} background: #{{{{{1|Unknown}}} color}}; border: 1px solid #{{{{{1|Unknown}}} color dark}};"
+|- style="text-align:center"
+| style="color:#FFF;" | '''[[{{{1|Unknown}}} (type)|<span style="color:#FFF;">{{{1|Unknown}}}</span>]]'''
+| width="20px" style="{{roundy|40px}} background:#FFFFFF; color:#000000;" | {{#switch: {{{2|100}}}|400=4×|200=2×|100=1×|50=½×|25=¼×|12.5=⅛×|0=0×}}
+|}<noinclude>[[Category:Type-related templates]][[Category:Templates]]</noinclude>

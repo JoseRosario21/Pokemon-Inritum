@@ -1,0 +1,274 @@
+{| class="roundy" style="{{roundy|10px}}; float:right; text-align:center; width:33%; max-width:400px; min-width:350px; background: #{{{{{type1color|{{{type1|Unknown}}}}}} color}}; border: 3px solid #{{{{{type2color|{{{type2|{{{type1|Unknown}}}}}}}}} color dark}}; padding:2px;"
+|-
+| colspan="4" |
+  {| width="100%" class="roundy" style="{{roundy|10px}}; background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px; border-spacing:3px;" |
+  ! width="15%" class="roundy" style="{{roundy|10px}}; background:#FFF;" | [[File:Icon{{uc:{{{name|BULBASAUR}}}}}.png]]
+  | colspan="2" width="70%" class="roundy" style="{{roundy|10px}}; background:#FFF;" |
+    {| width="100%" style="background:none;"
+    | <span style="color:#000;"><big><big>'''{{{name|Name}}}'''</big></big>{{#if: {{{category|}}}|<br/>{{{category|Species}}} Pokémon</span>}}
+    |}
+  ! width="15%" class="roundy" style="{{roundy|10px}}; background:#FFF;" | [[List of Pokémon by National Pokédex number|<span style="color:#000;">#<big><big>{{{ndex|Unknown}}}</big></big></span>]]
+  |-
+  | colspan="4" |
+    {| width="100%" class="roundy" style="{{roundy|10px}}; background:#FFF;"
+    | [[File:{{{image|{{uc:{{{name|BULBASAUR}}}}}.png}}}|250px]]{{#if: {{{caption|}}}|<br /><small>{{color|000|{{{caption|}}}}}</small>|}}{{#if: {{{caption2|}}}|<br />[[File:{{uc:{{{name|}}}}}_1.png|125px|]]|}}{{#if: {{{caption3|}}}|[[File:{{uc:{{{name|}}}}}_2.png|125px|]]|}}{{#if: {{{caption2|}}}|<br /><small>{{color|000|{{{caption2|}}}    }}</small>|}}{{#if: {{{caption3|}}}|<small>{{color|000|    {{{caption3|}}}}}</small>|}}{{#if: {{{caption4|}}}|<br />[[File:{{uc:{{{name|}}}}}_3.png|125px|]]|}}{{#if: {{{caption5|}}}|[[File:{{uc:{{{name|}}}}}_4.png|125px|]]|}}{{#if: {{{caption4|}}}|<br /><small>{{color|000|{{{caption4|}}}    }}</small>|}}{{#if: {{{caption5|}}}|<small>{{color|000|    {{{caption5|}}}}}</small>|}}
+    |}
+  |}
+|-
+| class="roundy" colspan="4" style="{{roundy|10px}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''[[List of Pokémon by base stats by type|{{color|000|Type}}]]'''
+  {| width="100%" style="background: #1D2034; padding-top: 3px; {{roundy|10px}}"
+  |
+    {| style="margin:auto; background:none;"
+    | width="45px" style="font-size: 85%; line-height:12px; background: #{{{{{type1|Unknown}}} color}}; {{roundy|2px}}" | [[{{{type1|Unknown}}} (type)|<span style="color:#FFF;">'''{{{type1|Unknown}}}'''</span>]]
+    | width="45px" style="{{#if: {{{type2|}}}||display: none;}} font-size: 85%; line-height:12px; background: #{{{{{type2|Unknown}}} color}}; {{roundy|2px}}" | {{#ifeq: {{{type2|Unknown}}}|Unknown||[[{{{type2|Unknown}}} (type){{!}}<span style="color:#FFF;">'''{{{type2|Unknown}}}'''</span>]]}}
+    |}{{#if: {{{type1-2|}}}|<small>{{{caption|}}}</small>}}
+  | style="{{#if: {{{type1-2|}}}||display: none;}} width:50%;" |
+    {| style="margin:auto; background:none;"
+    | width="45px" style="font-size: 85%; line-height:12px; background: #{{{{{type1-2|Unknown}}} color}}; {{roundy|2px}}" | [[{{{type1-2|Unknown}}} (type)|<span style="color:#FFF;">'''{{{type1-2|Unknown}}}'''</span>]]
+    | width="45px" style="{{#if: {{{type2-2|}}}||display: none;}} font-size: 85%; line-height:12px; background: #{{{{{type2-2|Unknown}}} color}}; {{roundy|2px}}" | {{#ifeq: {{{type2-2|Unknown}}}|Unknown||[[{{{type2-2|Unknown}}} (type){{!}}<span style="color:#FFF;">'''{{{type2-2|Unknown}}}'''</span>]]}}
+    |}{{#if: {{{type1-2|}}}|<small>{{{caption2|}}}</small>}}
+  | style="{{#if: {{{type1-3|}}}||display: none;}} width:50%;" |
+    {| style="margin:auto; background:none;"
+    | width="45px" style="font-size: 85%; line-height:12px; background: #{{{{{type1-3|Unknown}}} color}}; {{roundy|2px}}" | [[{{{type1-3|Unknown}}} (type)|<span style="color:#FFF;">'''{{{type1-3|Unknown}}}'''</span>]]
+    | width="45px" style="{{#if: {{{type2-3|}}}||display: none;}} font-size: 85%; line-height:12px; background: #{{{{{type2-3|Unknown}}} color}}; {{roundy|2px}}" | {{#ifeq: {{{type2-3|Unknown}}}|Unknown||[[{{{type2-3|Unknown}}} (type){{!}}<span style="color:#FFF;">'''{{{type2-3|Unknown}}}'''</span>]]}}
+    |}{{#if: {{{type1-3|}}}|<small>{{{caption3|}}}</small>}}
+  |-
+  | style="{{#if: {{{type1-4|}}}||display: none;}} width:50%;" |
+    {| style="margin:auto; background:none;"
+    | width="45px" style="font-size: 85%; line-height:12px; background: #{{{{{type1-4|Unknown}}} color}}; {{roundy|2px}}" | [[{{{type1-4|Unknown}}} (type)|<span style="color:#FFF;">'''{{{type1-4|Unknown}}}'''</span>]]
+    | width="45px" style="{{#if: {{{type2-4|}}}||display: none;}} font-size: 85%; line-height:12px; background: #{{{{{type2-4|Unknown}}} color}}; {{roundy|2px}}" | {{#ifeq: {{{type2-4|Unknown}}}|Unknown||[[{{{type2-4|Unknown}}} (type){{!}}<span style="color:#FFF;">'''{{{type2-4|Unknown}}}'''</span>]]}}
+    |}{{#if: {{{type1-4|}}}|<small>{{{caption4|}}}</small>}}
+  | style="{{#if: {{{type1-5|}}}||display: none;}} width:50%;" |
+    {| style="margin:auto; background:none;"
+    | width="45px" style="font-size: 85%; line-height:12px; background: #{{{{{type1-5|Unknown}}} color}}; {{roundy|2px}}" | [[{{{type1-5|Unknown}}} (type)|<span style="color:#FFF;">'''{{{type1-5|Unknown}}}'''</span>]]
+    | width="45px" style="{{#if: {{{type2-5|}}}||display: none;}} font-size: 85%; line-height:12px; background: #{{{{{type2-5|Unknown}}} color}}; {{roundy|2px}}" | {{#ifeq: {{{type2-5|Unknown}}}|Unknown||[[{{{type2-5|Unknown}}} (type){{!}}<span style="color:#FFF;">'''{{{type2-5|Unknown}}}'''</span>]]}}
+    |}{{#if: {{{type1-5|}}}|<small>{{{caption5|}}}</small>}}
+  | style="{{#if: {{{type1-6|}}}||display: none;}} width:50%;" |
+    {| style="margin:auto; background:none;"
+    | width="45px" style="font-size: 85%; line-height:12px; background: #{{{{{type1-6|Unknown}}} color}}; {{roundy|2px}}" | [[{{{type1-6|Unknown}}} (type)|<span style="color:#FFF;">'''{{{type1-6|Unknown}}}'''</span>]]
+    | width="45px" style="{{#if: {{{type2-6|}}}||display: none;}} font-size: 85%; line-height:12px; background: #{{{{{type2-6|Unknown}}} color}}; {{roundy|2px}}" | {{#ifeq: {{{type2-6|Unknown}}}|Unknown||[[{{{type2-6|Unknown}}} (type){{!}}<span style="color:#FFF;">'''{{{type2-6|Unknown}}}'''</span>]]}}
+    |}{{#if: {{{type1-6|}}}|<small>{{{caption6|}}}</small>}}
+  |}
+|-
+| class="roundy" colspan="{{#if: {{{hidenability|}}}|2|4}}" width="{{#if: {{{hidenability|}}}|50|100}}%" style="{{roundy|10px}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''[[List of Pokémon by ability|{{color|000|Abilit{{#if: {{{ability2|}}}|ies|y}}}}]]'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | {{AbilityIP|{{{ability1|No ability}}}|FFF}}{{#if: {{{ability2|}}}|&nbsp;<small>or</small>&nbsp;{{AbilityIP|{{{ability2|No ability}}}|FFF}}|}}
+  |}
+| class="roundy" colspan="2" width="50%" style="{{roundy|10px}} {{#if: {{{hidenability|}}}||display:none;}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''<span style="color:#000;">Hidden Abilities</span>'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | colspan="2" | {{#if: {{{hidenability|}}}|{{AbilityIP|{{{hidenability|No ability}}}|FFF}}|}}
+  |}
+|-
+| class="roundy" colspan="{{#if: {{{hiddenability2|}}}|2|4}}" width="{{#if: {{{hiddenability2|}}}|50|100}}%" style="{{roundy|10px}} {{#if: {{{ability12|}}}{{{hiddenability2|}}}||display:none;}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''{{color|000|{{{caption2|}}}}}'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | {{AbilityIP|{{{ability12|No ability}}}|FFF}}{{#if: {{{ability22|}}}|&nbsp;<small>or</small>&nbsp;{{AbilityIP|{{{ability22|No ability}}}|FFF}}|}}
+  |}
+| class="roundy" colspan="2" width="50%" style="{{roundy|10px}} {{#if: {{{hiddenability2|}}}||display:none;}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''<span style="color:#000;">{{{caption2|}}}</span>'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | colspan="2" | {{#if: {{{hiddenability2|}}}|{{AbilityIP|{{{hiddenability2|No ability}}}|FFF}}|}}
+  |}
+|-
+| class="roundy" colspan="{{#if: {{{hiddenability3|}}}|2|4}}" width="{{#if: {{{hiddenability3|}}}|50|100}}%" style="{{roundy|10px}} {{#if: {{{ability13|}}}{{{hiddenability3|}}}||display:none;}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''{{color|000|{{{caption3|}}}}}'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | {{AbilityIP|{{{ability13|No ability}}}|FFF}}{{#if: {{{ability23|}}}|&nbsp;<small>or</small>&nbsp;{{AbilityIP|{{{ability23|No ability}}}|FFF}}|}}
+  |}
+| class="roundy" colspan="2" width="50%" style="{{roundy|10px}} {{#if: {{{hiddenability3|}}}||display:none;}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''<span style="color:#000;">{{{caption3|}}}</span>'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | colspan="2" | {{#if: {{{hiddenability3|}}}|{{AbilityIP|{{{hiddenability3|No ability}}}|FFF}}|}}
+  |}
+|-
+| class="roundy" colspan="{{#if: {{{hiddenability4|}}}|2|4}}" width="{{#if: {{{hiddenability4|}}}|50|100}}%" style="{{roundy|10px}} {{#if: {{{ability14|}}}{{{hiddenability4|}}}||display:none;}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''{{color|000|{{{caption4|}}}}}'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | {{AbilityIP|{{{ability14|No ability}}}|FFF}}{{#if: {{{ability24|}}}|&nbsp;<small>or</small>&nbsp;{{AbilityIP|{{{ability24|No ability}}}|FFF}}|}}
+  |}
+| class="roundy" colspan="2" width="50%" style="{{roundy|10px}} {{#if: {{{hiddenability4|}}}||display:none;}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''<span style="color:#000;">{{{caption4|}}}</span>'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | colspan="2" | {{#if: {{{hiddenability4|}}}|{{AbilityIP|{{{hiddenability4|No ability}}}|FFF}}|}}
+  |}
+|-
+| class="roundy" colspan="4" style="{{roundy|10px}} {{#if: {{{megaability|}}}||display:none;}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" |'''{{color|000|Mega Ability}}'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | colspan="4" | {{#if: {{{megaability|}}}|{{AbilityIP|{{{megaability|No ability}}}|FFF}}|}}
+  |}
+|-
+| class="roundy" colspan="4" style="{{roundy|10px}} {{#if: {{{megaability2|}}}||display:none;}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" |'''{{color|000|{{{caption2|}}}}}'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | colspan="4" | {{#if: {{{megaability2|}}}|{{AbilityIP|{{{megaability2|No ability}}}|FFF}}|}}
+  |}
+|-
+| width="50%" class="roundy" colspan="2" style="{{roundy|10px}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''[[List of Pokémon by breeding stats|{{color|000|Gender ratio}}]]'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | style="{{#switch: {{{genderrate|Unknown}}}|Unknown|Genderless=|display:none;}}" | {{#ifeq:{{{genderrate|Unknown}}}|Genderless|[[:Category:Genderless Pokémon|<span style="color:#FFF;">Genderless</span>]]}}{{#ifeq:{{{genderrate|Unknown}}}|Unknown|[[:Category:Pokémon with unknown gender ratios|<span style="color:#FFF;">Unknown</span>]]}}
+  |- style="{{#switch: {{{genderrate|Unknown}}}|Unknown|Genderless=display:none;}}"
+  | {{#switch:{{{genderrate|Unknown}}}|AlwaysFemale=[[:Category:Female-only Pokémon|<span style="color:#FF6060;">100% female</span>]]|223=[[:Category:Pokémon with a gender ratio of one male to seven females|<span style="color:#0000FF;">12.5%</span> <span style="color:#000;">/</span> <span style="color:#FF6060;">87.5%</span>]]|Female75Percent=[[:Category:Pokémon with a gender ratio of one male to three females|<span style="color:#0000FF;">25%</span> <span style="color:#000;">/</span> <span style="color:#FF6060;">75%</span>]]|Female50Percent=[[:Category:Pokémon with a gender ratio of one male to one female|<span style="color:#0000FF;">50%</span> <span style="color:#000;">/</span> <span style="color:#FF6060;">50%</span>]]|Female25Percent=[[:Category:Pokémon with a gender ratio of three males to one female|<span style="color:#0000FF;">75%</span> <span style="color:#000;">/</span> <span style="color:#FF6060;">25%</span>]]|FemaleOneEighth=[[:Category:Pokémon with a gender ratio of seven males to one female|<span style="color:#0000FF;">87.5%</span> <span style="color:#000;">/</span> <span style="color:#FF6060;">12.5%</span>]]|AlwaysMale=[[:Category:Male-only Pokémon|<span style="color:#0000FF;">100% male</span>]]|}}
+  |}
+| class="roundy" colspan="2" style="{{roundy|10px}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''[[List of Pokémon by catch rate|{{color|000|Catch rate}}]]'''
+  {| width="100%" style="background:#1D2034;
+  | <span style="color:#FFF;">{{#iferror: {{#expr:{{{catchrate|Unknown}}} - 1}}|Unknown|{{{catchrate|3}}} <small>({{tt|{{#expr: ({{{catchrate|3}}}/255 * 1/3 * 100) round 1}}%|When an ordinary Poké Ball is thrown at full health}})</small>}}</span>
+  |}
+|-
+| class="roundy" colspan="4" style="{{roundy|10px}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}};" | '''{{color|000|Breeding}}'''
+  {| width="100%" style="border-collapse:collapse;"
+  |-
+  | width="50%" | '''[[List of Pokémon by breeding stats|{{color|000|Egg group{{#if: {{{egggroup2|}}}|s|}}}}]]'''
+    {| width="100%" style="background:#1D2034;
+    | <span style="color:#FFF;">{{#switch: {{{egggroup1|Unknown}}}|Unknown=Unknown|0=[[:Category:Undiscovered egg group Pokémon|<span style="color:#FFF;">Undiscovered</span>]]|[[{{{egggroup1|}}} (Egg Group)|<span style="color:#FFF;">{{{egggroup1|}}}</span>]]{{#if:{{{egggroup2|}}}|&nbsp;<small>and</small> [[{{{egggroup2|}}} (Egg Group)|<span style="color:#FFF;">{{{egggroup2|}}}</span>]]}}}}</span>
+    |}
+  | '''[[List of Pokémon by breeding stats|{{color|000|Hatch time}}]]'''
+    {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+    | <span style="color:#FFF;">{{#ifeq: {{{eggsteps|Unknown}}}|Unknown|Unknown|{{{eggsteps|0}}} <small>steps</small>{{#ifeq: {{{egggroupn|1}}}|0|{{tt|*|Not legitimately obtainable as an Egg}} }} }}</span>
+    |}
+  |}
+|-
+| class="roundy" colspan="2" style="{{roundy|10px}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''[[List of Pokémon by height and weight|{{color|000|Height}}]]'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | width="50%" | <span style="color:#FFF;">{{#expr:((({{{height-m|0}}}*39.370079)-({{{height-m|0}}}*39.370079)mod12)/12)round0}}'{{#expr:({{{height-m|0}}}*39.370079)mod12round0}}"</span>
+  | width="50%" | <span style="color:#FFF;">{{{height-m|0}}} m</span>
+  |- {{#if: {{{caption|}}}||style="display:none;"}}
+  | colspan="2" | <span style="color:#FFF;"><small>{{{caption|}}}</small></span>
+  |- {{#if: {{{height2-m|}}}||style="display:none;"}}
+  | width="50%" | <span style="color:#FFF;">{{#expr:((({{{height2-m|0}}}*39.370079)-({{{height2-m|0}}}*39.370079)mod12)/12)round0}}'{{#expr:({{{height2-m|0}}}*39.370079)mod12round0}}"</span>
+  | width="50%" | <span style="color:#FFF;">{{{height2-m|0}}} m</span>
+  |- {{#if: {{{height2-m|}}}||style="display:none;"}}
+  | colspan="2" | <span style="color:#FFF;"><small>{{{caption2|}}}</small></span>
+  |- {{#if: {{{height3-m|}}}||style="display:none;"}}
+  | width="50%" | <span style="color:#FFF;">{{#expr:((({{{height3-m|0}}}*39.370079)-({{{height3-m|0}}}*39.370079)mod12)/12)round0}}'{{#expr:({{{height3-m|0}}}*39.370079)mod12round0}}"</span>
+  | width="50%" | <span style="color:#FFF;">{{{height3-m|0}}} m</span>
+  |- {{#if: {{{height3-m|}}}||style="display:none;"}}
+  | colspan="2" | <span style="color:#FFF;"><small>{{{caption3|}}}</small></span>
+  |- {{#if: {{{height4-m|}}}||style="display:none;"}}
+  | width="50%" | <span style="color:#FFF;">{{#expr:((({{{height4-m|0}}}*39.370079)-({{{height4-m|0}}}*39.370079)mod12)/12)round0}}'{{#expr:({{{height4-m|0}}}*39.370079)mod12round0}}"</span>
+  | width="50%" | <span style="color:#FFF;">{{{height4-m|0}}} m</span>
+  |- {{#if: {{{height4-m|}}}||style="display:none;"}}
+  | colspan="2" | <span style="color:#FFF;"><small>{{{caption4|}}}</small></span>
+  |- {{#if: {{{height5-m|}}}||style="display:none;"}}
+  | width="50%" | <span style="color:#FFF;">{{#expr:((({{{height5-m|0}}}*39.370079)-({{{height5-m|0}}}*39.370079)mod12)/12)round0}}'{{#expr:({{{height5-m|0}}}*39.370079)mod12round0}}"</span>
+  | width="50%" | <span style="color:#FFF;">{{{height5-m|0}}} m</span>
+  |- {{#if: {{{height5-m|}}}||style="display:none;"}}
+  | colspan="2" | <span style="color:#FFF;"><small>{{{caption5|}}}</small></span>
+  |- {{#if: {{{height6-m|}}}||style="display:none;"}}
+  | width="50%" | <span style="color:#FFF;">{{#expr:((({{{height6-m|0}}}*39.370079)-({{{height6-m|0}}}*39.370079)mod12)/12)round0}}'{{#expr:({{{height6-m|0}}}*39.370079)mod12round0}}"</span>
+  | width="50%" | <span style="color:#FFF;">{{{height6-m|0}}} m</span>
+  |- {{#if: {{{height6-m|}}}||style="display:none;"}}
+  | colspan="2" | <span style="color:#FFF;"><small>{{{caption6|}}}</small></span>
+  |}
+| class="roundy" colspan="2" style="{{roundy|10px}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''[[List of Pokémon by height and weight|{{color|000|Weight}}]]'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | width="50%" | <span style="color:#FFF;">{{#expr:({{{weight-kg|0}}}*2.204623)round1}} lbs.</span>
+  | width="50%" | <span style="color:#FFF;">{{{weight-kg|0}}} kg</span>
+  |- {{#if: {{{caption|}}}||style="display:none;"}}
+  | colspan="2" | <span style="color:#FFF;"><small>{{{caption|}}}</small></span>
+  |- {{#if: {{{weight2-kg|}}}||style="display:none;"}}
+  | width="50%" | <span style="color:#FFF;">{{#expr:({{{weight2-kg|0}}}*2.204623)round1}} lbs.</span>
+  | width="50%" | <span style="color:#FFF;">{{{weight2-kg|0}}} kg</span>
+  |- {{#if: {{{weight2-kg|}}}||style="display:none;"}}
+  | colspan="2" | <span style="color:#FFF;"><small>{{{caption2|}}}</small></span>
+|- {{#if: {{{weight3-kg|}}}||style="display:none;"}}
+  | width="50%" | <span style="color:#FFF;">{{#expr:({{{weight3-kg|0}}}*2.204623)round1}} lbs.</span>
+  | width="50%" | <span style="color:#FFF;">{{{weight3-kg|0}}} kg</span>
+  |- {{#if: {{{weight3-kg|}}}||style="display:none;"}}
+  | colspan="2" | <span style="color:#FFF;"><small>{{{caption3|}}}</small></span>
+|- {{#if: {{{weight4-kg|}}}||style="display:none;"}}
+  | width="50%" | <span style="color:#FFF;">{{#expr:({{{weight4-kg|0}}}*2.204623)round1}} lbs.</span>
+  | width="50%" | <span style="color:#FFF;">{{{weight4-kg|0}}} kg</span>
+  |- {{#if: {{{weight4-kg|}}}||style="display:none;"}}
+  | colspan="2" | <span style="color:#FFF;"><small>{{{caption4|}}}</small></span>
+|- {{#if: {{{weight5-kg|}}}||style="display:none;"}}
+  | width="50%" | <span style="color:#FFF;">{{#expr:({{{weight5-kg|0}}}*2.204623)round1}} lbs.</span>
+  | width="50%" | <span style="color:#FFF;">{{{weight5-kg|0}}} kg</span>
+  |- {{#if: {{{weight5-kg|}}}||style="display:none;"}}
+  | colspan="2" | <span style="color:#FFF;"><small>{{{caption5|}}}</small></span>
+|- {{#if: {{{weight6-kg|}}}||style="display:none;"}}
+  | width="50%" | <span style="color:#FFF;">{{#expr:({{{weight6-kg|0}}}*2.204623)round1}} lbs.</span>
+  | width="50%" | <span style="color:#FFF;">{{{weight6-kg|0}}} kg</span>
+  |- {{#if: {{{weight6-kg|}}}||style="display:none;"}}
+  | colspan="2" | <span style="color:#FFF;"><small>{{{caption6|}}}</small></span>
+  |}
+|-
+| class="roundy" colspan="2" style="{{roundy|10px}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | [[List of Pokémon by effort value yield|'''{{color|000|Base experience yield}}''']]
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | <span style="color:#FFF;">{{{expyield|Unknown}}}</span>
+  |}
+| class="roundy" colspan="2" style="{{roundy|10px}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''<span style="color:#000;">Leveling rate</span>'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | <span style="color:#FFF;">{{{expgroup|Unknown}}}</span>
+  |}
+|-
+| class="roundy" colspan="4" style="{{roundy|10px}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | [[List of Pokémon by effort value yield|'''{{color|000|EV yield}}''']]
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  |-
+  | colspan="6" | <span style="color:#FFF;">Total: {{{evtotal|{{#expr: ({{{evhp|0}}}+{{{evat|0}}}+{{{evde|0}}}+{{{evsa|0}}}+{{{evsd|0}}}+{{{evsp|0}}})}}}}}</span>
+  |- {{#if: {{{caption|}}}||style="display:none;"}}
+  | colspan="6" | <span style="color:#FFF;"><small>{{{caption|}}}</small></span>
+  |-
+  | width="16%" style="{{roundy|10px}} background:#{{HP color light}};" | <span style="color:#000;">{{{evhp|0}}}<br/><small>HP</small></span>
+  | width="17%" style="{{roundy|10px}} background:#{{Attack color light}};" | <span style="color:#000;">{{{evat|0}}}<br/><small>Atk</small></span>
+  | width="16%" style="{{roundy|10px}} background:#{{Defense color light}};" | <span style="color:#000;">{{{evde|0}}}<br/><small>Def</small></span>
+  | width="17%" style="{{roundy|10px}} background:#{{Special Attack color light}};" | <span style="color:#000;">{{{evsa|0}}}<br/><small>Sp.Atk</small></span>
+  | width="17%" style="{{roundy|10px}} background:#{{Special Defense color light}};" | <span style="color:#000;">{{{evsd|0}}}<br/><small>Sp.Def</small></span>
+  | width="17%" style="{{roundy|10px}} background:#{{Speed color light}};" | <span style="color:#000;">{{{evsp|0}}}<br/><small>Speed</small></span>
+  |- {{#ifexpr: ({{{evhp2|0}}}+{{{evat2|0}}}+{{{evde2|0}}}+{{{evsa2|0}}}+{{{evsd2|0}}}+{{{evsp2|0}}}) > 0||style="display:none;"}}
+  | colspan="6" | <span style="color:#FFF;"><small>{{{caption2|}}}</small></span>
+  |- {{#ifexpr: ({{{evhp2|0}}}+{{{evat2|0}}}+{{{evde2|0}}}+{{{evsa2|0}}}+{{{evsd2|0}}}+{{{evsp2|0}}}) > 0||style="display:none;"}}
+  | style="{{roundy|10px}} background:#{{HP color light}};" | <span style="color:#000;">{{{evhp2|0}}}<br/><small>HP</small></span>
+  | style="{{roundy|10px}} background:#{{Attack color light}};" | <span style="color:#000;">{{{evat2|0}}}<br/><small>Atk</small></span>
+  | style="{{roundy|10px}} background:#{{Defense color light}};" | <span style="color:#000;">{{{evde2|0}}}<br/><small>Def</small></span>
+  | style="{{roundy|10px}} background:#{{Special Attack color light}};" | <span style="color:#000;">{{{evsa2|0}}}<br/><small>Sp.Atk</small></span>
+  | style="{{roundy|10px}} background:#{{Special Defense color light}};" | <span style="color:#000;">{{{evsd2|0}}}<br/><small>Sp.Def</small></span>
+  | style="{{roundy|10px}} background:#{{Speed color light}};" | <span style="color:#000;">{{{evsp2|0}}}<br/><small>Speed</small></span>
+  |- {{#ifexpr: ({{{evhp3|0}}}+{{{evat3|0}}}+{{{evde3|0}}}+{{{evsa3|0}}}+{{{evsd3|0}}}+{{{evsp3|0}}}) > 0||style="display:none;"}}
+  | colspan="6" | <span style="color:#FFF;"><small>{{{caption3|}}}</small></span>
+  |- {{#ifexpr: ({{{evhp3|0}}}+{{{evat3|0}}}+{{{evde3|0}}}+{{{evsa3|0}}}+{{{evsd3|0}}}+{{{evsp3|0}}}) > 0||style="display:none;"}}
+  | style="{{roundy|10px}} background:#{{HP color light}};" | <span style="color:#000;">{{{evhp3|0}}}<br/><small>HP</small></span>
+  | style="{{roundy|10px}} background:#{{Attack color light}};" | <span style="color:#000;">{{{evat3|0}}}<br/><small>Atk</small></span>
+  | style="{{roundy|10px}} background:#{{Defense color light}};" | <span style="color:#000;">{{{evde3|0}}}<br/><small>Def</small></span>
+  | style="{{roundy|10px}} background:#{{Special Attack color light}};" | <span style="color:#000;">{{{evsa3|0}}}<br/><small>Sp.Atk</small></span>
+  | style="{{roundy|10px}} background:#{{Special Defense color light}};" | <span style="color:#000;">{{{evsd3|0}}}<br/><small>Sp.Def</small></span>
+  | style="{{roundy|10px}} background:#{{Speed color light}};" | <span style="color:#000;">{{{evsp3|0}}}<br/><small>Speed</small></span>
+  |- {{#ifexpr: ({{{evhp4|0}}}+{{{evat4|0}}}+{{{evde4|0}}}+{{{evsa4|0}}}+{{{evsd4|0}}}+{{{evsp4|0}}}) > 0||style="display:none;"}}
+  | colspan="6" | <span style="color:#FFF;"><small>{{{caption4|}}}</small></span>
+  |- {{#ifexpr: ({{{evhp4|0}}}+{{{evat4|0}}}+{{{evde4|0}}}+{{{evsa4|0}}}+{{{evsd4|0}}}+{{{evsp4|0}}}) > 0||style="display:none;"}}
+  | style="{{roundy|10px}} background:#{{HP color light}};" | <span style="color:#000;">{{{evhp4|0}}}<br/><small>HP</small></span>
+  | style="{{roundy|10px}} background:#{{Attack color light}};" | <span style="color:#000;">{{{evat4|0}}}<br/><small>Atk</small></span>
+  | style="{{roundy|10px}} background:#{{Defense color light}};" | <span style="color:#000;">{{{evde4|0}}}<br/><small>Def</small></span>
+  | style="{{roundy|10px}} background:#{{Special Attack color light}};" | <span style="color:#000;">{{{evsa4|0}}}<br/><small>Sp.Atk</small></span>
+  | style="{{roundy|10px}} background:#{{Special Defense color light}};" | <span style="color:#000;">{{{evsd4|0}}}<br/><small>Sp.Def</small></span>
+  | style="{{roundy|10px}} background:#{{Speed color light}};" | <span style="color:#000;">{{{evsp4|0}}}<br/><small>Speed</small></span>
+  |- {{#ifexpr: ({{{evhp5|0}}}+{{{evat5|0}}}+{{{evde5|0}}}+{{{evsa5|0}}}+{{{evsd5|0}}}+{{{evsp5|0}}}) > 0||style="display:none;"}}
+  | colspan="6" | <span style="color:#FFF;"><small>{{{caption5|}}}</small></span>
+  |- {{#ifexpr: ({{{evhp5|0}}}+{{{evat5|0}}}+{{{evde5|0}}}+{{{evsa5|0}}}+{{{evsd5|0}}}+{{{evsp5|0}}}) > 0||style="display:none;"}}
+  | style="{{roundy|10px}} background:#{{HP color light}};" | <span style="color:#000;">{{{evhp5|0}}}<br/><small>HP</small></span>
+  | style="{{roundy|10px}} background:#{{Attack color light}};" | <span style="color:#000;">{{{evat5|0}}}<br/><small>Atk</small></span>
+  | style="{{roundy|10px}} background:#{{Defense color light}};" | <span style="color:#000;">{{{evde5|0}}}<br/><small>Def</small></span>
+  | style="{{roundy|10px}} background:#{{Special Attack color light}};" | <span style="color:#000;">{{{evsa5|0}}}<br/><small>Sp.Atk</small></span>
+  | style="{{roundy|10px}} background:#{{Special Defense color light}};" | <span style="color:#000;">{{{evsd5|0}}}<br/><small>Sp.Def</small></span>
+  | style="{{roundy|10px}} background:#{{Speed color light}};" | <span style="color:#000;">{{{evsp5|0}}}<br/><small>Speed</small></span>
+  |- {{#ifexpr: ({{{evhp6|0}}}+{{{evat6|0}}}+{{{evde6|0}}}+{{{evsa6|0}}}+{{{evsd6|0}}}+{{{evsp6|0}}}) > 0||style="display:none;"}}
+  | colspan="6" | <span style="color:#FFF;"><small>{{{caption6|}}}</small></span>
+  |- {{#ifexpr: ({{{evhp6|0}}}+{{{evat6|0}}}+{{{evde6|0}}}+{{{evsa6|0}}}+{{{evsd6|0}}}+{{{evsp6|0}}}) > 0||style="display:none;"}}
+  | style="{{roundy|10px}} background:#{{HP color light}};" | <span style="color:#000;">{{{evhp6|0}}}<br/><small>HP</small></span>
+  | style="{{roundy|10px}} background:#{{Attack color light}};" | <span style="color:#000;">{{{evat6|0}}}<br/><small>Atk</small></span>
+  | style="{{roundy|10px}} background:#{{Defense color light}};" | <span style="color:#000;">{{{evde6|0}}}<br/><small>Def</small></span>
+  | style="{{roundy|10px}} background:#{{Special Attack color light}};" | <span style="color:#000;">{{{evsa6|0}}}<br/><small>Sp.Atk</small></span>
+  | style="{{roundy|10px}} background:#{{Special Defense color light}};" | <span style="color:#000;">{{{evsd6|0}}}<br/><small>Sp.Def</small></span>
+  | style="{{roundy|10px}} background:#{{Speed color light}};" | <span style="color:#000;">{{{evsp6|0}}}<br/><small>Speed</small></span>
+  |}
+|-
+| class="roundy" colspan="2" style="{{roundy|10px}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''[[List of Pokémon by color|{{color|000|Pokédex color}}]]'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | <span style="background:#{{#switch: {{{color|Unknown}}}|Red=f05868|Blue=3088f0|Green=40b868|Yellow=F8E030|Purple=a868c0|Pink=f890c8|Brown=b07030|Black=585858|Gray=a0a0a0|White=f0f0f0|Orange=F09010|Light blue=80D0F8|Gold=E0C050|L68A090}}; {{roundy|4px}}">&emsp;</span> [[:Category:{{{color|Unknown}}}-colored Pokémon|{{{color|Unknown}}}]]{{#if: {{{color2|}}}|<br><span style="background:#{{#switch: {{{color2|Unknown}}}|Red=f05868|Blue=3088f0|Green=40b868|Yellow=F8E030|Purple=a868c0|Pink=f890c8|Brown=b07030|Black=585858|Gray=a0a0a0|White=f0f0f0|Orange=F09010|Light blue=80D0F8|Gold=E0C050|L68A090}}; {{roundy|4px}}">&emsp;</span> [[:Category:{{{color|Unknown}}}-colored Pokémon|{{{color2|Unknown}}}]]}}
+  |}
+| class="roundy" colspan="2" style="{{roundy|10px}} background:#{{{{{type1color|{{{type1|Unknown}}}}}} color light}}; padding:2px;" | '''[[List of Pokémon by base friendship|{{color|000|Base friendship}}]]'''
+  {| width="100%" style="background:#1D2034; {{roundy|10px}}"
+  | <span style="color:#FFF;">{{{friendship|Unknown}}}</span>
+  |}
+|-
+|}<includeonly>
+<!--Pokémon-->[[Category:Pokémon]]
+<!--Image-->{{#ifexist: File:{{{image|{{{ndex|0}}}.png}}}||[[Category:Pokémon in need of sprites]]}}
+<!--Types-->{{#if: {{{type1|}}}|[[Category:{{{type1}}}-type Pokémon]]}}{{#if: {{{type2|}}}|[[Category:{{{type2}}}-type Pokémon]]}}{{#if: {{{type2|}}}|[[Category:Dual-type Pokémon]]|[[Category:Single-type Pokémon]]}}
+<!--Gender dist.-->{{#switch: {{{genderrate|Unknown}}}|Genderless=[[Category:Genderless Pokémon]]|AlwaysFemale=[[Category:Female-only Pokémon]][[Category:Pokémon with a gender ratio of one male to seven females]]|Female75Percent=[[Category:Pokémon with a gender ratio of one male to three females]]|Female50Percent=[[Category:Pokémon with a gender ratio of one male to one female]]|Female25Percent=[[Category:Pokémon with a gender ratio of three males to one female]]|FemaleOneEighth=[[Category:Pokémon with a gender ratio of seven males to one female]]|AlwaysMale=[[Category:Male-only Pokémon]]|[[Category:Pokémon with unknown gender ratios]]}}
+<!--Experience-->[[Category:Pokémon in the {{{expgroup|Unknown}}} experience group]]
+<!--Color-->{{#if: {{{color|}}}|[[Category:{{{color|Unknown}}}-colored Pokémon]]|[[Category:Unknown-colored Pokémon]]}}
+<!--Egg Groups-->[[Category:{{{egggroup1|Undiscovered}}} egg group Pokémon]]{{#if: {{{egggroup2|}}}|[[Category:{{{egggroup2}}} egg group Pokémon]]|}}
+</includeonly><noinclude>[[Category:Infobox templates]]</noinclude>

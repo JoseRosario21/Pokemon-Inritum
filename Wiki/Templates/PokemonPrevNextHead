@@ -1,0 +1,22 @@
+{| align="center" style="background: #{{{{{type2|{{{type|Unknown}}}}}} color}}; width: 100%; {{roundy|20px}} border: 3px solid #{{ {{#if: {{{type2|}}}|{{{type2|Unknown}}} color|{{{type|Unknown}}} color dark}} }};"
+|- align="center"
+| width="45%" style="background: #{{{{{type|Unknown}}} color light}}; {{roundyleft|15px}}" | 
+{| align="right" style="background: #{{{{{type|Unknown}}} color light}}; width:100%; {{roundyleft|15px}}"
+| align="right" | [[{{{prev}}}|&larr;]]
+| align="center" | {{#ifeq: {{{prevnum|Unknown}}}|Unknown|{{MS|000|Missingno.}}|{{MS|{{{prev|000}}}|{{{prev|Missingno.}}}}}}}
+| align="right" | [[{{{prev}}}|<nowiki>#</nowiki>{{{prevnum}}}: {{{prev}}}]]
+|}
+| style="background: #{{{{{type|Unknown}}} color light}}" | 
+{| align="center" style="background: #{{{{{type|Unknown}}} color light}}; width:100%;"
+| align="center" | [[Pokémon Locations|Pokémon]]
+|}
+| width="45%" style="background: #{{{{{type|Unknown}}} color light}}; {{roundyright|15px}}" | 
+{| align="right" style="background: #{{{{{type|Unknown}}} color light}}; width:100%; {{roundyright|15px}}"
+| align="left" | [[{{{next}}}|<nowiki>#</nowiki>{{{nextnum}}}: {{{next}}}]]
+| align="center" | {{#ifeq: {{{nextnum|Unknown}}}|Unknown|{{MS|000|Missingno.}}|{{MS|{{{next|000}}}|{{{next|Missingno.}}}}}}}
+| align="left" | [[{{{next}}}|&rarr;]]
+|}
+|}<noinclude>[[Category:Navigation templates|{{PAGENAME}}]]</noinclude>
+{| width="100%" style="background: none;"
+| 
+|}

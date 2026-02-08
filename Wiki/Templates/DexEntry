@@ -1,0 +1,12 @@
+{| style="margin:auto; max-width:400px; background: #{{{{{type1|Unknown}}} color}}; border: 3px solid #{{ {{#if:{{{type2|}}}|{{{type2|Unknown}}} color|{{{type1|Unknown}}} color dark}} }}; {{roundy|15px}};"
+|-
+| 
+  {| width="100%" style="background: #{{{{{type1|Unknown}}} color}}; border-collapse:collapse;"
+  ! style="background: #{{{{{type1|Unknown}}} color light}}; {{roundytop|10px}};" | <span style="color:#000;">Pokédex entry</span>
+  |-
+  | style="background:#{{{{{type1|Unknown}}} color light}}; padding:2px; {{roundybottom|10px}};" |
+    {| width="100%" style="background:#FFF; padding:3px; {{roundy|10px}}"
+    | style="vertical-align: middle;" | <span style="color:#000;">{{#if: {{{1|}}}|{{{1}}}|<center><small>''No entry yet''</small></center><includeonly>[[Category:Pokemon in need of Pokedex entries]]</includeonly>}}</span>
+    |}
+  |}
+|}<noinclude>[[Category:Table templates]]</noinclude>
