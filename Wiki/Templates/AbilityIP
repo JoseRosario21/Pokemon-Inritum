@@ -1,8 +1,0 @@
-{{#switch: {{{1|Klutz}}}
-|High Temperature
-|Neural Link=[[{{{1|Klutz}}}|<span style="color:#{{{2|FFF}}};">{{{text|{{{1|Klutz}}}}}}</span>]]
-|W. Compaction=<span class="plainlinks">[//bulbapedia.bulbagarden.net/wiki/Water_Compaction_(Ability) <span style="color:#{{{2|FFF}}};">{{{text|{{{1|Klutz}}}}}}</span>]</span>
-|EmergencyExit=<span class="plainlinks">[//bulbapedia.bulbagarden.net/wiki/Emergency_Exit_(Ability) <span style="color:#{{{2|FFF}}};">{{{text|{{{1|Klutz}}}}}}</span>]</span>
-|#default=<span class="plainlinks">[//bulbapedia.bulbagarden.net/wiki/{{urlencode:{{{1|Klutz}}}|PATH}}_(Ability) <span style="color:#{{{2|FFF}}};">{{{text|{{{1|Klutz}}}}}}</span>]</span>}}<noinclude>
-
-[[Category:Link-Templates]][[Category:Templates]]</noinclude>

@@ -1,5 +1,0 @@
-{{#switch: {{{1|Struggle}}}
-|Stomp Tantrum=<span class="plainlinks">[//bulbapedia.bulbagarden.net/wiki/Stomping_Tantrum_(move) <span style="color:#{{{2|FFF}}};">{{{text|{{{1|Struggle}}}}}}</span>]</span>
-|#default=<span class="plainlinks">[//bulbapedia.bulbagarden.net/wiki/{{urlencode:{{{1|Struggle}}}|PATH}}_(move) <span style="color:#{{{2|FFF}}};">{{{text|{{{1|Struggle}}}}}}</span>]</span>}}<noinclude>
-
-[[Category:Link-Templates]][[Category:Templates]]</noinclude>
