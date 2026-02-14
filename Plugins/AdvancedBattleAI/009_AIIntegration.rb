@@ -140,9 +140,23 @@ class Battle
         side = opposes?(idx) ? 1 : 0
         ai.memory.record_pokemon_seen(side, battler.species)
 
-        # Record ability if visible (not hidden)
-        if battler.ability_id
-          ai.memory.record_ability(idx, battler.ability_id)
+        # Only record ability for opponent Pokemon whose ability triggers visibly
+        # on entry (Intimidate, Drizzle, etc.). The AI shouldn't know abilities
+        # that don't announce themselves. For now, record for non-player Pokemon
+        # whose ability has a visible on-entry effect.
+        if battler.ability_id && !battler.pbOwnedByPlayer?
+          visible_on_entry = [
+            :INTIMIDATE, :DRIZZLE, :DROUGHT, :SANDSTREAM, :SNOWWARNING,
+            :ELECTRICSURGE, :GRASSYSURGE, :MISTYSURGE, :PSYCHICSURGE,
+            :AIRLOCK, :CLOUDNINE, :TRACE, :PRESSURE, :UNNERVE,
+            :SCREENCLEANER, :NEUTRALIZINGGAS, :DOWNLOAD, :INTREPIDSWORD,
+            :DAUNTLESSSHIELD, :ASONEGLASTRIER, :ASONESPECTRIER,
+            :CURIOUSMEDICINE, :PASTELVEIL, :PRIMORDIALSEA, :DESOLATELAND,
+            :DELTASTREAM
+          ]
+          if visible_on_entry.include?(battler.ability_id)
+            ai.memory.record_ability(idx, battler.ability_id)
+          end
         end
       end
     end

@@ -1,6 +1,7 @@
 #===============================================================================
 # Advanced Battle AI - Team Preview Analysis
 # Analyzes opponent's full team at battle start for strategic decisions
+# Uses species-based move prediction for opponent — does NOT read actual moves.
 #===============================================================================
 
 class Battle::AI
@@ -28,6 +29,27 @@ class Battle::AI
     @opponent_has_setup = false
     @opponent_is_stall = false
     @team_preview_analyzed = false
+    @predicted_opponent_moves = {}  # Cache: party_index => [move_id, ...]
+  end
+
+  #-----------------------------------------------------------------------------
+  # Get moves to analyze for a party Pokemon.
+  # For the AI's own party: uses actual moves (the AI knows its own moveset).
+  # For the player's party: uses species-based prediction.
+  #-----------------------------------------------------------------------------
+  def get_analysis_moves(pkmn, is_opponent = false)
+    return [] unless pkmn
+    if is_opponent
+      # Use cached prediction or generate new one
+      key = pkmn.personalID rescue pkmn.object_id
+      unless @predicted_opponent_moves[key]
+        @predicted_opponent_moves[key] = Battle::AI::AIMemory.predict_moves_for_species(pkmn)
+      end
+      return @predicted_opponent_moves[key]
+    else
+      # AI's own moves — read directly
+      return pkmn.moves.map { |m| m ? m.id : nil }.compact
+    end
   end
 
   #-----------------------------------------------------------------------------
@@ -53,17 +75,17 @@ class Battle::AI
     return unless player_party && player_party.length > 0
     return unless our_party && our_party.length > 0
 
-    # Reuse 012's composition analysis on the player's team
-    @opponent_team_analysis = analyze_team_composition(player_party)
+    # Analyze opponent team using predicted moves (not actual)
+    @opponent_team_analysis = analyze_team_composition_predicted(player_party)
     @opponent_win_condition = determine_win_condition(@opponent_team_analysis)
     @opponent_is_stall = (@opponent_win_condition == AdvancedBattleAI::WinCondition::STALL)
 
-    # Scan player moves for hazard removal, priority, and setup
+    # Scan predicted moves for hazard removal, priority, and setup
     player_party.each do |pkmn|
       next unless pkmn && pkmn.able?
-      pkmn.moves.each do |move|
-        next unless move
-        move_data = GameData::Move.try_get(move.id)
+      predicted_move_ids = get_analysis_moves(pkmn, true)
+      predicted_move_ids.each do |move_id|
+        move_data = GameData::Move.try_get(move_id)
         next unless move_data
 
         # Hazard removal: Rapid Spin or Defog
@@ -84,8 +106,8 @@ class Battle::AI
       end
     end
 
-    # Coverage gaps and threat map
-    @opponent_coverage_gaps = calculate_opponent_coverage_gaps(player_party)
+    # Coverage gaps and threat map (using predicted moves)
+    @opponent_coverage_gaps = calculate_opponent_coverage_gaps_predicted(player_party)
     @threat_map = build_threat_map(player_party, our_party)
 
     AdvancedBattleAI.log(
@@ -98,22 +120,134 @@ class Battle::AI
   end
 
   #-----------------------------------------------------------------------------
-  # Calculate types the opponent's team cannot hit super-effectively
+  # Analyze team composition using predicted moves (for opponent team)
   #-----------------------------------------------------------------------------
-  def calculate_opponent_coverage_gaps(player_party)
-    # Collect all attacking move types across the player's team
+  def analyze_team_composition_predicted(party)
+    analysis = {
+      sweepers: [],
+      walls: [],
+      setup_sweepers: [],
+      pivots: [],
+      hazard_setters: [],
+      clerics: [],
+      stallbreakers: [],
+      total_recovery: 0,
+      total_priority: 0,
+      total_setup: 0,
+      total_hazards: 0,
+      average_speed: 0,
+      speed_control: false
+    }
+
+    total_speed = 0
+    party.each_with_index do |pkmn, idx|
+      next unless pkmn && pkmn.able?
+
+      # Classify using predicted moves
+      predicted_move_ids = get_analysis_moves(pkmn, true)
+      role = classify_pokemon_role_with_moves(pkmn, predicted_move_ids)
+      case role
+      when :sweeper
+        analysis[:sweepers].push(idx)
+      when :setup_sweeper
+        analysis[:setup_sweepers].push(idx)
+        analysis[:total_setup] += 1
+      when :physical_wall, :special_wall, :mixed_wall
+        analysis[:walls].push(idx)
+      when :pivot
+        analysis[:pivots].push(idx)
+      when :hazard_setter
+        analysis[:hazard_setters].push(idx)
+      when :cleric
+        analysis[:clerics].push(idx)
+      when :stallbreaker
+        analysis[:stallbreakers].push(idx)
+      end
+
+      # Count move types from predicted moves
+      predicted_move_ids.each do |move_id|
+        move_data = GameData::Move.try_get(move_id)
+        next unless move_data
+
+        analysis[:total_recovery] += 1 if is_recovery_move?(move_data)
+        if move_data.priority > 0 && move_data.power > 0
+          analysis[:total_priority] += 1
+        end
+        analysis[:total_setup] += 1 if is_setup_move?(move_data)
+        analysis[:total_hazards] += 1 if is_hazard_move?(move_data)
+        analysis[:speed_control] = true if is_speed_control_move?(move_data)
+      end
+
+      total_speed += pkmn.speed
+    end
+
+    able_count = party.count { |p| p && p.able? }
+    analysis[:average_speed] = able_count > 0 ? total_speed / able_count : 0
+
+    return analysis
+  end
+
+  #-----------------------------------------------------------------------------
+  # Classify a Pokemon role given a set of move IDs (predicted or actual)
+  #-----------------------------------------------------------------------------
+  def classify_pokemon_role_with_moves(pkmn, move_ids)
+    return :unknown unless pkmn
+
+    has_setup = false
+    has_pivot = false
+    has_hazards = false
+    has_recovery = false
+    has_stallbreak = false
+
+    move_ids.each do |move_id|
+      move_data = GameData::Move.try_get(move_id)
+      next unless move_data
+      has_setup = true if is_setup_move?(move_data)
+      has_pivot = true if is_pivot_move?(move_data)
+      has_hazards = true if is_hazard_move?(move_data)
+      has_recovery = true if is_recovery_move?(move_data)
+      has_stallbreak = true if is_stallbreak_move?(move_data)
+    end
+
+    # Stat-based classification (same thresholds as classify_pokemon_role)
+    offensive = [pkmn.attack, pkmn.spatk].max
+    defensive = (pkmn.defense + pkmn.spdef) / 2
+    speed = pkmn.speed
+
+    pkmn_ability = pkmn.ability_id rescue nil
+    wall_threshold = pkmn_ability == :INTIMIDATE ? 1.1 : 1.3
+
+    return :setup_sweeper if has_setup && offensive >= 80
+    return :pivot if has_pivot
+    return :hazard_setter if has_hazards
+    return :stallbreaker if has_stallbreak && offensive >= 80
+
+    if defensive >= offensive * wall_threshold
+      return :physical_wall if pkmn.defense > pkmn.spdef * 1.3
+      return :special_wall if pkmn.spdef > pkmn.defense * 1.3
+      return :mixed_wall
+    end
+
+    return :cleric if has_recovery && defensive >= 80
+    return :sweeper if offensive >= 90 && speed >= 75
+    return :utility
+  end
+
+  #-----------------------------------------------------------------------------
+  # Calculate coverage gaps using predicted moves (for opponent team)
+  #-----------------------------------------------------------------------------
+  def calculate_opponent_coverage_gaps_predicted(player_party)
     attacking_types = []
     player_party.each do |pkmn|
       next unless pkmn && pkmn.able?
-      pkmn.moves.each do |move|
-        next unless move
-        move_data = GameData::Move.try_get(move.id)
+      predicted_move_ids = get_analysis_moves(pkmn, true)
+      predicted_move_ids.each do |move_id|
+        move_data = GameData::Move.try_get(move_id)
         next unless move_data && move_data.power > 0
         attacking_types.push(move_data.type) unless attacking_types.include?(move_data.type)
       end
     end
 
-    # For each non-pseudo game type, check if any attacking type hits it SE
     gaps = []
     GameData::Type.each do |type_data|
       next if type_data.pseudo_type
@@ -129,12 +263,13 @@ class Battle::AI
 
   #-----------------------------------------------------------------------------
   # Build threat map: for each opponent Pokemon, which of ours it threatens
-  # and which of ours counter it
+  # and which of ours counter it.
+  # Uses predicted moves for opponent, actual moves for our party.
   #-----------------------------------------------------------------------------
   def build_threat_map(player_party, our_party)
     map = {}
 
-    # Check if our team has a hazard setter (for hazard vulnerability adjustment)
+    # Check if our team has a hazard setter (AI knows its own moves)
     our_has_hazard_setter = our_party.any? do |pkmn|
       next false unless pkmn && pkmn.able?
       pkmn.moves.any? do |move|
@@ -147,36 +282,36 @@ class Battle::AI
     player_party.each_with_index do |opp_pkmn, opp_idx|
       next unless opp_pkmn && opp_pkmn.able?
 
-      entry = { threatens: [], countered_by: [], role: classify_pokemon_role(opp_pkmn) }
+      predicted_move_ids = get_analysis_moves(opp_pkmn, true)
+      entry = {
+        threatens: [],
+        countered_by: [],
+        role: classify_pokemon_role_with_moves(opp_pkmn, predicted_move_ids)
+      }
 
       our_party.each_with_index do |our_pkmn, our_idx|
         next unless our_pkmn && our_pkmn.able?
 
-        # How much does opp threaten our Pokemon?
-        opp_damage_frac = calculate_party_threat_score(opp_pkmn, our_pkmn)
-        # How much does our Pokemon threaten opp?
+        # How much does opp threaten our Pokemon? (using predicted moves)
+        opp_damage_frac = calculate_party_threat_score_with_moves(opp_pkmn, our_pkmn, predicted_move_ids)
+        # How much does our Pokemon threaten opp? (using actual moves)
         our_damage_frac = calculate_party_threat_score(our_pkmn, opp_pkmn)
 
-        # Hazard vulnerability adjustment: if we have a hazard setter and
-        # the opponent's Pokemon is weak to Rock, increase our threat score
+        # Hazard vulnerability adjustment
         if our_has_hazard_setter
           opp_types = opp_pkmn.types rescue [:NORMAL]
           rock_eff = Effectiveness.calculate(:ROCK, *opp_types)
           if rock_eff >= Effectiveness::SUPER_EFFECTIVE_MULTIPLIER * 2
-            # 4x weak to Rock — Stealth Rock deals 50%
             our_damage_frac += 0.5
           elsif rock_eff >= Effectiveness::SUPER_EFFECTIVE_MULTIPLIER
-            # 2x weak to Rock — Stealth Rock deals 25%
             our_damage_frac += 0.25
           end
         end
 
-        # Opponent threatens ours if best move deals >= 50% HP
         if opp_damage_frac >= 0.5
           entry[:threatens].push(our_idx)
         end
 
-        # Our Pokemon counters opponent if it threatens >= 40% AND survives opp's best
         if our_damage_frac >= 0.4 && opp_damage_frac < 1.0
           entry[:countered_by].push({ index: our_idx, score: our_damage_frac })
         end
@@ -189,16 +324,32 @@ class Battle::AI
   end
 
   #-----------------------------------------------------------------------------
-  # Calculate best move damage fraction for party Pokemon (not battlers)
-  # Uses same formula as estimate_move_damage but on Pokemon objects
+  # Calculate best move damage fraction using actual Pokemon moves (AI's own)
   #-----------------------------------------------------------------------------
-  # Delegates to shared utility for party Pokemon damage estimation
   def calculate_party_threat_score(attacker_pkmn, defender_pkmn)
     best_fraction = 0.0
 
     attacker_pkmn.moves.each do |move|
       next unless move
       move_data = GameData::Move.try_get(move.id)
+      next unless move_data && move_data.power > 0
+
+      damage = AdvancedBattleAI.estimate_damage_party(move_data, attacker_pkmn, defender_pkmn)
+      fraction = defender_pkmn.totalhp > 0 ? damage.to_f / defender_pkmn.totalhp : 0.0
+      best_fraction = fraction if fraction > best_fraction
+    end
+
+    return best_fraction
+  end
+
+  #-----------------------------------------------------------------------------
+  # Calculate best move damage fraction from a list of move IDs (predicted)
+  #-----------------------------------------------------------------------------
+  def calculate_party_threat_score_with_moves(attacker_pkmn, defender_pkmn, move_ids)
+    best_fraction = 0.0
+
+    move_ids.each do |move_id|
+      move_data = GameData::Move.try_get(move_id)
       next unless move_data && move_data.power > 0
 
       damage = AdvancedBattleAI.estimate_damage_party(move_data, attacker_pkmn, defender_pkmn)
@@ -275,7 +426,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:team_preview_setup_safety,
     next score unless move_data && ai.is_setup_move?(move_data)
 
     unless ai.opponent_has_priority
-      score += AdvancedBattleAI::SCORE_MINOR_BONUS  # Reduced from 10 to 8
+      score += AdvancedBattleAI::SCORE_MINOR_BONUS
       AdvancedBattleAI.log("Team preview: setup safety +#{AdvancedBattleAI::SCORE_MINOR_BONUS} (no opponent priority)", :scoring)
     end
 
@@ -372,7 +523,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:team_preview_coverage_exploit,
     end
 
     if user_in_gap
-      score += AdvancedBattleAI::SCORE_SMALL_BONUS  # Reduced from 15 to 10
+      score += AdvancedBattleAI::SCORE_SMALL_BONUS
       AdvancedBattleAI.log("Team preview: coverage exploit setup +#{AdvancedBattleAI::SCORE_SMALL_BONUS} (type in gap)", :scoring)
     end
 

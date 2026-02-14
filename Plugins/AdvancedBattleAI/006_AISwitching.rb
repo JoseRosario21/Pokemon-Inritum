@@ -12,8 +12,8 @@ def should_avoid_switching?(battler, ai)
   AdvancedBattleAI.should_avoid_switching?(battler, ai)
 end
 
-def estimate_switch_damage(move_data, attacker, defender)
-  AdvancedBattleAI.estimate_damage_battler(move_data, attacker, defender)
+def estimate_switch_damage(move_data, attacker, defender, battle = nil)
+  AdvancedBattleAI.estimate_damage_battler(move_data, attacker, defender, battle)
 end
 
 def best_move_damage(battler, opponent)
@@ -887,6 +887,67 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:advanced_perish_song_stay,
           AdvancedBattleAI.log("Perish Song: staying in, opponent perishes in #{opp_perish} turns", :decisions)
           next true
         end
+      end
+    end
+
+    next false
+  }
+)
+
+#===============================================================================
+# No-Threat Anti-Loop Handler
+# If every opponent has no damaging moves (or all known moves are status),
+# there is zero reason to switch — just stay in and attack/stall.
+# Also prevents switching loops when the AI keeps flip-flopping.
+#===============================================================================
+Battle::AI::Handlers::ShouldNotSwitch.add(:advanced_no_threat_anti_loop,
+  proc { |battler, reserves, ai, battle|
+    next false unless AdvancedBattleAI.feature_enabled?(:roles, ai.trainer)
+
+    # Check if ANY opponent can deal damage to us
+    any_threat = false
+    battle.pbGetOpposingIndicesInOrder(battler.index).each do |opp_idx|
+      opp = battle.battlers[opp_idx]
+      next unless opp && !opp.fainted?
+
+      # If we know all 4 moves and none are damaging, opponent is no threat
+      known_moves = ai.memory ? ai.memory.get_known_moves(opp_idx) : []
+      if known_moves.length >= 4
+        has_damage = known_moves.any? do |move_id|
+          md = GameData::Move.try_get(move_id)
+          md && md.power > 0
+        end
+        next unless has_damage  # This opponent is harmless, check next
+      end
+
+      # If we don't know all moves, check the ones we do know + assume unknown could be damaging
+      if known_moves.length < 4
+        # Check the opponent's actual moveset if it's an AI trainer Pokemon (AI knows its own)
+        if !opp.pbOwnedByPlayer?
+          has_damage = opp.moves.any? { |m| m && m.damagingMove? }
+          next unless has_damage
+        else
+          # Player Pokemon — we don't know all moves, assume could be a threat
+          any_threat = true
+          break
+        end
+      end
+
+      any_threat = true
+      break
+    end
+
+    unless any_threat
+      AdvancedBattleAI.log("Don't switch: no opponent can deal damage", :decisions)
+      next true
+    end
+
+    # Anti-loop: if we just switched in last turn, don't switch again
+    if battler.turnCount <= 1
+      switch_count = ai.memory ? ai.memory.get_switch_count(battler.index) : 0
+      if switch_count >= 2
+        AdvancedBattleAI.log("Don't switch: anti-loop (switched #{switch_count} times, just arrived)", :decisions)
+        next true
       end
     end
 

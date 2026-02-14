@@ -122,6 +122,49 @@ class Battle::AI::AIMemory
     return predicted.first(4 - known.length)
   end
 
+  # Predict likely moves for a party Pokemon (no battler required).
+  # Uses species data and the Pokemon's level to estimate a plausible moveset.
+  # Returns up to 4 GameData::Move IDs.
+  def self.predict_moves_for_species(pkmn)
+    return [] unless pkmn
+    species_data = pkmn.species_data rescue nil
+    return [] unless species_data
+
+    # Get level-up moves the Pokemon could know at current level
+    level_moves = species_data.moves.select { |m| m[0] <= pkmn.level }.map { |m| m[1] }
+
+    # Get TM/tutor moves
+    tutor_moves = species_data.tutor_moves || []
+
+    all_possible = (level_moves + tutor_moves).uniq
+    pkmn_types = pkmn.types rescue [:NORMAL]
+
+    # Score each move for likelihood
+    scored = []
+    all_possible.each do |move_id|
+      move_data = GameData::Move.try_get(move_id)
+      next unless move_data
+      priority = 0
+      # STAB damaging moves are most likely
+      if move_data.power > 0 && pkmn_types.include?(move_data.type)
+        priority += 30
+        priority += move_data.power / 10  # Higher power = more likely
+      elsif move_data.power > 0
+        # Coverage moves
+        priority += 15
+        priority += move_data.power / 15
+      else
+        # Status moves — moderately likely
+        priority += 10
+      end
+      scored.push([move_id, priority])
+    end
+
+    # Return top 4 by priority
+    scored.sort_by! { |_, p| -p }
+    return scored.first(4).map { |id, _| id }
+  end
+
   #-----------------------------------------------------------------------------
   # Ability Recording
   #-----------------------------------------------------------------------------
@@ -145,8 +188,8 @@ class Battle::AI::AIMemory
 
   # Predict ability based on species (if not yet revealed)
   def predict_ability(battler)
-    return get_known_ability(battler.index) if ability_known?(battler.index)
     return nil unless battler
+    return get_known_ability(battler.index) if ability_known?(battler.index)
 
     species_data = battler.pokemon.species_data
     abilities = species_data.abilities + (species_data.hidden_abilities || [])

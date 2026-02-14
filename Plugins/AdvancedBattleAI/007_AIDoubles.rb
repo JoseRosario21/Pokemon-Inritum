@@ -509,7 +509,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_coordinated_ko
         ai.move.set_up(move.move) if move.respond_to?(:move)
         our_damage = ai.move.rough_damage
       end
-    rescue
+    rescue StandardError
       next score
     end
 

@@ -80,7 +80,7 @@ Battle::AI::Handlers::MoveEffectScore.add("AddSpikesToFoeSide",
     score += grounded_count * 5
 
     # Penalty for many Flying/Levitate opponents
-    flying_count = count_immune_to_ground(user, ai, battle)
+    flying_count = AdvancedBattleAI.count_immune_to_ground(user, ai, battle)
     score -= flying_count * 8
 
     # Early game bonus
@@ -119,11 +119,11 @@ Battle::AI::Handlers::MoveEffectScore.add("AddToxicSpikesToFoeSide",
     end
 
     # Penalty for Poison-type opponents (absorb T-Spikes)
-    poison_count = count_poison_type_opponents(user, ai, battle)
+    poison_count = AdvancedBattleAI.count_poison_type_opponents(user, ai, battle)
     score -= poison_count * 15  # Big penalty - Poison types absorb T-Spikes
 
     # Penalty for Steel-type opponents (immune)
-    steel_count = count_steel_type_opponents(user, ai, battle)
+    steel_count = AdvancedBattleAI.count_steel_type_opponents(user, ai, battle)
     score -= steel_count * 8
 
     # Bonus if 2nd layer (badly poison is much stronger)
@@ -144,7 +144,7 @@ Battle::AI::Handlers::MoveEffectScore.add("AddStickyWebToFoeSide",
     next score unless AdvancedBattleAI.feature_enabled?(:hazards, ai.trainer)
 
     # Sticky Web value depends on speed matchups
-    speed_advantage = calculate_speed_advantage_with_web(user, ai, battle)
+    speed_advantage = AdvancedBattleAI.calculate_speed_advantage_with_web(user, ai, battle)
 
     score = Battle::AI::MOVE_BASE_SCORE + (speed_advantage * 5)
 
@@ -160,7 +160,7 @@ Battle::AI::Handlers::MoveEffectScore.add("AddStickyWebToFoeSide",
     end
 
     # Penalty for many Flying/Levitate opponents
-    flying_count = count_immune_to_ground(user, ai, battle)
+    flying_count = AdvancedBattleAI.count_immune_to_ground(user, ai, battle)
     score -= flying_count * 10
 
     next [score, AdvancedBattleAI::HAZARD_SCORE_THRESHOLD - 5].max
@@ -175,10 +175,10 @@ Battle::AI::Handlers::MoveEffectScore.add("RemoveUserBindingAndEntryHazards",
     next score unless AdvancedBattleAI.feature_enabled?(:hazards, ai.trainer)
 
     # Calculate value of hazards on our side
-    our_hazard_value = calculate_own_hazard_damage_value(user, ai, battle)
+    our_hazard_value = AdvancedBattleAI.calculate_own_hazard_damage_value(user, ai, battle)
 
     # Calculate value of hazards on opponent's side (we might accidentally help them)
-    their_hazard_value = calculate_opponent_hazard_value(user, ai, battle)
+    their_hazard_value = AdvancedBattleAI.calculate_opponent_hazard_value(user, ai, battle)
 
     # Net benefit calculation
     net_benefit = our_hazard_value - (their_hazard_value * 0.3)  # Small penalty for removing their binding
@@ -216,14 +216,14 @@ Battle::AI::Handlers::MoveEffectScore.add("LowerTargetEvasion1RemoveSideEffects"
     next score unless AdvancedBattleAI.feature_enabled?(:hazards, ai.trainer)
 
     # Calculate value of hazards on our side
-    our_hazard_value = calculate_own_hazard_damage_value(user, ai, battle)
+    our_hazard_value = AdvancedBattleAI.calculate_own_hazard_damage_value(user, ai, battle)
 
     # Calculate value of hazards on opponent's side (Defog removes both!)
-    their_hazard_value = calculate_opponent_hazard_value(user, ai, battle)
+    their_hazard_value = AdvancedBattleAI.calculate_opponent_hazard_value(user, ai, battle)
 
     # Calculate screen values
-    our_screens = calculate_screen_value(user.pbOwnSide, battle)
-    their_screens = calculate_screen_value(user.pbOpposingSide, battle)
+    our_screens = AdvancedBattleAI.calculate_screen_value(user.pbOwnSide, battle)
+    their_screens = AdvancedBattleAI.calculate_screen_value(user.pbOpposingSide, battle)
 
     # Net calculation: we want to remove our hazards and their screens
     # But we lose our hazards too...
@@ -246,7 +246,7 @@ Battle::AI::Handlers::MoveEffectScore.add("LowerTargetEvasion1RemoveSideEffects"
     # Terrain considerations (Defog clears terrain too)
     if battle.field.terrain != :None
       # Check if terrain benefits us or opponent
-      terrain_benefit = evaluate_terrain_benefit(user, battle)
+      terrain_benefit = AdvancedBattleAI.evaluate_terrain_benefit(user, battle)
       score -= terrain_benefit  # Negative if terrain helps us
     end
 
@@ -271,104 +271,107 @@ def count_grounded_opponents(user, ai, battle)
   AdvancedBattleAI.count_grounded_opponents(user, ai, battle)
 end
 
-# Count opponents immune to ground (Flying type or Levitate)
-def count_immune_to_ground(user, ai, battle)
-  count = 0
-  battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
-    opp = battle.battlers[opp_idx]
-    next unless opp && !opp.fainted?
-    if opp.airborne? || opp.pbHasType?(:FLYING) || opp.hasActiveAbility?(:LEVITATE)
-      count += 1
-    end
-  end
-  return count
-end
-
-# Count Poison-type opponents
-def count_poison_type_opponents(user, ai, battle)
-  count = 0
-  battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
-    opp = battle.battlers[opp_idx]
-    next unless opp && !opp.fainted?
-    count += 1 if opp.pbHasType?(:POISON)
-  end
-  return count
-end
-
-# Count Steel-type opponents
-def count_steel_type_opponents(user, ai, battle)
-  count = 0
-  battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
-    opp = battle.battlers[opp_idx]
-    next unless opp && !opp.fainted?
-    count += 1 if opp.pbHasType?(:STEEL)
-  end
-  return count
-end
-
-# Calculate speed advantage gained from Sticky Web
-def calculate_speed_advantage_with_web(user, ai, battle)
-  advantage = 0
-  battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
-    opp = battle.battlers[opp_idx]
-    next unless opp && !opp.fainted?
-    next if opp.airborne?
-    if opp.speed > user.speed
-      reduced_speed = (opp.speed * 0.67).to_i
-      if reduced_speed < user.speed
-        advantage += 1
+# Module methods — hazard-specific helpers used only by this file
+module AdvancedBattleAI
+  # Count opponents immune to ground (Flying type or Levitate)
+  def self.count_immune_to_ground(user, ai, battle)
+    count = 0
+    battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
+      opp = battle.battlers[opp_idx]
+      next unless opp && !opp.fainted?
+      if opp.airborne? || opp.pbHasType?(:FLYING) || opp.hasActiveAbility?(:LEVITATE)
+        count += 1
       end
     end
+    return count
   end
-  return advantage
-end
 
-# Calculate value of hazards on our side
-def calculate_own_hazard_damage_value(user, ai, battle)
-  value = 0
-  side = user.pbOwnSide
-  value += 25 if side.effects[PBEffects::StealthRock]
-  value += (side.effects[PBEffects::Spikes] || 0) * 12
-  value += (side.effects[PBEffects::ToxicSpikes] || 0) * 15
-  value += 20 if side.effects[PBEffects::StickyWeb]
-  return value
-end
-
-# Calculate value of hazards on opponent's side
-def calculate_opponent_hazard_value(user, ai, battle)
-  value = 0
-  side = user.pbOpposingSide
-  value += 25 if side.effects[PBEffects::StealthRock]
-  value += (side.effects[PBEffects::Spikes] || 0) * 12
-  value += (side.effects[PBEffects::ToxicSpikes] || 0) * 15
-  value += 20 if side.effects[PBEffects::StickyWeb]
-  return value
-end
-
-# Calculate value of screens on a side
-def calculate_screen_value(side, battle)
-  value = 0
-  value += 15 if side.effects[PBEffects::Reflect] > 0
-  value += 15 if side.effects[PBEffects::LightScreen] > 0
-  value += 30 if side.effects[PBEffects::AuroraVeil] > 0
-  return value
-end
-
-# Evaluate if current terrain benefits user's side
-def evaluate_terrain_benefit(user, battle)
-  terrain = battle.field.terrain
-  return 0 if terrain == :None
-  benefit = 0
-  case terrain
-  when :Electric
-    benefit += 10 if user.pbHasType?(:ELECTRIC)
-  when :Grassy
-    benefit += 10 if user.pbHasType?(:GRASS)
-    benefit += 5 unless user.airborne?
-  when :Misty
-    benefit += 10 unless user.airborne?
-  when :Psychic
-    benefit += 10 if user.pbHasType?(:PSYCHIC)
+  # Count Poison-type opponents
+  def self.count_poison_type_opponents(user, ai, battle)
+    count = 0
+    battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
+      opp = battle.battlers[opp_idx]
+      next unless opp && !opp.fainted?
+      count += 1 if opp.pbHasType?(:POISON)
+    end
+    return count
   end
-  return benefit
+
+  # Count Steel-type opponents
+  def self.count_steel_type_opponents(user, ai, battle)
+    count = 0
+    battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
+      opp = battle.battlers[opp_idx]
+      next unless opp && !opp.fainted?
+      count += 1 if opp.pbHasType?(:STEEL)
+    end
+    return count
+  end
+
+  # Calculate speed advantage gained from Sticky Web
+  def self.calculate_speed_advantage_with_web(user, ai, battle)
+    advantage = 0
+    battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
+      opp = battle.battlers[opp_idx]
+      next unless opp && !opp.fainted?
+      next if opp.airborne?
+      if opp.speed > user.speed
+        reduced_speed = (opp.speed * 0.67).to_i
+        if reduced_speed < user.speed
+          advantage += 1
+        end
+      end
+    end
+    return advantage
+  end
+
+  # Calculate value of hazards on our side
+  def self.calculate_own_hazard_damage_value(user, ai, battle)
+    value = 0
+    side = user.pbOwnSide
+    value += 25 if side.effects[PBEffects::StealthRock]
+    value += (side.effects[PBEffects::Spikes] || 0) * 12
+    value += (side.effects[PBEffects::ToxicSpikes] || 0) * 15
+    value += 20 if side.effects[PBEffects::StickyWeb]
+    return value
+  end
+
+  # Calculate value of hazards on opponent's side
+  def self.calculate_opponent_hazard_value(user, ai, battle)
+    value = 0
+    side = user.pbOpposingSide
+    value += 25 if side.effects[PBEffects::StealthRock]
+    value += (side.effects[PBEffects::Spikes] || 0) * 12
+    value += (side.effects[PBEffects::ToxicSpikes] || 0) * 15
+    value += 20 if side.effects[PBEffects::StickyWeb]
+    return value
+  end
+
+  # Calculate value of screens on a side
+  def self.calculate_screen_value(side, battle)
+    value = 0
+    value += 15 if side.effects[PBEffects::Reflect] > 0
+    value += 15 if side.effects[PBEffects::LightScreen] > 0
+    value += 30 if side.effects[PBEffects::AuroraVeil] > 0
+    return value
+  end
+
+  # Evaluate if current terrain benefits user's side
+  def self.evaluate_terrain_benefit(user, battle)
+    terrain = battle.field.terrain
+    return 0 if terrain == :None
+    benefit = 0
+    case terrain
+    when :Electric
+      benefit += 10 if user.pbHasType?(:ELECTRIC)
+    when :Grassy
+      benefit += 10 if user.pbHasType?(:GRASS)
+      benefit += 5 unless user.airborne?
+    when :Misty
+      benefit += 10 unless user.airborne?
+    when :Psychic
+      benefit += 10 if user.pbHasType?(:PSYCHIC)
+    end
+    return benefit
+  end
 end

@@ -3,31 +3,33 @@
 # Makes AI choose the RIGHT target for each status move based on role/threat
 #===============================================================================
 
-# Function code groups for status moves
-PARALYSIS_FUNCTION_CODES = [
-  "ParalyzeTarget", "ParalyzeTargetIfNotTypeImmune",
-  "ParalyzeTargetAlwaysHitsInRainHitsTargetInSky", "ParalyzeFlinchTarget"
-]
-BURN_FUNCTION_CODES = [
-  "BurnTarget", "BurnFlinchTarget"
-]
-POISON_FUNCTION_CODES = [
-  "PoisonTarget", "BadPoisonTarget", "PoisonTargetLowerTargetSpeed1"
-]
-SLEEP_FUNCTION_CODES = [
-  "SleepTarget", "SleepTargetIfUserDarkrai",
-  "SleepTargetChangeUserMeloettaForm", "SleepTargetNextTurn"
-]
+module AdvancedBattleAI
+  # Function code groups for status moves
+  PARALYSIS_FUNCTION_CODES = [
+    "ParalyzeTarget", "ParalyzeTargetIfNotTypeImmune",
+    "ParalyzeTargetAlwaysHitsInRainHitsTargetInSky", "ParalyzeFlinchTarget"
+  ]
+  BURN_FUNCTION_CODES = [
+    "BurnTarget", "BurnFlinchTarget"
+  ]
+  POISON_FUNCTION_CODES = [
+    "PoisonTarget", "BadPoisonTarget", "PoisonTargetLowerTargetSpeed1"
+  ]
+  SLEEP_FUNCTION_CODES = [
+    "SleepTarget", "SleepTargetIfUserDarkrai",
+    "SleepTargetChangeUserMeloettaForm", "SleepTargetNextTurn"
+  ]
 
-ALL_STATUS_FUNCTION_CODES = PARALYSIS_FUNCTION_CODES + BURN_FUNCTION_CODES +
-                            POISON_FUNCTION_CODES + SLEEP_FUNCTION_CODES
+  ALL_STATUS_FUNCTION_CODES = PARALYSIS_FUNCTION_CODES + BURN_FUNCTION_CODES +
+                              POISON_FUNCTION_CODES + SLEEP_FUNCTION_CODES
 
-# Physical setup function codes (for burn targeting)
-PHYSICAL_SETUP_FUNCTIONS = [
-  "RaiseUserAttack1", "RaiseUserAttack2", "RaiseUserAttack3",
-  "MaxUserAttackLoseHalfOfTotalHP",  # Belly Drum
-  "RaiseUserAtkDef1", "RaiseUserAtkSpd1", "RaiseUserAtkSpAtk1"
-]
+  # Physical setup function codes (for burn targeting)
+  PHYSICAL_SETUP_FUNCTIONS = [
+    "RaiseUserAttack1", "RaiseUserAttack2", "RaiseUserAttack3",
+    "MaxUserAttackLoseHalfOfTotalHP",  # Belly Drum
+    "RaiseUserAtkDef1", "RaiseUserAtkSpd1", "RaiseUserAtkSpAtk1"
+  ]
+end
 
 #===============================================================================
 # Handler 1: Strategic Status Targeting
@@ -37,14 +39,14 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_status_targeti
   proc { |score, move, user, target, ai, battle|
     next score unless AdvancedBattleAI.feature_enabled?(:roles, ai.trainer)
     func = move.function_code
-    next score unless ALL_STATUS_FUNCTION_CODES.include?(func)
+    next score unless AdvancedBattleAI::ALL_STATUS_FUNCTION_CODES.include?(func)
 
     target_role = target.detected_role rescue nil
 
     #---------------------------------------------------------------------------
     # Paralysis targeting
     #---------------------------------------------------------------------------
-    if PARALYSIS_FUNCTION_CODES.include?(func)
+    if AdvancedBattleAI::PARALYSIS_FUNCTION_CODES.include?(func)
       # +20 if target is a sweeper (shutting down speed advantage is huge)
       if target_role == Battle::AI::Roles::SWEEPER ||
          target_role == Battle::AI::Roles::SETUP_SWEEPER
@@ -77,7 +79,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_status_targeti
     #---------------------------------------------------------------------------
     # Burn targeting
     #---------------------------------------------------------------------------
-    if BURN_FUNCTION_CODES.include?(func)
+    if AdvancedBattleAI::BURN_FUNCTION_CODES.include?(func)
       t_atk = target.attack rescue 0
       t_spatk = target.spatk rescue 0
 
@@ -89,7 +91,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_status_targeti
 
       # +10 if target has known physical setup moves
       if ai.memory
-        if ai.memory.knows_move_with_function?(target.index, *PHYSICAL_SETUP_FUNCTIONS)
+        if ai.memory.knows_move_with_function?(target.index, *AdvancedBattleAI::PHYSICAL_SETUP_FUNCTIONS)
           score += AdvancedBattleAI::SCORE_SMALL_BONUS
           AdvancedBattleAI.log("+#{AdvancedBattleAI::SCORE_SMALL_BONUS} burn physical setup user", :scoring)
         end
@@ -111,7 +113,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_status_targeti
     #---------------------------------------------------------------------------
     # Toxic/Poison targeting
     #---------------------------------------------------------------------------
-    if POISON_FUNCTION_CODES.include?(func)
+    if AdvancedBattleAI::POISON_FUNCTION_CODES.include?(func)
       # +15 if target has recovery (known Leftovers or recovery moves)
       has_recovery = false
       if ai.memory
@@ -189,7 +191,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_status_dont_wa
     next score unless AdvancedBattleAI.feature_enabled?(:roles, ai.trainer)
     next score unless move.statusMove?
     func = move.function_code
-    next score unless ALL_STATUS_FUNCTION_CODES.include?(func)
+    next score unless AdvancedBattleAI::ALL_STATUS_FUNCTION_CODES.include?(func)
 
     # -15 if target already has a status condition
     if target.battler.status != :NONE

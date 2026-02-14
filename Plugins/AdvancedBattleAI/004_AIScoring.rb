@@ -507,7 +507,3 @@ def calculate_setup_window(user, ai, battle)
   return [turns, 5].min  # Cap at 5 turns
 end
 
-# Global wrapper — delegates to module method
-def count_positive_stat_stages(user)
-  AdvancedBattleAI.count_positive_stat_stages(user)
-end

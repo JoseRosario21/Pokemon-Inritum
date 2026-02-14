@@ -272,7 +272,7 @@ class Battle::AI
         next unless move_data && move_data.power > 0
 
         type_mod = Effectiveness.calculate(move_data.type, *opp.types)
-        effective_power = move_data.power * type_mod / 100.0
+        effective_power = move_data.power * type_mod / Effectiveness::NORMAL_EFFECTIVE_MULTIPLIER
 
         # STAB bonus
         if pkmn.types.include?(move_data.type)
@@ -316,7 +316,10 @@ class Battle::AI
     end
 
     # Check if we can now sweep (opponent weakened)
-    opponents = @battle.pbGetOpposingIndicesInOrder(0)
+    ai_check_idx = nil
+    @battle.battlers.each { |b| next unless b && !b.fainted? && !b.pbOwnedByPlayer?; ai_check_idx = b.index; break }
+    ai_check_idx ||= 1
+    opponents = @battle.pbGetOpposingIndicesInOrder(ai_check_idx)
     remaining_opponents = opponents.count { |i| @battle.battlers[i] && !@battle.battlers[i].fainted? }
 
     if remaining_opponents <= 2
