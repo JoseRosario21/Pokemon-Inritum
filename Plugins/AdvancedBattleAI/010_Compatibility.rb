@@ -337,14 +337,5 @@ class Battle::AI
 end
 
 #===============================================================================
-# MQS (Modern Quest System) Integration
-# No battle impact, but log for confirmation
-#===============================================================================
-if defined?(Quest)
-  AdvancedBattleAI.log("MQS plugin detected (no battle integration needed)", :general)
-end
-
-#===============================================================================
 # Compatibility Check on Load
 #===============================================================================
-AdvancedBattleAI.log("Compatibility layer loaded successfully", :general)

@@ -335,7 +335,3 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_recovery_item_
   }
 )
 
-#===============================================================================
-# Log that Item Awareness loaded
-#===============================================================================
-AdvancedBattleAI.log("Item & Ability Awareness (Phase 3) loaded", :general)

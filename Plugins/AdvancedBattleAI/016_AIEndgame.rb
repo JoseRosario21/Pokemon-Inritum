@@ -236,7 +236,3 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_desperate_plays,
   }
 )
 
-#===============================================================================
-# Log that Endgame & Clutch Plays loaded
-#===============================================================================
-AdvancedBattleAI.log("Endgame & Clutch Plays (Phase 5) loaded", :general)
