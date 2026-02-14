@@ -65,34 +65,9 @@ class Battle::AI
   #-----------------------------------------------------------------------------
   # Estimate damage for prediction (simpler than full rough_damage calc)
   #-----------------------------------------------------------------------------
+  # Delegates to shared utility
   def estimate_move_damage(move_data, attacker_battler, defender_battler)
-    return 0 unless move_data && move_data.power > 0
-
-    base_power = move_data.power
-    base_power = 60 if base_power == 1  # Variable power moves
-
-    # Get attacking stat (category: 0=Physical, 1=Special, 2=Status)
-    if move_data.category == 0  # Physical
-      atk = attacker_battler.attack
-      dfn = defender_battler.defense
-    else  # Special
-      atk = attacker_battler.spatk
-      dfn = defender_battler.spdef
-    end
-
-    # Basic damage formula (simplified)
-    damage = ((2 * attacker_battler.level / 5.0 + 2) * base_power * atk / dfn / 50.0 + 2).floor
-
-    # STAB
-    if attacker_battler.types.include?(move_data.type)
-      damage = (damage * 1.5).floor
-    end
-
-    # Type effectiveness
-    type_mod = Effectiveness.calculate(move_data.type, *defender_battler.types)
-    damage = (damage * type_mod / Effectiveness::NORMAL_EFFECTIVE_MULTIPLIER).floor
-
-    return damage
+    AdvancedBattleAI.estimate_damage_battler(move_data, attacker_battler, defender_battler, @battle)
   end
 
   #-----------------------------------------------------------------------------
@@ -115,7 +90,14 @@ class Battle::AI
     }
 
     # Check speed comparison against our active Pokemon
-    @battle.allSameSideBattlers(@user.index).each do |our_battler|
+    # Find AI-side battlers safely (avoid @user nil reference)
+    ai_side_battlers = []
+    @battle.battlers.each do |b|
+      next unless b && !b.fainted? && !b.pbOwnedByPlayer?
+      ai_side_battlers.push(b)
+    end
+
+    ai_side_battlers.each do |our_battler|
       our_ai = @battlers[our_battler.index]
       next unless our_ai
       if ai_opponent.faster_than?(our_ai)
@@ -172,7 +154,7 @@ class Battle::AI
       end
 
       # Super effective check
-      @battle.allSameSideBattlers(@user.index).each do |our_battler|
+      ai_side_battlers.each do |our_battler|
         type_mod = Effectiveness.calculate(move_data.type, *our_battler.types)
         if Effectiveness.super_effective?(type_mod)
           factors[:has_super_effective] = true
@@ -342,8 +324,9 @@ class Battle::AI
     best_move = nil
     best_damage = 0
 
-    # Check against our active Pokemon
-    @battle.allSameSideBattlers(@user.index).each do |our_battler|
+    # Check against our active AI-side Pokemon
+    @battle.battlers.each do |our_battler|
+      next unless our_battler && !our_battler.fainted? && !our_battler.pbOwnedByPlayer?
       our_ai = @battlers[our_battler.index]
       next unless our_ai
 
@@ -377,12 +360,9 @@ class Battle::AI
 
     known = []
 
-    # Try to get from memory system if available
-    if defined?(AdvancedBattleAI) && AdvancedBattleAI::ENABLE_MOVE_MEMORY
-      memory = @battle.instance_variable_get(:@ai_memory)
-      if memory && memory[opponent_idx]
-        known = memory[opponent_idx][:known_moves] || []
-      end
+    # Try to get from AI memory system
+    if @memory
+      known = @memory.get_known_moves(opponent_idx).dup
     end
 
     # Also include last move used
@@ -390,7 +370,16 @@ class Battle::AI
       known.push(opponent.lastMoveUsed)
     end
 
-    # If we don't know any moves, assume from the Pokemon's moveset
+    # If we know fewer than 4 moves, use predict_likely_moves as fallback
+    if known.length < 4 && @memory
+      predicted = @memory.predict_likely_moves(opponent)
+      predicted.each do |move_id|
+        break if known.length >= 4
+        known.push(move_id) unless known.include?(move_id)
+      end
+    end
+
+    # If we still don't know any moves, fall back to the Pokemon's moveset
     if known.empty?
       opponent.pokemon.moves.each do |move|
         known.push(move.id) if move

@@ -32,6 +32,9 @@ module AdvancedBattleAI
   # Adjust scoring for Field Effect plugin terrain/fields (requires Field Effect plugin)
   ENABLE_FIELD_INTEGRATION = true
 
+  # Item & ability awareness (Choice lock exploitation, Sash/Sturdy, Intimidate, recovery items)
+  ENABLE_ITEM_AWARENESS = true
+
   # Win condition identification - AI identifies how to win and plays toward it
   ENABLE_WIN_CONDITION = true
 
@@ -57,6 +60,9 @@ module AdvancedBattleAI
 
   # Skill level for double battle coordination
   SKILL_THRESHOLD_DOUBLES = 80
+
+  # Skill level for item & ability awareness
+  SKILL_THRESHOLD_ITEMS = 60
 
   # Skill level for all features (sacrifice plays, full prediction)
   SKILL_THRESHOLD_FULL = 100
@@ -100,6 +106,20 @@ module AdvancedBattleAI
   SWEEPER_SPEED_PERCENTILE = 0.6
 
   #-----------------------------------------------------------------------------
+  # Score Modifiers (centralized for tuning)
+  #-----------------------------------------------------------------------------
+  SCORE_MINOR_BONUS    = 8
+  SCORE_SMALL_BONUS    = 10
+  SCORE_MEDIUM_BONUS   = 15
+  SCORE_LARGE_BONUS    = 20
+  SCORE_MAJOR_BONUS    = 25
+  SCORE_MINOR_PENALTY  = -8
+  SCORE_SMALL_PENALTY  = -10
+  SCORE_MEDIUM_PENALTY = -15
+  SCORE_LARGE_PENALTY  = -20
+  SCORE_MAJOR_PENALTY  = -25
+
+  #-----------------------------------------------------------------------------
   # Debug Settings
   #-----------------------------------------------------------------------------
 
@@ -127,6 +147,7 @@ end
 # FieldAware       - Enables field effect integration
 # WinConditionAware - Enables win condition identification and strategy
 # PredictMoves     - Enables move prediction system
+# ItemAware        - Enables item & ability awareness (Choice, Sash, Intimidate, recovery)
 
 #===============================================================================
 # Utility methods for checking if features are enabled
@@ -191,6 +212,11 @@ module AdvancedBattleAI
       return false unless ENABLE_MOVE_PREDICTION
       return true if ai_trainer.has_skill_flag?("PredictMoves")
       return skill >= SKILL_THRESHOLD_FULL  # High skill requirement for prediction
+
+    when :items
+      return false unless ENABLE_ITEM_AWARENESS
+      return true if ai_trainer.has_skill_flag?("ItemAware")
+      return skill >= SKILL_THRESHOLD_ITEMS
     end
 
     return false
@@ -215,5 +241,304 @@ module AdvancedBattleAI
       return unless DEBUG_LOG_SCORING
     end
     echoln "[AdvancedAI] #{message}"
+  end
+
+  #---------------------------------------------------------------------------
+  # Shared Damage Estimation Utility
+  # Core formula used by all damage estimation call sites.
+  # Options hash supports :weather, :ability, :item, :adaptability, :move_flags
+  #---------------------------------------------------------------------------
+
+  # Core formula: stat-based, no battler objects required
+  def estimate_damage(atk_stat, def_stat, level, base_power, move_type, move_category,
+                      attacker_types, defender_types, options = {})
+    return 0 if base_power <= 0 || def_stat <= 0
+    base_power = 60 if base_power == 1  # Variable power moves
+
+    damage = ((2 * level / 5.0 + 2) * base_power * atk_stat / def_stat / 50.0 + 2).floor
+
+    # STAB
+    stab = attacker_types.include?(move_type) ? 1.5 : 1.0
+    # Adaptability makes STAB 2.0x
+    if options[:ability] == :ADAPTABILITY && stab > 1.0
+      stab = 2.0
+    end
+    damage = (damage * stab).floor
+
+    # Type effectiveness
+    type_mod = Effectiveness.calculate(move_type, *defender_types)
+    damage = (damage * type_mod / Effectiveness::NORMAL_EFFECTIVE_MULTIPLIER).floor
+
+    # Weather modifiers
+    weather = options[:weather]
+    if weather
+      case weather
+      when :Sun, :HarshSun
+        damage = (damage * 1.5).floor if move_type == :FIRE
+        damage = (damage * 0.5).floor if move_type == :WATER
+      when :Rain, :HeavyRain
+        damage = (damage * 1.5).floor if move_type == :WATER
+        damage = (damage * 0.5).floor if move_type == :FIRE
+      end
+    end
+
+    # Ability modifiers
+    ability = options[:ability]
+    if ability
+      case ability
+      when :HUGEPOWER, :PUREPOWER
+        damage = (damage * 2.0).floor if move_category == 0  # Physical
+      when :TECHNICIAN
+        damage = (damage * 1.5).floor if base_power <= 60
+      when :STRONGJAW
+        damage = (damage * 1.5).floor if options[:move_flags] && options[:move_flags][:biting]
+      when :TOUGHCLAWS
+        damage = (damage * 1.33).floor if options[:move_flags] && options[:move_flags][:contact]
+      when :SHEERFORCE
+        damage = (damage * 1.3).floor if options[:move_flags] && options[:move_flags][:secondary_effect]
+      end
+    end
+
+    # Item modifiers
+    item = options[:item]
+    if item
+      case item
+      when :CHOICEBAND
+        damage = (damage * 1.5).floor if move_category == 0  # Physical
+      when :CHOICESPECS
+        damage = (damage * 1.5).floor if move_category == 1  # Special
+      when :LIFEORB
+        damage = (damage * 1.3).floor
+      end
+    end
+
+    return damage
+  end
+
+  # Entry point for in-battle battler objects
+  def estimate_damage_battler(move_data, attacker_battler, defender_battler, battle = nil)
+    return 0 unless move_data && move_data.power > 0
+
+    if move_data.category == 0  # Physical
+      atk = attacker_battler.attack
+      dfn = defender_battler.defense
+    else  # Special
+      atk = attacker_battler.spatk
+      dfn = defender_battler.spdef
+    end
+
+    options = {}
+
+    # Weather
+    if battle && battle.field && battle.field.weather
+      options[:weather] = battle.field.weather
+    end
+
+    # Ability
+    ability_id = attacker_battler.ability_id rescue nil
+    options[:ability] = ability_id if ability_id
+
+    # Item
+    item_id = attacker_battler.item_id rescue nil
+    options[:item] = item_id if item_id
+
+    # Move flags
+    move_flags = {}
+    if move_data.respond_to?(:flags)
+      flags = move_data.flags
+      move_flags[:contact] = flags.include?("Contact") if flags
+      move_flags[:biting] = flags.include?("Bite") if flags
+    end
+    # Check for secondary effect (addlEffect > 0)
+    if move_data.respond_to?(:addlEffect)
+      move_flags[:secondary_effect] = (move_data.addlEffect || 0) > 0
+    end
+    options[:move_flags] = move_flags
+
+    attacker_types = attacker_battler.types rescue [:NORMAL]
+    defender_types = defender_battler.types rescue [:NORMAL]
+
+    return estimate_damage(
+      atk, dfn, attacker_battler.level, move_data.power, move_data.type,
+      move_data.category, attacker_types, defender_types, options
+    )
+  end
+
+  # Entry point for party Pokemon objects (used by team preview, switching)
+  def estimate_damage_party(move_data, attacker_pkmn, defender_pkmn)
+    return 0 unless move_data && move_data.power > 0
+
+    if move_data.category == 0  # Physical
+      atk = attacker_pkmn.attack
+      dfn = defender_pkmn.defense
+    else  # Special
+      atk = attacker_pkmn.spatk
+      dfn = defender_pkmn.spdef
+    end
+    dfn = [dfn, 1].max
+
+    options = {}
+
+    # Ability from party Pokemon
+    ability_id = attacker_pkmn.ability_id rescue nil
+    options[:ability] = ability_id if ability_id
+
+    # Item from party Pokemon
+    item_id = attacker_pkmn.item_id rescue nil
+    options[:item] = item_id if item_id
+
+    # Move flags
+    move_flags = {}
+    if move_data.respond_to?(:flags)
+      flags = move_data.flags
+      move_flags[:contact] = flags.include?("Contact") if flags
+      move_flags[:biting] = flags.include?("Bite") if flags
+    end
+    if move_data.respond_to?(:addlEffect)
+      move_flags[:secondary_effect] = (move_data.addlEffect || 0) > 0
+    end
+    options[:move_flags] = move_flags
+
+    attacker_types = attacker_pkmn.types rescue [:NORMAL]
+    defender_types = defender_pkmn.types rescue [:NORMAL]
+
+    return estimate_damage(
+      atk, dfn, attacker_pkmn.level, move_data.power, move_data.type,
+      move_data.category, attacker_types, defender_types, options
+    )
+  end
+
+  #---------------------------------------------------------------------------
+  # Module-level utility methods (moved from global scope)
+  #---------------------------------------------------------------------------
+
+  def count_positive_stat_stages(ai_battler)
+    return 0 unless ai_battler && ai_battler.battler
+    count = 0
+    [:ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE, :SPEED].each do |stat|
+      stage = ai_battler.stages[stat] || 0
+      count += stage if stage > 0
+    end
+    return count
+  end
+
+  def should_avoid_switching?(battler, ai)
+    return true unless battler && ai
+    ai_battler = ai.battlers[battler.index]
+    return false unless ai_battler
+    # Don't switch if we have significant stat boosts
+    if count_positive_stat_stages(ai_battler) >= 2
+      log("Avoiding switch: has +2 or more stat boosts", :decisions)
+      return true
+    end
+    # Don't switch if trapped
+    if battler.effects[PBEffects::Trapping] > 0 ||
+       battler.effects[PBEffects::MeanLook] > 0 ||
+       battler.effects[PBEffects::JawLock] > 0
+      return true
+    end
+    return false
+  end
+
+  def best_move_damage(battler, opponent)
+    best = 0
+    battler.moves.each do |m|
+      next unless m && m.damagingMove?
+      move_data = GameData::Move.try_get(m.id)
+      next unless move_data
+      dmg = estimate_damage_battler(move_data, battler, opponent)
+      best = dmg if dmg > best
+    end
+    return best
+  end
+
+  def calculate_stealth_rock_value(user, ai, battle)
+    return 0 unless ai
+    total_value = 0
+    battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
+      opp = battle.battlers[opp_idx]
+      next unless opp && !opp.fainted?
+      next if opp.hasActiveAbility?(:MAGICGUARD)
+      next if opp.hasActiveItem?(:HEAVYDUTYBOOTS)
+      type_mod = Effectiveness.calculate(:ROCK, *opp.types)
+      damage_fraction = type_mod / 8.0
+      if damage_fraction >= 0.5
+        total_value += 30
+      elsif damage_fraction >= 0.25
+        total_value += 20
+      elsif damage_fraction >= 0.125
+        total_value += 10
+      else
+        total_value += 3
+      end
+    end
+    remaining = count_opponent_remaining_pokemon(user, battle) - battle.pbGetOpposingIndicesInOrder(user.index).length
+    total_value += remaining * 12
+    return total_value
+  end
+
+  def count_opponent_remaining_pokemon(user, battle)
+    count = 0
+    if battle.opponent
+      battle.opponent.each do |trainer|
+        trainer.party.each { |p| count += 1 if p && p.able? }
+      end
+    end
+    return [count, 6].min
+  end
+
+  def count_grounded_opponents(user, ai, battle)
+    count = 0
+    battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
+      opp = battle.battlers[opp_idx]
+      next unless opp && !opp.fainted?
+      next if opp.airborne?
+      count += 1
+    end
+    return count
+  end
+
+  def calculate_hazard_entry_damage_fraction(pkmn, side)
+    return 0.0 unless pkmn && side
+    if pkmn.respond_to?(:hasActiveItem?)
+      return 0.0 if pkmn.hasActiveItem?(:HEAVYDUTYBOOTS)
+    elsif pkmn.respond_to?(:item)
+      return 0.0 if pkmn.item == :HEAVYDUTYBOOTS
+    end
+    if pkmn.respond_to?(:hasActiveAbility?)
+      return 0.0 if pkmn.hasActiveAbility?(:MAGICGUARD)
+    elsif pkmn.respond_to?(:ability)
+      return 0.0 if pkmn.ability == :MAGICGUARD
+    end
+    fraction = 0.0
+    types = pkmn.types
+    if side.effects[PBEffects::StealthRock]
+      type_mod = Effectiveness.calculate(:ROCK, *types)
+      fraction += type_mod / (Effectiveness::NORMAL_EFFECTIVE_MULTIPLIER * 8.0)
+    end
+    spikes = side.effects[PBEffects::Spikes] || 0
+    if spikes > 0
+      is_flying = types.include?(:FLYING)
+      has_levitate = false
+      if pkmn.respond_to?(:hasActiveAbility?)
+        has_levitate = pkmn.hasActiveAbility?(:LEVITATE)
+      elsif pkmn.respond_to?(:ability)
+        has_levitate = pkmn.ability == :LEVITATE
+      end
+      unless is_flying || has_levitate
+        case spikes
+        when 1 then fraction += 1.0 / 8.0
+        when 2 then fraction += 1.0 / 6.0
+        else        fraction += 1.0 / 4.0
+        end
+      end
+    end
+    return fraction
+  end
+
+  def count_remaining_pokemon(battle, battler_index)
+    party = battle.pbParty(battler_index)
+    return 0 unless party
+    party.count { |p| p && p.able? }
   end
 end

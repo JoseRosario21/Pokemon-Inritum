@@ -3,147 +3,25 @@
 # Role-based switching and strategic decisions
 #===============================================================================
 
-#===============================================================================
-# Helper function to count positive stat stages
-#===============================================================================
+# Global wrappers — delegate to AdvancedBattleAI module methods
 def count_positive_stat_stages(ai_battler)
-  return 0 unless ai_battler && ai_battler.battler
-  count = 0
-  [:ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE, :SPEED].each do |stat|
-    stage = ai_battler.stages[stat] || 0
-    count += stage if stage > 0
-  end
-  return count
+  AdvancedBattleAI.count_positive_stat_stages(ai_battler)
 end
 
-#===============================================================================
-# Helper to check if battler should avoid switching
-#===============================================================================
 def should_avoid_switching?(battler, ai)
-  return true unless battler && ai
-
-  ai_battler = ai.battlers[battler.index]
-  return false unless ai_battler
-
-  # Don't switch if we have significant stat boosts
-  if count_positive_stat_stages(ai_battler) >= 2
-    AdvancedBattleAI.log("Avoiding switch: has +2 or more stat boosts", :decisions)
-    return true
-  end
-
-  # Don't switch if trapped (can't switch anyway, but check for logic)
-  if battler.effects[PBEffects::Trapping] > 0 ||
-     battler.effects[PBEffects::MeanLook] > 0 ||
-     battler.effects[PBEffects::JawLock] > 0
-    return true
-  end
-
-  # Don't switch if we have a powerful setup opportunity
-  # (e.g., opponent is at low HP and we can finish them)
-
-  return false
+  AdvancedBattleAI.should_avoid_switching?(battler, ai)
 end
 
-#===============================================================================
-# Helper: Estimate damage a move deals from attacker to defender (battlers)
-# Simplified formula for switching decisions (not full calc)
-#===============================================================================
 def estimate_switch_damage(move_data, attacker, defender)
-  return 0 unless move_data && move_data.power > 0
-
-  base_power = move_data.power
-  base_power = 60 if base_power == 1  # Variable power moves
-
-  if move_data.category == 0  # Physical
-    atk = attacker.attack
-    dfn = defender.defense
-  else  # Special
-    atk = attacker.spatk
-    dfn = defender.spdef
-  end
-
-  damage = ((2 * attacker.level / 5.0 + 2) * base_power * atk / dfn / 50.0 + 2).floor
-
-  # STAB
-  if attacker.types.include?(move_data.type)
-    damage = (damage * 1.5).floor
-  end
-
-  # Type effectiveness
-  type_mod = Effectiveness.calculate(move_data.type, *defender.types)
-  damage = (damage * type_mod / Effectiveness::NORMAL_EFFECTIVE_MULTIPLIER).floor
-
-  return damage
+  AdvancedBattleAI.estimate_damage_battler(move_data, attacker, defender)
 end
 
-#===============================================================================
-# Helper: Best damage our battler can deal to an opponent
-#===============================================================================
 def best_move_damage(battler, opponent)
-  best = 0
-  battler.moves.each do |m|
-    next unless m && m.damagingMove?
-    move_data = GameData::Move.try_get(m.id)
-    next unless move_data
-    dmg = estimate_switch_damage(move_data, battler, opponent)
-    best = dmg if dmg > best
-  end
-  return best
+  AdvancedBattleAI.best_move_damage(battler, opponent)
 end
 
-#===============================================================================
-# Helper: Calculate entry hazard damage as fraction of total HP for a Pokemon
-# Works for both battler objects and party Pokemon objects
-#===============================================================================
 def calculate_hazard_entry_damage_fraction(pkmn, side)
-  return 0.0 unless pkmn && side
-
-  # Check for Heavy-Duty Boots
-  if pkmn.respond_to?(:hasActiveItem?)
-    return 0.0 if pkmn.hasActiveItem?(:HEAVYDUTYBOOTS)
-  elsif pkmn.respond_to?(:item)
-    return 0.0 if pkmn.item == :HEAVYDUTYBOOTS
-  end
-
-  # Check for Magic Guard
-  if pkmn.respond_to?(:hasActiveAbility?)
-    return 0.0 if pkmn.hasActiveAbility?(:MAGICGUARD)
-  elsif pkmn.respond_to?(:ability)
-    return 0.0 if pkmn.ability == :MAGICGUARD
-  end
-
-  fraction = 0.0
-  types = pkmn.types
-
-  # Stealth Rock: 1/8 * type effectiveness to Rock
-  if side.effects[PBEffects::StealthRock]
-    type_mod = Effectiveness.calculate(:ROCK, *types)
-    fraction += type_mod / (Effectiveness::NORMAL_EFFECTIVE_MULTIPLIER * 8.0)
-  end
-
-  # Spikes: 1/8, 1/6, 1/4 per layer (grounded only)
-  spikes = side.effects[PBEffects::Spikes] || 0
-  if spikes > 0
-    is_flying = types.include?(:FLYING)
-    has_levitate = false
-    if pkmn.respond_to?(:hasActiveAbility?)
-      has_levitate = pkmn.hasActiveAbility?(:LEVITATE)
-    elsif pkmn.respond_to?(:ability)
-      has_levitate = pkmn.ability == :LEVITATE
-    end
-    unless is_flying || has_levitate
-      case spikes
-      when 1 then fraction += 1.0 / 8.0
-      when 2 then fraction += 1.0 / 6.0
-      else        fraction += 1.0 / 4.0
-      end
-    end
-  end
-
-  # Toxic Spikes: poison on entry (not direct damage, but relevant)
-  # Sticky Web: speed drop (not direct damage)
-
-  return fraction
+  AdvancedBattleAI.calculate_hazard_entry_damage_fraction(pkmn, side)
 end
 
 #===============================================================================
@@ -181,17 +59,22 @@ Battle::AI::Handlers::ShouldSwitch.add(:advanced_role_mismatch,
     next false if can_ko
 
     # Don't switch if we outspeed and can deal > 50% of any opponent's HP
+    dealing_good_damage = false
     battle.pbGetOpposingIndicesInOrder(battler.index).each do |opp_idx|
       opp = battle.battlers[opp_idx]
       next unless opp && !opp.fainted?
-      if battler.speed > opp.speed
-        dmg = best_move_damage(battler, opp)
+      ai_user = ai.battlers[battler.index]
+      ai_opp = ai.battlers[opp_idx]
+      if ai_user && ai_opp && ai_user.faster_than?(ai_opp)
+        dmg = AdvancedBattleAI.best_move_damage(battler, opp)
         if dmg > opp.totalhp * 0.5
           AdvancedBattleAI.log("Role mismatch skipped: outspeed and deal >50%", :decisions)
-          next false  # This exits the each block; we handle below
+          dealing_good_damage = true
+          break
         end
       end
     end
+    next false if dealing_good_damage
 
     # Check entry hazard cost: don't switch if hazards on our side are heavy
     our_side = battler.pbOwnSide
@@ -497,7 +380,9 @@ Battle::AI::Handlers::ShouldSwitch.add(:advanced_type_disadvantage,
         break
       end
       # Also check: if we outspeed and deal > 50%, don't switch
-      if battler.speed > opp.speed && dmg > opp.totalhp * 0.5
+      ai_us = ai.battlers[battler.index]
+      ai_them = ai.battlers[opp_idx]
+      if ai_us && ai_them && ai_us.faster_than?(ai_them) && dmg > opp.totalhp * 0.5
         can_ko_any = true
         break
       end
@@ -741,7 +626,43 @@ class Battle::AI
     end
 
     #---------------------------------------------------------------------------
-    # 6. Memory integration: Check known moves for dangerous ones
+    # 6. Intimidate switching bonus/penalty
+    #---------------------------------------------------------------------------
+    if AdvancedBattleAI.feature_enabled?(:items, @trainer)
+      pkmn_abilities = []
+      species_data = pkmn.species_data rescue nil
+      if species_data
+        pkmn_abilities = (species_data.abilities || []) + (species_data.hidden_abilities || [])
+      end
+
+      if pkmn_abilities.include?(:INTIMIDATE)
+        opponents.each do |opp_idx|
+          opp = @battle.battlers[opp_idx]
+          next unless opp && !opp.fainted?
+
+          # Bonus if opponent is primarily physical
+          if opp.attack > opp.spatk * 1.3
+            # Check if opponent has Defiant/Competitive (avoid triggering)
+            opp_ability = nil
+            if @memory
+              opp_ability = @memory.get_known_ability(opp_idx)
+              opp_ability ||= @memory.predict_ability(opp)
+            end
+
+            if [:DEFIANT, :COMPETITIVE].include?(opp_ability)
+              score -= 30
+              AdvancedBattleAI.log("Intimidate penalty: opponent has #{opp_ability}", :decisions)
+            else
+              score += 25
+              AdvancedBattleAI.log("Intimidate bonus vs physical attacker", :decisions)
+            end
+          end
+        end
+      end
+    end
+
+    #---------------------------------------------------------------------------
+    # 7. Memory integration: Check known moves for dangerous ones
     #---------------------------------------------------------------------------
     if @memory
       opponents.each do |opp_idx|
@@ -760,6 +681,18 @@ class Battle::AI
             score += 10
           elsif Effectiveness.super_effective?(type_mod)
             score -= 15
+          end
+        end
+
+        # Use damage history to estimate threat when moves aren't fully known
+        if known_moves.length < 2
+          [:PHYSICAL, :SPECIAL].each do |dmg_type|
+            hist_damage = @memory.estimate_damage_from_history(opp_idx, idxBattler, dmg_type)
+            next unless hist_damage && hist_damage > 0
+            dmg_fraction = hist_damage.to_f / pkmn.totalhp
+            if dmg_fraction >= 0.5
+              score -= 10  # Opponent dealt heavy damage of this type
+            end
           end
         end
       end
@@ -811,7 +744,9 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:advanced_can_ko_opponent,
       end
 
       # We outspeed and can KO — never switch
-      if battler.speed > opp.speed && best_dmg >= opp.hp
+      ai_us = ai.battlers[battler.index]
+      ai_them = ai.battlers[opp_idx]
+      if ai_us && ai_them && ai_us.faster_than?(ai_them) && best_dmg >= opp.hp
         AdvancedBattleAI.log("Don't switch: outspeed and can KO #{opp.name}", :decisions)
         dominated_by_ko = true
         break
@@ -913,5 +848,87 @@ Battle::AI::Handlers::ShouldSwitch.add(:advanced_counter_switch,
     end
 
     next false
+  }
+)
+
+#===============================================================================
+# Perish Song Awareness — Switch out when Perish count reaches 1
+#===============================================================================
+Battle::AI::Handlers::ShouldSwitch.add(:advanced_perish_song_escape,
+  proc { |battler, reserves, ai, battle|
+    next false unless AdvancedBattleAI.feature_enabled?(:sacrifice, ai.trainer)
+
+    # If Perish Song count is at 1, we faint next turn — switch out
+    perish_count = battler.effects[PBEffects::PerishSong] rescue 0
+    if perish_count == 1 && reserves.any? { |p| p && p.able? }
+      AdvancedBattleAI.log("Perish Song: switching out at count 1", :decisions)
+      next true
+    end
+
+    next false
+  }
+)
+
+#===============================================================================
+# Perish Song Awareness — Don't switch if opponent is about to perish
+#===============================================================================
+Battle::AI::Handlers::ShouldNotSwitch.add(:advanced_perish_song_stay,
+  proc { |battler, reserves, ai, battle|
+    next false unless AdvancedBattleAI.feature_enabled?(:sacrifice, ai.trainer)
+
+    our_perish = battler.effects[PBEffects::PerishSong] rescue 0
+    # If we're not under Perish Song, check if opponent is
+    if our_perish == 0
+      battle.pbGetOpposingIndicesInOrder(battler.index).each do |opp_idx|
+        opp = battle.battlers[opp_idx]
+        next unless opp && !opp.fainted?
+        opp_perish = opp.effects[PBEffects::PerishSong] rescue 0
+        if opp_perish > 0 && opp_perish <= 2
+          AdvancedBattleAI.log("Perish Song: staying in, opponent perishes in #{opp_perish} turns", :decisions)
+          next true
+        end
+      end
+    end
+
+    next false
+  }
+)
+
+#===============================================================================
+# Perish Song Move Scoring — Boost if opponent is trapped/last Pokemon
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveScore.add(:advanced_perish_song_usage,
+  proc { |score, move, user, ai, battle|
+    next score unless move.function_code == "StartPerishCountsForAllBattlers"
+    next score unless AdvancedBattleAI.feature_enabled?(:sacrifice, ai.trainer)
+
+    battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
+      opp = battle.battlers[opp_idx]
+      next unless opp && !opp.fainted?
+
+      # Already under Perish Song — don't use again
+      if (opp.effects[PBEffects::PerishSong] rescue 0) > 0
+        score -= 30
+        next
+      end
+
+      # Opponent is trapped (Mean Look, etc.) — Perish Song is very strong
+      is_trapped = (opp.effects[PBEffects::Trapping] > 0 ||
+                    opp.effects[PBEffects::MeanLook] > 0 ||
+                    opp.effects[PBEffects::JawLock] > 0) rescue false
+      if is_trapped
+        score += AdvancedBattleAI::SCORE_MAJOR_BONUS
+        AdvancedBattleAI.log("Perish Song: bonus vs trapped opponent", :scoring)
+      end
+
+      # Opponent is last Pokemon — can't switch out
+      opp_remaining = AdvancedBattleAI.count_remaining_pokemon(battle, opp_idx)
+      if opp_remaining == 1
+        score += AdvancedBattleAI::SCORE_MAJOR_BONUS
+        AdvancedBattleAI.log("Perish Song: bonus vs last opponent Pokemon", :scoring)
+      end
+    end
+
+    next score
   }
 )

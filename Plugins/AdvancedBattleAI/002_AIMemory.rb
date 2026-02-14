@@ -109,7 +109,7 @@ class Battle::AI::AIMemory
       move_data = GameData::Move.try_get(move_id)
       next unless move_data
       # Prioritize STAB moves
-      if move_data.type == battler.types[0] || move_data.type == battler.types[1]
+      if move_data.type == battler.types[0] || (battler.types.length > 1 && move_data.type == battler.types[1])
         predicted.unshift(move_id)
       # Prioritize status moves for walls, attacking for sweepers
       elsif move_data.category == 2 # Status
@@ -252,6 +252,90 @@ class Battle::AI::AIMemory
   end
 
   #-----------------------------------------------------------------------------
+  # Choice Lock Detection
+  #-----------------------------------------------------------------------------
+
+  CHOICE_ITEMS = [:CHOICEBAND, :CHOICESCARF, :CHOICESPECS]
+
+  # Check if opponent appears to be Choice-locked
+  def opponent_choice_locked?(battler_index)
+    # If we know their item is a Choice item, they're locked after using a move
+    known_item = get_known_item(battler_index)
+    if known_item && CHOICE_ITEMS.include?(known_item)
+      return get_last_move(battler_index) != nil
+    end
+    # Heuristic: if they used the same damaging move twice in a row with unknown item,
+    # they might be Choice-locked (not conclusive but useful)
+    return false unless @revealed_moves[battler_index]
+    return false if @revealed_items.key?(battler_index) && !CHOICE_ITEMS.include?(known_item)
+    # Check damage history for repeated same-move usage
+    history = @damage_taken.values.flatten.select { |h| h[:attacker] == battler_index }
+    return false if history.length < 2
+    last_two = history.last(2)
+    last_two[0][:move] == last_two[1][:move] && last_two[0][:move] == get_last_move(battler_index)
+  end
+
+  # Get the move the opponent is locked into (nil if not locked)
+  def get_choice_locked_move(battler_index)
+    return nil unless opponent_choice_locked?(battler_index)
+    return get_last_move(battler_index)
+  end
+
+  #-----------------------------------------------------------------------------
+  # Item Prediction
+  #-----------------------------------------------------------------------------
+
+  # Predict what item a battler likely holds (heuristic, for high-skill AI)
+  def predict_item(battler)
+    return nil unless battler
+    idx = battler.index
+
+    # If item already known, return it
+    return get_known_item(idx) if @revealed_items.key?(idx) && get_known_item(idx)
+
+    # If item was consumed, they have nothing
+    return nil if item_consumed?(idx)
+
+    # If they used a status move freely, they're NOT Choice-locked
+    known_moves = get_known_moves(idx)
+    used_status = known_moves.any? do |move_id|
+      move_data = GameData::Move.try_get(move_id)
+      move_data && move_data.category == 2  # Status
+    end
+
+    # If they survived what should be an OHKO at full HP, likely Sash
+    history = get_damage_history(idx)
+    if !history.empty? && battler.hp == 1
+      last_hit = history.last
+      if last_hit[:damage] >= battler.totalhp
+        return :FOCUSSASH
+      end
+    end
+
+    # Heuristic based on stats and role
+    atk = battler.attack
+    spatk = battler.spatk
+    speed = battler.speed
+    bulk = battler.defense + battler.spdef
+
+    if !used_status
+      # Offensive Pokemon with no status moves might have Choice item
+      if atk > spatk && atk > bulk
+        return :CHOICEBAND
+      elsif spatk > atk && spatk > bulk
+        return :CHOICESPECS
+      end
+    end
+
+    # Bulky Pokemon likely have Leftovers
+    if bulk > atk && bulk > spatk
+      return :LEFTOVERS
+    end
+
+    return nil
+  end
+
+  #-----------------------------------------------------------------------------
   # Threat Analysis
   #-----------------------------------------------------------------------------
 
@@ -324,6 +408,41 @@ class Battle::AI::AIMemory
       "RemoveScreensAndSafeguard"  # Court Change swaps, not removes
     ]
     return knows_move_with_function?(battler_index, *removal_functions)
+  end
+
+  #-----------------------------------------------------------------------------
+  # Status Strategy Helpers
+  #-----------------------------------------------------------------------------
+
+  # Returns true if battler's Attack > SpAtk * 1.3 (physically offensive)
+  def target_is_physically_offensive?(battler)
+    return false unless battler
+    b = battler.respond_to?(:battler) ? battler.battler : battler
+    return false unless b
+    atk = b.attack rescue 0
+    spatk = b.spatk rescue 0
+    return false if atk == 0 || spatk == 0
+    return atk > spatk * 1.3
+  end
+
+  # Returns true if battler outspeeds all of our remaining team
+  def target_is_fast_threat?(target, ai, battle)
+    return false unless target && ai && battle
+    target_battler = target.respond_to?(:battler) ? target.battler : target
+    return false unless target_battler
+
+    # Check all of our side's battlers
+    our_indices = battle.pbGetOpposingIndicesInOrder(target_battler.index)
+    return false if our_indices.empty?
+
+    our_indices.each do |idx|
+      our_battler = ai.battlers[idx] rescue nil
+      next unless our_battler && !our_battler.battler.fainted?
+      # If any of our Pokemon is faster, target isn't a fast threat
+      return false if our_battler.faster_than?(target)
+    end
+
+    return true
   end
 
   #-----------------------------------------------------------------------------

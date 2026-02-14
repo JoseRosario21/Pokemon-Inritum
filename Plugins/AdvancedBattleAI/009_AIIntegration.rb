@@ -117,11 +117,16 @@ class Battle
   #-----------------------------------------------------------------------------
   # Hook into battler entering battle to record abilities
   #-----------------------------------------------------------------------------
-  alias advanced_ai_pbOnBattlerEnteringBattle pbOnBattlerEnteringBattle if method_defined?(:pbOnBattlerEnteringBattle)
+  if method_defined?(:pbOnBattlerEnteringBattle)
+    alias advanced_ai_pbOnBattlerEnteringBattle pbOnBattlerEnteringBattle
+  end
 
   def pbOnBattlerEnteringBattle(battler_index, skip_event_reset = false)
-    # Call original first
-    ret = advanced_ai_pbOnBattlerEnteringBattle(battler_index, skip_event_reset) if self.class.method_defined?(:advanced_ai_pbOnBattlerEnteringBattle)
+    # Call original first if it exists
+    ret = nil
+    if respond_to?(:advanced_ai_pbOnBattlerEnteringBattle, true)
+      ret = advanced_ai_pbOnBattlerEnteringBattle(battler_index, skip_event_reset)
+    end
 
     # Handle array of indices (the method can receive either single index or array)
     indices = battler_index.is_a?(Array) ? battler_index.flatten : [battler_index]

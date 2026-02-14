@@ -403,10 +403,11 @@ class Battle::AI
     return best
   end
 
-  # Helper to create temporary AI battler for party Pokemon
+  # Helper to create temporary AI battler for party Pokemon.
+  # NOTE: Returns a lightweight Hash mock, not a full AIBattler.
+  # Only used by get_best_switch_for_role which accesses :has_role? and
+  # :role_switch_priority. The scope is contained and intentionally minimal.
   def create_temp_ai_battler(pkmn)
-    # This is a simplified check - in full implementation,
-    # we'd create a proper temporary battler object
     return nil unless pkmn
     return {
       has_role?: ->(role) { estimate_pokemon_role(pkmn) == role },

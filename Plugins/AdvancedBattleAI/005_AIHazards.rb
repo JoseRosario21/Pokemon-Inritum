@@ -258,67 +258,17 @@ Battle::AI::Handlers::MoveEffectScore.add("LowerTargetEvasion1RemoveSideEffects"
 # Helper Functions
 #===============================================================================
 
-# Calculate Stealth Rock damage value against opponent's team
+# Global wrappers — delegate to AdvancedBattleAI module methods
 def calculate_stealth_rock_value(user, ai, battle)
-  return 0 unless ai
-
-  total_value = 0
-  seen_species = ai.memory ? ai.memory.get_pokemon_seen(user.opposing_side_index) : []
-
-  # Check visible opponents
-  battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
-    opp = battle.battlers[opp_idx]
-    next unless opp && !opp.fainted?
-
-    # Skip if has Magic Guard
-    next if opp.hasActiveAbility?(:MAGICGUARD)
-
-    # Skip if has Heavy-Duty Boots (we can't know for sure, but check item)
-    next if opp.hasActiveItem?(:HEAVYDUTYBOOTS)
-
-    type_mod = Effectiveness.calculate(:ROCK, *opp.types)
-    damage_fraction = type_mod / 8.0  # SR deals 1/8 * effectiveness
-
-    # Value based on damage
-    if damage_fraction >= 0.5
-      total_value += 30  # 4x weak
-    elsif damage_fraction >= 0.25
-      total_value += 20  # 2x weak
-    elsif damage_fraction >= 0.125
-      total_value += 10  # Neutral
-    else
-      total_value += 3   # Resistant
-    end
-  end
-
-  # Add value for unseen Pokemon (estimate)
-  remaining = count_opponent_remaining_pokemon(user, battle) - battle.pbGetOpposingIndicesInOrder(user.index).length
-  total_value += remaining * 12  # Average value per unseen Pokemon
-
-  return total_value
+  AdvancedBattleAI.calculate_stealth_rock_value(user, ai, battle)
 end
 
-# Count opponent's remaining Pokemon
 def count_opponent_remaining_pokemon(user, battle)
-  count = 0
-  if battle.opponent
-    battle.opponent.each do |trainer|
-      trainer.party.each { |p| count += 1 if p && p.able? }
-    end
-  end
-  return [count, 6].min
+  AdvancedBattleAI.count_opponent_remaining_pokemon(user, battle)
 end
 
-# Count grounded opponents (affected by Spikes/T-Spikes)
 def count_grounded_opponents(user, ai, battle)
-  count = 0
-  battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
-    opp = battle.battlers[opp_idx]
-    next unless opp && !opp.fainted?
-    next if opp.airborne?
-    count += 1
-  end
-  return count
+  AdvancedBattleAI.count_grounded_opponents(user, ai, battle)
 end
 
 # Count opponents immune to ground (Flying type or Levitate)
@@ -359,22 +309,17 @@ end
 # Calculate speed advantage gained from Sticky Web
 def calculate_speed_advantage_with_web(user, ai, battle)
   advantage = 0
-
   battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
     opp = battle.battlers[opp_idx]
     next unless opp && !opp.fainted?
-    next if opp.airborne?  # Web doesn't affect flying
-
-    # If opponent is currently faster but would be slower with -1 Speed
+    next if opp.airborne?
     if opp.speed > user.speed
-      # Rough estimate: -1 Speed is about 33% reduction
       reduced_speed = (opp.speed * 0.67).to_i
       if reduced_speed < user.speed
         advantage += 1
       end
     end
   end
-
   return advantage
 end
 
@@ -382,70 +327,30 @@ end
 def calculate_own_hazard_damage_value(user, ai, battle)
   value = 0
   side = user.pbOwnSide
-
-  # Stealth Rock
-  if side.effects[PBEffects::StealthRock]
-    value += 25  # Significant value to remove
-  end
-
-  # Spikes
-  spikes = side.effects[PBEffects::Spikes] || 0
-  value += spikes * 12
-
-  # Toxic Spikes
-  tspikes = side.effects[PBEffects::ToxicSpikes] || 0
-  value += tspikes * 15
-
-  # Sticky Web
-  if side.effects[PBEffects::StickyWeb]
-    value += 20
-  end
-
+  value += 25 if side.effects[PBEffects::StealthRock]
+  value += (side.effects[PBEffects::Spikes] || 0) * 12
+  value += (side.effects[PBEffects::ToxicSpikes] || 0) * 15
+  value += 20 if side.effects[PBEffects::StickyWeb]
   return value
 end
 
-# Calculate value of hazards on opponent's side (that we set up)
+# Calculate value of hazards on opponent's side
 def calculate_opponent_hazard_value(user, ai, battle)
   value = 0
   side = user.pbOpposingSide
-
-  # Stealth Rock
-  if side.effects[PBEffects::StealthRock]
-    value += 25
-  end
-
-  # Spikes
-  spikes = side.effects[PBEffects::Spikes] || 0
-  value += spikes * 12
-
-  # Toxic Spikes
-  tspikes = side.effects[PBEffects::ToxicSpikes] || 0
-  value += tspikes * 15
-
-  # Sticky Web
-  if side.effects[PBEffects::StickyWeb]
-    value += 20
-  end
-
+  value += 25 if side.effects[PBEffects::StealthRock]
+  value += (side.effects[PBEffects::Spikes] || 0) * 12
+  value += (side.effects[PBEffects::ToxicSpikes] || 0) * 15
+  value += 20 if side.effects[PBEffects::StickyWeb]
   return value
 end
 
 # Calculate value of screens on a side
 def calculate_screen_value(side, battle)
   value = 0
-
-  if side.effects[PBEffects::Reflect] > 0
-    value += 15
-  end
-
-  if side.effects[PBEffects::LightScreen] > 0
-    value += 15
-  end
-
-  if side.effects[PBEffects::AuroraVeil] > 0
-    value += 30
-  end
-
+  value += 15 if side.effects[PBEffects::Reflect] > 0
+  value += 15 if side.effects[PBEffects::LightScreen] > 0
+  value += 30 if side.effects[PBEffects::AuroraVeil] > 0
   return value
 end
 
@@ -453,24 +358,17 @@ end
 def evaluate_terrain_benefit(user, battle)
   terrain = battle.field.terrain
   return 0 if terrain == :None
-
   benefit = 0
-
   case terrain
   when :Electric
-    # Benefits Electric types
     benefit += 10 if user.pbHasType?(:ELECTRIC)
   when :Grassy
-    # Heals grounded Pokemon, boosts Grass
     benefit += 10 if user.pbHasType?(:GRASS)
     benefit += 5 unless user.airborne?
   when :Misty
-    # Protects from status, weakens Dragon
     benefit += 10 unless user.airborne?
   when :Psychic
-    # Boosts Psychic, blocks priority
     benefit += 10 if user.pbHasType?(:PSYCHIC)
   end
-
   return benefit
 end

@@ -43,8 +43,17 @@ class Battle::AI
 
     @win_condition_analyzed = true
 
+    # Get AI side — find the first non-player battler's side
+    ai_battler_index = nil
+    @battle.battlers.each do |b|
+      next unless b && !b.fainted? && !b.pbOwnedByPlayer?
+      ai_battler_index = b.index
+      break
+    end
+    ai_battler_index ||= 1
+
     # Get our party
-    our_party = @battle.pbParty(@battle.pbSideSize(0) > 0 ? 1 : 0)
+    our_party = @battle.pbParty(ai_battler_index)
     return unless our_party && our_party.length > 0
 
     # Analyze team composition
@@ -291,7 +300,10 @@ class Battle::AI
 
     # Check if our win condition Pokemon fainted
     if @win_condition_pokemon
-      our_party = @battle.pbParty(@battle.pbSideSize(0) > 0 ? 1 : 0)
+      ai_idx = nil
+      @battle.battlers.each { |b| next unless b && !b.fainted? && !b.pbOwnedByPlayer?; ai_idx = b.index; break }
+      ai_idx ||= 1
+      our_party = @battle.pbParty(ai_idx)
       if our_party && our_party[@win_condition_pokemon]
         pkmn = our_party[@win_condition_pokemon]
         if !pkmn.able?
@@ -309,7 +321,10 @@ class Battle::AI
 
     if remaining_opponents <= 2
       # Late game - check if any Pokemon can clean up
-      our_party = @battle.pbParty(@battle.pbSideSize(0) > 0 ? 1 : 0)
+      ai_idx = nil
+      @battle.battlers.each { |b| next unless b && !b.fainted? && !b.pbOwnedByPlayer?; ai_idx = b.index; break }
+      ai_idx ||= 1
+      our_party = @battle.pbParty(ai_idx)
       our_party.each_with_index do |pkmn, idx|
         next unless pkmn && pkmn.able?
         if can_pokemon_sweep?(pkmn, opponents)
@@ -347,10 +362,13 @@ class Battle::AI
       has_stallbreak = true if is_stallbreak_move?(move_data)
     end
 
-    # Stat-based classification
+    # Stat-based classification (thresholds aligned with 003_AIRoles.rb)
     offensive = [pkmn.attack, pkmn.spatk].max
     defensive = (pkmn.defense + pkmn.spdef) / 2
     speed = pkmn.speed
+
+    # Check ability for role hints
+    pkmn_ability = pkmn.ability_id rescue nil
 
     # Setup sweeper
     if has_setup && offensive >= 80
@@ -372,8 +390,10 @@ class Battle::AI
       return :stallbreaker
     end
 
-    # Walls
-    if defensive >= offensive * 1.2
+    # Walls (aligned with 003: def > off * 1.3, Intimidate users lean wall-ish)
+    wall_threshold = 1.3
+    wall_threshold = 1.1 if pkmn_ability == :INTIMIDATE
+    if defensive >= offensive * wall_threshold
       if pkmn.defense > pkmn.spdef * 1.3
         return :physical_wall
       elsif pkmn.spdef > pkmn.defense * 1.3
@@ -388,8 +408,8 @@ class Battle::AI
       return :cleric
     end
 
-    # Sweeper
-    if offensive >= 100 && speed >= 80
+    # Sweeper (aligned: off >= 90, speed >= 75)
+    if offensive >= 90 && speed >= 75
       return :sweeper
     end
 
@@ -503,7 +523,7 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:advanced_preserve_win_condition,
 Battle::AI::Handlers::GeneralMoveScore.add(:advanced_win_condition_setup,
   proc { |score, move, user, ai, battle|
     # Analyze win condition if not done yet
-    ai.analyze_win_condition rescue nil
+    ai.analyze_win_condition if ai.respond_to?(:analyze_win_condition)
 
     next score unless ai.win_condition == AdvancedBattleAI::WinCondition::SWEEP
 
@@ -531,7 +551,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_win_condition_setup,
 #-------------------------------------------------------------------------------
 Battle::AI::Handlers::GeneralMoveScore.add(:advanced_win_condition_stall,
   proc { |score, move, user, ai, battle|
-    ai.analyze_win_condition rescue nil
+    ai.analyze_win_condition if ai.respond_to?(:analyze_win_condition)
 
     next score unless ai.win_condition == AdvancedBattleAI::WinCondition::STALL
 
@@ -567,7 +587,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_win_condition_stall,
 #-------------------------------------------------------------------------------
 Battle::AI::Handlers::GeneralMoveScore.add(:advanced_win_condition_momentum,
   proc { |score, move, user, ai, battle|
-    ai.analyze_win_condition rescue nil
+    ai.analyze_win_condition if ai.respond_to?(:analyze_win_condition)
 
     next score unless ai.win_condition == AdvancedBattleAI::WinCondition::MOMENTUM
 
@@ -594,35 +614,31 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_win_condition_momentum,
 #-------------------------------------------------------------------------------
 Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_win_condition_wallbreak,
   proc { |score, move, user, target, ai, battle|
-    ai.analyze_win_condition rescue nil
+    ai.analyze_win_condition if ai.respond_to?(:analyze_win_condition)
 
     next score unless ai.win_condition == AdvancedBattleAI::WinCondition::WALLBREAK
 
     # Check if target is a wall (high defenses, low offense)
-    begin
-      target_offensive = [target.attack, target.spatk].max
-      target_defensive = (target.defense + target.spdef) / 2
+    target_offensive = [target.attack, target.spatk].max
+    target_defensive = (target.defense + target.spdef) / 2
 
-      if target_defensive > target_offensive * 1.2
-        # Target is a wall - prioritize breaking it
-        if move.damagingMove?
-          # Boost super effective moves against walls
-          type_mod = Effectiveness.calculate(move.type, *target.types)
-          if Effectiveness.super_effective?(type_mod)
-            score += 20
-            AdvancedBattleAI.log("Win condition: boosting wallbreaking move", :scoring)
-          end
-        end
-
-        # Boost Taunt against walls
-        move_data = GameData::Move.try_get(move.id) rescue nil
-        if move_data && ai.is_stallbreak_move?(move_data)
-          score += 25
-          AdvancedBattleAI.log("Win condition: boosting Taunt vs wall", :scoring)
+    if target_defensive > target_offensive * 1.2
+      # Target is a wall - prioritize breaking it
+      if move.damagingMove?
+        # Boost super effective moves against walls
+        type_mod = Effectiveness.calculate(move.type, *target.types)
+        if Effectiveness.super_effective?(type_mod)
+          score += 20
+          AdvancedBattleAI.log("Win condition: boosting wallbreaking move", :scoring)
         end
       end
-    rescue
-      # Silently fail if there's an error
+
+      # Boost Taunt against walls
+      move_data = GameData::Move.try_get(move.id)
+      if move_data && ai.is_stallbreak_move?(move_data)
+        score += 25
+        AdvancedBattleAI.log("Win condition: boosting Taunt vs wall", :scoring)
+      end
     end
 
     next score
