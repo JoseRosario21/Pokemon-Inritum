@@ -1,0 +1,6 @@
+Name       = Field Effect Move Info UI
+Version    = 1.0.0
+Essentials = 21.1
+Requires   = [DBK] Enhanced Battle UI,2.0.9
+Requires   = Field Effect,1.0.0
+Credits    = Fanfan

@@ -25,7 +25,7 @@ end
 def fill_updater_config()
 	trueValues = ['true', 'y', 'si', 'yes', 's']
 	falseValues = ['false', 'n', 'no']
-	return if !File.exists?('pu_config')
+	return if !File.exist?('pu_config')
 	config = {}
 	File.foreach('pu_config'){|line|
 		splitted_line = line.split('=')
@@ -44,7 +44,7 @@ def fill_updater_config()
 	GameVersion.poke_updater_config = config
 
 			
-	return if !File.exists?('pu_locales')
+	return if !File.exist?('pu_locales')
 	if defined?(JSON)
 		json_library_available = true
 	else
@@ -185,7 +185,7 @@ def validate_version(url, from_update_button=false, update=true)
 				end
 
 				if !GameVersion.poke_updater_config['FORCE_UPDATE'] && !update
-					if !File.exists?(GameVersion.poke_updater_config['UPDATER_FILENAME'])
+					if !File.exist?(GameVersion.poke_updater_config['UPDATER_FILENAME'])
 						Kernel.pbMessageBlack("#{get_poke_updater_text('MANUAL_UPDATE', GameVersion.poke_updater_config['MANUAL_DOWNLOAD_LINK'])}")
 						if !GameVersion.poke_updater_config['MANUAL_DOWNLOAD_LINK'].empty? && pbConfirmMessageBlack("#{get_poke_updater_text('MANUAL_DOWNLOAD_CONFIRM')}")
 							System.launch(GameVersion.poke_updater_config['MANUAL_DOWNLOAD_LINK'])
@@ -204,7 +204,7 @@ def validate_version(url, from_update_button=false, update=true)
 				end
 				
 				if GameVersion.poke_updater_config['FORCE_UPDATE'] || update
-					if !File.exists?(GameVersion.poke_updater_config['UPDATER_FILENAME'])
+					if !File.exist?(GameVersion.poke_updater_config['UPDATER_FILENAME'])
 						Kernel.pbMessage("#{get_poke_updater_text('MANUAL_UPDATE', GameVersion.poke_updater_config['MANUAL_DOWNLOAD_LINK'])}")
 						if !GameVersion.poke_updater_config['MANUAL_DOWNLOAD_LINK'].empty? && pbConfirmMessage("#{get_poke_updater_text('MANUAL_DOWNLOAD_CONFIRM')}")
 							System.launch(GameVersion.poke_updater_config['MANUAL_DOWNLOAD_LINK'])
