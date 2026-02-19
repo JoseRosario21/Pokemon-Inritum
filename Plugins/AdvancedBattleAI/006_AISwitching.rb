@@ -268,6 +268,7 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:advanced_prefer_pivot,
     next false unless pivot_move
 
     # Check if pivot would work (not immune)
+    pivot_works = false
     battle.pbGetOpposingIndicesInOrder(battler.index).each do |opp_idx|
       opp = battle.battlers[opp_idx]
       next unless opp && !opp.fainted?
@@ -277,16 +278,18 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:advanced_prefer_pivot,
         type_mod = Effectiveness.calculate(pivot_move.type, *opp.types)
         if type_mod > 0
           AdvancedBattleAI.log("Prefer pivot move (#{pivot_move.name}) over hard switch", :decisions)
-          next true
+          pivot_works = true
+          break
         end
       else
         # Status pivots always work (Parting Shot, Teleport)
         AdvancedBattleAI.log("Prefer status pivot move over hard switch", :decisions)
-        next true
+        pivot_works = true
+        break
       end
     end
 
-    next false
+    next pivot_works
   }
 )
 
@@ -309,13 +312,14 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:advanced_sacrifice_play,
       # Only consider sacrifice if we're very low HP
       if battler.hp < battler.totalhp * 0.2
         # Look for setup sweeper in reserves
-        reserves.each do |pkmn|
-          next unless pkmn && pkmn.able?
+        has_sweeper = reserves.any? do |pkmn|
+          next false unless pkmn && pkmn.able?
           role = ai.estimate_pokemon_role(pkmn)
-          if role == Battle::AI::Roles::SETUP_SWEEPER
-            AdvancedBattleAI.log("Allowing sacrifice to bring in sweeper", :decisions)
-            next true
-          end
+          role == Battle::AI::Roles::SETUP_SWEEPER
+        end
+        if has_sweeper
+          AdvancedBattleAI.log("Allowing sacrifice to bring in sweeper", :decisions)
+          next true
         end
       end
     end
@@ -812,7 +816,9 @@ Battle::AI::Handlers::ShouldSwitch.add(:advanced_counter_switch,
     next false if battler.hp < battler.totalhp * 0.5
 
     # Check if opponent has shown moves that hard counter us
+    should_switch = false
     battle.pbGetOpposingIndicesInOrder(battler.index).each do |opp_idx|
+      break if should_switch
       known_moves = ai.memory.get_known_moves(opp_idx)
       next if known_moves.empty?
 
@@ -841,13 +847,14 @@ Battle::AI::Handlers::ShouldSwitch.add(:advanced_counter_switch,
 
           if handles_threat
             AdvancedBattleAI.log("Counter switch: 4x weakness, have resistant option", :decisions)
-            next true
+            should_switch = true
+            break
           end
         end
       end
     end
 
-    next false
+    next should_switch
   }
 )
 
@@ -879,15 +886,18 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:advanced_perish_song_stay,
     our_perish = battler.effects[PBEffects::PerishSong] rescue 0
     # If we're not under Perish Song, check if opponent is
     if our_perish == 0
+      opponent_perishing = false
       battle.pbGetOpposingIndicesInOrder(battler.index).each do |opp_idx|
         opp = battle.battlers[opp_idx]
         next unless opp && !opp.fainted?
         opp_perish = opp.effects[PBEffects::PerishSong] rescue 0
         if opp_perish > 0 && opp_perish <= 2
           AdvancedBattleAI.log("Perish Song: staying in, opponent perishes in #{opp_perish} turns", :decisions)
-          next true
+          opponent_perishing = true
+          break
         end
       end
+      next true if opponent_perishing
     end
 
     next false

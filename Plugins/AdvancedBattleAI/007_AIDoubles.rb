@@ -559,7 +559,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_coordinated_ko
     end
 
     # Bonus for finishing a target that has already been hit this turn
-    took_damage = (begin; target.battler.tookDamageThisTurn; rescue; false; end)
+    took_damage = (begin; target.battler.tookDamageThisRound; rescue; false; end)
     if took_damage
       score += 10
       AdvancedBattleAI.log("Coordinated KO: finishing damaged target", :scoring)

@@ -503,8 +503,7 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:advanced_preserve_win_condition,
   proc { |battler, reserves, ai, battle|
     next false unless ai.win_condition_pokemon
 
-    # Check if this battler is our win condition Pokemon
-    # battler is an AIBattler wrapper, need .battler to get the actual Battler
+    # battler in ShouldNotSwitch handlers is a Battle::AI::AIBattler
     party_idx = battler.battler.pokemonIndex rescue nil
     next false unless party_idx
 

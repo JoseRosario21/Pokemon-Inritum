@@ -52,7 +52,7 @@ module XP18
     # Generate enemy team
     level_range = xp_level_range
     bst = bst_range
-    team = generate_team(XP_PARTY_SIZE, level_range, bst)
+    team = generate_team(XP_ENEMY_COUNT, level_range, bst)
     # Build trainer
     trainer = NPCTrainer.new(_INTL("Simulation"), TRAINER_TYPE)
     trainer.id = $player.make_foreign_ID

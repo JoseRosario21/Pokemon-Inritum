@@ -48,7 +48,9 @@ Battle::AI::Handlers::ShouldSwitch.add(:advanced_exploit_choice_lock,
     next false unless ai.memory
 
     # Check each opponent for Choice lock
+    should_switch = false
     battle.pbGetOpposingIndicesInOrder(battler.index).each do |opp_idx|
+      break if should_switch
       locked_move_id = ai.memory.get_choice_locked_move(opp_idx)
       next unless locked_move_id
 
@@ -65,12 +67,13 @@ Battle::AI::Handlers::ShouldSwitch.add(:advanced_exploit_choice_lock,
         res_type_mod = Effectiveness.calculate(locked_data.type, *pkmn.types)
         if res_type_mod == 0 || Effectiveness.not_very_effective?(res_type_mod)
           AdvancedBattleAI.log("Switch to exploit Choice lock: #{pkmn.name} resists #{locked_data.name}", :decisions)
-          next true
+          should_switch = true
+          break
         end
       end
     end
 
-    next false
+    next should_switch
   }
 )
 
@@ -80,6 +83,7 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:advanced_resist_choice_lock,
     next false unless AdvancedBattleAI.feature_enabled?(:items, ai.trainer)
     next false unless ai.memory
 
+    immune_to_lock = false
     battle.pbGetOpposingIndicesInOrder(battler.index).each do |opp_idx|
       locked_move_id = ai.memory.get_choice_locked_move(opp_idx)
       next unless locked_move_id
@@ -90,11 +94,12 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:advanced_resist_choice_lock,
       type_mod = Effectiveness.calculate(locked_data.type, *battler.types)
       if type_mod == 0
         AdvancedBattleAI.log("Don't switch: immune to Choice-locked #{locked_data.name}", :decisions)
-        next true
+        immune_to_lock = true
+        break
       end
     end
 
-    next false
+    next immune_to_lock
   }
 )
 
@@ -242,6 +247,7 @@ Battle::AI::Handlers::ShouldSwitch.add(:advanced_intimidate_pivot,
     next false unless physical_threat
 
     # Check if we have an Intimidate user in reserves
+    should_switch = false
     reserves.each do |pkmn|
       next unless pkmn && pkmn.able?
 
@@ -269,11 +275,12 @@ Battle::AI::Handlers::ShouldSwitch.add(:advanced_intimidate_pivot,
 
       if safe_to_intimidate
         AdvancedBattleAI.log("Intimidate pivot: switching to #{pkmn.name} vs physical threat", :decisions)
-        next true
+        should_switch = true
+        break
       end
     end
 
-    next false
+    next should_switch
   }
 )
 

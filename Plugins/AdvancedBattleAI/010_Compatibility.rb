@@ -310,6 +310,7 @@ class Battle::AI
     should_mega = advanced_ai_mega_pbEnemyShouldMegaEvolve? if respond_to?(:advanced_ai_mega_pbEnemyShouldMegaEvolve?)
 
     return should_mega unless AdvancedBattleAI.feature_enabled?(:roles, @trainer)
+    return should_mega unless @user
 
     user_ai = @battlers[@user.index]
     return should_mega unless user_ai

@@ -58,61 +58,10 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_endgame,
     end
 
     #---------------------------------------------------------------------------
-    # Late Game: <= 3 Pokemon per side
-    #---------------------------------------------------------------------------
-    if our_remaining <= 3 || opp_remaining <= 3
-      # KO moves finish the game faster
-      if can_ko
-        score += 15
-        AdvancedBattleAI.log("Endgame: KO move bonus (late game)", :scoring)
-      end
-
-      # Don't set up if we only have 1 Pokemon left (too risky)
-      if is_setup && our_remaining == 1
-        score -= 10
-        AdvancedBattleAI.log("Endgame: setup penalty (last Pokemon)", :scoring)
-      end
-
-      # Priority when low HP
-      if is_priority && user.hp_fraction < 0.5
-        score += 10
-        AdvancedBattleAI.log("Endgame: priority bonus (low HP, late game)", :scoring)
-      end
-    end
-
-    #---------------------------------------------------------------------------
-    # Endgame: <= 2 Pokemon per side
-    #---------------------------------------------------------------------------
-    if our_remaining <= 2 || opp_remaining <= 2
-      # Stronger KO bonus
-      if can_ko
-        score += 20
-        AdvancedBattleAI.log("Endgame: KO move bonus (endgame)", :scoring)
-      end
-
-      # Priority KO against faster targets
-      if is_priority && can_ko && !user_faster
-        score += 15
-        AdvancedBattleAI.log("Endgame: priority KO vs faster target", :scoring)
-      end
-
-      # No more switches coming — hazards are wasteful
-      if is_hazard
-        score -= 15
-        AdvancedBattleAI.log("Endgame: hazard penalty (few Pokemon left)", :scoring)
-      end
-
-      # If target is low, just KO them instead of using status
-      if is_status && target.hp_fraction < 0.4
-        score -= 10
-        AdvancedBattleAI.log("Endgame: status penalty (target low HP)", :scoring)
-      end
-    end
-
-    #---------------------------------------------------------------------------
-    # Last Pokemon: 1v1
+    # Endgame tiers (mutually exclusive to prevent score stacking)
     #---------------------------------------------------------------------------
     if our_remaining == 1 && opp_remaining == 1
+      # --- 1v1: Last Pokemon ---
       # Heavily favor the highest-damage move
       if move.damagingMove? && best_effective_power > 0 && this_effective_power >= best_effective_power * 0.95
         score += 25
@@ -140,6 +89,45 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_endgame,
       if is_priority && can_ko && !user_faster
         score += 20
         AdvancedBattleAI.log("Endgame: priority KO bonus (1v1, slower)", :scoring)
+      end
+
+    elsif our_remaining <= 2 || opp_remaining <= 2
+      # --- Endgame: <= 2 Pokemon per side ---
+      if can_ko
+        score += 20
+        AdvancedBattleAI.log("Endgame: KO move bonus (endgame)", :scoring)
+      end
+
+      if is_priority && can_ko && !user_faster
+        score += 15
+        AdvancedBattleAI.log("Endgame: priority KO vs faster target", :scoring)
+      end
+
+      if is_hazard
+        score -= 15
+        AdvancedBattleAI.log("Endgame: hazard penalty (few Pokemon left)", :scoring)
+      end
+
+      if is_status && target.hp_fraction < 0.4
+        score -= 10
+        AdvancedBattleAI.log("Endgame: status penalty (target low HP)", :scoring)
+      end
+
+    elsif our_remaining <= 3 || opp_remaining <= 3
+      # --- Late Game: <= 3 Pokemon per side ---
+      if can_ko
+        score += 15
+        AdvancedBattleAI.log("Endgame: KO move bonus (late game)", :scoring)
+      end
+
+      if is_setup && our_remaining == 1
+        score -= 10
+        AdvancedBattleAI.log("Endgame: setup penalty (last Pokemon)", :scoring)
+      end
+
+      if is_priority && user.hp_fraction < 0.5
+        score += 10
+        AdvancedBattleAI.log("Endgame: priority bonus (low HP, late game)", :scoring)
       end
     end
 
