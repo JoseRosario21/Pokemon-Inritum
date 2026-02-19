@@ -401,17 +401,17 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_protect_usage,
           base_bonus = 0
           if current_speed_stages < 2
             # Still slow - really want that speed boost
-            base_bonus = 150
+            base_bonus = 40
           elsif current_speed_stages < 4
             # Getting faster but could use more
-            base_bonus = 100
+            base_bonus = 30
           else
             # Already very boosted, less urgent but still useful
-            base_bonus = 50
+            base_bonus = 15
           end
 
-          # Scale bonus by success chance
-          actual_bonus = (base_bonus * success_multiplier).to_i
+          # Scale bonus by success chance, cap at +40
+          actual_bonus = [(base_bonus * success_multiplier).to_i, 40].min
           score += actual_bonus
           AdvancedBattleAI.log("Speed Boost Protect (stages=#{current_speed_stages}, success=#{(success_multiplier * 100).to_i}%)", :scoring)
         end
@@ -490,24 +490,12 @@ def calculate_setup_window(user, ai, battle)
     target_ai = ai.battlers[target_idx]
     next unless target_ai
 
-    # Estimate max damage target can deal
+    # Estimate max damage target can deal using shared utility
     target.moves.each do |move|
       next unless move && move.damagingMove?
-
-      # Simple damage estimation
-      type_mod = Effectiveness.calculate(move.type, *user.types)
-      base_damage = move.power * type_mod / 100.0
-
-      # Factor in offensive stats roughly
-      if move.category == 0  # Physical
-        atk = target.attack
-        def_stat = user.defense
-      else  # Special
-        atk = target.spatk
-        def_stat = user.spdef
-      end
-
-      estimated = (base_damage * atk / def_stat * 0.5).to_i
+      move_data = GameData::Move.try_get(move.id)
+      next unless move_data
+      estimated = AdvancedBattleAI.estimate_damage_battler(move_data, target, user.battler, battle)
       max_incoming_damage = [max_incoming_damage, estimated].max
     end
   end
@@ -519,14 +507,3 @@ def calculate_setup_window(user, ai, battle)
   return [turns, 5].min  # Cap at 5 turns
 end
 
-# Count positive stat stages for a battler
-def count_positive_stat_stages(user)
-  return 0 unless user.battler
-
-  count = 0
-  [:ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE, :SPEED].each do |stat|
-    stage = user.stages[stat] || 0
-    count += stage if stage > 0
-  end
-  return count
-end

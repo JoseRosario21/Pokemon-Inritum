@@ -487,3 +487,258 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_ally_switch,
     next score
   }
 )
+
+#===============================================================================
+# 6.1 Coordinated KO Timing
+# Bonus for combined damage KOs in doubles
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_coordinated_ko,
+  proc { |score, move, user, target, ai, battle|
+    next score unless battle.doubleBattle?
+    next score unless AdvancedBattleAI.feature_enabled?(:doubles, ai.trainer)
+    next score unless move.damagingMove?
+
+    partner_idx = user.index.even? ? user.index + 1 : user.index - 1
+    partner = battle.battlers[partner_idx]
+    next score unless partner && !partner.fainted?
+
+    # Estimate our damage
+    our_damage = 0
+    begin
+      if ai.move
+        ai.move.set_up(move.move) if move.respond_to?(:move)
+        our_damage = ai.move.rough_damage
+      end
+    rescue StandardError
+      next score
+    end
+
+    # Estimate partner's best damage against this target
+    partner_best_damage = 0
+    partner.moves.each do |m|
+      next unless m && (m.damagingMove? rescue false)
+      m_power = m.power rescue 0
+      next if m_power == 0
+
+      # Simple damage estimate
+      target_battler = target.battler
+      move_type = m.type rescue :NORMAL
+      type_mod = Effectiveness.calculate(move_type, *target_battler.types) rescue 1.0
+      stab = (partner.pbHasType?(move_type) rescue false) ? 1.5 : 1.0
+
+      if (m.category rescue 0) == 0  # Physical
+        atk = partner.attack
+        dfn = [target_battler.defense, 1].max
+      else
+        atk = partner.spatk
+        dfn = [target_battler.spdef, 1].max
+      end
+
+      est_dmg = ((2 * partner.level / 5.0 + 2) * m_power * atk / dfn / 50.0 + 2).floor
+      est_dmg = (est_dmg * stab * type_mod / Effectiveness::NORMAL_EFFECTIVE_MULTIPLIER).floor
+      partner_best_damage = est_dmg if est_dmg > partner_best_damage
+    end
+
+    # Combined damage KO
+    if our_damage + partner_best_damage >= target.hp && our_damage < target.hp
+      score += 20
+      AdvancedBattleAI.log("Coordinated KO: combined damage secures KO", :scoring)
+    end
+
+    # KOing this target leaves only 1 opponent (2v1 advantage)
+    if our_damage >= target.hp
+      opp_count = 0
+      battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
+        opp = battle.battlers[opp_idx]
+        opp_count += 1 if opp && !opp.fainted?
+      end
+      if opp_count == 2  # This KO would make it 2v1
+        score += 15
+        AdvancedBattleAI.log("Coordinated KO: creates 2v1 advantage", :scoring)
+      end
+    end
+
+    # Bonus for finishing a target that has already been hit this turn
+    took_damage = (begin; target.battler.tookDamageThisRound; rescue; false; end)
+    if took_damage
+      score += 10
+      AdvancedBattleAI.log("Coordinated KO: finishing damaged target", :scoring)
+    end
+
+    next score
+  }
+)
+
+#===============================================================================
+# 6.2 Speed Control Coordination
+# Tailwind and speed-lowering moves in doubles context
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveScore.add(:advanced_speed_control_doubles,
+  proc { |score, move, user, ai, battle|
+    next score unless battle.doubleBattle?
+    next score unless AdvancedBattleAI.feature_enabled?(:doubles, ai.trainer)
+
+    partner_idx = user.index.even? ? user.index + 1 : user.index - 1
+    partner = battle.battlers[partner_idx]
+    next score unless partner && !partner.fainted?
+
+    partner_ai = ai.battlers[partner_idx]
+    next score unless partner_ai
+
+    #---------------------------------------------------------------------------
+    # Tailwind
+    #---------------------------------------------------------------------------
+    if move.function_code == "StartUserSideDoubleSpeed"
+      # Check if Trick Room is active (Tailwind counterproductive)
+      if battle.field.effects[PBEffects::TrickRoom] > 0
+        score -= 20
+        AdvancedBattleAI.log("Speed control: Tailwind penalty (Trick Room active)", :scoring)
+        next score
+      end
+
+      # Check if partner is a sweeper/setup sweeper that's currently slower
+      is_sweeper = partner_ai.has_role?(Battle::AI::Roles::SWEEPER) ||
+                   partner_ai.has_role?(Battle::AI::Roles::SETUP_SWEEPER) rescue false
+
+      # Check if partner is slower than opponents
+      partner_slower_than_any = false
+      partner_already_outspeeds_all = true
+      battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
+        opp_ai = ai.battlers[opp_idx]
+        next unless opp_ai && !opp_ai.battler.fainted?
+        if opp_ai.faster_than?(partner_ai)
+          partner_slower_than_any = true
+          partner_already_outspeeds_all = false
+        end
+      end
+
+      if is_sweeper && partner_slower_than_any
+        score += 15
+        AdvancedBattleAI.log("Speed control: Tailwind for slow sweeper partner", :scoring)
+      elsif partner_already_outspeeds_all
+        score -= 15
+        AdvancedBattleAI.log("Speed control: Tailwind unnecessary (already fastest)", :scoring)
+      end
+    end
+
+    #---------------------------------------------------------------------------
+    # Icy Wind / Electroweb (LowerTargetSpeed1 and variants)
+    #---------------------------------------------------------------------------
+    speed_lower_functions = [
+      "LowerTargetSpeed1", "LowerTargetSpeed1WeakerInGrassyTerrain",
+      "LowerTargetSpeed1MakeTargetWeakerToFire", "PoisonTargetLowerTargetSpeed1"
+    ]
+    if speed_lower_functions.include?(move.function_code)
+      # Check if our side has a speed disadvantage
+      our_side_slower = false
+      battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
+        opp_ai = ai.battlers[opp_idx]
+        next unless opp_ai && !opp_ai.battler.fainted?
+        if opp_ai.faster_than?(user) || opp_ai.faster_than?(partner_ai)
+          our_side_slower = true
+          break
+        end
+      end
+
+      if our_side_slower
+        score += 10
+        AdvancedBattleAI.log("Speed control: speed-lowering bonus (speed disadvantage)", :scoring)
+      end
+    end
+
+    next score
+  }
+)
+
+#===============================================================================
+# 6.3 Protect Prediction — Don't Double-Target Into Protect
+# Uses move prediction to avoid wasting moves on Protecting targets
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_protect_prediction,
+  proc { |score, move, user, target, ai, battle|
+    next score unless battle.doubleBattle?
+    next score unless AdvancedBattleAI.feature_enabled?(:move_prediction, ai.trainer)
+    next score unless move.damagingMove? || move.statusMove?
+
+    # Predict if target will use Protect
+    prediction, pred_move, confidence = ai.predict_opponent_move(target.index)
+
+    if prediction == AdvancedBattleAI::Prediction::PROTECT
+      # Exception: Feint gets a bonus instead of penalty
+      feint_functions = ["RemoveProtections", "RemoveProtectionsBypassSubstitute"]
+      if feint_functions.include?(move.function_code)
+        score += 25
+        AdvancedBattleAI.log("Protect prediction: Feint bonus vs predicted Protect", :scoring)
+      else
+        # Penalize single-target moves against predicted Protect
+        if confidence > 0.7
+          score -= 25
+          AdvancedBattleAI.log("Protect prediction: heavy penalty (high confidence)", :scoring)
+        elsif confidence > 0.5
+          score -= 15
+          AdvancedBattleAI.log("Protect prediction: penalty (moderate confidence)", :scoring)
+        end
+      end
+    end
+
+    next score
+  }
+)
+
+#===============================================================================
+# 6.4 Feint Coordination
+# Use Feint strategically against Protect users in doubles
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_feint_doubles,
+  proc { |score, move, user, target, ai, battle|
+    next score unless battle.doubleBattle?
+    next score unless AdvancedBattleAI.feature_enabled?(:doubles, ai.trainer)
+
+    feint_functions = ["RemoveProtections", "RemoveProtectionsBypassSubstitute"]
+    next score unless feint_functions.include?(move.function_code)
+
+    target_battler = target.battler
+
+    # Check if target used Protect last turn (ProtectRate > 1 means they used it)
+    protect_rate = target_battler.effects[PBEffects::ProtectRate] rescue 1
+    if protect_rate > 1
+      score += 20
+      AdvancedBattleAI.log("Feint: bonus vs recent Protect user", :scoring)
+    end
+
+    # Check move prediction for Protect
+    if AdvancedBattleAI.feature_enabled?(:move_prediction, ai.trainer)
+      prediction, pred_move, confidence = ai.predict_opponent_move(target.index)
+      if prediction == AdvancedBattleAI::Prediction::PROTECT && confidence > 0.4
+        score += 15
+        AdvancedBattleAI.log("Feint: bonus vs predicted Protect", :scoring)
+      end
+    end
+
+    # Penalty if target has never shown Protect (check memory)
+    if ai.memory
+      has_shown_protect = false
+      known_moves = ai.memory.get_known_moves(target.index)
+      protect_functions = [
+        "ProtectUser", "ProtectUserFromTargetingMovesSpikyShield",
+        "ProtectUserBanefulBunker", "ProtectUserFromDamagingMovesKingsShield",
+        "ProtectUserFromTargetingMovesSilkTrap", "ProtectUserFromTargetingMovesBurningBulwark"
+      ]
+      known_moves.each do |move_id|
+        move_data = GameData::Move.try_get(move_id)
+        next unless move_data
+        if protect_functions.include?(move_data.function_code)
+          has_shown_protect = true
+          break
+        end
+      end
+
+      unless has_shown_protect
+        score -= 20
+        AdvancedBattleAI.log("Feint: penalty (target never shown Protect)", :scoring)
+      end
+    end
+
+    next score
+  }
+)

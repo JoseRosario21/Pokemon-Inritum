@@ -61,33 +61,12 @@ class Battle::AI
     }
   end
 
-  # Estimate damage from a specific move
+  # Estimate damage from a specific move — delegates to shared utility
   def estimate_damage_to_user(user, attacker, move)
     return 0 unless move && move.damagingMove?
-
-    # Type effectiveness
-    type_mod = Effectiveness.calculate(move.type, *user.types)
-    return 0 if type_mod == 0
-
-    # Base calculation
-    if move.category == 0  # Physical
-      atk = attacker.attack
-      def_stat = user.defense
-    else  # Special
-      atk = attacker.spatk
-      def_stat = user.spdef
-    end
-
-    # Simplified damage formula
-    damage = ((2 * attacker.level / 5.0 + 2) * move.power * atk / def_stat / 50.0 + 2)
-    damage *= type_mod / Effectiveness::NORMAL_EFFECTIVE_MULTIPLIER
-
-    # STAB
-    if attacker.pbHasType?(move.type)
-      damage *= 1.5
-    end
-
-    return damage.to_i
+    move_data = GameData::Move.try_get(move.id)
+    return 0 unless move_data
+    AdvancedBattleAI.estimate_damage_battler(move_data, attacker, user.battler, @battle)
   end
 
   # Calculate sweep potential after setup
@@ -119,29 +98,12 @@ class Battle::AI
     return potential
   end
 
-  # Estimate damage user would deal
+  # Estimate damage user would deal — delegates to shared utility
   def estimate_damage_from_user(user, target, move)
     return 0 unless move && move.damagingMove?
-
-    type_mod = Effectiveness.calculate(move.type, *target.types)
-    return 0 if type_mod == 0
-
-    if move.category == 0
-      atk = user.attack
-      def_stat = target.defense
-    else
-      atk = user.spatk
-      def_stat = target.spdef
-    end
-
-    damage = ((2 * user.level / 5.0 + 2) * move.power * atk / def_stat / 50.0 + 2)
-    damage *= type_mod / Effectiveness::NORMAL_EFFECTIVE_MULTIPLIER
-
-    if user.has_type?(move.type)
-      damage *= 1.5
-    end
-
-    return damage.to_i
+    move_data = GameData::Move.try_get(move.id)
+    return 0 unless move_data
+    AdvancedBattleAI.estimate_damage_battler(move_data, user.battler, target, @battle)
   end
 
   # Get stat multiplier for stage
@@ -176,12 +138,12 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_setup_timing,
     window = ai.calculate_full_setup_window(user, battle)
 
     if window[:safe] && window[:turns] >= 2
-      # Safe setup window
-      score += AdvancedBattleAI::SETUP_WINDOW_BONUS
+      # Safe setup window (reduced from SETUP_WINDOW_BONUS to avoid stacking)
+      score += 15
 
       # Extra bonus for longer windows
       if window[:turns] >= 3
-        score += 10
+        score += 8
       end
 
       # Calculate sweep potential
@@ -327,21 +289,28 @@ Battle::AI::Handlers::MoveEffectScore.add("RaiseUserAtkSpd1",
         score += 15
       end
 
-      # Extra value if Speed boost makes us faster
-      user_speed = user.speed * 1.5  # After DD
-      will_outspeed = true
-      battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
-        opp = battle.battlers[opp_idx]
-        next unless opp && !opp.fainted?
-        if opp.speed >= user_speed
-          will_outspeed = false
-          break
+      # Check Trick Room — Dragon Dance speed boost is counterproductive under TR
+      trick_room_active = (battle.field.effects[PBEffects::TrickRoom] > 0 rescue false)
+      if trick_room_active
+        score -= 20
+        AdvancedBattleAI.log("Dragon Dance: penalty under Trick Room", :scoring)
+      else
+        # Extra value if Speed boost makes us faster
+        user_speed = user.speed * 1.5  # After DD
+        will_outspeed = true
+        battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
+          opp = battle.battlers[opp_idx]
+          next unless opp && !opp.fainted?
+          if opp.speed >= user_speed
+            will_outspeed = false
+            break
+          end
         end
-      end
 
-      if will_outspeed && user.speed < 100  # Slow mon benefits more
-        score += 10
-        AdvancedBattleAI.log("Dragon Dance: Speed tier breakthrough", :scoring)
+        if will_outspeed && user.speed < 100  # Slow mon benefits more
+          score += 10
+          AdvancedBattleAI.log("Dragon Dance: Speed tier breakthrough", :scoring)
+        end
       end
     else
       score -= 10

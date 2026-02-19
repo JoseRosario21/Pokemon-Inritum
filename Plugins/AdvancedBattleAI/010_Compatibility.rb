@@ -144,16 +144,15 @@ if defined?(Battle::Field) || defined?(PBFieldEffects)
 
       # Get current field effect
       field = nil
-      if battle.respond_to?(:field) && battle.field.respond_to?(:effects)
-        field = battle.field.effects[:Field] rescue nil
+      if battle.respond_to?(:field_id)
+        field = battle.field_id rescue nil
       end
-      field ||= $game_screen.field_effect rescue nil
 
-      next score unless field && field != :None && field != 0
+      next score unless field && field != :BASE
 
       # Field-specific scoring adjustments
       case field
-      when :Electric, :ElectricTerrain
+      when :ELECTRIC
         if move.type == :ELECTRIC
           score += 15
           AdvancedBattleAI.log("Electric field boost", :scoring)
@@ -163,7 +162,7 @@ if defined?(Battle::Field) || defined?(PBFieldEffects)
           score += 25
         end
 
-      when :Grassy, :GrassyTerrain
+      when :GRASSY
         if move.type == :GRASS
           score += 15
         end
@@ -173,7 +172,7 @@ if defined?(Battle::Field) || defined?(PBFieldEffects)
           AdvancedBattleAI.log("Grassy Glide priority boost", :scoring)
         end
 
-      when :Psychic, :PsychicTerrain
+      when :PSYCHIC
         if move.type == :PSYCHIC
           score += 15
         end
@@ -182,75 +181,47 @@ if defined?(Battle::Field) || defined?(PBFieldEffects)
           score += 20 if battle.doubleBattle?
         end
 
-      when :Misty, :MistyTerrain
+      when :MISTY
         # Dragon moves weakened
         if move.type == :DRAGON
           score -= 10
         end
 
-      when :Fire, :Volcano
-        if move.type == :FIRE
-          score += 20
-        end
+      when :BEACH
         if move.type == :WATER
-          score -= 10
-        end
-
-      when :Water, :Ocean, :Underwater
-        if move.type == :WATER
-          score += 20
-        end
-        if move.type == :FIRE
-          score -= 15
-        end
-
-      when :Cave, :Rock
-        if move.type == :ROCK
           score += 10
         end
-
-      when :Forest, :Jungle
-        if move.type == :GRASS || move.type == :BUG
-          score += 10
-        end
-
-      when :Desert, :Sand
         if move.type == :GROUND || move.type == :ROCK
           score += 10
         end
 
-      when :Snow, :Ice, :Frozen
-        if move.type == :ICE
-          score += 15
-        end
-        if move.type == :FIRE
-          score -= 5  # Slightly weaker
-        end
-
-      when :Factory, :Steel
-        if move.type == :STEEL || move.type == :ELECTRIC
+      when :FOREST
+        if move.type == :GRASS || move.type == :BUG
           score += 10
         end
 
-      when :Chess, :Chessboard
-        # Chess board has complex rules, basic handling
-        if move.type == :PSYCHIC || move.type == :DARK
+      when :DARKFOREST
+        if move.type == :DARK || move.type == :GHOST
           score += 10
         end
-
-      when :Mirror
-        # Mirror field reflects some moves
-        if move.statusMove?
-          score -= 5  # Status might be reflected
-        end
-
-      when :Rainbow
-        # Rainbow field boosts many types
-        if [:FIRE, :WATER, :GRASS, :ELECTRIC].include?(move.type)
+        if move.type == :GRASS || move.type == :BUG
           score += 5
         end
 
-      when :Fairy, :FairyTale
+      when :CAVE
+        if move.type == :ROCK || move.type == :GROUND
+          score += 10
+        end
+
+      when :CRYSTALCAVE
+        if move.type == :ROCK
+          score += 10
+        end
+        if move.type == :FAIRY
+          score += 10
+        end
+
+      when :FAIRYGROVE
         if move.type == :FAIRY
           score += 15
         end
@@ -258,13 +229,13 @@ if defined?(Battle::Field) || defined?(PBFieldEffects)
           score -= 15
         end
 
-      when :Dragon, :DragonsDen
-        if move.type == :DRAGON
-          score += 15
+      when :URBAN
+        if move.type == :STEEL || move.type == :ELECTRIC
+          score += 10
         end
 
-      when :Dark, :Darkness
-        if move.type == :DARK || move.type == :GHOST
+      when :NORMALIZED
+        if move.type == :NORMAL
           score += 10
         end
       end
@@ -339,6 +310,7 @@ class Battle::AI
     should_mega = advanced_ai_mega_pbEnemyShouldMegaEvolve? if respond_to?(:advanced_ai_mega_pbEnemyShouldMegaEvolve?)
 
     return should_mega unless AdvancedBattleAI.feature_enabled?(:roles, @trainer)
+    return should_mega unless @user
 
     user_ai = @battlers[@user.index]
     return should_mega unless user_ai
@@ -366,14 +338,5 @@ class Battle::AI
 end
 
 #===============================================================================
-# MQS (Modern Quest System) Integration
-# No battle impact, but log for confirmation
-#===============================================================================
-if defined?(Quest)
-  AdvancedBattleAI.log("MQS plugin detected (no battle integration needed)", :general)
-end
-
-#===============================================================================
 # Compatibility Check on Load
 #===============================================================================
-AdvancedBattleAI.log("Compatibility layer loaded successfully", :general)
