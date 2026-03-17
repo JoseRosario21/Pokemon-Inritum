@@ -45,8 +45,11 @@ class Battle::Field
     :NORMALIZED => [[13],
                 %w[],
                 %i[]],
-    :DARKFOREST => [[15,20,21,22,23,25],
+    :DARKFOREST => [[15,20,21,22,25],
                 %w[],
+                %i[]],
+    :ZAPPFEFALLS => [[23],
+                %w[Howard],
                 %i[]],
     :FAIRYGROVE => [[27],
                 %w[],
@@ -245,5 +248,9 @@ class Battle::Field
 
   def is_crystalcave?
     @id == :CRYSTALCAVE
+  end
+
+  def is_zappfefalls?
+    @id == :ZAPPFEFALLS
   end
 end

@@ -312,6 +312,44 @@ Effect = heal_boost|HEALINGWISH
 StatusImmunity = ALL|grounded
 
 #-------------------------------
+# ZAPFFE FALLS FIELD
+# Roaring waterfall - mist weakens Fire and Rock, boosts Water and Bug moves
+#-------------------------------
+[ZAPPFEFALLS]
+Name = Zapffe Falls Field
+Category = Natural
+Tags = Outdoor,Natural,Coastal
+Fieldback = DarkForest
+NaturePower = WATERFALL
+SecretPower = 4
+Duration = -1
+Announcement = The roar of the falls fills the air!|Mist from the falls hangs over the battlefield!|The waterfall's mist faded...
+# Fire is dampened by the constant mist
+TypeMultiplier = FIRE|final_damage|0.7|The mist from the falls smothers the flames!
+# Rock is weakened - boulders eroded and slick from the rushing water
+TypeMultiplier = ROCK|final_damage|0.7|The rushing water erodes the impact!
+# Waterfall is the signature move of this location
+MoveMultiplier = WATERFALL|1.5|The falls surge with incredible power!
+# Water moves boosted by the rushing current
+MoveMultiplier = SURF|1.2|The rushing current strengthens the wave!
+MoveMultiplier = HYDROPUMP|1.2|The torrent gains power from the falls!
+MoveMultiplier = LIQUIDATION|1.2|The falls amplify the crash!
+MoveMultiplier = WAVECRASH|1.2|The falls surge with power!
+MoveMultiplier = AQUATAIL|1.2|The current whips harder!
+MoveMultiplier = WHIRLPOOL|1.3|The falls create a powerful whirlpool!
+# Bug moves boosted - bugs thrive near waterfalls
+MoveMultiplier = BUGBUZZ|1.2|The sound resonates through the falls!
+MoveMultiplier = LEECHLIFE|1.2|The mist nourishes the attack!
+MoveMultiplier = BUGBITE|1.2|The waterside bugs grow fierce!
+MoveMultiplier = XSCISSOR|1.2|The waterside bugs grow fierce!
+MoveMultiplier = UTURN|1.2|The waterside bugs dart away!
+MoveMultiplier = SKITTERSMACK|1.2|The waterside bugs grow fierce!
+MoveMultiplier = INFESTATION|1.2|The waterside bugs swarm relentlessly!
+# Effects
+Effect = binding_boost|WHIRLPOOL
+Effect = heal_boost|AQUARING
+
+#-------------------------------
 # CRYSTAL CAVE FIELD
 # Crystalline cave with prismatic light effects
 #-------------------------------
