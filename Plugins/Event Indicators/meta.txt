@@ -1,0 +1,4 @@
+Name = Event Indicators
+Version = 2.3
+Essentials = 20.1,21.1
+Credits = wrigty12, Luka S.J.
