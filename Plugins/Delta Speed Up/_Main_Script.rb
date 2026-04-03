@@ -16,7 +16,7 @@ $RefreshEventsForTurbo = false
 #===============================================================================#
 module Game
   class << self
-    alias_method :original_load, :load unless method_defined?(:original_load)
+    alias_method :original_load, :load unless Game.respond_to?(:original_load)
   end
 
   def self.load(save_data)
@@ -45,7 +45,7 @@ end
 #===============================================================================#
 module System
   class << self
-    alias_method :unscaled_uptime, :uptime unless method_defined?(:unscaled_uptime)
+    alias_method :unscaled_uptime, :uptime unless System.respond_to?(:unscaled_uptime)
   end
 
   def self.uptime
