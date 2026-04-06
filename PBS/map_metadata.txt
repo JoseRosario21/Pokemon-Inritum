@@ -13,7 +13,7 @@ Outdoor = true
 MapPosition = 0,2,12
 BattleBack = field
 #-------------------------------
-[004]   # Stuot City
+[004]   # Stuot
 Name = Stuot City
 Outdoor = true
 ShowArea = true
@@ -38,7 +38,7 @@ Outdoor = true
 MapPosition = 0,2,12
 BattleBack = field
 #-------------------------------
-[008]   # Ostern Town
+[008]   # Ostern
 Name = Ostern Town
 MapPosition = 0,10,14
 BattleBack = field
@@ -56,7 +56,7 @@ Flags = PowerSpot
 Name = Fisherman's Hut
 MapPosition = 0,7,14
 #-------------------------------
-[012]   # Route1
+[012]   # Route 1
 Name = Route1
 Outdoor = true
 ShowArea = true
@@ -89,7 +89,7 @@ MapPosition = 0,3,15
 Name = Ostern Hotel Restaurant
 MapPosition = 0,10,14
 #-------------------------------
-[018]   # Interiors - Ostern
+[018]   # Interiors
 Name = Interiors - Ostern
 MapPosition = 0,10,14
 #-------------------------------
@@ -137,7 +137,7 @@ MapPosition = 0,7,17
 Name = Stuot Lab
 MapPosition = 0,3,15
 #-------------------------------
-[031]   # TrainStation
+[031]   # Train Station
 Name = TrainStation
 MapPosition = 0,3,15
 #-------------------------------
@@ -150,6 +150,10 @@ Name = Lumoria Docks
 Outdoor = true
 ShowArea = true
 MapPosition = 0,7,17
+#-------------------------------
+[037]   # TEST
+SnapEdges = true
+Flags = PowerSpot
 #-------------------------------
 [038]   # Interiors
 Name = Interiors

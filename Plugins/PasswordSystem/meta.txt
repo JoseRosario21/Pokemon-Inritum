@@ -1,0 +1,3 @@
+Name = Password System
+Version = 1.0.0
+Credits = Pokémon Inritum Team

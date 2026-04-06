@@ -1,0 +1,56 @@
+===Change Log===
+2.3 
+- New Feature: Pause Arrows. To help indicate that an NPC has something more to say, you can now add "pause arrows" to the end of a text bubble indicator, similar to normal text boxes. There are two ways to add these:
+-- Add :text_show_pause_indicator to the indicator definition to make the arrow appear to all uses of an indicator.
+-- Add "\t" to the end of the text used in any text bubble indicator.
+- Fixed translation issue where having any event indicators on a map cleared out all other strings for that map.
+
+2.2 
+- New feature: Some Text Modification Support. Text bubbles now support some text modification commands:
+-- \PN pulls in the player's name.
+-- \PM pulls in the player's current money.
+-- \v[x] pulls in the value of variable x.
+-- \n will force a line break.
+-- \sc[code] will execute what you have set in the [] as a script call, and replace this with the result of that script. For example, for text "Potions: \sc[$bag.quantity(:POTION)]", it would appear as "Potions: 99".
+- New feature: Individual Text Bubble Width. You can now set a specific max width for a text bubble indicator using :text_max_width.
+- New feature: Text Bubble Position Settings. Added a few settings to allow more x and y position control of all text bubble indicators.
+- Reworked Text Bubble Flair. Now, you can have different flair at each position. The :text_bubble_flair_position parameter is no longer used. Instead, you define the graphic and position in a hash, which can be assigned to the :text_bubble_flair parameter.
+- Fixed text color on dark bubbles for single line text.
+- Fixed the text bubble not fully appearing if the text was a single character.
+
+2.1
+- Fixed text bubble indicators not supporting translation. Now, when you compile, it should pull text from the Comments for translation.
+- Fixed an issue that resulted in orphaned event indicators hanging out offscreen.
+
+2.0
+- New feature: Text Bubble Indicators. You can now define indicators to be small text bubbles that float above an event. If you set the :text parameter to a indicator definition, and add the text you want to show in the third line of the Comment command in the event page, that text will appear.
+- New feature: Text Bubble Flair. With the new text bubble indicators, you can add a 28x graphic to the bubble to provide more information (for example, adding the usual quest indicator graphic so you can show both text and tell the player it's related to a quest).
+- New feature: More Hiding Control. You can now make indicators disappear if the player is too far away or too close to the event (using :min_distance and :max_distance, respectfully). You can also make indicators disappear if the player is or isn't facing the event (using :must_look_away and :must_face, respectfully).
+
+1.3
+- New feature: Conditions. By adding :condition and setting it to a proc, you can make an indicator only appear under certain conditions. For example, if you want an indicator for an NPC to only appear after game_switch 5 is true, but you don't want to include a whole new page for the event (maybe you're using a Conditional Branch, instead), you can do that using :condition.
+
+1.2.3
+- Fixed where the same indicator would get added again if the even was visible when changing maps.
+
+1.2.2
+- Fixed animation and movement handling if an event was constantly refreshed (like if it has a s:cooledDown? page condition on any of its pages).
+
+1.2.1
+- Fixed a crash that would occur if a scene didn't have a spriteset defined.
+
+1.2
+- New feature: Vertical movement. You can now set indicators to bob up and down instead of always being static. You can define different movement speeds per indicator using :movement_speed, and you can make some indicators not have movement using :no_movement. This is off by default, you can turn it on with the EVENT_INDICATOR_VERTICAL_MOVEMENT setting.
+- New feature: Animated indicators. You can set indicators to animate by having its graphic have multiple horizontal frames, and defining the number of frames using :animation_frames. You can also define different animation speeds per indicator using :animation_speed.
+- New feature: Options Menu Options. You can make it so options appear in the options menu to hide all indicators, and to turn off indicator movement.
+
+1.1.1
+- IMPORTANT: I've split out Settings from the 001_Script file. They are now in their own 000_Settings file. Please add all of your settings in that file, instead.
+- Made a change that will hopefully prevent a nil.id crash.
+
+1.1 
+- Reworked how you add x and y adjustments in the Comment command. Instructions have been updated in 001_Script.
+- New feature: X and y adjustments for definitions. Added x_adjustment and y_adjustment as optional parameters for EVENT_INDICATORS definitions. As a result, there are now 3 ways you can adjust the x and y positions of indicators: globally, per definition, and per event.
+
+1.0 
+- Initial Release

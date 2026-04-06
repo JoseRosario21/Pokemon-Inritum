@@ -309,6 +309,7 @@ class Battle::AI
         new_choice = -1
         party.each_with_index do |pkmn, i|
           next if !pkmn || !pkmn.able? || @battle.pbFindBattler(i, @idxBattler)
+          next if !@battle.pbIsOwner?(@idxBattler, i)
           new_choice = i
           break
         end

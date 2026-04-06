@@ -12,6 +12,7 @@ class Battle::Scene
   def pbGetFinalModifiers(battler, move, type, baseDmg, power, acc, pri, chance, showTera)
     # Store field info for use in pbUpdateMoveInfoWindow
     @field_move_info = nil
+    @field_bonus = nil
     # Call original
     bonus, power, acc, pri, chance = pbGetFinalModifiers_without_field(
       battler, move, type, baseDmg, power, acc, pri, chance, showTera)
@@ -25,12 +26,15 @@ class Battle::Scene
     # Power multiplier from field
     if power > 0 && field_power_mult != 1.0
       power *= field_power_mult
+      field_msg = if field_power_mult > 1.0
+        [_INTL("Power boosted by the {1}.", field_name), BASE_RAISED, SHADOW_RAISED]
+      else
+        [_INTL("Power weakened by the {1}.", field_name), BASE_LOWERED, SHADOW_LOWERED]
+      end
       if bonus.nil?
-        if field_power_mult > 1.0
-          bonus = [_INTL("Power boosted by the {1}.", field_name), BASE_RAISED, SHADOW_RAISED]
-        else
-          bonus = [_INTL("Power weakened by the {1}.", field_name), BASE_LOWERED, SHADOW_LOWERED]
-        end
+        bonus = field_msg
+      else
+        @field_bonus = field_msg
       end
     end
     # Check for type change (if move type differs from base)
@@ -48,8 +52,11 @@ class Battle::Scene
       end
       if type_changed_by_field
         info[:type_changed] = true
+        field_msg = [_INTL("Type changed by the {1}.", field_name), BASE_RAISED, SHADOW_RAISED]
         if bonus.nil?
-          bonus = [_INTL("Type changed by the {1}.", field_name), BASE_RAISED, SHADOW_RAISED]
+          bonus = field_msg
+        elsif @field_bonus.nil?
+          @field_bonus = field_msg
         end
       end
     end
@@ -63,8 +70,11 @@ class Battle::Scene
             if new_acc != acc
               acc = new_acc
               info[:acc_changed] = true
+              field_msg = [_INTL("Accuracy modified by the {1}.", field_name), BASE_RAISED, SHADOW_RAISED]
               if bonus.nil?
-                bonus = [_INTL("Accuracy modified by the {1}.", field_name), BASE_RAISED, SHADOW_RAISED]
+                bonus = field_msg
+              elsif @field_bonus.nil?
+                @field_bonus = field_msg
               end
             end
           end
@@ -73,8 +83,11 @@ class Battle::Scene
           if moves.include?(move.id)
             acc = 0  # "---" means it always hits
             info[:acc_changed] = true
+            field_msg = [_INTL("Always hits on the {1}.", field_name), BASE_RAISED, SHADOW_RAISED]
             if bonus.nil?
-              bonus = [_INTL("Always hits on the {1}.", field_name), BASE_RAISED, SHADOW_RAISED]
+              bonus = field_msg
+            elsif @field_bonus.nil?
+              @field_bonus = field_msg
             end
           end
         end
@@ -87,8 +100,11 @@ class Battle::Scene
         moves = effect[:args].map { |m| m.to_sym }
         if moves.include?(move.id)
           chance = [chance * 2, 100].min
+          field_msg = [_INTL("Effect chance boosted by the {1}.", field_name), BASE_RAISED, SHADOW_RAISED]
           if bonus.nil?
-            bonus = [_INTL("Effect chance boosted by the {1}.", field_name), BASE_RAISED, SHADOW_RAISED]
+            bonus = field_msg
+          elsif @field_bonus.nil?
+            @field_bonus = field_msg
           end
           break
         end
@@ -110,6 +126,13 @@ class Battle::Scene
     return unless @battle.has_field?
     xpos = 0
     ypos = 78
+    # Draw secondary field bonus text below the primary bonus line
+    if @field_bonus
+      textPos = [
+        [@field_bonus[0], xpos + 8, ypos + 148, :left, @field_bonus[1], @field_bonus[2], :outline]
+      ]
+      pbDrawTextPositions(@enhancedUIOverlay, textPos)
+    end
     move = battler.moves[cw.index].clone
     if specialAction == :zmove && cw.mode == 2
       move = move.convert_zmove(battler, @battle, cw.index, false)

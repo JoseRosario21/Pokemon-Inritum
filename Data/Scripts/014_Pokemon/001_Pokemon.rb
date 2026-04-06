@@ -423,10 +423,15 @@ class Pokemon
 
   # The index of this Pokémon's ability (0, 1 are natural abilities, 2+ are
   # hidden abilities) as defined for its species/form. An ability may not be
-  # defined at this index. Is recalculated (as 0 or 1) if made nil.
+  # defined at this index. Is recalculated from the full ability pool (including
+  # hidden abilities) if made nil, giving each ability an equal chance.
   # @return [Integer] the index of this Pokémon's ability
   def ability_index
-    @ability_index = (@personalID & 1) if !@ability_index
+    if !@ability_index
+      sp_data = species_data
+      total = sp_data.abilities.length + sp_data.hidden_abilities.length
+      @ability_index = total > 0 ? (@personalID % total) : 0
+    end
     return @ability_index
   end
 

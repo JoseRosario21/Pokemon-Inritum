@@ -1,0 +1,4 @@
+Name = Quest Map Markers
+Version = 1.0.0
+Essentials = 21.1
+Requires = Modern Quest System + UI
