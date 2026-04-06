@@ -77,7 +77,7 @@ class Battle::Battler
   #-----------------------------------------------------------------------------
   alias stolen_pbConsumeItem pbConsumeItem
   def pbConsumeItem(recoverable = true, symbiosis = true, belch = true)
-    if Settings::RESTORE_ITEMS_AFTER_BATTLE && @battle.wildBattle?
+    if Settings::RESTORE_ITEMS_AFTER_BATTLE
       if @item_id && GameData::Item.get(@item_id).is_berry?
         # Clears user's initial item if initial hold item is a berry.
         if self.initialItem == @item_id

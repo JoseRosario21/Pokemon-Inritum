@@ -77,6 +77,7 @@ Pokemon = ZUBAT,11
 LoseText = ...
 Pokemon = POPPLIO,14
 Pokemon = DUCKLETT,11
+Pokemon = WOOPER,10
 #-------------------------------
 [CRUSHGIRL,Jenny]
 LoseText = I will keep on fighting!
@@ -118,7 +119,9 @@ Pokemon = BELDUM,15
 [RIVAL1,Meryl,2]
 LoseText = ...
 Pokemon = BRIONNE,17
-Pokemon = DUCKLETT,13
+Pokemon = DUCKLETT,14
+Pokemon = WOOPER,14
+Pokemon = BINACLE,14
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,1]
 LoseText = Don't think you are so strong now.
