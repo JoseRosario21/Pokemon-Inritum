@@ -4,10 +4,10 @@
 # Place an NPC in any map (Pokémon Centers recommended) and call this from
 # their Script event page:
 #
-#   DifficultySystem.offer_story_mode_switch
+#   pbStorySwitch
 #
 # The NPC's second event page should use the condition:
-#   Script: pbStoryMode?
+#   Switch 97 = ON
 # so their dialogue changes after the switch has been made.
 #===============================================================================
 module DifficultySystem
@@ -20,8 +20,8 @@ module DifficultySystem
     end
 
     pbMessage(
-      _INTL("Story Mode makes battles easier: trainers use weaker strategies," \
-            " their Pokémon have lower stats, and Gym Leaders bring one fewer Pokémon.\\1")
+      _INTL("Story Mode makes battles easier: trainers use simpler strategies" \
+            " and their Pokémon have lower stats throughout.\\1")
     )
     pbMessage(_INTL("\\1Warning: this cannot be undone. You cannot switch back to Classic Mode.\\1"))
 
@@ -31,7 +31,13 @@ module DifficultySystem
     end
 
     pbDifficulty.mode = :story
+    $game_switches[97] = true
     pbMessage(_INTL("Difficulty switched to Story Mode.\\nEnjoy the adventure!"))
     return true
   end
+end
+
+# Short alias for use in RPG Maker XP script call boxes.
+def pbStorySwitch
+  DifficultySystem.offer_story_mode_switch
 end

@@ -73,12 +73,6 @@ LoseText = Tough match!
 Pokemon = ROGGENROLA,9
 Pokemon = ZUBAT,11
 #-------------------------------
-[RIVAL1,Meryl,1]
-LoseText = ...
-Pokemon = POPPLIO,14
-Pokemon = DUCKLETT,11
-Pokemon = WOOPER,10
-#-------------------------------
 [CRUSHGIRL,Jenny]
 LoseText = I will keep on fighting!
 Pokemon = MACHOP,10
@@ -116,13 +110,6 @@ Pokemon = BELDUM,15
     Shiny = true
     Ball = HEAVYBALL
 #-------------------------------
-[RIVAL1,Meryl,2]
-LoseText = ...
-Pokemon = BRIONNE,17
-Pokemon = DUCKLETT,14
-Pokemon = WOOPER,14
-Pokemon = BINACLE,14
-#-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,1]
 LoseText = Don't think you are so strong now.
 Pokemon = BRONZOR,12
@@ -139,16 +126,13 @@ Pokemon = MEOWSTIC,13
     Moves = REFLECT,LIGHTSCREEN,PSYBEAM,MAGICALLEAF
     AbilityIndex = 2
     Item = LIGHTCLAY
-    IV = 10,10,10,10,10,10
 Pokemon = MRMIME,13
     Moves = PSYBEAM,DAZZLINGGLEAM,CHARGEBEAM,ICYWIND
     AbilityIndex = 2
-    IV = 10,10,10,10,10,10
 Pokemon = SOLROCK,15
     Moves = ROCKPOLISH,ROCKSLIDE,ZENHEADBUTT
     AbilityIndex = 0
     Item = BABIRIBERRY
-    IV = 10,10,10,10,10,10
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,4]
 LoseText = This win changes nothing.
@@ -156,18 +140,15 @@ Pokemon = QWILFISH,13
     Form = 1
     Moves = SPIKES,TOXICSPIKES,BITE,POISONTAIL
     AbilityIndex = 2
-    IV = 10,10,10,10,10,10
 Pokemon = MEOWSTIC,13
     Form = 1
     Moves = FAKEOUT,CALMMIND,PSYBEAM,ECHOEDVOICE
     AbilityIndex = 2
     Gender = female
-    IV = 10,10,10,10,10,10
 Pokemon = LUNATONE,15
     Moves = PSYWAVE,COSMICPOWER,ICYWIND
     AbilityIndex = 0
     Item = RINDOBERRY
-    IV = 10,10,10,10,10,10
 #-------------------------------
 [TEAM_REBIRTH_ELITE_GRUNT_M,Grunt]
 Items = ZRING
@@ -210,15 +191,6 @@ Pokemon = ZUBAT,8
 Pokemon = EKANS,10
 Pokemon = CACNEA,11
 Pokemon = SCRAGGY,12
-#-------------------------------
-[POKEMONBREEDER,Trish]
-LoseText = Did you level up?
-Pokemon = AUDINO,14
-    Moves = POUND
-Pokemon = AUDINO,14
-    Moves = POUND
-Pokemon = AUDINO,14
-    Moves = POUND
 #-------------------------------
 [RIVAL1,Meryl,3]
 LoseText = ...
@@ -363,217 +335,138 @@ Pokemon = LITLEO,18
     Moves = WILLOWISP,ENDEAVOR,SNARL,FIRESPIN
     AbilityIndex = 1
     Nature = TIMID
-    IV = 10,10,10,10,10,10
-    EV = 10,10,10,10,10,10
 Pokemon = PIDGEOTTO,18
     Moves = AERIALACE,QUICKATTACK,FEATHERDANCE,TAILWIND
     AbilityIndex = 0
     Item = CHARTIBERRY
     Nature = JOLLY
-    IV = 10,10,10,10,10,10
-    EV = 10,10,10,10,10,10
 Pokemon = BIBAREL,18
     Moves = WATERPULSE,YAWN,MUDSLAP,SWIFT
     AbilityIndex = 1
     Item = CHOPLEBERRY
     Nature = NAIVE
-    IV = 10,10,10,10,10,10
-    EV = 10,10,10,10,10,10
 Pokemon = STUFFUL,18
     Moves = FORCEPALM,BABYDOLLEYES,STOMP,BRUTALSWING
     AbilityIndex = 0
     Item = BERRYJUICE
     Nature = IMPISH
-    IV = 10,10,10,10,10,10
-    EV = 10,10,10,10,10,10
 Pokemon = STANTLER,18
     Moves = BODYSLAM,PSYSHIELDBASH,TRAILBLAZE,HYPNOSIS
     AbilityIndex = 0
     Nature = JOLLY
-    IV = 10,10,10,10,10,10
-    EV = 10,10,10,10,10,10
 Pokemon = ZANGOOSE,18
     Moves = PROTECT,FACADE,QUICKATTACK,AERIALACE
     Zeta = true
     AbilityIndex = 2
     Nature = JOLLY
-    IV = 10,10,10,10,10,10
-    EV = 10,10,10,10,10,10
 #-------------------------------
 [MERCENARY,Will]
 LoseText = Is this Toxel really a Zeta?!
 Pokemon = JOLTIK,18
     Moves = ELECTROWEB,THUNDERWAVE,BUGBITE
     AbilityIndex = 0
-    IV = 20,20,20,20,20,20
-    EV = 20,20,20,20,20,20
 Pokemon = VOLTORB,18
     Moves = CHARGEBEAM,SWIFT,STUNSPORE,TAUNT
     Form = 1
     AbilityIndex = 2
-    IV = 20,20,20,20,20,20
-    EV = 20,20,20,20,20,20
 Pokemon = WATTREL,19
     Moves = SPARK,PLUCK,QUICKATTACK,UPROAR
     AbilityIndex = 2
-    IV = 20,20,20,20,20,20
-    EV = 20,20,20,20,20,20
 Pokemon = LUXIO,20
     Moves = ICEFANG,BITE,SPARK,ROAR
     AbilityIndex = 2
-    IV = 20,20,20,20,20,20
-    EV = 20,20,20,20,20,20
 Pokemon = MORPEKO,20
     Moves = RAPIDSPIN,POWERTRIP,THUNDERFANG,FAKEOUT
     AbilityIndex = 0
-    IV = 20,20,20,20,20,20
-    EV = 20,20,20,20,20,20
 Pokemon = TOXEL,23
     Zeta = true
     Moves = NUZZLE,ACID,BELCH,TEARFULLOOK
     AbilityIndex = 0
-    IV = 20,20,20,20,20,20
-    EV = 20,20,20,20,20,20
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,5]
 LoseText = You had to resist didn't you...
 Pokemon = MURKROW,19
     Moves = CONFUSERAY,WINGATTACK,THIEF
     AbilityIndex = 2
-    IV = 0,15,0,15,0,0
-    EV = 0,126,0,126,0,0
 Pokemon = DROWZEE,19
     Moves = HYPNOSIS,CONFUSION,DISABLE
     AbilityIndex = 0
-    IV = 0,0,0,15,15,0
-    EV = 126,0,0,0,0,126
 Pokemon = GASTLY,20
     Moves = NIGHTSHADE,HYPNOSIS,MEANLOOK,CURSE
-    IV = 0,0,0,15,15,0
-    EV = 0,0,0,126,126,0
-#-------------------------------
-[GYM_LEADER_HOWARD,Howard]
-LoseText = ...
-Pokemon = WHIRLIPEDE,23
-    Moves = BUGBITE,POISONJAB,BITE
-    Ability = POISONPOINT
-    Item = BLACKSLUDGE
-    Nature = JOLLY
-    IV = 20,20,20,20,20,20
-    EV = 24,24,24,24,24,24
-Pokemon = RIBOMBEE,25
-    Moves = DRAININGKISS,BUGBUZZ,CHARM,STUNSPORE
-    AbilityIndex = 1
-    Nature = MODEST
-    IV = 20,0,20,20,20,20
-    EV = 24,0,24,24,24,24
-Pokemon = KLEAVOR,25
-    Moves = ROCKTOMB,FURYCUTTER,QUICKATTACK,AERIALACE
-    Zeta = true
-    Ability = SHARPNESS
-    Item = LUMBERRY
-    Nature = JOLLY
-    IV = 20,20,20,20,20,20
-    EV = 28,28,28,28,28,28
 #-------------------------------
 [INQUISITOR,Code M]
 LoseText = Your mind is too weak to resist...
 Pokemon = KADABRA,24
     Moves = PSYBEAM,SHADOWBALL,CALMMIND,THUNDERWAVE
     AbilityIndex = 0
-    IV = 20,20,20,20,20,20
-    EV = 40,40,40,40,40,40
 Pokemon = METANG,25
     Form = 1
     Moves = FLASHCANNON,CHARGEBEAM,VOLTSWITCH,BULLETPUNCH
     AbilityIndex = 2
     Zeta = true
-    IV = 20,20,20,20,20,20
-    EV = 40,40,40,40,40,40
 Pokemon = SNEASEL,24
     Moves = ICESHARD,KNOCKOFF,FAKEOUT,ICEPUNCH
     AbilityIndex = 0
-    IV = 20,20,20,20,20,20
-    EV = 40,40,40,40,40,40
 Pokemon = PAWNIARD,25
     Moves = IRONHEAD,ASSURANCE,SUCKERPUNCH,SWORDSDANCE
     AbilityIndex = 0
-    IV = 20,20,20,20,20,20
-    EV = 40,40,40,40,40,40
 Pokemon = ABSOL,25
     Moves = NIGHTSLASH,PLAYROUGH,SLASH,FOCUSENERGY
     AbilityIndex = 0
     Item = SITRUSBERRY
     IV = 25,25,25,25,25,25
-    EV = 40,40,40,40,40,40
 #-------------------------------
 [POKEGANG,Durant]
 LoseText = ...
 Pokemon = DURANT,23
     Moves = BUGBITE,BITE,METALCLAW,SANDATTACK
     AbilityIndex = 0
-    IV = 20,20,20,20,20,20
-    EV = 0,126,0,126,0,0
 Pokemon = DURANT,23
     Moves = BUGBITE,BITE,METALCLAW,SANDATTACK
     AbilityIndex = 0
-    IV = 20,20,20,20,20,20
-    EV = 0,126,0,126,0,0
 Pokemon = DURANT,24
     Zeta = true
     AbilityIndex = 0
     Moves = BUGBITE,BITE,METALCLAW,SANDATTACK
-    IV = 20,20,20,20,20,20
-    EV = 0,126,0,126,0,0
 #-------------------------------
 [BUGCATCHER,Marcus]
 LoseText = The bugs of this forest are something else...
 Pokemon = PINECO,22
     Ability = STURDY
-    IV = 15,15,15,15,15,15
     Moves = BUGBITE,ROLLOUT,TAKEDOWN,RAPIDSPIN
 Pokemon = PARAS,22
     Ability = EFFECTSPORE
-    IV = 15,15,15,15,15,15
     Moves = FURYCUTTER,ABSORB,SPORE,POISONPOWDER
 Pokemon = SPEWPA,22
     Ability = SHEDSKIN
-    IV = 15,15,15,15,15,15
     Moves = TACKLE,STRINGSHOT,STRUGGLEBUG,STUNSPORE
 Pokemon = MOTHIM,23
     Ability = TINTEDLENS
-    IV = 15,15,15,15,15,15
     Moves = BUGBITE,GUST,CONFUSION,STRINGSHOT
 #-------------------------------
 [BLACKBELT,Takeshi]
 LoseText = Your fighting spirit is strong!
 Pokemon = TIMBURR,22
     Ability = GUTS
-    IV = 15,15,15,15,15,15
     Moves = LOWKICK,ROCKTOMB,BULKUP,FOCUSENERGY
 Pokemon = FARFETCHD,22
     Form = 1
     Ability = STEADFAST
-    IV = 15,15,15,15,15,15
     Moves = ROCKSMASH,AERIALACE,KNOCKOFF,DETECT
 Pokemon = PAWMO,23
     Ability = VOLTABSORB
-    IV = 15,15,15,15,15,15
     Moves = ARMTHRUST,SPARK,DIG,QUICKATTACK
 #-------------------------------
 [PSYCHIC_M,Vincent]
 LoseText = I didn't foresee this outcome...
 Pokemon = ESPURR,22
     Ability = KEENEYE
-    IV = 15,0,15,15,15,15
     Moves = PSYBEAM,DISARMINGVOICE,SWIFT,FAKETEARS
 Pokemon = MIMEJR,22
     Ability = SOUNDPROOF
-    IV = 15,0,15,15,15,15
     Moves = CONFUSION,CONFUSERAY,INFESTATION,CHARM
 Pokemon = HATTREM,23
     Ability = HEALER
-    IV = 15,15,15,15,15,15
     Moves = PSYBEAM,DISARMINGVOICE,BRUTALSWING,PLAYNICE
 #-------------------------------
 [CHANNELER,Morticia]
@@ -581,15 +474,12 @@ LoseText = The spirits were not in my favor today...
 Pokemon = PUMPKABOO,22
     Form = 2
     Ability = PICKUP
-    IV = 15,15,15,15,15,15
     Moves = SHADOWSNEAK,BULLETSEED,CONFUSERAY,LEECHSEED
 Pokemon = SINISTEA,22
     Ability = WEAKARMOR
-    IV = 15,0,15,15,15,15
     Moves = HEX,MEGADRAIN,WITHDRAW,AROMATICMIST
 Pokemon = SHUPPET,23
     Ability = INSOMNIA
-    IV = 15,15,15,15,15,15
     Moves = SHADOWSNEAK,HEX,WILLOWISP,SPITE
 Pokemon = GREAVARD,23
     Ability = PICKUP
@@ -600,111 +490,84 @@ Pokemon = GREAVARD,23
 LoseText = Guess the fish weren't biting today!
 Pokemon = ARROKUDA,22
     Ability = SWIFTSWIM
-    IV = 15,15,15,15,15,15
     Moves = AQUAJET,BITE,PECK,AGILITY
 Pokemon = POLIWAG,22
     Ability = WATERABSORB
-    IV = 15,0,15,15,15,15
     Moves = BUBBLEBEAM,MUDSHOT,HYPNOSIS,POUND
 Pokemon = BARBOACH,22
     Ability = OBLIVIOUS
-    IV = 15,0,15,15,15,15
     Moves = WATERPULSE,MUDSHOT,AMNESIA,REST
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,6]
 LoseText = You'll regret crossing us...
 Pokemon = MAGBY,25
     Ability = FLAMEBODY
-    IV = 15,15,15,15,15,15
     Moves = FLAMEBURST,FEINTATTACK,CONFUSERAY,SMOKESCREEN
 Pokemon = QWILFISH,25
     Form = 1
     Ability = INTIMIDATE
-    IV = 15,15,15,15,15,15
     Moves = BITE,BUBBLEBEAM,POISONTAIL,HARDEN
 Pokemon = NACLSTACK,25
     Ability = PURIFYINGSALT
-    IV = 15,15,15,15,15,15
     Moves = SMACKDOWN,HEADBUTT,MUDSHOT,HARDEN
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,7]
 LoseText = This isn't the end...
 Pokemon = GIRAFARIG,25
     Ability = INNERFOCUS
-    IV = 15,15,15,15,15,15
     Moves = PSYBEAM,SWIFT,DOUBLEKICK,GROWL
 Pokemon = GOLBAT,25
     Ability = INNERFOCUS
-    IV = 15,15,15,15,15,15
     Moves = WINGATTACK,POISONFANG,BITE,CONFUSERAY
 Pokemon = DRIZZILE,25
     Ability = TORRENT
-    IV = 15,15,15,15,15,15
     Moves = WATERPULSE,TEARFULLOOK,SUCKERPUNCH,AQUAJET
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,8]
 LoseText = Our cause will prevail regardless!
 Pokemon = MISDREAVUS,25
     Ability = LEVITATE
-    IV = 15,0,15,15,15,15
     Moves = HEX,CONFUSERAY,CONFUSION
 Pokemon = TORRACAT,25
     Ability = INTIMIDATE
-    IV = 15,15,15,15,15,15
     Moves = FIREFANG,BITE,DOUBLEKICK,FURYSWIPES
 Pokemon = SABLEYE,25
     Ability = KEENEYE
-    IV = 15,15,15,15,15,15
     Moves = SHADOWCLAW,SHADOWSNEAK,FEINTATTACK,DETECT
 Pokemon = MANKEY,25
     Ability = VITALSPIRIT
-    IV = 15,15,15,15,15,15
     Moves = ROCKSMASH,FOCUSENERGY,ROCKTOMB,LOWKICK
-    AbilityIndex = 0
-    IV = 10,10,10,10,10,10
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,9]
 LoseText = The shadows will consume you eventually...
 Pokemon = STUNKY,25
     Ability = STENCH
-    IV = 15,15,15,15,15,15
     Moves = BITE,POISONTAIL,FURYSWIPES,FOCUSENERGY
 Pokemon = MRMIME,25
     Form = 1
     Ability = VITALSPIRIT
-    IV = 15,15,15,15,15,15
     Moves = CONFUSION,HYPNOSIS,ICYWIND,ICESHARD
 Pokemon = NOCTOWL,25
     Ability = TINTEDLENS
-    IV = 15,0,15,15,15,15
     Moves = AIRSLASH,ECHOEDVOICE,EXTRASENSORY,GROWL
 Pokemon = MORGREM,25
     Ability = PRANKSTER
-    IV = 15,15,15,15,15,15
     Moves = FAKEOUT,ASSURANCE,CONFIDE,TORMENT
-    AbilityIndex = 0
-    IV = 10,10,10,10,10,10
 #-------------------------------
 [TEAM_REBIRTH_GRUNT_M,Grunt,10]
 LoseText = You haven't seen the last of us...
 Pokemon = HOUNDOUR,25
     Ability = UNNERVE
-    IV = 15,15,15,15,15,15
     Moves = BITE,INCINERATE,SMOG,LEER
 Pokemon = NIDORINA,25
     Ability = POISONPOINT
-    IV = 15,15,15,15,15,15
     Moves = POISONTAIL,BITE,DOUBLEKICK,TOXICSPIKES
 Pokemon = LUXIO,25
     Ability = INTIMIDATE
-    IV = 15,15,15,15,15,15
     Moves = SPARK,BITE,CHARGE,ROAR
 Pokemon = SHIINOTIC,25
     Ability = EFFECTSPORE
-    IV = 15,0,15,15,15,15
     Moves = DRAININGKISS,MEGADRAIN,SLEEPPOWDER,MOONLIGHT
-    AbilityIndex = 0
-    IV = 10,10,10,10,10,10
 #-------------------------------
 [GYM_LEADER_HOWARD,Howard,1]
 LoseText = ...
@@ -713,43 +576,31 @@ Pokemon = WHIRLIPEDE,23
     Ability = POISONPOINT
     Item = BLACKSLUDGE
     Nature = JOLLY
-    IV = 20,20,20,20,20,20
-    EV = 24,24,24,24,24,24
 Pokemon = ARAQUANID,24
     Moves = LEECHLIFE,LIQUIDATION,STICKYWEB
     Ability = WATERBUBBLE
     Item = CHARTIBERRY
     Nature = ADAMANT
-    IV = 20,0,20,20,20,20
-    EV = 24,0,24,24,24,24
 Pokemon = VIKAVOLT,24
     Moves = DISCHARGE,ENERGYBALL,HIDDENPOWER,MUDSHOT
     Item = CHARTIBERRY
     Nature = MODEST
-    IV = 19,19,19,19,19,18
-    EV = 24,24,24,24,24,24
 Pokemon = WORMADAM,24
     Form = 1
     Moves = BULLDOZE,BUGBITE,ROCKTOMB,SUCKERPUNCH
     Ability = OVERCOAT
     Item = MUSCLEBAND
     Nature = JOLLY
-    IV = 20,20,20,20,20,20
-    EV = 24,24,24,24,24,24
 Pokemon = RIBOMBEE,25
     Moves = DRAININGKISS,BUGBUZZ,CHARM,STUNSPORE
     AbilityIndex = 1
     Nature = MODEST
-    IV = 20,0,20,20,20,20
-    EV = 24,0,24,24,24,24
 Pokemon = KLEAVOR,25
     Moves = XSCISSOR,QUICKATTACK,AERIALACE,TRAILBLAZE
     Zeta = true
     Ability = SHARPNESS
     Item = LUMBERRY
     Nature = JOLLY
-    IV = 20,20,20,20,20,20
-    EV = 28,28,28,28,28,28
 #-------------------------------
 [GENTLEMAN,Harold]
 LoseText = What a wonderful battle... You truly have a bond with your Pokémon.
