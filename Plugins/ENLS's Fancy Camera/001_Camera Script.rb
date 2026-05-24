@@ -1,6 +1,6 @@
 class Game_Temp
   attr_accessor :camera_pos, :camera_x, :camera_y, :camera_shake,
-                :camera_speed, :camera_offset, :camera_target_event
+                :camera_speed, :camera_offset, :camera_target_event, :camera_resetting
 
   def camera_pos
     @camera_pos = [0, 0] if !@camera_pos
@@ -15,11 +15,13 @@ class Game_Temp
 
   def camera_x=(value)
     @camera_x = value
+    @camera_pos ||= [0, 0]
     @camera_pos[0] = ((value == 0) ? 0 : (@camera_x * Game_Map::REAL_RES_X) - Game_Player::SCREEN_CENTER_X)
   end
 
   def camera_y=(value)
     @camera_y = value
+    @camera_pos ||= [0, 0]
     @camera_pos[1] = ((value == 0) ? 0 : (@camera_y * Game_Map::REAL_RES_Y) - Game_Player::SCREEN_CENTER_Y)
   end
 
@@ -123,11 +125,16 @@ def pbCameraScrollTo(x, y, speed = nil)
   end
 end
 
-# Sets the camera to the player and resets the speed
+# Smoothly pans the camera back to the player and then resumes following
 def pbCameraReset(speed = nil)
   $game_temp.camera_speed = (speed != nil) ? speed : FancyCamera::DEFAULT_SPEED
   $game_temp.camera_target_event = nil
-  $game_temp.camera_pos = [0, 0]
+  if $game_player
+    $game_temp.camera_pos = [$game_player.x, $game_player.y]
+    $game_temp.camera_resetting = true
+  else
+    $game_temp.camera_pos = [0, 0]
+  end
 end
 
 # Scrolls the camera to an event

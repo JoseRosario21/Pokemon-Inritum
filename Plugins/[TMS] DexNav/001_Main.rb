@@ -299,21 +299,14 @@ class PokemonDexNav_Scene
         end
         if Input.trigger?(Input::USE)
           if $player.pokedex.seen?(@active_species)
-            action = pbMessage(_INTL("What you want to do?"), [_INTL("Search"), _INTL("Register"), _INTL("Cancel")], 3)
+            action = pbMessage(_INTL("What you want to do?"), [_INTL("Register"), _INTL("Cancel")], 2)
             if action == 0
               pbPlayDecisionSE
-              $game_switches[Settings::DEXNAX_HAS_REGISTERED_SWITCH_ID] = false
-              saveActiveSpecies
-              ret = true
-              break
-            end
-            if action == 1
-              pbPlayDecisionSE
-              pbMessage(_INTL("{1} registered, press Ctrl to search.", @active_species.to_s.capitalize))
+              pbMessage(_INTL("{1} registered, press L to search.", @active_species.to_s.capitalize))
               $game_switches[Settings::DEXNAX_HAS_REGISTERED_SWITCH_ID] = true
               saveActiveSpecies
             end
-            if action == 2
+            if action == 1
               pbPlayCancelSE
             end
           else
@@ -393,7 +386,6 @@ MenuHandlers.add(:pokegear_menu, :dexnav, {
     next false unless out
     menu.dispose
     $game_temp.in_menu = false
-    pbDexNavSearchEvent
     next true
   }
 })

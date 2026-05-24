@@ -24,6 +24,10 @@ class Game_Player < Game_Character
     if distance < 0.75
       self.map.display_x = target[0]
       self.map.display_y = target[1]
+      if $game_temp.camera_resetting
+        $game_temp.camera_resetting = false
+        $game_temp.camera_pos = [0, 0]
+      end
     else
       self.map.display_x = ease_in_out(self.map.display_x, target[0], speed)
       self.map.display_y = ease_in_out(self.map.display_y, target[1], speed)
@@ -83,7 +87,11 @@ class Game_Player < Game_Character
   end
 
   def center(x, y)
-    pbCameraReset if $game_temp.camera_pos
+    if $game_temp.camera_x != 0 || $game_temp.camera_y != 0 || $game_temp.camera_resetting
+      $game_temp.camera_resetting = false
+      $game_temp.camera_target_event = nil
+      $game_temp.camera_pos = [0, 0]
+    end
     self.map.display_x = (x * Game_Map::REAL_RES_X) - SCREEN_CENTER_X
     self.map.display_y = (y * Game_Map::REAL_RES_Y) - SCREEN_CENTER_Y
   end

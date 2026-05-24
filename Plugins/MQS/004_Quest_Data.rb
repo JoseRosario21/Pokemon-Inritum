@@ -103,7 +103,7 @@ module QuestModule
     :Stage4 => "Find another way into the cave",
     :Stage5 => "Explore Zapffe Falls Cave",
     :Stage6 => "Meet Howard on the top of Zapffe Falls",
-    :Stage7 => "Fight Howard",
+    :Stage7 => "Battle Howard",
     :Stage8 => "Go to Lumoria",
     :Location1 => "Dark Forest",
     :Location2 => "Zapffe Falls",
@@ -125,6 +125,38 @@ module QuestModule
     :Location1 => "Dark Forest",
     :QuestDescription => "A terrifying colony of Durant is causing massive damage to the habitat of many pokémon in Dark Forest. Locate the colony and defeat them!",
     :RewardString => "???"
+  }
+
+  Chapter3 = {
+    :ID => "5",
+    :Name => "Chapter 3 - Arcanum Vitae",
+    :QuestGiver => "nil",
+    :Stage1 => "Opening side quest 1",
+    :Stage2 => "Opening side quest 2",
+    :Stage3 => "Opening side quest 3",
+    :Stage4 => "Opening side quest X",
+    :Stage5 => "Investigate the old church in Dark Forest",
+    :Stage6 => "Report to Robin",
+    :Stage7 => "Help finding Harold",
+    :Stage8 => "Investigate the temple",
+    :Stage9 => "Stop the Aberration",
+    :Stage10 => "Report to Robin",
+    :Stage11 => "Battle Robin",
+    :Stage12 => "Depart from Lumoria",
+    :Location1 => "Lumoria",
+    :Location2 => "Lumoria",
+    :Location3 => "Lumoria",
+    :Location4 => "Lumoria",
+    :Location5 => "Dark Forest",
+    :Location6 => "Lumoria",
+    :Location7 => "Dark Forest",
+    :Location8 => "Ceryneian Temple",
+    :Location9 => "Ceryneian Temple",
+    :Location10 => "Lumoria",
+    :Location11 => "Lumoria",
+    :Location12 => "Lumoria Docks",
+    :QuestDescription => "Chapter 3 story",
+    :RewardString => "nil"
   }
 
 end

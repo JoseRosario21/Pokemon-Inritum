@@ -65,21 +65,7 @@ def pbPasswordMenu
     raw = pbMessageFreeText(_INTL("Enter your password."), "", false, 30)
     break if raw.strip.empty?
 
-    key = raw.strip.upcase
-    effect = PasswordSystem::PASSWORDS[key]
-
-    if effect.nil?
-      pbMessage(_INTL("That password is not valid.\\nDouble-check and try again."))
-    elsif $player.redeemed_passwords.include?(key)
-      pbMessage(_INTL("That password has already been redeemed on this save."))
-    else
-      success = pbApplyPasswordEffect(effect)
-      if success
-        $player.redeemed_passwords.push(key)
-        desc = effect[:description]
-        pbMessage(desc) if desc && !desc.empty?
-      end
-    end
+    pbRedeemPassword(raw)
 
     break unless pbConfirmMessage(_INTL("Would you like to enter another password?"))
   end
