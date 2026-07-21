@@ -4,3 +4,4 @@ Docs/*
 .claude/settings.local.json
 .vscode/settings.json
 CLAUDE.md
+.mcp.json

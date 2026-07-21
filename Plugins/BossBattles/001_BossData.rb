@@ -103,6 +103,31 @@ module BossBattle
     },
 
     #===========================================================================
+    # Animus Golurk — Ceryneian Temple guardian
+    #===========================================================================
+    :ANIMUS_GOLURK => {
+      name:          "Animus Golurk",
+      species:       :GOLURK,
+      level:         45,
+      form:          2,
+      ability:       :CURSEDSTEEL,
+      nature:        :ADAMANT,
+      moves:         [:SPIRITBREAK, :JETPUNCH, :BULLETPUNCH, :IRONHEAD], # TODO: swap :IRONHEAD for final 4th move
+      iv:            31,
+      catchable:     false,
+      entry_text:    "The Ceryneian Temple falls silent.\nIts eternal guardian will not let you pass.",
+
+      shield_count:  1,
+
+      on_break: {
+        1 => {
+          message:      "{1}'s battle scars ignite with cursed energy!",
+          stat_changes: { ATTACK: 2 },
+        },
+      },
+    },
+
+    #===========================================================================
     # Minimal template — copy this for new bosses
     #===========================================================================
     # :MY_BOSS => {

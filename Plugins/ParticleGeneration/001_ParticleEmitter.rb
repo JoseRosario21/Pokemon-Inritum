@@ -16,14 +16,21 @@
 #   vx_min/max    — horizontal velocity range (px/sec)          (-10, 10)
 #   vy_min/max    — vertical velocity range (px/sec)            (-50, -20)
 #   life_min/max  — particle lifetime in seconds                (2.5, 5.0)
-#   radius        — particle circle radius in pixels            (6)
-#   color         — Color object for the particle               (grey)
 #   gravity       — vertical acceleration (px/sec²)             (0.0)
 #   wind          — horizontal acceleration (px/sec²)           (0.0)
 #   z             — viewport z-value                            (210)
+#
+# Circle-mode options (used when no graphic: is provided):
+#   radius        — particle circle radius in pixels            (6)
+#   color         — Color object for the particle               (grey)
+#
+# Graphic-mode options (used when graphic: is provided):
+#   graphic       — path to image file e.g. "Graphics/Particles/leaf.png"  (nil)
+#   scale_min/max — random uniform scale applied per particle   (1.0, 1.0)
+#   spin_min/max  — angular velocity in degrees/sec; negative = CCW  (0.0, 0.0)
 #===============================================================================
 class ParticleEmitter
-  Particle = Struct.new(:x, :y, :vx, :vy, :age, :life, :sprite)
+  Particle = Struct.new(:x, :y, :vx, :vy, :age, :life, :sprite, :spin)
 
   def initialize(opts = {})
     @x        = opts.fetch(:x,         0)
@@ -39,6 +46,12 @@ class ParticleEmitter
     @color    = opts.fetch(:color,     Color.new(200, 200, 200))
     @gravity  = opts.fetch(:gravity,   0.0)
     @wind     = opts.fetch(:wind,      0.0)
+    @graphic   = opts.fetch(:graphic,   nil)
+    @frames    = opts.fetch(:frames,    1)
+    @scale_min = opts.fetch(:scale_min, 1.0)
+    @scale_max = opts.fetch(:scale_max, 1.0)
+    @spin_min  = opts.fetch(:spin_min,  0.0)
+    @spin_max  = opts.fetch(:spin_max,  0.0)
 
     @vp      = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @vp.z    = opts.fetch(:z, 210)
@@ -90,6 +103,8 @@ class ParticleEmitter
       p.y   += p.vy * dt
       p.age += dt
 
+      p.sprite.angle = (p.sprite.angle + p.spin * dt) % 360 if p.spin != 0.0
+
       frac = p.age / p.life   # 0.0 → 1.0 over the particle's life
       alpha = if frac < 0.15
                 (255 * frac / 0.15).to_i          # fade in
@@ -132,27 +147,47 @@ class ParticleEmitter
     sprite = @pool.pop || _new_sprite
     sprite.visible = true
     sprite.opacity = 0
-    x  = @x + rand * @spread_x
-    y  = @y + rand * @spread_y
-    vx = @vx_min + rand * (@vx_max - @vx_min)
-    vy = @vy_min + rand * (@vy_max - @vy_min)
-    lf = @lf_min  + rand * (@lf_max  - @lf_min)
+    sprite.angle   = rand * 360
+
+    if @frames > 1
+      fw = @texture.width / @frames
+      fh = @texture.height
+      sprite.src_rect.set(rand(@frames) * fw, 0, fw, fh)
+      sprite.ox = fw / 2
+      sprite.oy = fh / 2
+    end
+
+    scale = @scale_min + rand * (@scale_max - @scale_min)
+    sprite.zoom_x = scale
+    sprite.zoom_y = scale
+
+    x    = @x + rand * @spread_x
+    y    = @y + rand * @spread_y
+    vx   = @vx_min + rand * (@vx_max - @vx_min)
+    vy   = @vy_min + rand * (@vy_max - @vy_min)
+    lf   = @lf_min  + rand * (@lf_max  - @lf_min)
+    spin = @spin_min + rand * (@spin_max - @spin_min)
+
     sprite.x = x.round
     sprite.y = y.round
-    @active << Particle.new(x, y, vx, vy, 0.0, lf, sprite)
+    @active << Particle.new(x, y, vx, vy, 0.0, lf, sprite, spin)
   end
 
   def _new_sprite
-    s    = Sprite.new(@vp)
+    s        = Sprite.new(@vp)
     s.bitmap = @texture
-    s.ox = @texture.width / 2
-    s.oy = @texture.height / 2
+    fw       = @frames > 1 ? @texture.width / @frames : @texture.width
+    s.ox     = fw / 2
+    s.oy     = @texture.height / 2
     s
   end
 
-  # Builds a soft radial-gradient circle bitmap.
-  # Generated once per emitter; all particle sprites share the same bitmap.
+  # Builds the shared texture for all particle sprites.
+  # If graphic: was given, loads that file. Otherwise generates a soft
+  # radial-gradient circle using radius: and color:.
   def _build_texture
+    return Bitmap.new(@graphic) if @graphic
+
     r    = @radius
     size = r * 2 + 2
     bmp  = Bitmap.new(size, size)

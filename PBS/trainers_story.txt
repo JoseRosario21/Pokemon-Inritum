@@ -1,0 +1,101 @@
+# Story Mode trainer variants.
+# Only define entries for fights that need tuning vs. Classic.
+# Version = Classic version + 100.
+#
+# Examples:
+#   Classic [GYM_LEADER_LYRA,Lyra]        → Story [GYM_LEADER_LYRA,Lyra,100]
+#   Classic [GYM_LEADER_HOWARD,Howard,1]  → Story [GYM_LEADER_HOWARD,Howard,101]
+#-------------------------------
+[RIVAL1,Meryl,103]
+LoseText = ...
+Pokemon = DUCKLETT,18
+    Moves = WATERPULSE,DEFOG,WINGATTACK,AERIALACE
+    AbilityIndex = 1
+    Item = SHARPBEAK
+    IV = 12,12,12,12,12,12
+Pokemon = WOOPER,18
+    Moves = RAINDANCE,MUDSHOT,SLAM,WATERGUN
+    AbilityIndex = 2
+    IV = 12,12,12,12,12,12
+Pokemon = BINACLE,18
+    Moves = MUDSLAP,WATERGUN,FURYCUTTER,WITHDRAW
+    AbilityIndex = 0
+    IV = 12,12,12,12,12,12
+Pokemon = LOMBRE,18
+    Moves = MEGADRAIN,ASTONISH,FAKEOUT,RAZORLEAF
+    AbilityIndex = 0
+    IV = 12,12,12,12,12,12
+Pokemon = BRIONNE,18
+    Moves = WATERGUN,DISARMINGVOICE,ICYWIND,AQUAJET
+    AbilityIndex = 2
+    Item = MYSTICWATER
+    IV = 12,12,12,12,12,12
+#-------------------------------
+[GYM_LEADER_LYRA,Lyra,100]
+LoseText = You are going to do great in the future!
+Pokemon = LITLEO,18
+    Moves = WILLOWISP,ENDEAVOR,SNARL,FIRESPIN
+    AbilityIndex = 1
+    Nature = TIMID
+Pokemon = PIDGEOTTO,18
+    Moves = AERIALACE,QUICKATTACK,FEATHERDANCE,TAILWIND
+    AbilityIndex = 0
+    Item = CHARTIBERRY
+    Nature = JOLLY
+Pokemon = BIBAREL,18
+    Moves = WATERPULSE,YAWN,MUDSLAP,SWIFT
+    AbilityIndex = 1
+    Item = CHOPLEBERRY
+    Nature = NAIVE
+Pokemon = ZANGOOSE,18
+    Moves = PROTECT,FACADE,QUICKATTACK,AERIALACE
+    Zeta = true
+    AbilityIndex = 0
+    Nature = JOLLY
+#-------------------------------
+[MERCENARY,Will,100]
+LoseText = Is this Toxel really a Zeta?!
+Pokemon = JOLTIK,18
+    Moves = ELECTROWEB,THUNDERWAVE,BUGBITE
+    AbilityIndex = 0
+Pokemon = WATTREL,19
+    Moves = SPARK,PLUCK,QUICKATTACK,UPROAR
+    AbilityIndex = 2
+Pokemon = LUXIO,20
+    Moves = ICEFANG,BITE,SPARK,ROAR
+    AbilityIndex = 2
+Pokemon = MORPEKO,20
+    Moves = RAPIDSPIN,POWERTRIP,THUNDERFANG,FAKEOUT
+    AbilityIndex = 0
+Pokemon = TOXEL,23
+    Zeta = true
+    Moves = NUZZLE,ACID,BELCH,TEARFULLOOK
+    AbilityIndex = 0
+#-------------------------------
+[GYM_LEADER_HOWARD,Howard,101]
+LoseText = ...
+Pokemon = WHIRLIPEDE,23
+    Moves = BUGBITE,POISONJAB,BITE
+    Ability = POISONPOINT
+    Item = BLACKSLUDGE
+    Nature = JOLLY
+Pokemon = VIKAVOLT,24
+    Moves = DISCHARGE,ENERGYBALL,HIDDENPOWER,MUDSHOT
+    Item = CHARTIBERRY
+    Nature = MODEST
+Pokemon = WORMADAM,24
+    Form = 1
+    Moves = BULLDOZE,BUGBITE,ROCKTOMB,SUCKERPUNCH
+    Ability = OVERCOAT
+    Item = MUSCLEBAND
+    Nature = JOLLY
+Pokemon = RIBOMBEE,25
+    Moves = DRAININGKISS,BUGBUZZ,CHARM,STUNSPORE
+    AbilityIndex = 1
+    Nature = MODEST
+Pokemon = KLEAVOR,25
+    Moves = XSCISSOR,QUICKATTACK,AERIALACE,TRAILBLAZE
+    Zeta = true
+    Ability = SHARPNESS
+    Item = LUMBERRY
+    Nature = JOLLY

@@ -170,9 +170,14 @@ def _pbPlayBattleAnimInternal(anim)
   loop do
     Graphics.update
     Input.update
+    pbUpdateSceneMap
     player.update
     break if player.animDone?
   end
   player.dispose
   anim_viewport.dispose
+end
+
+def pbAnim(anim_name)
+  pbPlayBattleAnim(anim_name)
 end

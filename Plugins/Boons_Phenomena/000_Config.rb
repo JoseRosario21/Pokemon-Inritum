@@ -18,7 +18,7 @@
 module PhenomenonConfig
   Frequency = 450 # Chance for phenomenon to generate on step. Between 350-600.
   Timer = 2800 # How many frames to wait before phenomenon disappears
-  Switch = 75 # Switch that when ON enables phenomena
+  Switch = 88 # Switch that when ON enables phenomena
   BattleMusic = '' # Custom music to play during Phenomenon
   Pokemon = {
     shiny: true, # 4x chance of shininess

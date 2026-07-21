@@ -2,14 +2,14 @@
 # Letterbox — cinematic black bars for cutscenes
 #
 # Usage (in map events via Script command):
-#   pbLetterboxOn          # slide bars in, default height (48px)
-#   pbLetterboxOn(64)      # slide bars in, 64px tall
-#   pbLetterboxOn(64, false) # 64px tall, instant
+#   pbLetterboxOn          # slide bars in, default height (64px)
+#   pbLetterboxOn(96)      # slide bars in, 96px tall
+#   pbLetterboxOn(96, false) # 96px tall, instant
 #   pbLetterboxOff         # slide bars out
 #   pbLetterboxOff(false)  # instant
 #==============================================================================
 module Letterbox
-  BAR_HEIGHT     = 48            # default bar height in pixels
+  BAR_HEIGHT     = 64            # default bar height in pixels
   MAX_BAR_HEIGHT = 96            # cap — beyond this the content area gets too cramped
   ANIM_SECS      = 0.3           # slide animation duration in seconds
   Z_LEVEL        = 99990         # below fade overlays (99999) but above everything else

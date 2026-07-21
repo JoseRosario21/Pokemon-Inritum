@@ -4,13 +4,6 @@
 # Author: ArtZoyd - 6/9/2025
 #===============================================================================
 
-# Patch NilClass to avoid crashes from accidental method calls on nil objects.
-# Returns nil instead of throwing NoMethodError (use cautiously!)
-class NilClass
-  def method_missing(*)
-    nil
-  end
-end
 
 # Global flags to coordinate and safely control soft continues
 $force_soft_continue = false      # Forces exit from battle loops if needed

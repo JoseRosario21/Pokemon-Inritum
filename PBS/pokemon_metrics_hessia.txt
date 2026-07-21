@@ -143,3 +143,8 @@ ShadowSize = 2
 DmaxBackSprite = 0,0
 DmaxFrontSprite = 0,21
 DmaxShadowX = 0
+#-------------------------------
+[GOLURK,2]
+FrontSprite = 1,12
+ShadowX = 0
+ShadowSize = 3

@@ -201,7 +201,8 @@ class Scene_Map
       elsif Input.press?(Input::F9)
         $game_temp.debug_calling = true if $DEBUG
         # WARP changed for Plugin
-      elsif $game_switches[Settings::DEXNAX_HAS_REGISTERED_SWITCH_ID] && Input.trigger?(Input::CTRL)
+      end
+      if $game_switches[Settings::DEXNAX_HAS_REGISTERED_SWITCH_ID] && Input.triggerex?(:L)
         pbDexNavRegisteredEvent
       end
     end

@@ -1,3 +1,4 @@
 Name = Password System
 Version = 1.0.0
-Credits = Pokémon Inritum Team
+Essentials = 21.1
+Credits = BloodyNeonz

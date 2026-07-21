@@ -1,0 +1,38 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[RIVAL1,Meryl,1]
+LoseText = ...
+Pokemon = POPPLIO,14
+Pokemon = DUCKLETT,11
+Pokemon = WOOPER,10
+#-------------------------------
+[RIVAL1,Meryl,2]
+LoseText = ...
+Pokemon = BRIONNE,17
+Pokemon = DUCKLETT,14
+Pokemon = WOOPER,14
+Pokemon = BINACLE,14
+#-------------------------------
+[GYM_LEADER_HOWARD,Howard]
+LoseText = ...
+Pokemon = WHIRLIPEDE,23
+    Moves = BUGBITE,POISONJAB,BITE
+    Ability = POISONPOINT
+    Item = BLACKSLUDGE
+    Nature = JOLLY
+    IV = 20,20,20,20,20,20
+    EV = 24,24,24,24,24,24
+Pokemon = RIBOMBEE,25
+    Moves = DRAININGKISS,BUGBUZZ,CHARM,STUNSPORE
+    AbilityIndex = 1
+    Nature = MODEST
+    IV = 20,0,20,20,20,20
+    EV = 24,0,24,24,24,24
+Pokemon = KLEAVOR,25
+    Moves = ROCKTOMB,FURYCUTTER,QUICKATTACK,AERIALACE
+    Zeta = true
+    Ability = SHARPNESS
+    Item = LUMBERRY
+    Nature = JOLLY
+    IV = 20,20,20,20,20,20
+    EV = 28,28,28,28,28,28

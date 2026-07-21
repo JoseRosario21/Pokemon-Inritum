@@ -30,6 +30,11 @@ def pbRedeemPassword(raw_password)
     return false
   end
 
+  if effect[:expires_at] && Time.now > effect[:expires_at]
+    pbMessage(_INTL("This code has expired and is no longer valid."))
+    return false
+  end
+
   if $player.redeemed_passwords.include?(key)
     pbMessage(_INTL("That password has already been redeemed."))
     return false
@@ -99,6 +104,13 @@ def pbPasswordEffectPokemon(effect)
   pkmn.obtain_map      = $game_map&.map_id || 0
   pkmn.timeReceived    = pbGetTimeNow.to_i
   pkmn.item            = effect[:held_item] if effect[:held_item]
+  pkmn.nature          = effect[:nature]    if effect[:nature]
+  pkmn.ability         = effect[:ability]   if effect[:ability]
+  pkmn.poke_ball       = effect[:ball]      if effect[:ball]
+  if effect[:zeta]
+    pkmn.zeta = true
+    pkmn.apply_zeta_ivs
+  end
 
   if effect[:gender]
     case effect[:gender]
@@ -108,9 +120,13 @@ def pbPasswordEffectPokemon(effect)
     end
   end
 
+  if effect[:ivs]
+    effect[:ivs].each { |stat, val| pkmn.iv[stat] = val }
+  end
+
   if effect[:moves]
     pkmn.forget_all_moves
-    effect[:moves].each { |m| pkmn.learn(m) }
+    effect[:moves].each { |m| pkmn.learn_move(m) }
   end
 
   pkmn.calc_stats
