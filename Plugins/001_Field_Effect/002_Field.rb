@@ -57,6 +57,9 @@ class Battle::Field
     :CRYSTALCAVE => [[26],
                 %w[],
                 %i[]],
+    :CERYNEIATEMPLE => [[46],
+                %w[],
+                %i[]],
   }
 
   def initialize(battle)

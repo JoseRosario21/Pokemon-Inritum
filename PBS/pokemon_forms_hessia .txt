@@ -187,3 +187,13 @@ Color = Blue
 Flags = InheritFormWithEverstone
 Evolution = LAMPENT_1,Item,WATERSTONE
 Pokedex = Hessian Litwick are bioluminescent organisms found in Hessian marshlands. Their soft blue glow attracts insects, which they absorb for nutrients. Despite their appearance, they are actually a form of aquatic plant.
+#-------------------------------
+[GOLURK,2]
+FormName = Animus
+Types = STEEL,FAIRY
+Abilities = CURSEDSTEEL
+BaseStats = 104,159,105,55,105,55
+Height = 2.8
+Weight = 330.0
+Color = Green
+Pokedex = This Pokémon guards the Ceryneian Temple from intruders. Its maker kept it in the temple to protect Xerneas from harm. It bears many battle scars from those who attempted to reach Xerneas, but no one has lived to tell the tale.

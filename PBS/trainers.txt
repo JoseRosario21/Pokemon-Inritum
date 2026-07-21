@@ -613,3 +613,9 @@ Pokemon = ROSELIA,22
 Pokemon = TOGETIC,23
     Moves = ANCIENTPOWER,FAIRYWIND,YAWN,CHARM
     AbilityIndex = 2
+#-------------------------------
+[POLICEMAN,Michael]
+LoseText = You are strong. Very strong.
+Pokemon = MIGHTYENA,26
+    Moves = CRUNCH,FIREFANG,SCARYFACE,SNARL
+    AbilityIndex = 0

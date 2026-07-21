@@ -78,7 +78,7 @@ end
 # event can be a Game_Character object or an integer event ID.
 # Returns true on success, false if the target is unreachable.
 # Set wait:false to start the movement and return immediately.
-def pbEventMoveToXY(event, x, y, wait: true)
+def pbEventMoveToXY(event, x, y, wait = true)
   event = $game_map.events[event] if event.is_a?(Integer)
   return false if event.nil?
   path = MoveToXY.pathfind(event, x, y)
@@ -90,6 +90,7 @@ def pbEventMoveToXY(event, x, y, wait: true)
 end
 
 # Move the player to tile (x, y) along the shortest passable path.
-def pbPlayerMoveToXY(x, y, wait: true)
+def pbPlayerMoveToXY(x, y, wait = true)
   pbEventMoveToXY($game_player, x, y, wait: wait)
 end
+

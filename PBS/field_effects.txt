@@ -383,3 +383,33 @@ MoveMultiplier = STEALTHROCK|1.1|Crystal shards scatter around the field!
 # Effects
 Effect = hazard_type_change|STEALTHROCK|FAIRY
 Effect = crit_boost|POWERGEM|DIAMONDSTORM
+
+#-------------------------------
+# CERYNEIAN TEMPLE FIELD
+# Ancient temple protecting Xerneas. Steel and Fairy moves empowered,
+# contact moves are dangerous, and heavy ground-shaking moves are muted
+# by the sacred stone floor.
+#-------------------------------
+[CERYNEIATEMPLE]
+Name = Ceryneian Temple Field
+Category = Sacred
+Tags = Indoor,Magical,Fairy,Ancient
+Fieldback = CeryneianTemple
+NaturePower = MOONBLAST
+SecretPower = 3
+Duration = -1
+Announcement = The temple's sacred power fills the air...|Ancient energy surges through the hall!|The temple's aura subsides...
+# Steel moves empowered by the temple's iron construction
+TypeMultiplier = STEEL|1.3|The temple's iron walls amplify the strike!
+# Fairy moves empowered by Xerneas's blessing
+TypeMultiplier = FAIRY|1.3|Xerneas's blessing empowers the attack!
+# Contact moves dampened — the curse lingers in the air
+TypeMultiplier = GROUND|final_damage|0.7|The sacred floor absorbs the tremor!
+TypeMultiplier = FIRE|final_damage|0.7|The temple's blessing smothers the flames!
+# Signature moves
+MoveMultiplier = SPIRITBREAK|1.5|The temple resonates with the strike!
+MoveMultiplier = MOONBLAST|1.3|Moonlight floods through the ancient windows!
+MoveMultiplier = FLASHCANNON|1.2|The steel halls ring with the blast!
+MoveMultiplier = IRONHEAD|1.2|The temple's iron walls echo the blow!
+MoveMultiplier = JETPUNCH|1.2|The temple's steel frame channels the punch!
+MoveMultiplier = BULLETPUNCH|1.2|The temple's steel frame channels the punch!

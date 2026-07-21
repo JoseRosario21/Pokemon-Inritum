@@ -500,7 +500,9 @@ class Battle::Scene
     if set_environment
       @sprites["battle_bg"].setBitmap(@environment_battleBG)
       @sprites["base_0"].setBitmap(@environment_playerBase)
+      @sprites["base_0"].visible = true
       @sprites["base_1"].setBitmap(@environment_enemyBase)
+      @sprites["base_1"].visible = true
     else
       field_name = @battle.current_field.fieldback
       return if !field_name || field_name.empty?
@@ -508,8 +510,20 @@ class Battle::Scene
       battle_bg_path = "#{root}/#{field_name}_battlebg.png"
       return if !FileTest.exist?(battle_bg_path)
       @sprites["battle_bg"].setBitmap(battle_bg_path)
-      @sprites["base_0"].setBitmap("#{root}/#{field_name + "_playerbase.png"}")
-      @sprites["base_1"].setBitmap("#{root}/#{field_name + "_enemybase.png"}")
+      player_base = "#{root}/#{field_name}_playerbase.png"
+      enemy_base  = "#{root}/#{field_name}_enemybase.png"
+      if FileTest.exist?(player_base)
+        @sprites["base_0"].setBitmap(player_base)
+        @sprites["base_0"].visible = true
+      else
+        @sprites["base_0"].visible = false
+      end
+      if FileTest.exist?(enemy_base)
+        @sprites["base_1"].setBitmap(enemy_base)
+        @sprites["base_1"].visible = true
+      else
+        @sprites["base_1"].visible = false
+      end
     end
   end
 end
