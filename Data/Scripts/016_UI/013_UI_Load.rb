@@ -279,7 +279,7 @@ class PokemonLoadScreen
   end
 
   def pbStartLoadScreen
-    check_for_updates
+    GameUpdater.check_for_updates
     if $DEBUG && !FileTest.exist?("Game.rgssad") && Settings::SKIP_CONTINUE_SCREEN
       if @save_data.empty?
         Game.start_new
@@ -294,6 +294,7 @@ class PokemonLoadScreen
     cmd_options      = -1
     cmd_language     = -1
     cmd_mystery_gift = -1
+    cmd_check_update = -1
     cmd_debug        = -1
     cmd_quit         = -1
     show_continue = !@save_data.empty?
@@ -306,6 +307,7 @@ class PokemonLoadScreen
     commands[cmd_new_game = commands.length]  = _INTL("New Game")
     commands[cmd_options = commands.length]   = _INTL("Options")
     commands[cmd_language = commands.length]  = _INTL("Language") if Settings::LANGUAGES.length >= 2
+    commands[cmd_check_update = commands.length] = _INTL("Check for Updates")
     commands[cmd_debug = commands.length]     = _INTL("Debug") if $DEBUG
     commands[cmd_quit = commands.length]      = _INTL("Quit Game")
     map_id = show_continue ? @save_data[:map_factory].map.map_id : 0
@@ -342,6 +344,8 @@ class PokemonLoadScreen
         end
         $scene = pbCallTitle
         return
+      when cmd_check_update
+        pbFadeOutIn { GameUpdater.check_for_updates(prompt_if_none: true) }
       when cmd_debug
         pbFadeOutIn { pbDebugMenu(false) }
       when cmd_quit
