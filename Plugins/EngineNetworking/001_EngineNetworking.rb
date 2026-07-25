@@ -20,9 +20,12 @@ module EngineNetworking
     end
   end
 
-  # GitHub release assets (and gist raw URLs, sometimes) respond with a 302 to
-  # a CDN host rather than the content directly, so redirects have to be
-  # followed manually here.
+  # GitHub release assets, Dropbox direct-download links (and gist raw URLs,
+  # sometimes) respond with a 302 to a CDN host rather than the content
+  # directly, so redirects have to be followed manually here. Dropbox in
+  # particular can chain two redirects, and has been observed sending a
+  # relative Location header on the second hop (no scheme/host) - resolve
+  # against the current URI rather than assuming Location is always absolute.
   def self.https_get(url, timeout: 10, redirect_limit: 5)
     raise "Too many redirects for #{url}" if redirect_limit < 0
     uri = URI(url)
@@ -34,7 +37,8 @@ module EngineNetworking
     response = http.get(uri.request_uri)
     case response
     when Net::HTTPRedirection
-      return self.https_get(response['location'], timeout: timeout, redirect_limit: redirect_limit - 1)
+      next_url = URI.join(uri, response['location']).to_s
+      return self.https_get(next_url, timeout: timeout, redirect_limit: redirect_limit - 1)
     when Net::HTTPSuccess
       return response.body
     else
