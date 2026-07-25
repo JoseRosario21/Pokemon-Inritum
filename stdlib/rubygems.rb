@@ -1343,7 +1343,7 @@ end
 
 ##
 # Loads the default specs.
-#Gem::Specification.load_defaults
+Gem::Specification.load_defaults
 
 require_relative "rubygems/core_ext/kernel_gem"
 require_relative "rubygems/core_ext/kernel_require"
