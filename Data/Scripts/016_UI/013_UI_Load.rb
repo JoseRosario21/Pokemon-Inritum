@@ -295,6 +295,7 @@ class PokemonLoadScreen
     cmd_language     = -1
     cmd_mystery_gift = -1
     cmd_check_update = -1
+    cmd_discord      = -1
     cmd_debug        = -1
     cmd_quit         = -1
     show_continue = !@save_data.empty?
@@ -308,6 +309,7 @@ class PokemonLoadScreen
     commands[cmd_options = commands.length]   = _INTL("Options")
     commands[cmd_language = commands.length]  = _INTL("Language") if Settings::LANGUAGES.length >= 2
     commands[cmd_check_update = commands.length] = _INTL("Check for Updates")
+    commands[cmd_discord = commands.length]   = _INTL("Discord Server")
     commands[cmd_debug = commands.length]     = _INTL("Debug") if $DEBUG
     commands[cmd_quit = commands.length]      = _INTL("Quit Game")
     map_id = show_continue ? @save_data[:map_factory].map.map_id : 0
@@ -346,6 +348,8 @@ class PokemonLoadScreen
         return
       when cmd_check_update
         pbFadeOutIn { GameUpdater.check_for_updates(prompt_if_none: true) }
+      when cmd_discord
+        System.launch("https://discord.gg/QQJmu4wkxe")
       when cmd_debug
         pbFadeOutIn { pbDebugMenu(false) }
       when cmd_quit
