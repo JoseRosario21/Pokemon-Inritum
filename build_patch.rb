@@ -11,9 +11,10 @@
 # "diff these two folders" - it's your job to make sure both folders are in
 # a state you'd actually want to ship.
 #
-# Output: <output_dir>/patch.zip (added/changed files) and, if anything was
-# removed, <output_dir>/deletions.txt (one relative path per line). Upload
-# both as assets to this repo's "latest" release afterwards.
+# Output: <output_dir>/patch.zip, containing the added/changed files plus,
+# if anything was removed, a ".deletions.txt" entry (one relative path per
+# line) - GameUpdater reads and strips this entry after extracting. Just the
+# one file to upload/replace per release.
 
 require 'digest'
 require 'fileutils'
@@ -81,15 +82,10 @@ Zip::File.open(patch_path, create: true) do |zip|
   added_or_changed.each do |relative|
     zip.add(relative, new_files[relative])
   end
+  if deleted.any?
+    zip.get_output_stream('.deletions.txt') { |f| f.write(deleted.join("\n") + "\n") }
+  end
 end
-puts "Wrote #{patch_path}"
+puts "Wrote #{patch_path}#{deleted.any? ? " (includes .deletions.txt for #{deleted.size} removed file(s))" : ''}"
 
-if deleted.any?
-  deletions_path = File.join(output_dir, 'deletions.txt')
-  File.write(deletions_path, deleted.join("\n") + "\n")
-  puts "Wrote #{deletions_path}"
-else
-  puts "No deletions - skipping deletions.txt"
-end
-
-puts "\nDone. Upload patch.zip (and deletions.txt, if present) to the 'latest' release, and bump the version in the gist."
+puts "\nDone. Upload patch.zip to the 'latest' release, and bump the version in the gist."

@@ -15,16 +15,14 @@ module GameUpdater
   MANIFEST_URL = "https://gist.githubusercontent.com/JoseRosario21/9dd86019f894c1f7599890d41b907480/raw/gistfile1.txt"
 
   # The GitHub repo patches are published to, as a fixed "latest" release tag.
-  # Expects two assets on that release: patch.zip, and optionally deletions.txt.
+  # Just one asset expected: patch.zip. See build_patch.rb, which bundles a
+  # ".deletions.txt" entry inside the zip itself when anything was removed,
+  # instead of needing a second separately-hosted asset.
   RELEASE_OWNER = "JoseRosario21"
   RELEASE_REPO  = "Pokemon-Inritum"
 
   def self.patch_url
     "https://github.com/#{RELEASE_OWNER}/#{RELEASE_REPO}/releases/download/latest/patch.zip"
-  end
-
-  def self.deletions_url
-    "https://github.com/#{RELEASE_OWNER}/#{RELEASE_REPO}/releases/download/latest/deletions.txt"
   end
 
   #=============================================================================
@@ -57,20 +55,16 @@ module GameUpdater
     return path
   end
 
-  # Deletions are optional - a release with nothing removed won't have this
-  # asset, so a failed download here just means "nothing to delete".
-  def self.download_deletions
-    body = EngineNetworking.https_get(self.deletions_url)
-    path = File.join(Dir.pwd, 'deletions.txt')
-    File.open(path, 'wb') { |f| f.write(body) }
-    return path
-  rescue Exception
-    return nil
-  end
-
+  # Extracts every entry except ".deletions.txt" (if present, that one is
+  # parsed and applied as deletions instead of written to disk as a file).
   def self.apply_patch(zip_path)
+    deletions = nil
     Zip::File.open(zip_path) do |zip_file|
       zip_file.each do |entry|
+        if entry.name == '.deletions.txt'
+          deletions = zip_file.read(entry).split("\n").map(&:strip).reject(&:empty?)
+          next
+        end
         destination = File.join(Dir.pwd, entry.name)
         FileUtils.mkdir_p(File.dirname(destination))
         File.delete(destination) if File.exist?(destination)
@@ -80,17 +74,14 @@ module GameUpdater
       end
     end
     File.delete(zip_path)
+    self.apply_deletions(deletions) if deletions
   end
 
-  def self.apply_deletions(deletions_path)
-    return unless deletions_path && File.exist?(deletions_path)
-    File.foreach(deletions_path) do |line|
-      path = line.strip
-      next if path.empty?
+  def self.apply_deletions(deletions)
+    deletions.each do |path|
       full_path = File.join(Dir.pwd, path)
       File.delete(full_path) if File.exist?(full_path)
     end
-    File.delete(deletions_path)
   end
 
   #=============================================================================
@@ -119,11 +110,9 @@ module GameUpdater
     # them are blocking and would otherwise never even start until dismissed.
     Kernel.pbMessage(_INTL("Downloading update...") + "\\wtnp[0]")
     zip_path = self.download_patch
-    deletions_path = self.download_deletions
 
     Kernel.pbMessage(_INTL("Applying update...") + "\\wtnp[0]")
     self.apply_patch(zip_path)
-    self.apply_deletions(deletions_path)
 
     Kernel.pbMessage(_INTL("Update complete! The game will now close - please restart it."))
     Kernel.exit!
