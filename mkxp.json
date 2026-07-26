@@ -190,7 +190,7 @@
     // Override the game window title
     // (default: none)
     //
-    // "windowTitle": "Custom Title",
+    "windowTitle": "Pokemon Inritum",
 
 
     // Enforce a static frame rate
@@ -560,20 +560,24 @@
     // on the F1 menu. This is only a cosmetic effect, so it will
     // have no effect on the game's scripts.
     //
-    // "bindingNames": {
-    //  "c": "Confirm",
-    //  "b": "Cancel",
-    //  "x": ...,
-    // },
+    "bindingNames": {
+      "c": "Use",
+      "b": "Back",
+      "a": "Action",
+      "x": "JumpUp",
+      "y": "JumpDown",
+      "z": "Special",
+      "l": "(unused)",
+      "r": "(unused)"
+    },
 
 
     // Dump tile atlas (for debugging purposes)
     // (default: false)
     //
     // "dumpAtlas": false,
-    
-// Repudiation edit (fixes bottom half of text being cut on macs)
-    "solidFonts": true,
+
+    // Repudiation edit (fixes bottom half of text being cut off)
     "fontScale": 1.20,
     "fontHeightReporting": 1,
     "fontHinting": 0
