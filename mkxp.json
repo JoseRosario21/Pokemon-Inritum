@@ -166,7 +166,7 @@
     // Sync screen redraws to the monitor refresh rate
     // (default: disabled)
     //
-    // "vsync": false,
+    "vsync": true,
 
 
     // Specify the window width on startup. If set to 0,
@@ -175,7 +175,7 @@
     // in RGSS2 or higher).
     // (default: 0)
     //
-    // "defScreenW": 640,
+    "defScreenW": 512,
 
 
     // Specify the window height on startup. If set to 0,
@@ -184,7 +184,7 @@
     // in RGSS2 or higher).
     // (default: 0)
     //
-    // "defScreenH": 480,
+    "defScreenH": 384,
 
 
     // Override the game window title
@@ -251,7 +251,7 @@
     // tileset doesn't render at all
     // (default: disabled)
     //
-    // "subImageFix": false,
+    "subImageFix": true,
 
 
     // Enable framebuffer blitting if the driver is
@@ -515,7 +515,7 @@
     // SoundFont to use for midi playback (via fluidsynth)
     // (default: none)
     //
-    // "midiSoundFont": "Audio/BGM/GMGSx.sf2",
+    "midiSoundFont": "soundfont.sf2",
 
 
     // Activate "chorus" effect for midi playback
