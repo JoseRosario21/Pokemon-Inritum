@@ -11,7 +11,7 @@
 #===============================================================================
 class Battle::Scene::PokemonDataBox
   # Number of frames in each horizontal strip PNG.
-  ZETA_ANIM_FRAME_COUNT = 3
+  ZETA_ANIM_FRAME_COUNT = 4
   # Seconds each frame is held before advancing.
   ZETA_ANIM_FRAME_TIME = 0.1
 
