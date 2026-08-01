@@ -197,3 +197,37 @@ Height = 2.8
 Weight = 330.0
 Color = Green
 Pokedex = This Pokémon guards the Ceryneian Temple from intruders. Its maker kept it in the temple to protect Xerneas from harm. It bears many battle scars from those who attempted to reach Xerneas, but no one has lived to tell the tale.
+#-------------------------------
+[GIGALITH,1]
+FormName = Hessian
+Types = ROCK,GRASS
+Abilities = STURDY
+HiddenAbilities = MOSSYGUARD
+BaseStats = 85,135,130,60,80,25
+Moves = 1,POWERGEM,1,ABSORB,1,SANDATTACK,1,TACKLE,1,HARDEN,1,STEALTHROCK,1,LEECHSEED,12,MUDSLAP,16,SMACKDOWN,20,IRONDEFENSE,24,HEADBUTT,28,MEGADRAIN,30,ROCKSLIDE,36,ROCKBLAST,42,GRASSYTERRAIN,48,STONEEDGE,54,EXPLOSION,60,GIGADRAIN,66,SOLARBEAM
+Color = Green
+Pokedex = Despite their scary appearance, they're quite gentle and kind towards others. The moss that has overtaken this Pokémon has healing properties, allowing it to help others who are injured or in dire need of medicine. Some people call this Pokémon "The Miracle Worker".
+#-------------------------------
+[BOLDORE,1]
+FormName = Hessian
+Types = ROCK,GRASS
+Abilities = STURDY
+HiddenAbilities = MOSSYGUARD
+BaseStats = 70,105,105,50,40,20
+Moves = 0,POWERGEM,0,ABSORB,1,SANDATTACK,1,TACKLE,1,HARDEN,1,STEALTHROCK,1,LEECHSEED,12,MUDSLAP,16,SMACKDOWN,20,IRONDEFENSE,24,HEADBUTT,28,MEGADRAIN,30,ROCKSLIDE,36,ROCKBLAST,42,GRASSYTERRAIN,48,STONEEDGE,54,EXPLOSION
+Color = Green
+Flags = InheritFormWithEverstone
+Evolution = GIGALITH_1,Trade
+Pokedex = Boldore tend to blend in with nature thanks to the moss covering their head and back. This Pokémon is a master at camouflage.
+#-------------------------------
+[ROGGENROLA,1]
+FormName = Hessian
+Types = ROCK,GRASS
+Abilities = STURDY
+HiddenAbilities = MOSSYGUARD
+BaseStats = 55,75,85,25,25,15
+Moves = 1,SANDATTACK,1,TACKLE,1,ABSORB,4,HARDEN,8,STEALTHROCK,12,MUDSLAP,14,LEECHSEED,16,SMACKDOWN,20,IRONDEFENSE,24,HEADBUTT,26,MEGADRAIN,28,ROCKSLIDE,32,ROCKBLAST,36,GRASSYTERRAIN,40,STONEEDGE,44,EXPLOSION
+Color = Green
+Flags = InheritFormWithEverstone
+Evolution = BOLDORE_1,Level,25
+Pokedex = Hessian Roggenrola are Pokémon who soaked up the dripping water inside Ceryneian Temple, slowly growing plant life and moss on their bodies. They prefer dark places to stay cool.

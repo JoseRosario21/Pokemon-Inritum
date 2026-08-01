@@ -148,3 +148,30 @@ DmaxShadowX = 0
 FrontSprite = 1,12
 ShadowX = 0
 ShadowSize = 3
+#-------------------------------
+[ROGGENROLA,1]
+BackSprite = 0,56
+FrontSprite = 0,32
+ShadowX = 0
+ShadowSize = 1
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,32
+DmaxShadowX = 0
+#-------------------------------
+[BOLDORE,1]
+BackSprite = -3,52
+FrontSprite = 1,32
+ShadowX = 0
+ShadowSize = 2
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 1,32
+DmaxShadowX = 0
+#-------------------------------
+[GIGALITH,1]
+BackSprite = 5,48
+FrontSprite = -1,20
+ShadowX = 0
+ShadowSize = 3
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -1,20
+DmaxShadowX = 0

@@ -2004,6 +2004,23 @@ Battle::AbilityEffects::OnBeingHit.add(:STATIC,
   }
 )
 
+Battle::AbilityEffects::OnBeingHit.add(:MOSSYGUARD,
+  proc { |ability, user, target, move, battle|
+    next if !move.pbContactMove?(user)
+    next if user.pbHasType?(:GRASS) || user.effects[PBEffects::LeechSeed] >= 0
+    next if battle.pbRandom(100) >= 30
+    next if !user.affectedByContactEffect?(Battle::Scene::USE_ABILITY_SPLASH)
+    battle.pbShowAbilitySplash(target)
+    user.effects[PBEffects::LeechSeed] = target.index
+    msg = nil
+    if !Battle::Scene::USE_ABILITY_SPLASH
+      msg = _INTL("{1}'s {2} seeded {3}!", target.pbThis, target.abilityName, user.pbThis(true))
+    end
+    battle.pbDisplay(msg) if msg
+    battle.pbHideAbilitySplash(target)
+  }
+)
+
 Battle::AbilityEffects::OnBeingHit.add(:WANDERINGSPIRIT,
   proc { |ability, user, target, move, battle|
     next if !move.pbContactMove?(user)

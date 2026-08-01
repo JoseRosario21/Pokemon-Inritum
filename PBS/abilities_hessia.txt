@@ -11,3 +11,7 @@ Description = On switch-out, boosts the replacement's Attack and Defense.
 [CURSEDSTEEL]
 Name = Cursed Steel
 Description = Contact moves against this Pokémon curse the attacker.
+#-------------------------------
+[MOSSYGUARD]
+Name = Mossy Guard
+Description = Contact moves against this Pokémon have a 30% chance of seeding the attacker.
