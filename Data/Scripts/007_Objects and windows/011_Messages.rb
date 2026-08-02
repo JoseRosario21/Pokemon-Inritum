@@ -477,7 +477,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
   ### Controls
   textchunks = []
   controls = []
-  while text[/(?:\\(f|ff|ts|cl|me|se|wt|wtnp|ch)\[([^\]]*)\]|\\(g|cn|pt|wd|wm|op|cl|wu|\.|\||\!|\^))/i]
+  while text[/(?:\\(f|ff|ts|cl|me|se|wt|wtnp|ch)\[([^\]]*)\]|\\(g|cn|pt|wd|wm|op|cl|wu|sh|\.|\||\!|\^))/i]
     textchunks.push($~.pre_match)
     if $~[1]
       controls.push([$~[1].downcase, $~[2], -1])
@@ -514,6 +514,11 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     case control
     when "op"
       appear_timer_start = System.uptime
+    when "sh"     # Dramatic shout line: snap in fast, swap skin, play shout SE
+      appear_timer_start = System.uptime
+      appear_duration = 0.15
+      startSE = "shout"
+      msgwindow.setSkin("Graphics/Windowskins/shout", false)
     when "cl"
       text = text.sub(/\001\z/, "")   # fix: '$' can match end of line as well
       haveSpecialClose = true
