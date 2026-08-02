@@ -14,4 +14,8 @@ Description = Contact moves against this Pokémon curse the attacker.
 #-------------------------------
 [MOSSYGUARD]
 Name = Mossy Guard
+Description = Raises Defense by 2 stages when hit by a Water-type move.
+#-------------------------------
+[MOSSREAPER]
+Name = Moss Reaper
 Description = Contact moves against this Pokémon have a 30% chance of seeding the attacker.

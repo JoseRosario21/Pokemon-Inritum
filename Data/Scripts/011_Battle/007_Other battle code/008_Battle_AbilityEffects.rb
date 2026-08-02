@@ -2004,7 +2004,7 @@ Battle::AbilityEffects::OnBeingHit.add(:STATIC,
   }
 )
 
-Battle::AbilityEffects::OnBeingHit.add(:MOSSYGUARD,
+Battle::AbilityEffects::OnBeingHit.add(:MOSSREAPER,
   proc { |ability, user, target, move, battle|
     next if !move.pbContactMove?(user)
     next if user.pbHasType?(:GRASS) || user.effects[PBEffects::LeechSeed] >= 0
@@ -2018,6 +2018,13 @@ Battle::AbilityEffects::OnBeingHit.add(:MOSSYGUARD,
     end
     battle.pbDisplay(msg) if msg
     battle.pbHideAbilitySplash(target)
+  }
+)
+
+Battle::AbilityEffects::OnBeingHit.add(:MOSSYGUARD,
+  proc { |ability, user, target, move, battle|
+    next if move.calcType != :WATER
+    target.pbRaiseStatStageByAbility(:DEFENSE, 2, target)
   }
 )
 
