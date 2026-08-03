@@ -469,6 +469,13 @@ BaseMoney = 100
 SkillLevel = 100
 BattleBGM = As The Cicada's Cry
 #-------------------------------
+[GYM_LEADER_ROBIN]
+Name = Gym Leader
+Gender = Unknown
+BaseMoney = 100
+SkillLevel = 100
+BattleBGM = D4zzl1ng Gl34m
+#-------------------------------
 [INQUISITOR]
 Name = Inquisitor
 Gender = Male
