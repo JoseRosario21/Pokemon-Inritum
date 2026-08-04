@@ -74,6 +74,7 @@ class Battle::AI::AIBattler
     if role
       @detected_role = role
       detect_secondary_roles
+      log_detected_role
       return
     end
 
@@ -82,12 +83,27 @@ class Battle::AI::AIBattler
     if role
       @detected_role = role
       detect_secondary_roles
+      log_detected_role
       return
     end
 
     # Fall back to stat-based role detection
     @detected_role = detect_role_from_stats
     detect_secondary_roles
+    log_detected_role
+  end
+
+  # Logs the detected role to Data/debuglog.txt (when battle logging is on)
+  # so role classification is visible alongside the rest of the turn-by-turn
+  # AI decision trace, not just in the player-only pbAdvancedAITestRoles screen.
+  def log_detected_role
+    return unless @battler
+    label = role_to_string(@detected_role)
+    if @secondary_roles && !@secondary_roles.empty?
+      secondary = @secondary_roles.map { |r| role_to_string(r) }.join(", ")
+      label += " (secondary: #{secondary})"
+    end
+    PBDebug.log("[AI] #{@battler.pbThis} (#{index}) role: #{label}")
   end
 
   #-----------------------------------------------------------------------------
@@ -97,6 +113,13 @@ class Battle::AI::AIBattler
     return nil unless @battler.ability
 
     ability_id = @battler.ability_id
+
+    # A Pokemon carrying an explicit screen move is a screen setter first,
+    # even if it also has an incidentally-weather-setting ability (e.g. Snow
+    # Warning enabling its own Aurora Veil) - the move choice is the more
+    # deliberate signal, and it should take priority over the generic
+    # weather-setter classification below.
+    return Battle::AI::Roles::SCREEN_SETTER if @battler.moves.compact.any? { |m| is_screen_move?(m) }
 
     # Weather setters
     weather_abilities = [:DROUGHT, :DRIZZLE, :SANDSTREAM, :SNOWWARNING, :DESOLATELAND, :PRIMORDIALSEA, :DELTASTREAM]
@@ -448,4 +471,65 @@ class Battle::AI
       return Battle::AI::Roles::UTILITY
     end
   end
+end
+
+#===============================================================================
+# Screen Setter Lead Priority
+# A Pokemon built for the Screen Setter role (has Reflect/Light Screen/Aurora
+# Veil in its moveset) should strongly prefer opening with its screen rather
+# than attacking or setting up - UNLESS it can secure a kill this turn, in
+# which case ending a Pokemon outright is worth more than a screen.
+#
+# This wraps the base engine's existing screen-move scoring (which already
+# handles HP-awareness, foe-type matching, and Light Clay) rather than
+# replacing it, so that logic stays intact and this only adds the
+# role/kill-awareness layer on top.
+#===============================================================================
+["StartWeakenPhysicalDamageAgainstUserSide",
+ "StartWeakenSpecialDamageAgainstUserSide",
+ "StartWeakenDamageAgainstUserSideIfHail"].each do |screen_function_code|
+  original_screen_handler = Battle::AI::Handlers::MoveEffectScore[screen_function_code]
+  next unless original_screen_handler
+
+  Battle::AI::Handlers::MoveEffectScore.add(screen_function_code,
+    proc { |score, move, user, ai, battle|
+      score = original_screen_handler.call(score, move, user, ai, battle)
+      next score unless AdvancedBattleAI.feature_enabled?(:roles, ai.trainer)
+      next score unless user.has_role?(Battle::AI::Roles::SCREEN_SETTER)
+
+      # Don't boost the screen if this Pokemon can already secure a kill this
+      # turn - ending a Pokemon outright is worth more than banking a screen.
+      # Simplification: only checks this Pokemon's own moves, not whether a
+      # partner could clean up a second target next turn with no reprisal -
+      # that fuller doubles-coordination case isn't modeled here.
+      can_secure_kill = false
+      battle.pbGetOpposingIndicesInOrder(user.index).each do |opp_idx|
+        opp = battle.battlers[opp_idx]
+        next unless opp && !opp.fainted?
+        user.battler.moves.each do |m|
+          next unless m && m.damagingMove?
+          move_data = GameData::Move.try_get(m.id)
+          next unless move_data && move_data.power > 0
+          est_dmg = AdvancedBattleAI.estimate_damage_battler(move_data, user.battler, opp, battle)
+          if est_dmg >= opp.hp
+            can_secure_kill = true
+            break
+          end
+        end
+        break if can_secure_kill
+      end
+      next score if can_secure_kill
+
+      # No kill available - this Pokemon's job right now is to screen for the
+      # team. Bigger bonus as the opening lead, and again if Light Clay makes
+      # the screen last long enough to matter.
+      lead_bonus = 30
+      lead_bonus += 15 if user.battler.turnCount == 0
+      lead_bonus += 10 if user.has_active_item?(:LIGHTCLAY)
+      score += lead_bonus
+      AdvancedBattleAI.log("Screen Setter: no kill available, prioritizing support role (+#{lead_bonus})", :scoring)
+
+      next score
+    }
+  )
 end

@@ -1,0 +1,5 @@
+Name       = Achievements and Records
+Version    = 1.0.0
+Essentials = 21.1
+Optional   = Field Notes,1.0.0
+Credits    = BloodyNeonz

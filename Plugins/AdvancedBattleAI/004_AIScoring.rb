@@ -49,6 +49,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_best_damage_mo
     # Apply bonuses/penalties based on comparison
     if best_power > 0 && effective_power > 0
       ratio = effective_power / best_power
+      old_score = score
       if ratio >= 0.95
         # This IS the best move - big bonus!
         score += 40
@@ -61,16 +62,24 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_best_damage_mo
         # Much worse - heavy penalty
         score -= 60
       end
+      if score != old_score
+        PBDebug.log_score_change(score - old_score,
+          "effective power vs best available move (ratio #{(ratio * 100).round}%)")
+      end
     end
 
     # Super effective bonus
     if Effectiveness.super_effective?(type_mod)
+      old_score = score
       score += 25
+      PBDebug.log_score_change(score - old_score, "advanced: super effective")
     end
 
     # STAB bonus
     if has_stab
+      old_score = score
       score += 15
+      PBDebug.log_score_change(score - old_score, "advanced: STAB")
     end
 
     next score
@@ -114,6 +123,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_memory_predict
         if move.type == :GROUND && known_ability == :LEVITATE
           if user.has_move_with_function?("StartGravity") || user.has_active_ability?(:MOLDBREAKER)
             score += 10
+            AdvancedBattleAI.log("Ground move bypasses known Levitate", :scoring)
           end
         end
       end
@@ -124,6 +134,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_memory_predict
       # Prefer moves with good coverage
       if move.damagingMove?
         score += 5  # Small bonus for attacking a likely switching target
+        AdvancedBattleAI.log("Pressure a likely-switching low HP target", :scoring)
       end
     end
 
@@ -144,6 +155,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_memory_predict
         # Prefer strong attacks over chip damage
         if move.damagingMove? && move.move.power >= 80
           score += 8
+          AdvancedBattleAI.log("Strong attack vs known recovery user", :scoring)
         end
         # Boost Taunt
         if move.function_code == "DisableTargetStatusMoves"
@@ -239,6 +251,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_priority_usage
         AdvancedBattleAI.log("Priority bonus (low HP, might die)", :scoring)
       elsif user.hp_fraction < 0.5
         score += 5  # Small bonus when moderately low
+        AdvancedBattleAI.log("Priority bonus (moderately low HP)", :scoring)
       end
       # No bonus just for being slower - that's not smart play
     end
@@ -258,6 +271,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_priority_usage
       partner_idx = user.index.even? ? user.index + 1 : user.index - 1
       if battle.battlers[partner_idx] && ai.memory.knows_move_with_function?(partner_idx, "ProtectUserSideFromPriorityMoves")
         score -= 10
+        AdvancedBattleAI.log("Priority penalty: target's side has Quick Guard", :scoring)
       end
     end
 
@@ -288,6 +302,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_setup_decision,
       # Extra bonus if we have multiple setup turns
       if setup_window >= 3
         score += 10
+        AdvancedBattleAI.log("Setup window: extra-long window", :scoring)
       end
     elsif setup_window <= 1
       # Risky to set up
@@ -463,6 +478,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_protect_usage,
         next unless target && !target.fainted?
         if ai.battlers[target_idx] && ai.battlers[target_idx].faster_than?(user)
           score += 10
+          AdvancedBattleAI.log("Protect: expecting to be KO'd by a faster foe", :scoring)
           break
         end
       end

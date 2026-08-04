@@ -463,6 +463,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:prediction_dont_setup_vs_ohko,
 
     if dominated
       score -= 40
+      AdvancedBattleAI.log("Prediction: setup penalty, opponent will deal heavy damage", :scoring)
     end
 
     next score
@@ -557,6 +558,24 @@ Battle::AI::Handlers::ShouldSwitch.add(:prediction_switch_vs_se,
   proc { |battler, reserves, ai, battle|
     next false unless AdvancedBattleAI.feature_enabled?(:move_prediction, ai.trainer)
     next false if reserves.empty?
+
+    # === SAFEGUARDS ===
+    # A predicted super-effective hit is a guess, not a fact, so it alone is far
+    # too cheap a reason to give up a turn. Without these guards this handler
+    # fires on any Pokemon whose typing happens to be weak to something the foe
+    # carries, which in practice means switching out of a matchup every turn.
+    next false if should_avoid_switching?(battler.battler, ai)
+
+    # Give the Pokemon a chance to do its job before bailing.
+    next false if battler.battler.turnCount < 2
+
+    # If we can end an opponent this turn, take the trade rather than fleeing.
+    can_ko_any = battle.pbGetOpposingIndicesInOrder(battler.index).any? do |opp_idx|
+      opp = battle.battlers[opp_idx]
+      next false unless opp && !opp.fainted?
+      next best_move_damage(battler.battler, opp) >= opp.hp
+    end
+    next false if can_ko_any
 
     dominated = false
     battle.pbGetOpposingIndicesInOrder(battler.index).each do |opp_idx|

@@ -29,6 +29,11 @@ module AdvancedBattleAI
       return unless DEBUG_LOG_SCORING || @runtime_debug_scoring
     end
     echoln "[AdvancedAI] #{message}"
+    # Also persist to Data/debuglog.txt (via PBDebug's own $INTERNAL gate) so
+    # AdvancedBattleAI's scoring/decision explanations show up in the same
+    # reviewable log as the base AI's PBDebug.log_score_change calls, instead
+    # of only being visible in a live console session.
+    PBDebug.log("[AdvancedAI] #{message}")
   end
 end
 

@@ -324,6 +324,24 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:predicted_damage,
 )
 
 #===============================================================================
+# Discount non-lethal damage if the target is slower and known to have a
+# recovery move it can use to heal the damage off next turn.
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:recovery_move_anticipation,
+  proc { |score, move, user, target, ai, battle|
+    if move.damagingMove? && ai.trainer.medium_skill? && user.faster_than?(target)
+      dmg = move.rough_damage
+      if dmg > 0 && dmg < target.hp && target.check_for_move { |m| m.healingMove? }
+        old_score = score
+        score -= ([12.0 * dmg / target.hp, 15].min).to_i
+        PBDebug.log_score_change(score - old_score, "target can heal off this damage next turn")
+      end
+    end
+    next score
+  }
+)
+
+#===============================================================================
 # Prefer flinching external effects (note that move effects which cause
 # flinching are dealt with in the function code part of score calculation).
 #===============================================================================

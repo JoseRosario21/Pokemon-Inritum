@@ -1,0 +1,250 @@
+
+================================================================
+
+[Started battle] Double trainer battle (1 trainer(s) vs. 1 trainer(s))
+[AI] Grimer (0) role: Utility
+[AI] The opposing Ninetales (1) role: Screen Setter
+[AI] Sliggoo (2) role: Utility
+[AI] The opposing Azumarill (3) role: Utility (secondary: Setup Sweeper, Revenge Killer)
+[AI] Grimer (0) role: Utility
+[AI] The opposing Ninetales (1) role: Screen Setter
+[AI] Sliggoo (2) role: Utility
+[AI] The opposing Azumarill (3) role: Utility (secondary: Setup Sweeper, Revenge Killer)
+"You are challenged by Gym Leader Robin!"
+"Gym Leader Robin sent out Ninetales and Azumarill!"
+"Go! Grimer and Sliggoo!"
+[Round order] The opposing Ninetales (1), Sliggoo (2), Grimer (0), the opposing Azumarill (3)
+[Ability triggered] The opposing Ninetales's Snow Warning
+"It started to snow!"
+
+===== Round 1 =====
+
+   => will switch with Granbull
+
+[AI] Azumarill (3) is considering using Play Rough against Grimer (0)...
+     +  4: lowering the target's Attack by 1
+     + 16: function code modifier (against target)
+     + 18: damaging move (predicted damage 45 = 72% of target's HP)
+     + 40: effective power vs best available move (ratio 100%)
+     + 15: advanced: STAB
+[AI] Azumarill (3) is considering using Play Rough against Sliggoo (2)...
+     +  4: lowering the target's Attack by 1
+     + 16: function code modifier (against target)
+     + 30: damaging move (predicted damage 90 = 130% of target's HP)
+     + 10: predicted to KO the target
+     -  8: can trigger the target's ability
+     + 40: effective power vs best available move (ratio 100%)
+     + 25: advanced: super effective
+     + 15: advanced: STAB
+[AI] Azumarill (3) is considering using Belly Drum...
+     + 85: function code modifier (generic)
+[AI] Azumarill (3) is considering using Aqua Jet against Grimer (0)...
+     +  8: damaging move (predicted damage 21 = 33% of target's HP)
+     - 60: effective power vs best available move (ratio 44%)
+     + 15: advanced: STAB
+[AI] Azumarill (3) is considering using Aqua Jet against Sliggoo (2)...
+     +  3: damaging move (predicted damage 11 = 15% of target's HP)
+     -  8: can trigger the target's ability
+     - 60: effective power vs best available move (ratio 11%)
+     + 15: advanced: STAB
+[AI] Azumarill (3) is considering using Bulldoze...
+     +  4: lowering the target's Speed by 1
+     + 16: function code modifier (against target)
+     + 12: damaging move (predicted damage 32 = 51% of target's HP)
+     + 25: advanced: super effective
+     +  4: lowering the target's Speed by 1
+     + 16: function code modifier (against target)
+     +  3: damaging move (predicted damage 8 = 13% of target's HP)
+     - 60: effective power vs best available move (ratio 44%)
+     + 51: score inverted (move targets ally but can target foe)
+     +  4: lowering the target's Speed by 1
+     + 16: function code modifier (against target)
+     +  5: damaging move (predicted damage 16 = 23% of target's HP)
+     -  8: can trigger the target's ability
+     - 60: effective power vs best available move (ratio 22%)
+     + 20: affects multiple battlers
+[AI] Move choices for Azumarill (3):
+   *   0.0% to use Play Rough (target 0): score 207
+   * 100.0% to use Play Rough (target 2): score 276
+   *   0.0% to use Belly Drum: score 223
+   *   0.0% to use Aqua Jet (target 0): score 66
+   *   0.0% to use Aqua Jet (target 2): score 43
+   *   0.0% to use Bulldoze: score 146
+   => will use Play Rough (target 2)
+
+[Round order] Sliggoo (2), the opposing Ninetales (1), Grimer (0), the opposing Azumarill (3)
+
+"Gym Leader Robin withdrew Ninetales!"
+"Gym Leader Robin sent out Granbull!"
+[Ability triggered] The opposing Granbull's Intimidate
+[Stat change] Grimer's Attack changed by -1 (0 -> -1)
+"Grimer's Attack fell!"
+[Stat change] Sliggoo's Attack changed by -1 (0 -> -1)
+"Sliggoo's Attack fell!"
+[Use move] Sliggoo (2) used Protect
+"Sliggoo used Protect!"
+"Sliggoo protected itself!"
+[Use move] Grimer (0) used Poison Fang
+"Grimer used Poison Fang!"
+[HP change] The opposing Granbull lost 15 HP (65 -> 50)
+"It's super effective!"
+"The opposing Granbull was badly poisoned!"
+"The Kebia Berry weakened the damage to the opposing Granbull!"
+[Item consumed] The opposing Granbull consumed its held Kebia Berry
+[Use move] The opposing Azumarill (3) used Play Rough
+"The opposing Azumarill used Play Rough!"
+"Sliggoo protected itself!"
+
+[End of round 1]
+[HP change] The opposing Granbull lost 4 HP (50 -> 46)
+"The opposing Granbull was hurt by poison!"
+
+===== Round 2 =====
+
+[AI] Granbull (1) won't switch after all because it has a super-effective move
+[AI] Granbull (1) is considering using Fire Fang against Grimer (0)...
+     + 23: function code modifier (against target)
+     +  9: damaging move (predicted damage 24 = 38% of target's HP)
+     - 60: effective power vs best available move (ratio 43%)
+[AI] Granbull (1) is considering using Fire Fang against Sliggoo (2)...
+     + 23: function code modifier (against target)
+     +  4: damaging move (predicted damage 12 = 17% of target's HP)
+     -  8: can trigger the target's ability
+     - 60: effective power vs best available move (ratio 12%)
+[AI] Granbull (1) is considering using Play Rough against Grimer (0)...
+     +  2: lowering the target's Attack by 1
+     + 10: function code modifier (against target)
+     + 19: damaging move (predicted damage 48 = 77% of target's HP)
+     + 15: advanced: STAB
+[AI] Granbull (1) is considering using Play Rough against Sliggoo (2)...
+     +  2: lowering the target's Attack by 1
+     + 10: function code modifier (against target)
+     + 30: damaging move (predicted damage 96 = 139% of target's HP)
+     + 10: predicted to KO the target
+     -  8: can trigger the target's ability
+     + 40: effective power vs best available move (ratio 100%)
+     + 25: advanced: super effective
+     + 15: advanced: STAB
+[AI] Granbull (1) is considering using Rock Slide...
+     +  8: damaging move (predicted damage 20 = 32% of target's HP)
+     - 30: effective power vs best available move (ratio 50%)
+     +  7: damaging move (predicted damage 20 = 28% of target's HP)
+     -  8: can trigger the target's ability
+     - 60: effective power vs best available move (ratio 28%)
+     + 10: affects multiple battlers
+[AI] Granbull (1) is considering using Stomping Tantrum against Grimer (0)...
+     + 21: damaging move (predicted damage 54 = 87% of target's HP)
+     + 40: effective power vs best available move (ratio 100%)
+     + 25: advanced: super effective
+[AI] Granbull (1) is considering using Stomping Tantrum against Sliggoo (2)...
+     +  9: damaging move (predicted damage 27 = 39% of target's HP)
+     -  8: can trigger the target's ability
+     - 60: effective power vs best available move (ratio 28%)
+[AI] Move choices for Granbull (1):
+   *   0.0% to use Fire Fang (target 0): score 110
+   *   0.0% to use Fire Fang (target 2): score 67
+   *   0.0% to use Play Rough (target 0): score 162
+   * 100.0% to use Play Rough (target 2): score 255
+   *   0.0% to use Rock Slide: score 81
+   *   0.0% to use Stomping Tantrum (target 0): score 204
+   *   0.0% to use Stomping Tantrum (target 2): score 49
+   => will use Play Rough (target 2)
+
+   => will switch with Weezing
+
+[Round order] Sliggoo (2), Grimer (0), the opposing Azumarill (3), the opposing Granbull (1)
+
+"Gym Leader Robin withdrew Azumarill!"
+"Gym Leader Robin sent out Weezing!"
+[Ability triggered] The opposing Weezing's Misty Surge
+"Mist swirled about the battlefield!"
+[Use move] Sliggoo (2) used Protect
+"Sliggoo used Protect!"
+"But it failed!"
+[Move failed] In function code ProtectUser's def pbMoveFailed?
+[Use move] Grimer (0) used Poison Fang
+"Grimer used Poison Fang!"
+[HP change] The opposing Granbull lost 31 HP (46 -> 15)
+"It's super effective!"
+[Use move] The opposing Granbull (1) used Play Rough
+"The opposing Granbull used Play Rough!"
+[HP change] Sliggoo lost 69 HP (69 -> 0)
+"It's super effective!"
+[Ability triggered] Sliggoo's Gooey
+[Stat change] The opposing Granbull's Speed changed by -1 (0 -> -1)
+"The opposing Granbull's Speed fell!"
+"Sliggoo fainted!"
+
+[End of round 2]
+[HP change] The opposing Granbull lost 8 HP (15 -> 7)
+"The opposing Granbull was hurt by poison!"
+"Mist is swirling about the battlefield."
+"Your opponent's weak! Get 'em, Durant!"
+
+===== Round 3 =====
+
+[AI] Granbull (1) wants to switch because it will take a lot of EOR damage
+   => will switch with Azumarill
+
+   => no good replacement Pokémon, will not switch after all
+[AI] Weezing (3) is considering using Strange Steam against Grimer (0)...
+     + 16: damaging move (predicted damage 41 = 66% of target's HP)
+     + 40: effective power vs best available move (ratio 100%)
+     + 15: advanced: STAB
+[AI] Weezing (3) is considering using Strange Steam against Durant (2)...
+     + 11: damaging move (predicted damage 24 = 46% of target's HP)
+     - 60: effective power vs best available move (ratio 18%)
+     + 15: advanced: STAB
+[AI] Weezing (3) is considering using Sludge Bomb against Grimer (0)...
+     +  8: damaging move (predicted damage 20 = 32% of target's HP)
+     - 30: effective power vs best available move (ratio 50%)
+     + 15: advanced: STAB
+[AI] Weezing (3) is considering using Sludge Bomb against Durant (2)...
+     move will not affect Durant (2)
+     - 80: move will fail
+[AI] Weezing (3) is considering using Heat Wave...
+     +  8: damaging move (predicted damage 21 = 33% of target's HP)
+     + 30: damaging move (predicted damage 102 = 196% of target's HP)
+     + 10: predicted to KO the target
+     + 40: effective power vs best available move (ratio 100%)
+     + 25: advanced: super effective
+     + 10: affects multiple battlers
+[AI] Weezing (3) is considering using Will-O-Wisp against Grimer (0)...
+     move will not affect Grimer (0)
+     - 80: move will fail
+[AI] Weezing (3) is considering using Will-O-Wisp against Durant (2)...
+     move will not affect Durant (2)
+     - 80: move will fail
+[AI] Move choices for Weezing (3):
+   *   0.0% to use Strange Steam (target 0): score 179
+   *   0.0% to use Strange Steam (target 2): score 84
+   *   0.0% to use Sludge Bomb (target 0): score 101
+   *   0.0% to use Sludge Bomb (target 2): score 20
+   * 100.0% to use Heat Wave: score 212
+   *   0.0% to use Will-O-Wisp (target 0): score 20
+   *   0.0% to use Will-O-Wisp (target 2): score 20
+   => will use Heat Wave
+
+[Round order] Durant (2), the opposing Weezing (3), Grimer (0), the opposing Granbull (1)
+
+"Gym Leader Robin withdrew Granbull!"
+"Gym Leader Robin sent out Azumarill!"
+[Use move] Durant (2) used Metal Claw
+"Durant used Metal Claw!"
+[HP change] The opposing Weezing lost 39 HP (56 -> 17)
+"It's super effective!"
+[Use move] The opposing Weezing (3) used Heat Wave
+"The opposing Weezing used Heat Wave!"
+[Move failed] Failed pbAccuracyCheck
+"Grimer avoided the attack!"
+[HP change] Durant lost 52 HP (52 -> 0)
+"It's super effective!"
+"Durant fainted!"
+[Use move] Grimer (0) used Poison Fang
+"Grimer used Poison Fang!"
+[HP change] The opposing Weezing lost 11 HP (17 -> 6)
+
+[End of round 3]
+[HP change] The opposing Weezing gained 3 HP (6 -> 9)
+"The opposing Weezing restored a little HP using its Black Sludge!"
+"Mist is swirling about the battlefield."

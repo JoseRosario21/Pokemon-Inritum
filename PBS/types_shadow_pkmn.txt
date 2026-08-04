@@ -1,0 +1,15 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+# IconPosition was 19 in the stock file, but types_stellar.txt already claims
+# row 19 -- Graphics/UI/types.png is 64x560, i.e. exactly 20 rows of 28px
+# (0-18 for the real types, 19 for Stellar), so there is no free row.
+# Parked on 9 (QMARKS / "???") for now: sharing that slot has no functional
+# effect, since QMARKS only ever shows for typeless entries, and "???" reads
+# acceptably for Shadow. To give Shadow its own icon later, add a 21st row to
+# Graphics/UI/types.png (-> 64x588) and to Graphics/UI/DexNav/types.png
+# (32px rows, -> 64x672), then set IconPosition = 20 here.
+[SHADOW]
+Name = Shadow
+IconPosition = 9
+IsSpecialType = true
+Resistances = SHADOW

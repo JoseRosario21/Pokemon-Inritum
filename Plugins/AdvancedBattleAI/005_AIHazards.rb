@@ -16,6 +16,7 @@ Battle::AI::Handlers::MoveEffectScore.add("AddStealthRocksToFoeSide",
 
     # Base score adjustment
     score = Battle::AI::MOVE_BASE_SCORE + hazard_value
+    AdvancedBattleAI.log("SR base hazard value: #{hazard_value}", :scoring)
 
     # Bonus if we also have other hazards to layer
     if user.has_move_with_function?("AddSpikesToFoeSide")
@@ -48,6 +49,7 @@ Battle::AI::Handlers::MoveEffectScore.add("AddStealthRocksToFoeSide",
     remaining_pokemon = count_opponent_remaining_pokemon(user, battle)
     if remaining_pokemon >= 4
       score += 10  # More valuable with more switches expected
+      AdvancedBattleAI.log("SR bonus: opponent has many Pokemon left", :scoring)
     end
 
     next [score, AdvancedBattleAI::HAZARD_SCORE_THRESHOLD].max
@@ -68,6 +70,7 @@ Battle::AI::Handlers::MoveEffectScore.add("AddSpikesToFoeSide",
     hazard_value = layer_values[spikes_count] || 0
 
     score = Battle::AI::MOVE_BASE_SCORE + hazard_value
+    AdvancedBattleAI.log("Spikes base hazard value (layer #{spikes_count + 1}): #{hazard_value}", :scoring)
 
     # Bonus if Stealth Rock is already up (layering synergy)
     if user.pbOpposingSide.effects[PBEffects::StealthRock]
@@ -77,15 +80,22 @@ Battle::AI::Handlers::MoveEffectScore.add("AddSpikesToFoeSide",
 
     # Bonus for grounded opponents
     grounded_count = count_grounded_opponents(user, ai, battle)
-    score += grounded_count * 5
+    if grounded_count > 0
+      score += grounded_count * 5
+      AdvancedBattleAI.log("Spikes bonus: #{grounded_count} grounded opponent(s)", :scoring)
+    end
 
     # Penalty for many Flying/Levitate opponents
     flying_count = AdvancedBattleAI.count_immune_to_ground(user, ai, battle)
-    score -= flying_count * 8
+    if flying_count > 0
+      score -= flying_count * 8
+      AdvancedBattleAI.log("Spikes penalty: #{flying_count} Flying/Levitate opponent(s)", :scoring)
+    end
 
     # Early game bonus
     if battle.turnCount <= 3
       score += 10
+      AdvancedBattleAI.log("Spikes bonus: early game", :scoring)
     end
 
     next [score, AdvancedBattleAI::HAZARD_SCORE_THRESHOLD - 10].max
@@ -106,6 +116,7 @@ Battle::AI::Handlers::MoveEffectScore.add("AddToxicSpikesToFoeSide",
     hazard_value = layer_values[tspikes_count] || 0
 
     score = Battle::AI::MOVE_BASE_SCORE + hazard_value
+    AdvancedBattleAI.log("T-Spikes base hazard value (layer #{tspikes_count + 1}): #{hazard_value}", :scoring)
 
     # Bonus against stall teams (works well with chip damage)
     if ai.memory
@@ -120,15 +131,22 @@ Battle::AI::Handlers::MoveEffectScore.add("AddToxicSpikesToFoeSide",
 
     # Penalty for Poison-type opponents (absorb T-Spikes)
     poison_count = AdvancedBattleAI.count_poison_type_opponents(user, ai, battle)
-    score -= poison_count * 15  # Big penalty - Poison types absorb T-Spikes
+    if poison_count > 0
+      score -= poison_count * 15  # Big penalty - Poison types absorb T-Spikes
+      AdvancedBattleAI.log("T-Spikes penalty: #{poison_count} Poison-type opponent(s)", :scoring)
+    end
 
     # Penalty for Steel-type opponents (immune)
     steel_count = AdvancedBattleAI.count_steel_type_opponents(user, ai, battle)
-    score -= steel_count * 8
+    if steel_count > 0
+      score -= steel_count * 8
+      AdvancedBattleAI.log("T-Spikes penalty: #{steel_count} Steel-type opponent(s)", :scoring)
+    end
 
     # Bonus if 2nd layer (badly poison is much stronger)
     if tspikes_count == 1
       score += 5
+      AdvancedBattleAI.log("T-Spikes bonus: upgrading to badly poison", :scoring)
     end
 
     next [score, AdvancedBattleAI::HAZARD_SCORE_THRESHOLD - 15].max
@@ -147,6 +165,7 @@ Battle::AI::Handlers::MoveEffectScore.add("AddStickyWebToFoeSide",
     speed_advantage = AdvancedBattleAI.calculate_speed_advantage_with_web(user, ai, battle)
 
     score = Battle::AI::MOVE_BASE_SCORE + (speed_advantage * 5)
+    AdvancedBattleAI.log("Sticky Web base speed advantage: #{speed_advantage}", :scoring)
 
     # Big bonus if our team is slightly slower
     if speed_advantage >= 2
@@ -157,11 +176,15 @@ Battle::AI::Handlers::MoveEffectScore.add("AddStickyWebToFoeSide",
     # Bonus if we have sweepers that would benefit
     if ai.team_has_role?(user.side, Battle::AI::Roles::SWEEPER)
       score += 10
+      AdvancedBattleAI.log("Sticky Web bonus: team has a sweeper", :scoring)
     end
 
     # Penalty for many Flying/Levitate opponents
     flying_count = AdvancedBattleAI.count_immune_to_ground(user, ai, battle)
-    score -= flying_count * 10
+    if flying_count > 0
+      score -= flying_count * 10
+      AdvancedBattleAI.log("Sticky Web penalty: #{flying_count} Flying/Levitate opponent(s)", :scoring)
+    end
 
     next [score, AdvancedBattleAI::HAZARD_SCORE_THRESHOLD - 5].max
   }
@@ -184,6 +207,7 @@ Battle::AI::Handlers::MoveEffectScore.add("RemoveUserBindingAndEntryHazards",
     net_benefit = our_hazard_value - (their_hazard_value * 0.3)  # Small penalty for removing their binding
 
     score += net_benefit.to_i
+    AdvancedBattleAI.log("Rapid Spin net hazard benefit: #{net_benefit.to_i}", :scoring)
 
     # Bonus if bound/trapped
     if user.effects[PBEffects::Trapping] > 0
@@ -194,14 +218,17 @@ Battle::AI::Handlers::MoveEffectScore.add("RemoveUserBindingAndEntryHazards",
     # Bonus if Leech Seed
     if user.effects[PBEffects::LeechSeed] >= 0
       score += 15
+      AdvancedBattleAI.log("Rapid Spin bonus: removes Leech Seed", :scoring)
     end
 
     # Also gets +1 Speed, small bonus
     score += 5
+    AdvancedBattleAI.log("Rapid Spin: +1 Speed bonus", :scoring)
 
     # If no hazards/trapping to remove, still a decent attacking move
     if our_hazard_value == 0 && user.effects[PBEffects::Trapping] == 0
       score = Battle::AI::MOVE_BASE_SCORE  # Just use base score
+      AdvancedBattleAI.log("Rapid Spin: nothing to remove, base attacking score only", :scoring)
     end
 
     next score
@@ -230,6 +257,7 @@ Battle::AI::Handlers::MoveEffectScore.add("LowerTargetEvasion1RemoveSideEffects"
     net_benefit = our_hazard_value + their_screens - their_hazard_value - our_screens
 
     score += net_benefit.to_i
+    AdvancedBattleAI.log("Defog net hazard/screen benefit: #{net_benefit.to_i}", :scoring)
 
     # If we have important hazards up, big penalty for Defog
     if their_hazard_value >= 30
@@ -247,7 +275,10 @@ Battle::AI::Handlers::MoveEffectScore.add("LowerTargetEvasion1RemoveSideEffects"
     if battle.field.terrain != :None
       # Check if terrain benefits us or opponent
       terrain_benefit = AdvancedBattleAI.evaluate_terrain_benefit(user, battle)
-      score -= terrain_benefit  # Negative if terrain helps us
+      if terrain_benefit != 0
+        score -= terrain_benefit  # Negative if terrain helps us
+        AdvancedBattleAI.log("Defog terrain consideration: #{-terrain_benefit}", :scoring)
+      end
     end
 
     next score

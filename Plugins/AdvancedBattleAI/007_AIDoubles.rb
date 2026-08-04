@@ -86,8 +86,10 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_partner_synerg
         type_mod = Effectiveness.calculate(move_type, *partner.types)
         if Effectiveness.super_effective?(type_mod)
           score -= 30  # Big penalty for super effective on partner
+          AdvancedBattleAI.log("Spread move hits partner super-effectively", :scoring)
         elsif type_mod > 0
           score -= 10  # Small penalty for hitting partner
+          AdvancedBattleAI.log("Spread move hits partner", :scoring)
         end
       end
     end
@@ -295,12 +297,14 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_redirection,
       # Protect low HP partner
       if partner.hp < partner.totalhp * 0.3
         score += 15
+        AdvancedBattleAI.log("Redirect to protect low HP partner", :scoring)
       end
     end
 
     # Penalty if user is low HP (might faint from redirected attacks)
     if user.hp < user.totalhp * 0.25
       score -= 20
+      AdvancedBattleAI.log("Redirect penalty: user is low HP", :scoring)
     end
 
     next score
@@ -332,14 +336,17 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_helping_hand,
       AdvancedBattleAI.log("Helping Hand for strong attacker", :scoring)
     elsif best_power >= 60
       score += 15
+      AdvancedBattleAI.log("Helping Hand for decent attacker", :scoring)
     else
       score -= 10  # Partner doesn't have good attacks
+      AdvancedBattleAI.log("Helping Hand penalty: partner's attacks are weak", :scoring)
     end
 
     # Bonus if partner is boosted
     partner_ai = ai.battlers[partner_idx]
     if partner_ai && count_positive_stat_stages(partner_ai) >= 2
       score += 15
+      AdvancedBattleAI.log("Helping Hand for boosted partner", :scoring)
     end
 
     next score
@@ -392,7 +399,10 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_wide_guard,
     end
 
     # Penalty if no spread threat
-    score -= 30 unless has_spread_threat
+    if !has_spread_threat
+      score -= 30
+      AdvancedBattleAI.log("Wide Guard penalty: no spread move threat detected", :scoring)
+    end
 
     next score
   }
@@ -431,13 +441,17 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_quick_guard,
         if ai.memory.has_shown_priority?(opp_idx)
           score += 20
           has_priority_threat = true
+          AdvancedBattleAI.log("Quick Guard vs remembered priority user", :scoring)
           break
         end
       end
     end
 
     # Penalty if no priority threat
-    score -= 30 unless has_priority_threat
+    if !has_priority_threat
+      score -= 30
+      AdvancedBattleAI.log("Quick Guard penalty: no priority move threat detected", :scoring)
+    end
 
     next score
   }
@@ -482,6 +496,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_ally_switch,
     # Also useful for disruption/mindgames at high skill
     if ai.trainer.best_skill?
       score += 5
+      AdvancedBattleAI.log("Ally Switch: mindgame value at best skill", :scoring)
     end
 
     next score
@@ -489,8 +504,27 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_ally_switch,
 )
 
 #===============================================================================
+# Turn-order helper: does (move_a, battler_a) resolve before (move_b, battler_b)
+# this round? Priority bracket first, then speed (Trick Room-aware via
+# AIBattler#faster_than?). Doesn't touch the battle's live @priority array,
+# since that isn't safely queryable mid-decision - this recomputes the same
+# priority/speed rule from each battler's stats instead.
+#===============================================================================
+module AdvancedBattleAI
+  def self.acts_before?(move_a, battler_a, move_b, battler_b)
+    pri_a = move_a.pbPriority(battler_a.battler) rescue 0
+    pri_b = move_b.pbPriority(battler_b.battler) rescue 0
+    return pri_a > pri_b if pri_a != pri_b
+    return battler_a.faster_than?(battler_b)
+  end
+end
+
+#===============================================================================
 # 6.1 Coordinated KO Timing
-# Bonus for combined damage KOs in doubles
+# Bonus for combined damage KOs in doubles. Uses the partner's actual
+# committed move/target this round if it's already been chosen (earlier
+# battler index in a doubles turn), falling back to a best-damage estimate
+# only when the partner hasn't acted yet.
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_coordinated_ko,
   proc { |score, move, user, target, ai, battle|
@@ -513,19 +547,36 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_coordinated_ko
       next score
     end
 
-    # Estimate partner's best damage against this target
+    # Does the partner already have a real, committed choice this round?
+    partner_choice = battle.choices[partner_idx]
+    partner_move = nil
+    partner_target_idx = nil
+    if partner_choice && partner_choice[0] == :UseMove && partner_choice[2]
+      partner_move = partner_choice[2]
+      partner_target_idx = partner_choice[3]
+    end
+
+    if partner_target_idx && partner_target_idx >= 0 && partner_target_idx != target.index
+      # Partner has already locked in a different target - no combined KO on
+      # this one is possible, so don't credit this move for help that isn't coming.
+      next score
+    end
+
+    # Partner's damage against this target. The shared ai.move object is
+    # bound to the AI's current (user, target) for this handler call - it
+    # can't safely be repointed at the partner mid-scoring - so this uses the
+    # same standalone rough formula for the partner's estimate whether we're
+    # using their real committed move or guessing across their movepool.
     partner_best_damage = 0
-    partner.moves.each do |m|
+    candidate_moves = partner_move ? [partner_move] : partner.moves
+    candidate_moves.each do |m|
       next unless m && (m.damagingMove? rescue false)
       m_power = m.power rescue 0
       next if m_power == 0
-
-      # Simple damage estimate
       target_battler = target.battler
       move_type = m.type rescue :NORMAL
       type_mod = Effectiveness.calculate(move_type, *target_battler.types) rescue 1.0
       stab = (partner.pbHasType?(move_type) rescue false) ? 1.5 : 1.0
-
       if (m.category rescue 0) == 0  # Physical
         atk = partner.attack
         dfn = [target_battler.defense, 1].max
@@ -533,13 +584,27 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_coordinated_ko
         atk = partner.spatk
         dfn = [target_battler.spdef, 1].max
       end
-
       est_dmg = ((2 * partner.level / 5.0 + 2) * m_power * atk / dfn / 50.0 + 2).floor
       est_dmg = (est_dmg * stab * type_mod / Effectiveness::NORMAL_EFFECTIVE_MULTIPLIER).floor
       partner_best_damage = est_dmg if est_dmg > partner_best_damage
     end
 
-    # Combined damage KO
+    # acts_before? needs the AIBattler wrapper (for faster_than?), not the
+    # raw battler `partner` used above for the plain stat/movepool reads.
+    partner_ai_battler = ai.battlers[partner_idx]
+    partner_acts_first = partner_move && partner_ai_battler &&
+                          AdvancedBattleAI.acts_before?(partner_move, partner_ai_battler, move.move, user)
+
+    if partner_acts_first && partner_best_damage >= target.hp
+      # The partner's already-locked-in move alone secures the KO before we'd
+      # even act - hitting this target too is wasted, so don't reward it and
+      # lightly discourage piling on.
+      score -= 10
+      AdvancedBattleAI.log("Coordinated KO: partner already secures this KO first", :scoring)
+      next score
+    end
+
+    # Combined damage KO - genuinely needs both hits, neither alone suffices
     if our_damage + partner_best_damage >= target.hp && our_damage < target.hp
       score += 20
       AdvancedBattleAI.log("Coordinated KO: combined damage secures KO", :scoring)

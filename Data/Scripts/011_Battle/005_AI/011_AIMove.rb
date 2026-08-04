@@ -269,6 +269,14 @@ class Battle::AI::AIMove
         multipliers[:power_multiplier] /= 2 if calc_type == :DRAGON && target_battler.affectedByTerrain?
       end
     end
+    # Custom Field Effects (PBS-defined data-driven fields, e.g. Ceryneian
+    # Temple's Steel/Fairy boost) - reuses the real calc_damage field effect
+    # with aiCheck true, so it stays consistent with actual battle behaviour
+    # (including stacked fields) instead of re-deriving the multiplier logic.
+    if @ai.trainer.medium_skill? && @ai.battle.respond_to?(:apply_field_effect)
+      @ai.battle.apply_field_effect(:calc_damage, user_battler, target_battler, 1,
+                                     @move, calc_type, base_dmg, multipliers, true)
+    end
     # Badge multipliers
     if @ai.trainer.high_skill? && @ai.battle.internalBattle && target_battler.pbOwnedByPlayer?
       # Don't need to check the Atk/Sp Atk-boosting badges because the AI

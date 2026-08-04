@@ -140,10 +140,12 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_setup_timing,
     if window[:safe] && window[:turns] >= 2
       # Safe setup window (reduced from SETUP_WINDOW_BONUS to avoid stacking)
       score += 15
+      AdvancedBattleAI.log("Setup window: safe (#{window[:turns]} turns)", :scoring)
 
       # Extra bonus for longer windows
       if window[:turns] >= 3
         score += 8
+        AdvancedBattleAI.log("Setup window: extra-long window", :scoring)
       end
 
       # Calculate sweep potential
@@ -156,11 +158,13 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_setup_timing,
         AdvancedBattleAI.log("High sweep potential after setup", :scoring)
       elsif sweep_potential >= 30
         score += 8
+        AdvancedBattleAI.log("Moderate sweep potential after setup", :scoring)
       end
 
     elsif window[:turns] <= 1
       # Dangerous to set up
       score += AdvancedBattleAI::SETUP_RISKY_PENALTY
+      AdvancedBattleAI.log("Setup window: risky (#{window[:turns]} turns)", :scoring)
 
       # Extra penalty if priority threat
       if window[:has_priority_threat]
@@ -178,6 +182,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_setup_timing,
     elsif current_stages >= 2
       # Still beneficial but less so
       score -= 5
+      AdvancedBattleAI.log("Somewhat boosted already", :scoring)
     end
 
     next score
@@ -208,16 +213,20 @@ Battle::AI::Handlers::MoveEffectScore.add("MaxUserAttackLoseHalfOfTotalHP",
         AdvancedBattleAI.log("Belly Drum: high sweep potential", :scoring)
       elsif sweep_potential >= 40
         score = Battle::AI::MOVE_BASE_SCORE + 20
+        AdvancedBattleAI.log("Belly Drum: moderate sweep potential", :scoring)
       else
         score = Battle::AI::MOVE_BASE_SCORE - 20  # Not worth it
+        AdvancedBattleAI.log("Belly Drum: low sweep potential, not worth it", :scoring)
       end
     else
       score = Battle::AI::MOVE_USELESS_SCORE  # Too risky
+      AdvancedBattleAI.log("Belly Drum: too risky (unsafe or window < 2 turns)", :scoring)
     end
 
     # Check for Sitrus Berry / healing
-    if user.hasActiveItem?(:SITRUSBERRY)
+    if user.has_active_item?(:SITRUSBERRY)
       score += 20  # Berry helps recover HP loss
+      AdvancedBattleAI.log("Belly Drum + Sitrus Berry", :scoring)
     end
 
     # Check for priority moves (important after Belly Drum)
@@ -249,20 +258,24 @@ Battle::AI::Handlers::MoveEffectScore.add("RaiseUserAtkSpAtk2LowerUserDefSpDef1"
       AdvancedBattleAI.log("Shell Smash: good sweep potential", :scoring)
 
       # Bonus if we have White Herb
-      if user.hasActiveItem?(:WHITEHERB)
+      if user.has_active_item?(:WHITEHERB)
         score += 15  # Negates defense drops
+        AdvancedBattleAI.log("Shell Smash + White Herb", :scoring)
       end
     elsif window[:turns] >= 1
       # Risky but might work
       score = Battle::AI::MOVE_BASE_SCORE + 10
+      AdvancedBattleAI.log("Shell Smash: risky but might work", :scoring)
     else
       # Too dangerous
       score = Battle::AI::MOVE_BASE_SCORE - 20
+      AdvancedBattleAI.log("Shell Smash: too dangerous", :scoring)
     end
 
     # Big penalty if already used (diminishing returns + def drops stack)
     if user.stages[:ATTACK] >= 2 || user.stages[:SPECIAL_ATTACK] >= 2
       score -= 30
+      AdvancedBattleAI.log("Shell Smash: already boosted, diminishing returns", :scoring)
     end
 
     next score
@@ -281,12 +294,14 @@ Battle::AI::Handlers::MoveEffectScore.add("RaiseUserAtkSpd1",
 
     if window[:safe]
       score += AdvancedBattleAI::SETUP_WINDOW_BONUS
+      AdvancedBattleAI.log("Dragon Dance: safe setup window", :scoring)
 
       # Dragon Dance is great for sweeping
       sweep_potential = ai.calculate_sweep_potential(user, 1)
 
       if sweep_potential >= 30
         score += 15
+        AdvancedBattleAI.log("Dragon Dance: good sweep potential", :scoring)
       end
 
       # Check Trick Room — Dragon Dance speed boost is counterproductive under TR
@@ -314,6 +329,7 @@ Battle::AI::Handlers::MoveEffectScore.add("RaiseUserAtkSpd1",
       end
     else
       score -= 10
+      AdvancedBattleAI.log("Dragon Dance: unsafe setup window", :scoring)
     end
 
     next score
@@ -352,15 +368,18 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_baton_pass,
 
       if has_good_recipient
         score += 15
+        AdvancedBattleAI.log("Baton Pass: good recipient in party", :scoring)
       end
     elsif current_stages <= 0
       # No boosts to pass
       score -= 20
+      AdvancedBattleAI.log("Baton Pass: no boosts to pass", :scoring)
     end
 
     # Also consider Substitute
     if user.effects[PBEffects::Substitute] > 0
       score += 15  # Pass the sub
+      AdvancedBattleAI.log("Baton Pass: passing a Substitute too", :scoring)
     end
 
     next score
@@ -400,6 +419,7 @@ Battle::AI::Handlers::MoveEffectScore.add("UserMakesSubstitute",
         next unless m && m.statusMove?
         if m.function_code.match?(/Paralyze|Poison|Burn|Sleep|Confuse/)
           score += 10
+          AdvancedBattleAI.log("Substitute: blocks a status move threat", :scoring)
           break
         end
       end
@@ -411,6 +431,7 @@ Battle::AI::Handlers::MoveEffectScore.add("UserMakesSubstitute",
       next unless opp && !opp.fainted?
       if opp.hasActiveAbility?(:INFILTRATOR)
         score -= 15
+        AdvancedBattleAI.log("Substitute: opponent has Infiltrator", :scoring)
         break
       end
       # Check for sound-based moves
@@ -418,6 +439,7 @@ Battle::AI::Handlers::MoveEffectScore.add("UserMakesSubstitute",
         next unless m
         if m.soundMove?
           score -= 10
+          AdvancedBattleAI.log("Substitute: opponent has a sound move", :scoring)
           break
         end
       end

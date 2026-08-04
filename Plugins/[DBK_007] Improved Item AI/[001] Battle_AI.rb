@@ -168,7 +168,7 @@ class Battle::AI
     battler = @battle.pbFindBattler(party_index, user.side)
     firstAction = @battle.pbIsFirstAction?(user.index)
     return false if !@battle.pbCanUseItemOnPokemon?(item, pkmn, battler, @battle.scene, false)
-    args = [item, pkmn, battler, move_index, fistAction, self, @battle.scene, false]
+    args = [item, pkmn, battler, move_index, firstAction, self, @battle.scene, false]
     args.push(user.index) if @battle.launcherBattle?
     return false if !ItemHandlers.triggerCanUseInBattle(*args)
     return false if @battle.pbItemAlreadyInUse?(item, user.index, (useType >= 4 ? -1 : party_index), move_index)

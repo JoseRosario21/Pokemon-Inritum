@@ -91,6 +91,9 @@ end
 
 # Move the player to tile (x, y) along the shortest passable path.
 def pbPlayerMoveToXY(x, y, wait = true)
-  pbEventMoveToXY($game_player, x, y, wait: wait)
+  # `wait` is positional on pbEventMoveToXY -- passing it as `wait: wait` made
+  # Ruby 3 collapse it into a positional Hash, which is always truthy, so
+  # pbPlayerMoveToXY(x, y, false) still blocked until the walk finished.
+  pbEventMoveToXY($game_player, x, y, wait)
 end
 

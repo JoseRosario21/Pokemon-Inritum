@@ -124,7 +124,7 @@ module AdvancedBattleAI
   #-----------------------------------------------------------------------------
 
   # Log AI decisions to console (for debugging)
-  DEBUG_LOG_DECISIONS = false
+  DEBUG_LOG_DECISIONS = true
 
   # Log memory updates to console
   DEBUG_LOG_MEMORY = false
@@ -247,6 +247,27 @@ module AdvancedBattleAI
   # Shared Damage Estimation Utility
   # Core formula used by all damage estimation call sites.
   # Options hash supports :weather, :ability, :item, :adaptability, :move_flags
+  #
+  # This is intentionally a separate, simplified formula from the base AI's
+  # Battle::AI::AIMove#rough_damage (Data/Scripts/011_Battle/005_AI/011_AIMove.rb)
+  # rather than a duplicate of it - the two exist for different, non-overlapping
+  # jobs:
+  #   - rough_damage is bound to the single Battle::AI::AIMove instance's
+  #     current (ai.user, ai.target, ai.move), set via ai.move.set_up(move).
+  #     It's comprehensive (full ability/item/weather/terrain/field/screens/
+  #     crit/badge/burn handling via the real damage-calc hook registry) but
+  #     can only ever evaluate that one current combination - it can't safely
+  #     be repointed at an arbitrary battler pair mid-scoring.
+  #   - estimate_damage/_battler/_party take explicit battler or Pokemon
+  #     arguments, so they can evaluate ANY pairing - switch-in candidates,
+  #     an opponent's hypothetical move against the user, a benched party
+  #     Pokemon with no live Battler at all (_party). That flexibility is
+  #     why they use a simplified formula instead of the real hook registry.
+  #
+  # When a handler already has ai.move available for the AI's own current
+  # (user, move, target), prefer ai.move.rough_damage over these - it's both
+  # more accurate and already set up. Reach for estimate_damage_battler/
+  # _party only when evaluating a battler pair outside that current context.
   #---------------------------------------------------------------------------
 
   # Core formula: stat-based, no battler objects required

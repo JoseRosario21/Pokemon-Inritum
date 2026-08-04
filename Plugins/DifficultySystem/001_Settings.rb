@@ -7,7 +7,7 @@ module DifficultySystem
   # Add trainer type symbols to the appropriate list as new types are created.
   #-----------------------------------------------------------------------------
   BOSS_TRAINER_TYPES = [
-    :GYM_LEADER_LYRA, :GYM_LEADER_HOWARD,
+    :GYM_LEADER_LYRA, :GYM_LEADER_HOWARD, :GYM_LEADER_ROBIN,
     :RIVAL1, :RIVAL2,
     :TEAM_REBIRTH_LEADER, :TEAM_REBIRTH_ELITE_GRUNT_M, :TEAM_REBIRTH_ELITE_GRUNT2_M,
   ].freeze

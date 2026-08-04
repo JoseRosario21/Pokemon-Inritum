@@ -30,22 +30,27 @@ if defined?(Settings::DYNAMAX_POKEMON)
       when Battle::AI::Roles::PHYSICAL_WALL, Battle::AI::Roles::SPECIAL_WALL, Battle::AI::Roles::MIXED_WALL
         # Walls also benefit from doubled HP
         score += 15
+        AdvancedBattleAI.log("Dynamax bonus for wall", :scoring)
 
       when Battle::AI::Roles::HAZARD_SETTER
         # Less valuable - job should be done
         score -= 10
+        AdvancedBattleAI.log("Dynamax penalty for hazard setter", :scoring)
 
       when Battle::AI::Roles::PIVOT
         # Can't use pivot moves while Dynamaxed
         score -= 15
+        AdvancedBattleAI.log("Dynamax penalty for pivot", :scoring)
       end
 
       # Consider setup window
       window = @ai.calculate_full_setup_window(self, @ai.battle) rescue { safe: true }
       if window[:safe]
         score += 10
+        AdvancedBattleAI.log("Dynamax bonus: safe setup window", :scoring)
       else
         score -= 15  # Don't Dynamax if about to die
+        AdvancedBattleAI.log("Dynamax penalty: unsafe window", :scoring)
       end
 
       return score
@@ -151,11 +156,11 @@ if defined?(Battle::Field) || defined?(PBFieldEffects)
       next score unless field && field != :BASE
 
       # Field-specific scoring adjustments
+      old_score = score
       case field
       when :ELECTRIC
         if move.type == :ELECTRIC
           score += 15
-          AdvancedBattleAI.log("Electric field boost", :scoring)
         end
         # Rising Voltage doubles in Electric Terrain
         if move.function_code == "DoublePowerInElectricTerrain"
@@ -169,7 +174,6 @@ if defined?(Battle::Field) || defined?(PBFieldEffects)
         # Grassy Glide gets priority
         if move.function_code == "HigherPriorityInGrassyTerrain"
           score += 20
-          AdvancedBattleAI.log("Grassy Glide priority boost", :scoring)
         end
 
       when :PSYCHIC
@@ -239,6 +243,9 @@ if defined?(Battle::Field) || defined?(PBFieldEffects)
           score += 10
         end
       end
+      if score != old_score
+        AdvancedBattleAI.log("Field (#{field}) type synergy: #{score - old_score >= 0 ? '+' : ''}#{score - old_score}", :scoring)
+      end
 
       # Bonus for field-changing moves if field is bad for us
       field_change_functions = [
@@ -250,6 +257,7 @@ if defined?(Battle::Field) || defined?(PBFieldEffects)
         # Consider if current field is bad
         # This is a simplified check
         score += 10  # Small bonus for changing field
+        AdvancedBattleAI.log("Field-changing move bonus", :scoring)
       end
 
       next score
@@ -286,11 +294,13 @@ if defined?(Settings::Z_POWERED_POKEMON)
         # Z-Status moves give boosts, very valuable
         if move.statusMove?
           score += 25
+          AdvancedBattleAI.log("Z-Move bonus: setup sweeper using Z-status", :scoring)
         end
 
       when Battle::AI::Roles::STALLBREAKER
         # Z-Moves help break stall
         score += 15
+        AdvancedBattleAI.log("Z-Move bonus for stallbreaker", :scoring)
       end
 
       next score

@@ -209,32 +209,67 @@ Battle::AI::Handlers::ShouldSwitch.add(:advanced_role_mismatch,
       end
 
     when Battle::AI::Roles::SCREEN_SETTER
-      # Screen setter when screens are up
+      # Screens being up means the whole team benefits, not that this specific
+      # battler is done or mismatched - so unlike the wall branches above,
+      # "screens up" alone says nothing about whether THIS Pokemon should
+      # leave. Only consider it if the screen setter is also personally
+      # struggling here, and only leave for a genuinely dominant replacement
+      # (matching the rigor of the wall branches, not a bare "any single
+      # super-effective move" bar).
       side = battler.pbOwnSide
       screens_up = side.effects[PBEffects::Reflect] > 0 ||
                    side.effects[PBEffects::LightScreen] > 0 ||
                    side.effects[PBEffects::AuroraVeil] > 0
       if screens_up
-        # Only switch if a replacement has a better matchup
-        has_better_matchup = reserves.any? do |pkmn|
-          next false unless pkmn && pkmn.able?
-          score = 0
-          battle.pbGetOpposingIndicesInOrder(battler.index).each do |opp_idx|
-            opp = battle.battlers[opp_idx]
-            next unless opp && !opp.fainted?
-            pkmn.moves.each do |m|
-              next unless m
-              move_data = GameData::Move.try_get(m.id)
-              next unless move_data && move_data.power > 0
-              type_mod = Effectiveness.calculate(move_data.type, *opp.types)
-              score += 15 if Effectiveness.super_effective?(type_mod)
+        # Is the screen setter itself actually in trouble here?
+        personally_threatened = false
+        battle.pbGetOpposingIndicesInOrder(battler.index).each do |opp_idx|
+          opp = battle.battlers[opp_idx]
+          next unless opp && !opp.fainted?
+          opp.moves.each do |m|
+            next unless m && m.damagingMove?
+            move_data = GameData::Move.try_get(m.id)
+            next unless move_data
+            type_mod = Effectiveness.calculate(move_data.type, *battler.types)
+            if Effectiveness.super_effective?(type_mod)
+              personally_threatened = true
+              break
             end
           end
-          next score >= 15
+          break if personally_threatened
         end
-        if has_better_matchup
-          AdvancedBattleAI.log("Screen setter job done, replacement has better matchup", :decisions)
-          next true
+
+        if personally_threatened
+          # Only switch if a replacement is both a real offensive threat AND
+          # not itself walking into the same kind of trouble.
+          has_better_matchup = reserves.any? do |pkmn|
+            next false unless pkmn && pkmn.able?
+            score = 0
+            is_threatened = false
+            battle.pbGetOpposingIndicesInOrder(battler.index).each do |opp_idx|
+              opp = battle.battlers[opp_idx]
+              next unless opp && !opp.fainted?
+              pkmn.moves.each do |m|
+                next unless m
+                move_data = GameData::Move.try_get(m.id)
+                next unless move_data && move_data.power > 0
+                type_mod = Effectiveness.calculate(move_data.type, *opp.types)
+                score += 15 if Effectiveness.super_effective?(type_mod)
+              end
+              opp.moves.each do |m|
+                next unless m && m.damagingMove?
+                move_data = GameData::Move.try_get(m.id)
+                next unless move_data
+                type_mod = Effectiveness.calculate(move_data.type, *pkmn.types)
+                is_threatened = true if Effectiveness.super_effective?(type_mod)
+              end
+            end
+            next score >= 30 && !is_threatened
+          end
+          if has_better_matchup
+            AdvancedBattleAI.log("Screen setter threatened, replacement has a clean matchup", :decisions)
+            next true
+          end
         end
       end
     end
@@ -508,6 +543,7 @@ class Battle::AI
     #---------------------------------------------------------------------------
     # 1. Defensive score: Can it survive the opponent's likely next attack?
     #---------------------------------------------------------------------------
+    section_start = score
     opponents.each do |opp_idx|
       opp = @battle.battlers[opp_idx]
       next unless opp && !opp.fainted?
@@ -551,10 +587,14 @@ class Battle::AI
         end
       end
     end
+    if score != section_start
+      AdvancedBattleAI.log("#{pkmn.name} survivability vs field: #{score - section_start >= 0 ? '+' : ''}#{score - section_start}", :decisions)
+    end
 
     #---------------------------------------------------------------------------
     # 2. Offensive score: Can it threaten the opponent?
     #---------------------------------------------------------------------------
+    section_start = score
     opponents.each do |opp_idx|
       opp = @battle.battlers[opp_idx]
       next unless opp && !opp.fainted?
@@ -574,10 +614,14 @@ class Battle::AI
         end
       end
     end
+    if score != section_start
+      AdvancedBattleAI.log("#{pkmn.name} offensive threat vs field: +#{score - section_start}", :decisions)
+    end
 
     #---------------------------------------------------------------------------
     # 3. Speed factor: Faster replacements are more valuable offensively
     #---------------------------------------------------------------------------
+    section_start = score
     opponents.each do |opp_idx|
       opp = @battle.battlers[opp_idx]
       next unless opp && !opp.fainted?
@@ -588,17 +632,25 @@ class Battle::AI
         score -= 5   # Much slower — risky
       end
     end
+    if score != section_start
+      AdvancedBattleAI.log("#{pkmn.name} speed factor: #{score - section_start >= 0 ? '+' : ''}#{score - section_start}", :decisions)
+    end
 
     #---------------------------------------------------------------------------
     # 4. Entry hazard penalty: Subtract proportional HP loss from hazards
     #---------------------------------------------------------------------------
     our_side = @battle.sides[idxBattler % 2]
     hazard_fraction = calculate_hazard_entry_damage_fraction(pkmn, our_side)
-    score -= (hazard_fraction * 120).to_i  # e.g., 50% SR damage = -60
+    hazard_penalty = (hazard_fraction * 120).to_i  # e.g., 50% SR damage = -60
+    if hazard_penalty != 0
+      score -= hazard_penalty
+      AdvancedBattleAI.log("#{pkmn.name} entry hazard penalty: -#{hazard_penalty}", :decisions)
+    end
 
     #---------------------------------------------------------------------------
     # 5. Role relevance (kept from original, slightly adjusted)
     #---------------------------------------------------------------------------
+    section_start = score
     estimated_role = estimate_pokemon_role(pkmn)
 
     case estimated_role
@@ -627,6 +679,9 @@ class Battle::AI
       party = @battle.pbParty(idxBattler)
       status_count = party.count { |p| p && p.able? && p.status != :NONE }
       score += status_count * 10
+    end
+    if score != section_start
+      AdvancedBattleAI.log("#{pkmn.name} role relevance (#{estimated_role}): #{score - section_start >= 0 ? '+' : ''}#{score - section_start}", :decisions)
     end
 
     #---------------------------------------------------------------------------
@@ -668,6 +723,7 @@ class Battle::AI
     #---------------------------------------------------------------------------
     # 7. Memory integration: Check known moves for dangerous ones
     #---------------------------------------------------------------------------
+    section_start = score
     if @memory
       opponents.each do |opp_idx|
         opp = @battle.battlers[opp_idx]
@@ -700,6 +756,9 @@ class Battle::AI
           end
         end
       end
+    end
+    if score != section_start
+      AdvancedBattleAI.log("#{pkmn.name} memory-based threat assessment: #{score - section_start >= 0 ? '+' : ''}#{score - section_start}", :decisions)
     end
 
     AdvancedBattleAI.log("Replacement #{pkmn.name}: score #{score}", :decisions)
@@ -980,6 +1039,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:advanced_perish_song_usage,
       # Already under Perish Song — don't use again
       if (opp.effects[PBEffects::PerishSong] rescue 0) > 0
         score -= 30
+        AdvancedBattleAI.log("Perish Song: target already under Perish Song", :scoring)
         next
       end
 

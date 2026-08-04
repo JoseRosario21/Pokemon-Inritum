@@ -1,0 +1,4 @@
+Name       = Event Utilities
+Version    = 1.0.0
+Essentials = 21.1
+Credits    = BloodyNeonz

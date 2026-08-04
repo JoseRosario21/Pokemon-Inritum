@@ -21,14 +21,16 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_endgame,
 
     next score if our_remaining > 3 && opp_remaining > 3  # Not endgame yet
 
-    # Estimate if this move can KO the target
+    # Estimate if this move can KO the target. This is the AI's own current
+    # (user, move, target), so ai.move.rough_damage (already set up for this
+    # exact combination by the time this handler runs) is both more accurate
+    # and cheaper than re-deriving the estimate via estimate_damage_battler,
+    # which exists for evaluating battler pairs outside the AI's own current
+    # context (see AdvancedBattleAI.estimate_damage_battler's doc comment).
     can_ko = false
-    if move.damagingMove?
-      move_data = GameData::Move.try_get(move.id)
-      if move_data
-        damage = AdvancedBattleAI.estimate_damage_battler(move_data, user.battler, target.battler, battle)
-        can_ko = damage >= target.hp
-      end
+    if move.damagingMove? && ai.move
+      ai.move.set_up(move.move) if move.respond_to?(:move)
+      can_ko = ai.move.rough_damage >= target.hp
     end
 
     is_setup = move.function_code.match?(/RaiseUser|MaxUserAttack/) rescue false

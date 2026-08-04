@@ -35,6 +35,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_choice_exploit
     elsif Effectiveness.super_effective?(type_mod)
       # Their locked move hits us hard — we want to switch (handled by ShouldSwitch below)
       score -= 10
+      AdvancedBattleAI.log("Choice lock: vulnerable to #{locked_data.name}, want to switch", :scoring)
     end
 
     next score
@@ -177,6 +178,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_sash_sturdy_aw
     # Bonus for weak chip moves or priority (to break Sash then KO)
     if move.damagingMove? && move.move.power > 0 && move.move.power <= 60
       score += 8
+      AdvancedBattleAI.log("Weak chip move bonus vs Sash/Sturdy", :scoring)
     end
 
     # Bonus for hazard-setting moves (breaks Sash for next switch-in)
@@ -321,16 +323,18 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:advanced_recovery_item_
     end
 
     # Bonus for strong attacks that outpace recovery (Leftovers heals 1/16 = 6.25%)
-    if move.damagingMove? && move.move.power > 0
-      # Estimate damage fraction using shared utility
-      move_data = GameData::Move.try_get(move.id)
-      est_dmg = move_data ? AdvancedBattleAI.estimate_damage_battler(move_data, user.battler, target_battler, battle) : 0
+    if move.damagingMove? && move.move.power > 0 && ai.move
+      # This is the AI's own current (user, move, target), so reuse
+      # ai.move.rough_damage rather than re-deriving via estimate_damage_battler.
+      ai.move.set_up(move.move)
+      est_dmg = ai.move.rough_damage
 
       dmg_fraction = est_dmg.to_f / target_battler.totalhp
 
       if dmg_fraction > 0.12
         # Move outpaces recovery meaningfully
         score += 8
+        AdvancedBattleAI.log("Strong move vs Leftovers holder — outpaces recovery", :scoring)
       elsif dmg_fraction <= 0.0625 && dmg_fraction > 0
         # Move barely outpaces or loses to recovery — deprioritize
         score -= 5

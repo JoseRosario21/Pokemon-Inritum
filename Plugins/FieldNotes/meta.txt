@@ -1,0 +1,5 @@
+Name       = Field Notes
+Version    = 1.0.0
+Essentials = 21.1
+Requires   = Field Effect
+Credits    = BloodyNeonz
