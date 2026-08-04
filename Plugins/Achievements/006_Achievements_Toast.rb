@@ -13,7 +13,12 @@
 # graphic is missing, and it inherits nothing that needs reskinning.
 #===============================================================================
 module AchievementToast
-  WIDTH        = 236
+  # The panel is sized to its text rather than fixed. "Wildlife Management" and
+  # "Learning Experience" are 19 characters before the tier is added, and a
+  # fixed width wide enough for those would look empty for "Angler".
+  MIN_WIDTH    = 180
+  MAX_WIDTH    = 340    # past this it starts to feel like a message box
+  PADDING_X    = 12
   HEIGHT       = 46
   MARGIN_X     = 8
   MARGIN_Y     = 8
@@ -70,7 +75,10 @@ module AchievementToast
     when :slide
       ratio = @timer.to_f / SLIDE_FRAMES
       ratio = 1.0 if ratio > 1.0
-      @sprite.x = (-WIDTH + ((WIDTH + MARGIN_X) * ratio)).round
+      # Width varies per toast now, so read it from the sprite rather than a
+      # constant.
+      w = @sprite.bitmap ? @sprite.bitmap.width : MIN_WIDTH
+      @sprite.x = (-w + ((w + MARGIN_X) * ratio)).round
       @sprite.opacity = (255 * ratio).round
       if @timer >= SLIDE_FRAMES
         @sprite.x = MARGIN_X
@@ -100,38 +108,71 @@ module AchievementToast
   def start_next
     title, subtitle = queue.shift
     return if title.nil?
-    build_sprite
-    draw(title, subtitle)
-    @sprite.x = -WIDTH
+    # The tier goes on the small-font label line, not appended to the name.
+    # "Well Travelled - Bronze" on one system-font line is wider than a corner
+    # pop-up should be; splitting it puts the long half in the smaller font.
+    label = subtitle.to_s.empty? ? _INTL("Achievement unlocked") :
+                                   _INTL("{1} achievement unlocked", subtitle)
+    width = measure_width(label, title)
+    build_sprite(width)
+    draw(width, label, title)
+    @sprite.x = -width
     @sprite.y = MARGIN_Y
     @sprite.opacity = 0
     @phase = :slide
     @timer = 0
   end
 
-  def build_sprite
+  # Scratch bitmap, because the panel has to be sized before the sprite that
+  # will hold it exists.
+  def measure_width(label, title)
+    scratch = Bitmap.new(MAX_WIDTH, HEIGHT)
+    begin
+      pbSetSmallFont(scratch)
+      label_w = scratch.text_size(label).width
+      pbSetSystemFont(scratch)
+      title_w = scratch.text_size(title).width
+    ensure
+      scratch.dispose
+    end
+    widest = [label_w, title_w].max + (PADDING_X * 2)
+    return widest.clamp(MIN_WIDTH, MAX_WIDTH)
+  end
+
+  # Trims to fit, with an ellipsis, so an unusually long name can never spill
+  # outside the panel the way a fixed width let it.
+  def fit_text(bitmap, text, available)
+    return text if bitmap.text_size(text).width <= available
+    trimmed = text.dup
+    while trimmed.length > 1 && bitmap.text_size(trimmed + "...").width > available
+      trimmed.chop!
+    end
+    return trimmed + "..."
+  end
+
+  def build_sprite(width)
     dispose_sprite
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     # Above the map and its weather, below message boxes and menus.
     @viewport.z = 99_000
-    @sprite = BitmapSprite.new(WIDTH, HEIGHT, @viewport)
+    @sprite = BitmapSprite.new(width, HEIGHT, @viewport)
   end
 
-  def draw(title, subtitle)
+  def draw(width, label, title)
     bitmap = @sprite.bitmap
     bitmap.clear
     # Panel with a 1px edge and a gold accent bar down the left.
-    bitmap.fill_rect(0, 0, WIDTH, HEIGHT, EDGE_COLOR)
-    bitmap.fill_rect(1, 1, WIDTH - 2, HEIGHT - 2, BACK_COLOR)
+    bitmap.fill_rect(0, 0, width, HEIGHT, EDGE_COLOR)
+    bitmap.fill_rect(1, 1, width - 2, HEIGHT - 2, BACK_COLOR)
     bitmap.fill_rect(1, 1, 4, HEIGHT - 2, ACCENT_COLOR)
+    available = width - PADDING_X - 6
     pbSetSmallFont(bitmap)
     pbDrawTextPositions(bitmap, [
-      [_INTL("Achievement unlocked"), 14, 3, 0, LABEL_COLOR, SHADOW_COLOR]
+      [fit_text(bitmap, label, available), PADDING_X, 3, 0, LABEL_COLOR, SHADOW_COLOR]
     ])
     pbSetSystemFont(bitmap)
-    text = subtitle.empty? ? title : _INTL("{1} - {2}", title, subtitle)
     pbDrawTextPositions(bitmap, [
-      [text, 14, 19, 0, TEXT_COLOR, SHADOW_COLOR]
+      [fit_text(bitmap, title, available), PADDING_X, 19, 0, TEXT_COLOR, SHADOW_COLOR]
     ])
   end
 end

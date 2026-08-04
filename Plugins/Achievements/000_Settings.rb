@@ -21,6 +21,11 @@ module Achievements
   # Sound effect played on unlock. Set to nil for silence.
   UNLOCK_SE = "Pkmn move learnt"
 
+  # How many steps between checks while walking. Battle-end and map-entry checks
+  # cover everything else, but the movement achievements are earned by walking
+  # and would otherwise not surface until the player left the map.
+  STEPS_PER_CHECK = 20
+
   # Tier names, lowest to highest. The number of tiers an achievement has is
   # decided by how many thresholds it defines, so an achievement with three
   # thresholds uses the first three names here.

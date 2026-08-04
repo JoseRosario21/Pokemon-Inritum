@@ -2,8 +2,9 @@
 # Achievements and Records - Menu entry
 #
 # Lives on the Pokegear, matching how Rejuvenation presents its achievements
-# screen. The icon is Graphics/UI/Pokegear/icon_achievements.png (40x32, same
-# size as icon_dexnav.png).
+# screen. Buttons are text-only (see Plugins/PokegearTweaks), so "icon_name"
+# below is inert -- kept only so an icon can be restored by reverting that
+# plugin.
 #
 # Always available -- unlike Field Notes there is nothing to spoil, and the
 # Records page is meaningful from the first save.

@@ -217,6 +217,13 @@ class Achievements_Scene
   VISIBLE_ROWS = 5
   PANEL_Y      = 296
 
+  # Optical centring for the title row. The system font renders ~32px (27pt at
+  # mkxp's fontScale 1.20) and RGSS centres glyphs inside the box
+  # pbDrawTextPositions passes, so y=8 sits slightly above the middle of the
+  # header strip. This screen's header is 0-42 (rows start at 46), so it sits a
+  # little higher than the other apps' 0-46.
+  HEADER_Y = 10
+
   def pbUpdate
     pbUpdateSpriteHash(@sprites)
   end
@@ -309,8 +316,8 @@ class Achievements_Scene
     # is the only non-obvious control here.
     pbSetSystemFont(bitmap)
     pbDrawTextPositions(bitmap, [
-      [_INTL("< {1} >", title), 14,  8, 0, base, shadow],
-      [right,                   498, 8, 1, base, shadow]
+      [_INTL("< {1} >", title), 14,  HEADER_Y, 0, base, shadow],
+      [right,                   498, HEADER_Y, 1, base, shadow]
     ])
   end
 

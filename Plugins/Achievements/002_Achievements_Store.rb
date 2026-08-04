@@ -128,3 +128,18 @@ EventHandlers.add(:on_end_battle, :check_achievements,
 EventHandlers.add(:on_enter_map, :check_achievements,
   proc { |_old_map_id| Achievements.check_all }
 )
+
+# Walking is the one tracked activity that triggers neither of the above. With
+# only battle-end and map-entry checks, "Well Travelled" could be earned in the
+# middle of a long map and go unannounced until the player happened to leave it.
+#
+# Throttled rather than run every step: the check is 27 integer comparisons, so
+# it is cheap, but there is no reason to pay it on every tile.
+EventHandlers.add(:on_player_step_taken, :check_achievements,
+  proc {
+    @step_counter = (@step_counter || 0) + 1
+    next if @step_counter < Achievements::STEPS_PER_CHECK
+    @step_counter = 0
+    Achievements.check_all
+  }
+)

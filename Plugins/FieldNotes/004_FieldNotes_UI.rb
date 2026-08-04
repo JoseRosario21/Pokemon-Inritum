@@ -250,7 +250,12 @@ class FieldNotes_Scene
   # font do not fit across 512px and run into each other. The header is kept to a
   # single line for the same reason: the system font's line height is taller than
   # the gap between two stacked lines would allow.
-  FOOTER_Y = Graphics.height - 34
+  # Optical centring. The system font renders ~32px (27pt at mkxp's fontScale
+  # 1.20) and the small font ~25px, and RGSS centres glyphs inside the box
+  # pbDrawTextPositions passes -- so a title at y=8 sits slightly above the
+  # middle of the 0-46 header band. These two are the knobs for that.
+  HEADER_Y = 12
+  FOOTER_Y = Graphics.height - 30
 
   def refresh_chrome(page_title = nil)
     bitmap = @sprites["overlay"].bitmap
@@ -260,7 +265,7 @@ class FieldNotes_Scene
 
     pbSetSystemFont(bitmap)
     if page_title
-      pbDrawTextPositions(bitmap, [[page_title, 14, 8, 0, base, shadow]])
+      pbDrawTextPositions(bitmap, [[page_title, 14, HEADER_Y, 0, base, shadow]])
       pbSetSmallFont(bitmap)
       pbDrawTextPositions(bitmap, [
         [_INTL("UP/DOWN  Scroll"), 14,  FOOTER_Y, 0, base, shadow],
@@ -273,8 +278,8 @@ class FieldNotes_Scene
     count = @groups[@category][1].count { |d| FieldNotes.seen?(d.id) }
     total = @groups[@category][1].length
     pbDrawTextPositions(bitmap, [
-      [_INTL("Field Notes"), 14, 8, 0, base, shadow],
-      [_INTL("{1}  {2}/{3}", category, count, total), 498, 8, 1, base, shadow]
+      [_INTL("Field Notes"), 14, HEADER_Y, 0, base, shadow],
+      [_INTL("{1}  {2}/{3}", category, count, total), 498, HEADER_Y, 1, base, shadow]
     ])
 
     # Rather than a modal on a locked entry, the footer says why it can't be

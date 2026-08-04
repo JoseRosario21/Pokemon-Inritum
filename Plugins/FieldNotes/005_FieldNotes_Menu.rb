@@ -2,8 +2,9 @@
 # Field Notes - Menu entry
 #
 # Lives on the Pokegear, matching how Rejuvenation presents its field catalogue
-# as one of the player's apps. The icon is
-# Graphics/UI/Pokegear/icon_fieldnotes.png (40x32, same as icon_dexnav.png).
+# as one of the player's apps. Pokegear buttons are text-only (see
+# Plugins/PokegearTweaks), so "icon_name" below is inert -- kept only so an icon
+# can be restored by reverting that plugin.
 #
 # Hidden until the player has actually battled on a field, so it doesn't clutter
 # the app list during the opening hours of the game.
